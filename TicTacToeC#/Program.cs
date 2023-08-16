@@ -120,53 +120,44 @@ namespace TicTacToe
         }
         private static int checkForWinner()
         {
-            // row 1-3
-            if (gameBoard.GetCell(0) == gameBoard.GetCell(1) && gameBoard.GetCell(0) == gameBoard.GetCell(2))
+            int[][] winningCombinations = new int[][] {
+        // Rows
+        new int[] {0, 1, 2},
+        new int[] {3, 4, 5},
+        new int[] {6, 7, 8},
+        // Columns
+        new int[] {0, 3, 6},
+        new int[] {1, 4, 7},
+        new int[] {2, 5, 8},
+        // Diagonals
+        new int[] {0, 4, 8},
+        new int[] {2, 4, 6}
+    };
+
+            foreach (var combination in winningCombinations)
             {
-                return gameBoard.GetCell(0);
-            }
-            if (gameBoard.GetCell(3) == gameBoard.GetCell(4) && gameBoard.GetCell(3) == gameBoard.GetCell(5))
-            {
-                return gameBoard.GetCell(3);
-            }
-            if (gameBoard.GetCell(6) == gameBoard.GetCell(7) && gameBoard.GetCell(6) == gameBoard.GetCell(8))
-            {
-                return gameBoard.GetCell(6);
-            }
-            // column 1-3
-            if (gameBoard.GetCell(0) == gameBoard.GetCell(3) && gameBoard.GetCell(0) == gameBoard.GetCell(6))
-            {
-                return gameBoard.GetCell(0);
-            }
-            if (gameBoard.GetCell(1) == gameBoard.GetCell(4) && gameBoard.GetCell(1) == gameBoard.GetCell(7))
-            {
-                return gameBoard.GetCell(1);
-            }
-            if (gameBoard.GetCell(2) == gameBoard.GetCell(5) && gameBoard.GetCell(2) == gameBoard.GetCell(8))
-            {
-                return gameBoard.GetCell(2);
-            }
-            // diagonal
-            if (gameBoard.GetCell(0) == gameBoard.GetCell(4) && gameBoard.GetCell(0) == gameBoard.GetCell(8))
-            {
-                return gameBoard.GetCell(0);
-            }
-            if (gameBoard.GetCell(2) == gameBoard.GetCell(4) && gameBoard.GetCell(2) == gameBoard.GetCell(6))
-            {
-                return gameBoard.GetCell(2);
+                if (gameBoard.GetCell(combination[0]) != 0 &&
+                    gameBoard.GetCell(combination[0]) == gameBoard.GetCell(combination[1]) &&
+                    gameBoard.GetCell(combination[0]) == gameBoard.GetCell(combination[2]))
+                {
+                    return gameBoard.GetCell(combination[0]);
+                }
             }
 
-            // Check for draw (Uncomment if needed)
-            //for (int i = 0; i < 9; i++)
-            //{
-            //    if (gameBoard.GetCell(i) == 0)
-            //    {
-            //        return -1;
-            //    }
-            //}
+            //  draw
+            bool isDraw = true;
+            for (int i = 0; i < 9; i++)
+            {
+                if (gameBoard.GetCell(i) == 0)
+                {
+                    isDraw = false;
+                    break;
+                }
+            }
 
-            return 0;
+            return isDraw ? -1 : 0;
         }
+
 
         private static void printBoard()
         {
