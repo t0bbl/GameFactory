@@ -15,17 +15,17 @@ namespace TicTacToe
             player1 = Console.ReadLine();
             Console.WriteLine("Input name of second Challenger");
             player2 = Console.ReadLine();
-            GameBoard gameBoard = new GameBoard();
 
             do
             {
-                playGame();
+                playGame(); 
                 gameBoard.ResetBoard();
 
                 Console.WriteLine("Score:  " + player1 + " : " + scorePlayer1 + " !     " + player2 + " : " + scorePlayer2 + "!");
                 Console.WriteLine("Want a rematch Noob ? Y / N ?");
 
-             } while (Console.ReadLine().ToLower() == "y") ;
+
+            } while (Console.ReadLine().ToLower() == "y") ;
         }
 
         private class  GameBoard
