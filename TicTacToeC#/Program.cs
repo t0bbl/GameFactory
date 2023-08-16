@@ -7,7 +7,7 @@ namespace TicTacToe
     {
         static GameBoard gameBoard = new GameBoard();
         static string player1, player2;
-        static int scorePlayer1, scorePlayer2;
+        static int scorePlayer1, scorePlayer2, draw;
         static void Main(string[] args)
         { 
 
@@ -21,7 +21,7 @@ namespace TicTacToe
                 playGame(); 
                 gameBoard.ResetBoard();
 
-                Console.WriteLine("Score:  " + player1 + " : " + scorePlayer1 + " !     " + player2 + " : " + scorePlayer2 + "!");
+                Console.WriteLine("Score:  " + player1 + " : " + scorePlayer1 + " !     " + player2 + " : " + scorePlayer2 + "!     Draw: " + draw);
                 Console.WriteLine("Want a rematch Noob ? Y / N ?");
 
 
@@ -112,6 +112,7 @@ namespace TicTacToe
             else if (winnerNumber == -1)
             {
                 Console.WriteLine("It's a draw, Idiots!");
+                draw += 1;
             }
             return winnerNumber;
 
