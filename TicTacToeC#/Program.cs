@@ -25,46 +25,46 @@ namespace TicTacToe
 
             Console.WriteLine(startingPlayer == 1 ? player1 + " starts!" : player2 + " starts!");
 
+          
 
             while (checkForWinner() == 0)
             {
-
-                while (player1turn == -1 ||  board[player1turn] != 0)
+                if ((startingPlayer == 1 && player1turn == -1) || (startingPlayer == 2 && player2turn == -1))
                 {
-                    Console.WriteLine(player1 + " input a number from 0 to 8");
-                    player1turn = int.Parse(Console.ReadLine());
-                    Console.WriteLine(player1 + " typed " + player1turn);
+                    Console.WriteLine(startingPlayer == 1 ? player1 + ", input a number from 0 to 8" : player2 + ", input a number from 0 to 8");
                 }
-                board[player1turn] = 1;
+          
+
+                int currentPlayer = startingPlayer == 1 ? 1 : 2;
+
+                int chosenCell = int.Parse(Console.ReadLine());
+
+                if (board[chosenCell] == 0)
+                {
+                    board[chosenCell] = currentPlayer;
+                    startingPlayer = startingPlayer == 1 ? 2 : 1;
+                }
+                else
+                {
+                    Console.WriteLine("Invalid move, idiot. Try again.");
+                    continue;
+                }
 
                 printBoard();
-
-                while (player2turn == -1 || board[player2turn] != 0)
-                // // for the lonely days
-                //                {
-                //                    player2turn = rand.Next(8);
-                //                    Console.WriteLine(player2 + " typed " + player2turn);
-                //                }
-                {
-                    Console.WriteLine(player2 + " input a number from 0 to 8");
-                    player2turn = int.Parse(Console.ReadLine());
-                    Console.WriteLine(player2 + " typed " + player2turn);
-                }
-                board[player2turn] = 2;
-
-                printBoard();
-            }
-            int winnerNumber = checkForWinner();
+            
+        
+        }
+        int winnerNumber = checkForWinner();
 
             if (winnerNumber == 1)
             {
-                Console.WriteLine(player1 + " won the game! " + player2 + " should feel ashamed!");
+                Console.WriteLine(player1 + " won the game! " + player2 + " should feel ashamed! Want a rematch Noob?");
             }
             else if (winnerNumber == 2)
             {
-                Console.WriteLine(player2 + " won the game! " + player1 + " is a utterly bad player");
+                Console.WriteLine(player2 + " won the game! " + player1 + " is a utterly bad player! Want to go at it again?");
             }
-            else
+            else if (winnerNumber == -1) 
             {
                 Console.WriteLine("It's a draw, Idiots!");
             }
@@ -118,18 +118,18 @@ namespace TicTacToe
              //   Console.WriteLine("exit8");
                 return board[2];
             }
-            // draw
-            {
-                for (int i = 0; i < board.Length; i++)
-                {
-                    if (board[i] == 0)
-                    {
-            //            Console.WriteLine("exitdraw");
+            //// draw
+            //{
+            //    for (int i = 0; i < board.Length; i++)
+            //    {
+            //        if (board[i] == 0)
+            //        {
+            ////            Console.WriteLine("exitdraw");
 
-                        return -1;
-                    }
-                }
-            }
+            //            return -1;
+            //        }
+            //    }
+            //}
             return 0;
 
         }
