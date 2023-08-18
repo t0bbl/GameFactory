@@ -59,10 +59,6 @@ namespace TicTacToe
         }
         private static int playGame()
         {
-
-            int player1turn = -1;
-            int player2turn = -1;
-
             Random rand = new Random();
 
             int startingPlayer = rand.Next(1, 3);
@@ -73,17 +69,13 @@ namespace TicTacToe
 
             while (checkForWinner() == 0)
             {
-                if ((startingPlayer == 1 && player1turn == -1) || (startingPlayer == 2 && player2turn == -1))
-                {
-                    Console.WriteLine(startingPlayer == 1 ? player1 + ", input a number from 0 to 8" : player2 + ", input a number from 0 to 8");
-                }
-
-
+                Console.WriteLine(startingPlayer == 1 ? player1 + ", input a number from 0 to 8" : player2 + ", input a number from 0 to 8");
+                
                 int currentPlayer = startingPlayer == 1 ? 1 : 2;
 
                 int chosenCell = int.Parse(Console.ReadLine());
 
-                if (gameBoard.GetCell(chosenCell) == 0)
+                if (chosenCell < 9 && chosenCell >= 0 && gameBoard.GetCell(chosenCell) == 0)
                 {
                     gameBoard.SetCell(chosenCell, currentPlayer);
                     startingPlayer = startingPlayer == 1 ? 2 : 1;
