@@ -21,11 +21,12 @@ namespace TicTacToe
                 playGame(); 
                 gameBoard.ResetBoard();
 
-                Console.WriteLine("Score:  " + player1 + " : " + scorePlayer1 + " !     " + player2 + " : " + scorePlayer2 + "!     Draw: " + draw);
                 Console.WriteLine("Want a rematch Noob ? Y / N ?");
 
 
             } while (Console.ReadLine().ToLower() == "y") ;
+            Console.WriteLine("Score:  " + player1 + " : " + scorePlayer1 + " !     " + player2 + " : " + scorePlayer2 + "!     Draw: " + draw);
+
         }
 
         private class  GameBoard
