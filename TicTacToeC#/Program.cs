@@ -69,16 +69,13 @@ namespace TicTacToe
 
             while (checkForWinner() == 0)
             {
-               
-                    Console.WriteLine(startingPlayer == 1 ? player1 + ", input a number from 0 to 8" : player2 + ", input a number from 0 to 8");
+                Console.WriteLine(startingPlayer == 1 ? player1 + ", input a number from 0 to 8" : player2 + ", input a number from 0 to 8");
                 
-
-
                 int currentPlayer = startingPlayer == 1 ? 1 : 2;
 
                 int chosenCell = int.Parse(Console.ReadLine());
 
-                if (gameBoard.GetCell(chosenCell) == 0)
+                if (chosenCell < 9 && chosenCell >= 0 && gameBoard.GetCell(chosenCell) == 0)
                 {
                     gameBoard.SetCell(chosenCell, currentPlayer);
                     startingPlayer = startingPlayer == 1 ? 2 : 1;
