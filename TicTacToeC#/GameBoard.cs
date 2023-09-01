@@ -49,13 +49,13 @@ namespace TicTacToe
                     switch (cellValue)
                     {
                         case 0:
-                            Console.Write(".");
+                            Console.Write(" . ");
                             break;
                         case 1:
-                            Console.Write("X");
+                            Console.Write(" X ");
                             break;
                         case 2:
-                            Console.Write("O");
+                            Console.Write(" O ");
                             break;
                     }
                 }

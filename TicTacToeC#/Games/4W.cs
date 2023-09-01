@@ -26,10 +26,9 @@ namespace TicTacToe
             gameBoard = new GameBoard(6, 7);
             stack = new Dictionary<int, int>();
 
-            // Initialize each column's stack height
             for (int i = 0; i < 8; i++)
             {
-                stack[i] = 0;
+                stack[i] = 5;
             }
 
             while (CheckForWinner.CheckWinner(gameBoard, 4) == 0)
@@ -42,10 +41,10 @@ namespace TicTacToe
                     continue;
                 }
 
-                if (stack[chosenColumn] < 6)
+                if (stack[chosenColumn] >= 0)
                 {
                     int row = stack[chosenColumn];
-                    stack[chosenColumn]++;
+                    stack[chosenColumn]--;
                     gameBoard.SetCell(row, chosenColumn, currentPlayerIndex + 1);
                     currentPlayerIndex = (currentPlayerIndex + 1) % players.Length;
                 }
