@@ -7,32 +7,17 @@ namespace TicTacToe
     {
 
         public static GameBoard gameBoard;
-        static string game;
-        static bool validChoice = false;
+        public static string game = null;
 
         public static (Dictionary<string, int> scores, int draw) StartGame(string[] players, Dictionary<string, int> scores, int draw)
         {
             int currentPlayerIndex = 0;
 
 
-            while (!validChoice)
+            while (string.IsNullOrEmpty(game))
             {
                 Console.Write("Which Game shall we play? TTT or 4W?");
                 game = Console.ReadLine();
-
-                if (game == "TTT")
-                {
-                    validChoice = true;
-                }
-                else if (game == "4W")
-                {
-                    gameBoard = new GameBoard(7, 6);
-                    validChoice = true;
-                }
-                else
-                {
-                    Console.WriteLine("Try again, idiot.");
-                }
             }
 
             int player1turn = -1;
@@ -42,11 +27,26 @@ namespace TicTacToe
             currentPlayerIndex = rand.Next(0, players.Length);
 
             Console.WriteLine($"{players[currentPlayerIndex]} starts!");
-            TTT tttGame = new TTT(gameBoard, players, scores, currentPlayerIndex, draw);
-            var (updatedScores, updatedDraw) = tttGame.startTTT();
-            scores = updatedScores;
-            draw = updatedDraw;
+            if (game == "TTT")
+            {
+                TTT tttGame = new TTT(gameBoard, players, scores, currentPlayerIndex, draw);
+                var (updatedScores, updatedDraw) = tttGame.startTTT();
+                scores = updatedScores;
+                draw = updatedDraw;
+            }
+            else if (game == "4W")
+            {
+                FourW fourwGame = new FourW(gameBoard, players, scores, currentPlayerIndex, draw);
+                var (updatedScores, updatedDraw) = fourwGame.start4W();
+                scores = updatedScores;
+                draw = updatedDraw;
+            }
 
+            else
+            {
+                Console.WriteLine("Invalid game. Try again.");
+            }
+            
             return (scores, draw);
         }
     }
