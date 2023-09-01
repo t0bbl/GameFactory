@@ -10,11 +10,8 @@ namespace TicTacToe
 {
     class CheckForWinner
     {
-
-
         public static int CheckWinner(GameBoard gameBoard, int winningLength)
         {
-
             for (int row = 0; row < gameBoard.Rows; row++)
             {
                 for (int col = 0; col < gameBoard.Columns; col++)
@@ -47,18 +44,7 @@ namespace TicTacToe
             }
 
             // Check for a draw
-            bool isDraw = true;
-            for (int row = 0; row < gameBoard.Rows; row++)
-            {
-                for (int col = 0; col < gameBoard.Columns; col++)
-                {
-                    if (gameBoard.GetCell(row, col) == 0)
-                    {
-                        isDraw = false;
-                        break;
-                    }
-                }
-            }
+            bool isDraw = !Enumerable.Range(0, gameBoard.Rows).Any(row => Enumerable.Range(0, gameBoard.Columns).Any(col => gameBoard.GetCell(row, col) == 0));
 
             return isDraw ? -1 : 0;
         }

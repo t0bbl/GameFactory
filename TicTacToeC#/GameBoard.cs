@@ -9,7 +9,7 @@ using TicTacToe;
 
 namespace TicTacToe
 {
-    class GameBoard
+    public class GameBoard
     {   private int[,] board;
         public int Rows { get; private set; }
         public int Columns { get; private set; }

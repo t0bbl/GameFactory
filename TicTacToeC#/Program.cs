@@ -22,7 +22,7 @@ namespace TicTacToe
             {
                 PlayGame play = new PlayGame();
                 string[] players = playerNames.Values.ToArray();
-                playerScores = PlayGame.StartGame(players, playerScores, draw);
+                (playerScores, draw) = PlayGame.StartGame(players, playerScores, draw);
 
 
                 Console.WriteLine("Want a rematch Noob ? Y / N ?");
