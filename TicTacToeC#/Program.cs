@@ -9,20 +9,14 @@ namespace TicTacToe
     {
         static string game;
         static int draw, winnerNumber;
-        static Dictionary<string, string> playerNames = new Dictionary<string, string>();
-        static Dictionary<string, int> playerScores = new Dictionary<string, int>();
 
 
         static void Main(string[] args)
         {
 
-            string[] names = Player.PlayerNames(args);
 
-            for (int i = 0; i < names.Length; i++)
-            {
-                playerNames[$"player{i + 1}"] = names[i];
-                playerScores[names[i]] = 0;
-            }
+            Dictionary<string, string> playerNames = Player.PlayerNames(args);
+            Dictionary<string, int> playerScores = Player.playerScores;
 
             do
             {
@@ -37,7 +31,7 @@ namespace TicTacToe
             } while (Console.ReadLine().ToLower() == "y");
 
 
-            foreach (var name in names)
+            foreach (var name in playerNames.Values)
             {
                 Console.WriteLine($"{name} has won {playerScores[name]} times!");
             }
