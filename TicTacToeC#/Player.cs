@@ -10,13 +10,19 @@ namespace TicTacToe
 
         static public string[]  PlayerNames(string[] args)
         {
+            Console.WriteLine("How many Challengers are there?");
+            int playerNumber = int.Parse(Console.ReadLine());
 
-            Console.WriteLine("Input name of first Challenger");
-            player1 = Console.ReadLine();
-            Console.WriteLine("Input name of second Challenger");
-            player2 = Console.ReadLine();
+            string[] players = new string[playerNumber];
 
-            return new string[] { player1, player2 };
+
+            for (int i = 0; i < playerNumber; i++)
+            {   Console.WriteLine($"Input name of Challenger {i + 1}:");
+                players[i] = Console.ReadLine();
+             }
+
+
+            return players;
 
         }
     }
