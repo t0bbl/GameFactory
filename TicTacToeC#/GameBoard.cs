@@ -10,18 +10,18 @@ using TicTacToe;
 namespace TicTacToe
 {
     class GameBoard
-    { private int[,] board;
-    public int Rows { get; private set; }
-    public int Columns { get; private set; }
+    {   private int[,] board;
+        public int Rows { get; private set; }
+        public int Columns { get; private set; }
 
-    public GameBoard(int rows, int columns)
-    {
-        Rows = rows;
-        Columns = columns;
-        board = new int[rows, columns];
-        ResetBoard();
-    }
-    public void ResetBoard()
+        public GameBoard(int rows, int columns)
+        {
+            Rows = rows;
+            Columns = columns;
+            board = new int[rows, columns];
+            ResetBoard();
+        }
+        public void ResetBoard()
         {
             for (int i = 0; i < Rows; i++)
                 for (int j = 0; j < Columns; j++)

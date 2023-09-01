@@ -5,19 +5,12 @@ namespace TicTacToe
 {
     internal class PlayGame
     {
-        private GameBoard gameBoard;
+        public static GameBoard gameBoard;
         static string game;
+        static bool validChoice = false;
 
-        public PlayGame(GameBoard board)
+        public static (int, int, int, int) StartGame(string player1, string player2, int scorePlayer1, int scorePlayer2, int draw)
         {
-            gameBoard = board;
-        }
-
-        public (int, int, int, int) playGame(string player1, string player2, int scorePlayer1, int scorePlayer2, int draw)
-        {
-
-            Console.Write("Which Game shall we play? TTT or 4W?");
-            bool validChoice = false;
 
             while (!validChoice)
             {
@@ -77,6 +70,7 @@ namespace TicTacToe
                 gameBoard.PrintBoard();
             }
 
+
             int winnerNumber = CheckForWinner.CheckWinner(gameBoard, 3);
 
             switch (winnerNumber)
@@ -84,15 +78,19 @@ namespace TicTacToe
                 case 1:
                     Console.WriteLine($"{player1} won the game! {player2} should feel ashamed!");
                     scorePlayer1++;
+                    gameBoard.ResetBoard();
                     break;
                 case 2:
                     Console.WriteLine($"{player2} won the game! {player1} is a utterly bad player!");
                     scorePlayer2++;
+                    gameBoard.ResetBoard();
                     break;
                 case -1:
                     Console.WriteLine("It's a draw, Idiots!");
                     draw++;
+                    gameBoard.ResetBoard();
                     break;
+
             }
 
             return (winnerNumber, scorePlayer1, scorePlayer2, draw);

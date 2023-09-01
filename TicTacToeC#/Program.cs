@@ -8,28 +8,25 @@ namespace TicTacToe
     {
         static string player1, player2, game;
         static int scorePlayer1, scorePlayer2, draw, winnerNumber;
-        static GameBoard gameBoard;
 
         static void Main(string[] args)
         {
 
-            Console.WriteLine("Input name of first Challenger");
-            player1 = Console.ReadLine();
-            Console.WriteLine("Input name of second Challenger");
-            player2 = Console.ReadLine();
+            string[] names = Player.PlayerNames(args);
+            player1 = names[0];
+            player2 = names[1]; 
 
             do
             {
-                var play = new PlayGame(gameBoard);
+                PlayGame play = new PlayGame();
+                (winnerNumber, scorePlayer1, scorePlayer2, draw) =  PlayGame.StartGame( player1, player2, scorePlayer1, scorePlayer2, draw);
 
-                (winnerNumber, scorePlayer1, scorePlayer2, draw) =  play.playGame( player1, player2, scorePlayer1, scorePlayer2, draw);
-
-                gameBoard.ResetBoard();
 
                 Console.WriteLine("Want a rematch Noob ? Y / N ?");
 
 
             } while (Console.ReadLine().ToLower() == "y");
+
             Console.WriteLine("Score:  " + player1 + " : " + scorePlayer1 + " !     " + player2 + " : " + scorePlayer2 + "!     Draw: " + draw);
 
         }
