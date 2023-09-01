@@ -28,7 +28,7 @@ namespace TicTacToe
             } while (Console.ReadLine().ToLower() == "y");
 
             Console.WriteLine("Score:  " + player1 + " : " + scorePlayer1 + " !     " + player2 + " : " + scorePlayer2 + "!     Draw: " + draw);
-
+            Console.ReadKey();
         }
 
 
