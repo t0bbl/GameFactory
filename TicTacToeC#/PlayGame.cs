@@ -6,14 +6,40 @@ namespace TicTacToe
     internal class PlayGame
     {
         private GameBoard gameBoard;
+        static string game;
 
         public PlayGame(GameBoard board)
         {
             gameBoard = board;
         }
 
-        public (int, int, int, int) playGame(string gameType, string player1, string player2, int scorePlayer1, int scorePlayer2, int draw)
+        public (int, int, int, int) playGame(string player1, string player2, int scorePlayer1, int scorePlayer2, int draw)
         {
+
+            Console.Write("Which Game shall we play? TTT or 4W?");
+            bool validChoice = false;
+
+            while (!validChoice)
+            {
+                Console.Write("Which Game shall we play? TTT or 4W?");
+                game = Console.ReadLine();
+
+                if (game == "TTT")
+                {
+                    gameBoard = new GameBoard(3, 3);
+                    validChoice = true;
+                }
+                else if (game == "4W")
+                {
+                    gameBoard = new GameBoard(7, 6);
+                    validChoice = true;
+                }
+                else
+                {
+                    Console.WriteLine("Try again, idiot.");
+                }
+            }
+
             int player1turn = -1;
             int player2turn = -1;
 
