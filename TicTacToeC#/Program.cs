@@ -1,25 +1,34 @@
 ﻿using System;
 using System.Security.AccessControl;
 using System.Text.RegularExpressions;
+using System.Collections.Generic;
 
 namespace TicTacToe
 {
     class Program
     {
-        static string player1, player2, game;
-        static int scorePlayer1, scorePlayer2, draw, winnerNumber;
+        static string game;
+        static int draw, winnerNumber;
+        static Dictionary<string, string> playerNames = new Dictionary<string, string>();
+        static Dictionary<string, int> playerScores = new Dictionary<string, int>();
+
 
         static void Main(string[] args)
         {
 
             string[] names = Player.PlayerNames(args);
-            player1 = names[0];
-            player2 = names[1]; 
+
+            for (int i = 0; i < names.Length; i++)
+            {
+                playerNames[$"player{i + 1}"] = names[i];
+                playerScores[names[i]] = 0;
+            }
 
             do
             {
                 PlayGame play = new PlayGame();
-                (winnerNumber, scorePlayer1, scorePlayer2, draw) =  PlayGame.StartGame( player1, player2, scorePlayer1, scorePlayer2, draw);
+                string[] players = playerNames.Values.ToArray();
+                playerScores = PlayGame.StartGame(players, playerScores, draw);
 
 
                 Console.WriteLine("Want a rematch Noob ? Y / N ?");
@@ -27,7 +36,12 @@ namespace TicTacToe
 
             } while (Console.ReadLine().ToLower() == "y");
 
-            Console.WriteLine("Score:  " + player1 + " : " + scorePlayer1 + " !     " + player2 + " : " + scorePlayer2 + "!     Draw: " + draw);
+
+            foreach (var name in names)
+            {
+                Console.WriteLine($"{name} has won {playerScores[name]} times!");
+            }
+            Console.WriteLine($"There were {draw} draws.");
             Console.ReadKey();
         }
 
