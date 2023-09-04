@@ -14,10 +14,19 @@ namespace TicTacToe
             int currentPlayerIndex;
 
 
-            while (string.IsNullOrEmpty(game))
+            while (true)
             {
                 Console.Write("Which Game shall we play? TTT or 4W?");
                 game = Console.ReadLine();
+
+                if (game == "TTT" || game == "4W")
+                {
+                    break; 
+                }
+                else
+                {
+                    Console.WriteLine("Invalid game. Try again."); 
+                }
             }
 
             Random rand = new() ;
