@@ -20,9 +20,6 @@ namespace TicTacToe
                 game = Console.ReadLine();
             }
 
-            int player1turn = -1;
-            int player2turn = -1;
-
             Random rand = new Random();
             currentPlayerIndex = rand.Next(0, players.Length);
 
