@@ -12,7 +12,6 @@ namespace TicTacToe
         private int draw;
         private Dictionary<int, int> stack;
 
-        // Constructor that takes 5 arguments
         public FourW(GameBoard gameBoard, string[] players, Dictionary<string, int> scores, int currentPlayerIndex, int draw)
         {
             this.gameBoard = gameBoard;
