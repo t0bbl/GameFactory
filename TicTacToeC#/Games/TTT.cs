@@ -59,10 +59,6 @@ namespace TicTacToe
             switch (winnerNumber)
             {
                 case 1:
-                    Console.WriteLine($"{players[winnerNumber - 1]} won the game!");
-                    scores[players[winnerNumber - 1]]++;
-                    gameBoard.ResetBoard();
-                    break;
                 case 2:
                     Console.WriteLine($"{players[winnerNumber - 1]} won the game!");
                     scores[players[winnerNumber - 1]]++;
