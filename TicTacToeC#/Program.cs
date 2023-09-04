@@ -7,8 +7,7 @@ namespace TicTacToe
 {
     class Program
     {
-        static string game;
-        static int draw, winnerNumber;
+        static int draw;
 
 
         static void Main(string[] args)
