@@ -7,7 +7,7 @@ namespace TicTacToe
     {
 
         public static GameBoard gameBoard;
-        public static string game = null;
+        public static string game;
 
         public static (Dictionary<string, int> scores, int draw) StartGame(string[] players, Dictionary<string, int> scores, int draw)
         {
