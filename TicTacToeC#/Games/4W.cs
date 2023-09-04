@@ -21,7 +21,7 @@ namespace TicTacToe
             this.currentPlayerIndex = currentPlayerIndex;
             this.draw = draw;
         }
-        public (Dictionary<string, int> scores, int draw) start4W()
+        public (Dictionary<string, int> scores, int draw) Start4W()
         {
             gameBoard = new GameBoard(6, 7);
             stack = new Dictionary<int, int>();

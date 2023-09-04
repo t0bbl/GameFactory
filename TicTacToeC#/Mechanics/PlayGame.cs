@@ -30,14 +30,14 @@ namespace TicTacToe
             if (game == "TTT")
             {
                 TTT tttGame = new TTT(gameBoard, players, scores, currentPlayerIndex, draw);
-                var (updatedScores, updatedDraw) = tttGame.startTTT();
+                var (updatedScores, updatedDraw) = tttGame.StartTTT();
                 scores = updatedScores;
                 draw = updatedDraw;
             }
             else if (game == "4W")
             {
                 FourW fourwGame = new FourW(gameBoard, players, scores, currentPlayerIndex, draw);
-                var (updatedScores, updatedDraw) = fourwGame.start4W();
+                var (updatedScores, updatedDraw) = fourwGame.Start4W();
                 scores = updatedScores;
                 draw = updatedDraw;
             }

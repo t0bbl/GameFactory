@@ -22,7 +22,7 @@ namespace TicTacToe
         }
 
 
-        public (Dictionary<string, int> scores, int draw) startTTT()
+        public (Dictionary<string, int> scores, int draw) StartTTT()
         {
             gameBoard = new GameBoard(3, 3);
 
