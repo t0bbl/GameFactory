@@ -10,10 +10,8 @@ namespace TicTacToe
 
         public static Dictionary<string, string> PlayerNames(string[] args)
         {
-            Console.WriteLine("How many Challengers are there?");
-            int playerNumber = int.Parse(Console.ReadLine());
 
-            for (int i = 0; i < playerNumber; i++)
+            for (int i = 0; i < 2; i++)
             {
                 Console.WriteLine($"Input name of Challenger {i + 1}:");
                 string playerName = Console.ReadLine();
