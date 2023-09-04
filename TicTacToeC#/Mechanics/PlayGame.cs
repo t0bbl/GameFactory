@@ -11,7 +11,7 @@ namespace TicTacToe
 
         public static (Dictionary<string, int> scores, int draw) StartGame(string[] players, Dictionary<string, int> scores, int draw)
         {
-            int currentPlayerIndex = 0;
+            int currentPlayerIndex;
 
 
             while (string.IsNullOrEmpty(game))
@@ -20,20 +20,20 @@ namespace TicTacToe
                 game = Console.ReadLine();
             }
 
-            Random rand = new Random();
+            Random rand = new() ;
             currentPlayerIndex = rand.Next(0, players.Length);
 
             Console.WriteLine($"{players[currentPlayerIndex]} starts!");
             if (game == "TTT")
             {
-                TTT tttGame = new TTT(gameBoard, players, scores, currentPlayerIndex, draw);
+                TTT tttGame = new(gameBoard, players, scores, currentPlayerIndex, draw);
                 var (updatedScores, updatedDraw) = tttGame.StartTTT();
                 scores = updatedScores;
                 draw = updatedDraw;
             }
             else if (game == "4W")
             {
-                FourW fourwGame = new FourW(gameBoard, players, scores, currentPlayerIndex, draw);
+                FourW fourwGame = new(gameBoard, players, scores, currentPlayerIndex, draw);
                 var (updatedScores, updatedDraw) = fourwGame.Start4W();
                 scores = updatedScores;
                 draw = updatedDraw;

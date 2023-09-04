@@ -19,7 +19,6 @@ namespace TicTacToe
 
             do
             {
-                new PlayGame();
                 string[] players = playerNames.Values.ToArray();
                 (playerScores, draw) = PlayGame.StartGame(players, playerScores, draw);
 

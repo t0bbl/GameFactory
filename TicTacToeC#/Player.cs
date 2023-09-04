@@ -5,8 +5,8 @@ namespace TicTacToe
 {
     class Player
     {
-        public static Dictionary<string, string> playerNames = new Dictionary<string, string>();
-        public static Dictionary<string, int> playerScores = new Dictionary<string, int>();
+        public static Dictionary<string, string> playerNames = new();
+        public static Dictionary<string, int> playerScores = new();
 
         public static Dictionary<string, string> PlayerNames(string[] args)
         {
