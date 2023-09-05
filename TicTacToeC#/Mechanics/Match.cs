@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace TicTacToe
 {
-    internal class PlayGame
+    internal class Match
     {
         public GameBoard gameBoard;
         public string game;
