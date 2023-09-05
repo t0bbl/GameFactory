@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using TicTacToe;
 
 namespace TicTacToe
 {
@@ -9,53 +8,63 @@ namespace TicTacToe
         public static GameBoard gameBoard;
         public static string game;
         public static List<string> validGames = new List<string> { "TTT", "4W" };
+        public static string choosenGame = null;
 
-        public static (Dictionary<string, int>, int) StartGame(string[] players, Dictionary<string, int> scores, int draw)
+        public static (Dictionary<string, (int PlayerNumber, int Score)>, int) StartGame(
+     string[] players, Dictionary<string, (int PlayerNumber, int Score)> playerInfo, int draw)
         {
-            int currentPlayerIndex; 
+            int currentPlayerIndex;
 
             while (true)
             {
-                Console.Write("Which Game shall we play? ");
-                for (int i = 0; i < validGames.Count; i++)
+                if (choosenGame == null)
                 {
-                    Console.Write(validGames[i]);
-                    if (i < validGames.Count - 1)
+                    Console.Write("Which Game shall we play? ");
+                    for (int i = 0; i < validGames.Count; i++)
                     {
-                        Console.Write(", ");
+                        Console.Write(validGames[i]);
+                        if (i < validGames.Count - 1)
+                        {
+                            Console.Write(", ");
+                        }
                     }
-                }
-                Console.WriteLine("?");
-                game = Console.ReadLine();
-
-                if (validGames.Contains(game))
-                {
-                    Random rand = new();
-                    currentPlayerIndex = rand.Next(0, players.Length);
-                    Console.WriteLine($"{players[currentPlayerIndex]} starts!");
-
-                    if (game == "TTT")
+                    Console.WriteLine("?");
+                    game = Console.ReadLine();
+                    if (validGames.Contains(game))
                     {
-                        TTT tttGame = new TTT(gameBoard, players, scores, currentPlayerIndex, draw);
-                        var (updatedScores, updatedDraw) = tttGame.StartTTT();
-                        scores = updatedScores;
-                        draw = updatedDraw;
+                        choosenGame = game;
                     }
-                    else if (game == "4W")
+                    else
                     {
-                        FourW fourwGame = new FourW(gameBoard, players, scores, currentPlayerIndex, draw);
-                        var (updatedScores, updatedDraw) = fourwGame.Start4W();
-                        scores = updatedScores;
-                        draw = updatedDraw;
+                        Console.WriteLine("Invalid game. Try again.");
+                        continue;
                     }
-
-                    return (scores, draw);
                 }
                 else
                 {
-                    Console.WriteLine("Invalid game. Try again.");
+                    game = choosenGame;
                 }
-            }
+
+                Random rand = new Random();
+                currentPlayerIndex = rand.Next(0, players.Length);
+                Console.WriteLine($"{players[currentPlayerIndex]} starts!");
+
+                if (game == "TTT")
+                {
+                    TTT tttGame = new TTT(gameBoard, players, playerInfo, currentPlayerIndex, draw);
+                    var (updatedPlayerInfo, updatedDraw) = tttGame.StartTTT();
+                    playerInfo = updatedPlayerInfo;
+                    draw = updatedDraw;
+                }
+                else if (game == "4W")
+                {
+                    FourW fourwGame = new FourW(gameBoard, players, playerInfo, currentPlayerIndex, draw);
+                    var (updatedPlayerInfo, updatedDraw) = fourwGame.Start4W();
+                    playerInfo = updatedPlayerInfo;
+                    draw = updatedDraw;
+                }
+
+                return (playerInfo, draw);
         }
     }
 }

@@ -2,6 +2,7 @@
 using System.Security.AccessControl;
 using System.Text.RegularExpressions;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace TicTacToe
 {
@@ -14,13 +15,13 @@ namespace TicTacToe
         {
 
 
-            Dictionary<string, string> playerNames = Player.PlayerNames(args);
-            Dictionary<string, int> playerScores = Player.playerScores;
+            Dictionary<string, (int PlayerNumber, int Score)> playerInfo = Player.InitializePlayers();
+
 
             do
             {
-                string[] players = playerNames.Values.ToArray();
-                (playerScores, draw) = PlayGame.StartGame(players, playerScores, draw);
+                string[] players = playerInfo.Keys.ToArray();
+                (playerInfo, draw) = PlayGame.StartGame(players, playerInfo, draw);
 
 
                 Console.WriteLine("Want a rematch Noob ? Y / N ?");
@@ -29,9 +30,9 @@ namespace TicTacToe
             } while (Console.ReadLine().ToLower() == "y");
 
 
-            foreach (var name in playerNames.Values)
+            foreach (var name in playerInfo.Keys)
             {
-                Console.WriteLine($"{name} has won {playerScores[name]} times!");
+                Console.WriteLine($"{name} has won {playerInfo[name].Score} times!");
             }
             Console.WriteLine($"There were {draw} draws.");
             Console.ReadKey();

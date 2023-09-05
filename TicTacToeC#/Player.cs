@@ -5,21 +5,18 @@ namespace TicTacToe
 {
     class Player
     {
-        public static Dictionary<string, string> playerNames = new();
-        public static Dictionary<string, int> playerScores = new();
-
-        public static Dictionary<string, string> PlayerNames(string[] args)
+        public static Dictionary<string, (int PlayerNumber, int Score)> InitializePlayers()
         {
+            Dictionary<string, (int PlayerNumber, int Score)> playerInfo = new Dictionary<string, (int, int)>();
 
             for (int i = 0; i < 2; i++)
             {
                 Console.WriteLine($"Input name of Challenger {i + 1}:");
                 string playerName = Console.ReadLine();
-                playerNames[$"player{i + 1}"] = playerName;
-                playerScores[playerName] = 0;
+                playerInfo[playerName] = (i + 1, 0);
             }
 
-            return playerNames;
+            return playerInfo;
         }
     }
 }

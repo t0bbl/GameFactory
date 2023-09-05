@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.AccessControl;
-using System.Text;
-using System.Threading.Tasks;
 using TicTacToe;
 
 namespace TicTacToe
@@ -27,27 +24,17 @@ namespace TicTacToe
                         {
                             int newRow = row + dir[0] * i;
                             int newCol = col + dir[1] * i;
-
-                            if (newRow < 0 || newRow >= gameBoard.Rows || newCol < 0 || newCol >= gameBoard.Columns)
-                                break;
-
-                            if (gameBoard.GetCell(newRow, newCol) == cellValue)
-                                count++;
-                            else
-                                break;
+                            if (newRow < 0 || newRow >= gameBoard.Rows || newCol < 0 || newCol >= gameBoard.Columns) break;
+                            if (gameBoard.GetCell(newRow, newCol) == cellValue) count++;
+                            else break;
                         }
-
-                        if (count >= winningLength)
-                            return cellValue;
+                        if (count >= winningLength) return cellValue;
                     }
                 }
             }
 
-            // Check for a draw
             bool isDraw = !Enumerable.Range(0, gameBoard.Rows).Any(row => Enumerable.Range(0, gameBoard.Columns).Any(col => gameBoard.GetCell(row, col) == 0));
-
             return isDraw ? -1 : 0;
         }
-
     }
 }

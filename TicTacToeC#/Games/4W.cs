@@ -1,6 +1,5 @@
 using System;
-using System.Reflection.Metadata;
-
+using System.Collections.Generic;
 
 namespace TicTacToe
 {
@@ -8,20 +7,21 @@ namespace TicTacToe
     {
         private GameBoard gameBoard;
         private string[] players;
-        private Dictionary<string, int> scores;
+        private Dictionary<string, (int PlayerNumber, int Score)> playerInfo;
         private int currentPlayerIndex;
         private int draw;
         private Dictionary<int, int> stack;
 
-        public FourW(GameBoard gameBoard, string[] players, Dictionary<string, int> scores, int currentPlayerIndex, int draw)
+        public FourW(GameBoard gameBoard, string[] players, Dictionary<string, (int PlayerNumber, int Score)> playerInfo, int currentPlayerIndex, int draw)
         {
             this.gameBoard = gameBoard;
             this.players = players;
-            this.scores = scores;
+            this.playerInfo = playerInfo;
             this.currentPlayerIndex = currentPlayerIndex;
             this.draw = draw;
         }
-        public (Dictionary<string, int> scores, int draw) Start4W()
+
+        public (Dictionary<string, (int PlayerNumber, int Score)> PlayerInfo, int Draw) Start4W()
         {
             gameBoard = new GameBoard(6, 7);
             stack = new Dictionary<int, int>();
@@ -58,21 +58,21 @@ namespace TicTacToe
             }
 
             int winnerNumber = CheckForWinner.CheckWinner(gameBoard, 4);
+            string winner = players[winnerNumber - 1];
 
-            switch (winnerNumber)
+            if (winnerNumber > 0)
             {
-                case 1:
-                case 2:
-                    Console.WriteLine($"{players[winnerNumber - 1]} won the game!");
-                    scores[players[winnerNumber - 1]]++;
-                    break;
-                case -1:
-                    Console.WriteLine("It's a draw!");
-                    draw++;
-                    break;
+                Console.WriteLine($"{winner} won the game!");
+                var (playerNumber, score) = playerInfo[winner];
+                playerInfo[winner] = (playerNumber, score + 1);
+            }
+            else
+            {
+                Console.WriteLine("It's a draw!");
+                draw++;
             }
 
-            return (scores, draw);
+            return (playerInfo, draw);
         }
     }
 }
