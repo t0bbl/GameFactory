@@ -5,21 +5,27 @@ namespace TicTacToe
 {
     internal class PlayGame
     {
-        public static GameBoard gameBoard;
-        public static string game;
-        public static List<string> validGames = new List<string> { "TTT", "4W" };
-        public static string choosenGame = null;
+        public GameBoard gameBoard;
+        public string game;
+        public string choosenGame = null;
 
-        public static (Dictionary<string, (int PlayerNumber, int Score)>, int) StartGame(
-     string[] players, Dictionary<string, (int PlayerNumber, int Score)> playerInfo, int draw)
+        public enum ValidGames
         {
-            int currentPlayerIndex;
+            TTT = 1,
+            Wins = 2
+        }
+
+        public (Player[], int) StartGame(Player[] players, int draw)
+        {
+
+            List<string> gameOptions = new List<string>(Enum.GetNames(typeof(ValidGames)));
+
 
             while (true)
             {
                 if (choosenGame == null)
                 {
-                    game = Menu.ShowMenu(validGames);
+                    game = Menu.ShowMenu(gameOptions);
                     choosenGame = game;
                 }
                 else
@@ -28,25 +34,30 @@ namespace TicTacToe
                 }
 
                 Random rand = new Random();
-                currentPlayerIndex = rand.Next(0, players.Length);
-                Console.WriteLine($"{players[currentPlayerIndex]} starts!");
+                int startingPlayer = rand.Next(0, players.Length);
+                Console.WriteLine($"{players[startingPlayer].Name} starts!");
 
-                if (game == "TTT")
-                {
-                    TTT tttGame = new TTT(gameBoard, players, playerInfo, currentPlayerIndex, draw);
-                    var (updatedPlayerInfo, updatedDraw) = tttGame.StartTTT();
-                    playerInfo = updatedPlayerInfo;
-                    draw = updatedDraw;
-                }
-                else if (game == "4W")
-                {
-                    FourW fourwGame = new FourW(gameBoard, players, playerInfo, currentPlayerIndex, draw);
-                    var (updatedPlayerInfo, updatedDraw) = fourwGame.Start4W();
-                    playerInfo = updatedPlayerInfo;
-                    draw = updatedDraw;
-                }
 
-                return (playerInfo, draw);
+
+                if (Enum.TryParse(game, out ValidGames gameType))
+                {
+                    switch (gameType)
+                    {
+                        case ValidGames.TTT:
+                            TTT tttGame = new TTT();
+                            (players, draw) = tttGame.StartTTT(players, draw);
+                            break;
+                        case ValidGames.Wins:
+                            FourW fourwGame = new FourW();
+                            (players, draw) = fourwGame.Start4W(players, draw);
+                            break;
+                    }
+                    return (players, draw);
+                }
+                else
+                {
+                    Console.WriteLine("Invalid game. Try again.");
+                }
             }
         }
     }

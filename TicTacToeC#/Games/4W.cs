@@ -6,25 +6,13 @@ namespace TicTacToe
     public class FourW
     {
         private GameBoard gameBoard;
-        private string[] players;
-        private Dictionary<string, (int PlayerNumber, int Score)> playerInfo;
-        private int currentPlayerIndex;
-        private int draw;
         private Dictionary<int, int> stack;
 
-        public FourW(GameBoard gameBoard, string[] players, Dictionary<string, (int PlayerNumber, int Score)> playerInfo, int currentPlayerIndex, int draw)
-        {
-            this.gameBoard = gameBoard;
-            this.players = players;
-            this.playerInfo = playerInfo;
-            this.currentPlayerIndex = currentPlayerIndex;
-            this.draw = draw;
-        }
-
-        public (Dictionary<string, (int PlayerNumber, int Score)> PlayerInfo, int Draw) Start4W()
+        public (Player[], int) Start4W(Player[] players, int draw)
         {
             gameBoard = new GameBoard(6, 7);
             stack = new Dictionary<int, int>();
+            int currentPlayerIndex = 0;
 
             for (int i = 0; i < 8; i++)
             {
@@ -33,7 +21,7 @@ namespace TicTacToe
 
             while (CheckForWinner.CheckWinner(gameBoard, 4) == 0)
             {
-                Console.WriteLine($"{players[currentPlayerIndex]}, input a number from 0 to 7");
+                Console.WriteLine($"{players[currentPlayerIndex].Name}, input a number from 0 to 7");
 
                 if (!int.TryParse(Console.ReadLine(), out int chosenColumn) || chosenColumn < 0 || chosenColumn >= 8)
                 {
@@ -58,13 +46,12 @@ namespace TicTacToe
             }
 
             int winnerNumber = CheckForWinner.CheckWinner(gameBoard, 4);
-            string winner = players[winnerNumber - 1];
+            Player winner = players[winnerNumber - 1];
 
             if (winnerNumber > 0)
             {
-                Console.WriteLine($"{winner} won the game!");
-                var (playerNumber, score) = playerInfo[winner];
-                playerInfo[winner] = (playerNumber, score + 1);
+                Console.WriteLine($"{winner.Name} won the game!");
+                winner.Score++;
             }
             else
             {
@@ -72,7 +59,7 @@ namespace TicTacToe
                 draw++;
             }
 
-            return (playerInfo, draw);
+            return (players, draw);
         }
     }
 }

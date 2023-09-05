@@ -1,43 +1,31 @@
 ﻿using System;
-using System.Security.AccessControl;
-using System.Text.RegularExpressions;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace TicTacToe
 {
     class Program
     {
-        static int draw;
-
-
         static void Main(string[] args)
         {
+            int draw = 0;
+            PlayGame match = new PlayGame();
 
 
-            Dictionary<string, (int PlayerNumber, int Score)> playerInfo = Player.InitializePlayers();
-
+            Player[] players = InitializePlayer.Initialize();
 
             do
             {
-                string[] players = playerInfo.Keys.ToArray();
-                (playerInfo, draw) = PlayGame.StartGame(players, playerInfo, draw);
+                (players, draw) = match.StartGame(players, draw);
 
-
-                Console.WriteLine("Want a rematch Noob ? Y / N ?");
-
-
+                Console.WriteLine("Want a rematch? Y/N?");
             } while (Console.ReadLine().ToLower() == "y");
 
-
-            foreach (var name in playerInfo.Keys)
+            foreach (var player in players)
             {
-                Console.WriteLine($"{name} has won {playerInfo[name].Score} times!");
+                Console.WriteLine($"{player.Name} has won {player.Score} times!");
             }
             Console.WriteLine($"There were {draw} draws.");
             Console.ReadKey();
         }
-
-
     }
 }
