@@ -19,26 +19,28 @@ namespace TicTacToe
             {
                 if (choosenGame == null)
                 {
-                    Console.Write("Which Game shall we play? ");
-                    for (int i = 0; i < validGames.Count; i++)
-                    {
-                        Console.Write(validGames[i]);
-                        if (i < validGames.Count - 1)
-                        {
-                            Console.Write(", ");
-                        }
-                    }
-                    Console.WriteLine("?");
-                    game = Console.ReadLine();
-                    if (validGames.Contains(game))
-                    {
-                        choosenGame = game;
-                    }
-                    else
-                    {
-                        Console.WriteLine("Invalid game. Try again.");
-                        continue;
-                    }
+                    //Console.Write("Which Game shall we play? ");
+                    //for (int i = 0; i < validGames.Count; i++)
+                    //{
+                    //    Console.Write(validGames[i]);
+                    //    if (i < validGames.Count - 1)
+                    //    {
+                    //        Console.Write(", ");
+                    //    }
+                    //}
+                    //Console.WriteLine("?");
+                    //game = Console.ReadLine();
+                    //if (validGames.Contains(game))
+                    //{
+                    //    choosenGame = game;
+                    //}
+                    //else
+                    //{
+                    //    Console.WriteLine("Invalid game. Try again.");
+                    //    continue;
+                    //}
+                    game = Menu.ShowMenu(validGames);
+                    choosenGame = game;
                 }
                 else
                 {
@@ -65,6 +67,7 @@ namespace TicTacToe
                 }
 
                 return (playerInfo, draw);
+            }
         }
     }
 }
