@@ -1,6 +1,6 @@
 namespace TicTacToe
 {
-    public class TTT
+    public class TTT : GamesAvailable
     {
         private GameBoard gameBoard;
 

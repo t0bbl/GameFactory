@@ -1,18 +1,17 @@
 using System;
+using System.Collections.Generic;
 
 namespace TicTacToe
 {
     public class InitializeGame
     {
-
         public enum ValidGames
         {
             TTT = 1,
             FourW = 2
         }
 
-
-        public static string Initialize()
+        public static GamesAvailable Initialize()
         {
             List<string> gameOptions = new List<string>(Enum.GetNames(typeof(ValidGames)));
             string game = null;
@@ -25,10 +24,22 @@ namespace TicTacToe
                 }
                 else
                 {
-                    return game;
+                    switch (game)
+                    {
+                        case "TTT":
+                            return new TTT();
+                        case "FourW":
+                            return new FourW(); 
+                        default:
+                            throw new Exception("Invalid game type.");
+                    }
                 }
-
             }
         }
+    }
+
+    public interface GamesAvailable
+    {
+        (Player[], int) Start(Player[] players, int draw, int startingPlayerIndex);
     }
 }

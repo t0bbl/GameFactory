@@ -1,6 +1,6 @@
 namespace TicTacToe
 {
-    public class FourW
+    public class FourW : GamesAvailable
     {
         private GameBoard gameBoard;
         private Dictionary<int, int> stack;
