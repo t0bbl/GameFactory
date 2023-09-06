@@ -5,7 +5,7 @@
         static void Main(string[] args)
         {
             int draw = 0;
-            Match match = new Match();
+            Match match = new();
 
 
             Player[] players = InitializePlayer.Initialize();
