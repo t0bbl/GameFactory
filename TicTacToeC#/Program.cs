@@ -1,14 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace TicTacToe
+﻿namespace TicTacToe
 {
     class Program
     {
         static void Main(string[] args)
         {
             int draw = 0;
-            PlayGame match = new PlayGame();
+            Match match = new Match();
 
 
             Player[] players = InitializePlayer.Initialize();

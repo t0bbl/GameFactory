@@ -1,16 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
-using System.Net.NetworkInformation;
-using System.Text;
-using System.Threading.Tasks;
-using TicTacToe;
-
-namespace TicTacToe
+﻿namespace TicTacToe
 {
     public class GameBoard
-    {   private int[,] board;
+    {
+        private int[,] board;
         public int Rows { get; private set; }
         public int Columns { get; private set; }
 

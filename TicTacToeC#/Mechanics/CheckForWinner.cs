@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using TicTacToe;
-
-namespace TicTacToe
+﻿namespace TicTacToe
 {
     class CheckForWinner
     {

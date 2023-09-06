@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace TicTacToe
+﻿namespace TicTacToe
 {
     internal class Match
     {

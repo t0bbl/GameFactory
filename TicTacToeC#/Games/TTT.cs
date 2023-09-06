@@ -7,7 +7,7 @@ namespace TicTacToe
         public (Player[], int) StartTTT(Player[] players, int draw)
         {
             gameBoard = new GameBoard(3, 3);
-            int currentPlayerIndex = 0; 
+            int currentPlayerIndex = 0;
 
             while (CheckForWinner.CheckWinner(gameBoard, 3) == 0)
             {
