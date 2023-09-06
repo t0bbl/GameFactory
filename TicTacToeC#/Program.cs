@@ -10,13 +10,7 @@
 
             Player[] players = InitializePlayer.Initialize();
             string game = InitializeGame.Initialize();
-
-            do
-            {
-                (players, draw) = match.StartGame(game, players, draw);
-
-                Console.WriteLine("Want a rematch? Y/N?");
-            } while (Console.ReadLine().ToLower() == "y");
+            (players, draw) = match.StartGame(game, players, draw);
 
             foreach (var player in players)
             {
