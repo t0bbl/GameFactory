@@ -41,12 +41,12 @@
                     switch (gameType)
                     {
                         case ValidGames.TTT:
-                            TTT tttGame = new TTT();
-                            (players, draw) = tttGame.StartTTT(players, draw);
+                            TTT tttGame = new();
+                            (players, draw) = tttGame.Start(players, draw);
                             break;
                         case ValidGames.Wins:
-                            FourW fourwGame = new FourW();
-                            (players, draw) = fourwGame.Start4W(players, draw);
+                            FourW fourwGame = new();
+                            (players, draw) = fourwGame.Start(players, draw);
                             break;
                     }
                     return (players, draw);

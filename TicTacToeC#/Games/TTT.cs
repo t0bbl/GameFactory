@@ -4,7 +4,7 @@ namespace TicTacToe
     {
         private GameBoard gameBoard;
 
-        public (Player[], int) StartTTT(Player[] players, int draw)
+        public (Player[], int) Start(Player[] players, int draw)
         {
             gameBoard = new GameBoard(3, 3);
             int currentPlayerIndex = 0;

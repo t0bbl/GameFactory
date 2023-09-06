@@ -5,7 +5,7 @@ namespace TicTacToe
         private GameBoard gameBoard;
         private Dictionary<int, int> stack;
 
-        public (Player[], int) Start4W(Player[] players, int draw)
+        public (Player[], int) Start(Player[] players, int draw)
         {
             gameBoard = new GameBoard(6, 7);
             stack = new Dictionary<int, int>();
