@@ -10,7 +10,6 @@
                 Random rand = new();
                 int startingPlayer = rand.Next(0, players.Length);
                 Console.WriteLine($"{players[startingPlayer].Name} starts!");
-
                 game match = new();
                 (players, draw) = match.Start(players, draw);
 
