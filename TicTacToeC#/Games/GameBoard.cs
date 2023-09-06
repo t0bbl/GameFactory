@@ -1,27 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
-using System.Net.NetworkInformation;
-using System.Text;
-using System.Threading.Tasks;
-using TicTacToe;
-
-namespace TicTacToe
+﻿namespace TicTacToe
 {
-    class GameBoard
-    { private int[,] board;
-    public int Rows { get; private set; }
-    public int Columns { get; private set; }
-
-    public GameBoard(int rows, int columns)
+    public class GameBoard
     {
-        Rows = rows;
-        Columns = columns;
-        board = new int[rows, columns];
-        ResetBoard();
-    }
-    public void ResetBoard()
+        private int[,] board;
+        public int Rows { get; private set; }
+        public int Columns { get; private set; }
+
+        public GameBoard(int rows, int columns)
+        {
+            Rows = rows;
+            Columns = columns;
+            board = new int[rows, columns];
+            ResetBoard();
+        }
+        public void ResetBoard()
         {
             for (int i = 0; i < Rows; i++)
                 for (int j = 0; j < Columns; j++)
@@ -49,13 +41,13 @@ namespace TicTacToe
                     switch (cellValue)
                     {
                         case 0:
-                            Console.Write(".");
+                            Console.Write(" . ");
                             break;
                         case 1:
-                            Console.Write("X");
+                            Console.Write(" X ");
                             break;
                         case 2:
-                            Console.Write("O");
+                            Console.Write(" O ");
                             break;
                     }
                 }

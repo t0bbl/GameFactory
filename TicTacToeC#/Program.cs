@@ -1,39 +1,28 @@
-﻿using System;
-using System.Security.AccessControl;
-using System.Text.RegularExpressions;
-
-namespace TicTacToe
+﻿namespace TicTacToe
 {
     class Program
     {
-        static string player1, player2, game;
-        static int scorePlayer1, scorePlayer2, draw, winnerNumber;
-        static GameBoard gameBoard;
-
         static void Main(string[] args)
         {
+            int draw = 0;
+            Match match = new Match();
 
-            Console.WriteLine("Input name of first Challenger");
-            player1 = Console.ReadLine();
-            Console.WriteLine("Input name of second Challenger");
-            player2 = Console.ReadLine();
+
+            Player[] players = InitializePlayer.Initialize();
 
             do
             {
-                var play = new PlayGame(gameBoard);
+                (players, draw) = match.StartGame(players, draw);
 
-                (winnerNumber, scorePlayer1, scorePlayer2, draw) =  play.playGame( player1, player2, scorePlayer1, scorePlayer2, draw);
-
-                gameBoard.ResetBoard();
-
-                Console.WriteLine("Want a rematch Noob ? Y / N ?");
-
-
+                Console.WriteLine("Want a rematch? Y/N?");
             } while (Console.ReadLine().ToLower() == "y");
-            Console.WriteLine("Score:  " + player1 + " : " + scorePlayer1 + " !     " + player2 + " : " + scorePlayer2 + "!     Draw: " + draw);
 
+            foreach (var player in players)
+            {
+                Console.WriteLine($"{player.Name} has won {player.Score} times!");
+            }
+            Console.WriteLine($"There were {draw} draws.");
+            Console.ReadKey();
         }
-
-
     }
 }
