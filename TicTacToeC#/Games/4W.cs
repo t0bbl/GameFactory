@@ -7,9 +7,12 @@ namespace TicTacToe
 
         public (Player[], int) Start(Player[] players, int draw)
         {
+
+            StartingPlayer startingPlayer = new StartingPlayer();
+            int currentPlayerIndex = startingPlayer.GetStartingPlayerIndex(players);
+
             gameBoard = new GameBoard(6, 7);
             stack = new Dictionary<int, int>();
-            int currentPlayerIndex = 0;
 
             for (int i = 0; i < 8; i++)
             {

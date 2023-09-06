@@ -6,8 +6,10 @@ namespace TicTacToe
 
         public (Player[], int) Start(Player[] players, int draw)
         {
+            StartingPlayer startingPlayer = new StartingPlayer();
+            int currentPlayerIndex = startingPlayer.GetStartingPlayerIndex(players);
+
             gameBoard = new GameBoard(3, 3);
-            int currentPlayerIndex = 0;
 
             while (CheckForWinner.CheckWinner(gameBoard, 3) == 0)
             {
