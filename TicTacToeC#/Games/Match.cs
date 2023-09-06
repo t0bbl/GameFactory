@@ -2,7 +2,6 @@
 {
     internal class Match
     {
-        public GameBoard gameBoard;
         public string game;
         public string choosenGame = null;
 
