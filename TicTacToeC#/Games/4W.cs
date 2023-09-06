@@ -5,12 +5,10 @@ namespace TicTacToe
         private GameBoard gameBoard;
         private Dictionary<int, int> stack;
 
-        public (Player[], int) Start(Player[] players, int draw)
+        public (Player[], int) Start(Player[] players, int draw, int startingPlayerIndex)
         {
 
-            StartingPlayer startingPlayer = new StartingPlayer();
-            int currentPlayerIndex = startingPlayer.GetStartingPlayerIndex(players);
-
+            int currentPlayerIndex = startingPlayerIndex;
             gameBoard = new GameBoard(6, 7);
             stack = new Dictionary<int, int>();
 

@@ -4,11 +4,10 @@ namespace TicTacToe
     {
         private GameBoard gameBoard;
 
-        public (Player[], int) Start(Player[] players, int draw)
+        public (Player[], int) Start(Player[] players, int draw, int startingPlayerIndex)
         {
-            StartingPlayer startingPlayer = new StartingPlayer();
-            int currentPlayerIndex = startingPlayer.GetStartingPlayerIndex(players);
 
+            int currentPlayerIndex = startingPlayerIndex;
             gameBoard = new GameBoard(3, 3);
 
             while (CheckForWinner.CheckWinner(gameBoard, 3) == 0)
