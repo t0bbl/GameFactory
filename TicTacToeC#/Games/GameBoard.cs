@@ -3,8 +3,8 @@
     public class GameBoard
     {
         private int[,] board;
-        public int Rows { get; private set; }
-        public int Columns { get; private set; }
+        public int Rows { get; set; }
+        public int Columns { get; set; }
 
         public GameBoard(int rows, int columns)
         {
