@@ -5,56 +5,25 @@
         public string game;
         public string choosenGame = null;
 
-        public enum ValidGames
+        public (Player[], int) StartGame(string game, Player[] players, int draw)
         {
-            TTT = 1,
-            Wins = 2
-        }
-
-        public (Player[], int) StartGame(Player[] players, int draw)
-        {
-
-            List<string> gameOptions = new List<string>(Enum.GetNames(typeof(ValidGames)));
-
-
-            while (true)
-            {
-                if (choosenGame == null)
-                {
-                    game = Menu.ShowMenu(gameOptions);
-                    choosenGame = game;
-                }
-                else
-                {
-                    game = choosenGame;
-                }
-
                 Random rand = new();
                 int startingPlayer = rand.Next(0, players.Length);
                 Console.WriteLine($"{players[startingPlayer].Name} starts!");
 
-
-
-                if (Enum.TryParse(game, out ValidGames gameType))
-                {
-                    switch (gameType)
+                    switch (game)
                     {
-                        case ValidGames.TTT:
+                        case "TTT":
                             TTT tttGame = new();
                             (players, draw) = tttGame.Start(players, draw);
                             break;
-                        case ValidGames.Wins:
+                        case "FourW":
                             FourW fourwGame = new();
                             (players, draw) = fourwGame.Start(players, draw);
                             break;
                     }
                     return (players, draw);
-                }
-                else
-                {
-                    Console.WriteLine("Invalid game. Try again.");
-                }
             }
         }
     }
-}
+
