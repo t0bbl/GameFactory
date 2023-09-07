@@ -41,13 +41,11 @@ namespace TicTacToe
 
             if (winnerNumber > 0)
             {
-                Console.WriteLine($"{players[winnerNumber - 1].Name} won the game!");
-                players[winnerNumber - 1].Score += 1;
+                Stats.UpdateTTT(players, winnerNumber);
             }
             else
             {
-                Console.WriteLine("It's a draw!");
-                draw++;
+                Stats.UpdateDrawTTT(players);
             }
 
             gameBoard.ResetBoard();

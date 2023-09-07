@@ -48,13 +48,12 @@ namespace TicTacToe
 
             if (winnerNumber > 0)
             {
-                Console.WriteLine($"{winner.Name} won the game!");
-                winner.Score++;
+                Stats.UpdateFourWins(players, winnerNumber);
+
             }
             else
             {
-                Console.WriteLine("It's a draw!");
-                draw++;
+                Stats.UpdateDrawFourWins(players);
             }
 
             return (players, draw);
