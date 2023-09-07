@@ -13,7 +13,7 @@
                 // if there are several methods for determening a starting player refactor to Mechanics
                 Console.WriteLine($"{players[startingPlayerIndex].Name} starts!");
 
-                (players, draw) = game.Start(players, draw, startingPlayerIndex)
+                (players, draw) = game.Start(players, draw, startingPlayerIndex);
                 Console.WriteLine("Want a rematch? Y/N?");
             } while (Console.ReadLine().ToLower() == "y");
 
