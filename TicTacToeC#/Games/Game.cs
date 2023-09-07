@@ -3,13 +3,13 @@ using TicTacToeC;
 
 namespace TicTacToe
 {
-    internal class TTT : GamesAvailable
+    internal class Game : GamesAvailable
     {
         private int[,] board;
         public int Rows { get; set; }
         public int Columns { get; set; }
 
-        public TTT(int rows, int columns)
+        public Game(int rows, int columns)
         {
             this.Rows = rows;
             this.Columns = columns;
@@ -85,20 +85,16 @@ namespace TicTacToe
             bool isDraw = !Enumerable.Range(0, Rows).Any(row => Enumerable.Range(0, Columns).Any(col => GetCell(row, col) == 0));
             return isDraw ? -1 : 0;
         }
-
-  
         public void ResetBoard()
         {
             for (int i = 0; i < Rows; i++)
                 for (int j = 0; j < Columns; j++)
                     board[i, j] = 0;
         }
-
         public int GetCell(int row, int col)
         {
             return board[row, col];
         }
-
         public void SetCell(int row, int col, int value)
         {
             if (row >= 0 && row < Rows && col >= 0 && col < Columns)

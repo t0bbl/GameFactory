@@ -125,9 +125,9 @@ namespace TicTacToe
                     switch (game)
                     {
                         case "TTT":
-                            return new TTT(3, 3);
-                        //case "FourW":
-                        //    return new FourW();
+                            return new Game(3, 3);
+                        case "FourW":
+                            return new FourW(6, 7);
                         default:
                             throw new Exception("Invalid game type.");
                     }

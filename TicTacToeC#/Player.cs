@@ -105,6 +105,4 @@ namespace TicTacToeC
 
         }
     }
-
-
 }
