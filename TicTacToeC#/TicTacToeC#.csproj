@@ -9,6 +9,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="tempcode\**" />
+    <EmbeddedResource Remove="tempcode\**" />
+    <None Remove="tempcode\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Compile Remove="PrintBoard.cs" />
   </ItemGroup>
 

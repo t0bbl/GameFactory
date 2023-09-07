@@ -1,8 +1,23 @@
-namespace TicTacToe
+namespace TicTacToeC
 {
-    internal class Stats
+    internal class Player
     {
+        public string Name;
+        public int Score { get; set; }
+        public int WinsTTT { get; set; }
+        public int LossesTTT { get; set; }
+        public int DrawsTTT { get; set; }
+        public int WinsFourWins { get; set; }
+        public int LossesFourWins { get; set; }
+        public int DrawsFourWins { get; set; }
+        public int Number { get; set; }
 
+        public Guid Id { get; private set; }
+
+        public Player()
+        {
+            Id = Guid.NewGuid();
+        }
 
         public static (Player[], int) UpdateTTT(Player[] players, int winnerNumber, int draw)
         {
@@ -74,8 +89,6 @@ namespace TicTacToe
 
         }
 
-
-
         public static void EndGameStats(Player[] players, int draw)
         {
             Console.WriteLine("Game over!");
@@ -89,22 +102,9 @@ namespace TicTacToe
                 Console.WriteLine($"Draws:{draw}");
             }
             Console.ReadLine();
-    
+
         }
-
-
-        //public static void PrintAllPlayerInfo(Player[] players)
-        //{
-        //    foreach (var player in players)
-        //    {
-        //        Console.WriteLine($"--- Player {player.Id} ---");
-        //        foreach (var prop in player.GetType().GetProperties())
-        //        {
-        //            Console.WriteLine($"{prop.Name}: {prop.GetValue(player)}");
-        //        }
-        //    }
-        //}
-
     }
+
 
 }

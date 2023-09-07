@@ -1,4 +1,6 @@
-﻿namespace TicTacToe
+﻿using TicTacToeC;
+
+namespace TicTacToe
 {
     internal class Match
     {
