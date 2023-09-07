@@ -8,8 +8,8 @@
             Match match = new();
 
             Player[] players = InitializePlayer.Initialize();
-            GamesAvailable gameInstance = InitializeGame.Initialize(); // Changed type here
-            (players, draw) = match.StartGame(gameInstance, players, draw); // Changed argument here
+            GamesAvailable gameInstance = InitializeGame.Initialize();
+            (players, draw) = match.StartGame(gameInstance, players, draw);
 
             foreach (var player in players)
             {

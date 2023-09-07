@@ -14,7 +14,11 @@ namespace TicTacToe
             while (true)
             {
                 Console.Write("Enter the number of your choice: ");
-                string input = Console.ReadLine();
+                ConsoleKeyInfo keyInfo = Console.ReadKey();
+                char keyChar = keyInfo.KeyChar;
+                string input = keyChar.ToString();
+                Console.WriteLine();
+
 
                 if (int.TryParse(input, out int choice))
                 {
