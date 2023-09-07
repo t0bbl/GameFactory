@@ -2,7 +2,6 @@
 {
     internal class Match
     {
-        public string game;
 
         public (Player[], int) StartGame(GamesAvailable game, Player[] players, int draw)
         {
