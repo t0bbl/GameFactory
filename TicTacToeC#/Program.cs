@@ -9,6 +9,7 @@ namespace TicTacToe
         {
             int draw = 0;
             Match match = new();
+
             StartMenu.InitializeGameMenu();
             Player[] players = InitializePlayer.Initialize();
             GamesAvailable gameInstance = InitializeGame.Initialize();

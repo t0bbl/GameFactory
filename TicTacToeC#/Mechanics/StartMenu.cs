@@ -1,4 +1,5 @@
-namespace TicTacToe {
+namespace TicTacToe 
+{
     public class StartMenu
     {
         public enum StartMenuOptions
@@ -34,5 +35,4 @@ namespace TicTacToe {
             }
         }
     }
-
 }
