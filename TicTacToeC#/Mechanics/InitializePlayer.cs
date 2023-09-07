@@ -17,6 +17,7 @@ namespace TicTacToe
                 Console.WriteLine($"Enter the name of player {players[i].Number}: ");
                 players[i].Name = Console.ReadLine();
                 players[i].Score = 0;
+
             }
 
             return players;

@@ -2,9 +2,15 @@ namespace TicTacToe
 {
     public class Player
     {
-        public int Id;
-        public int Number;
         public string Name;
         public int Score;
+        public int Number;
+
+        public Guid Id { get; private set; }
+
+        public Player()
+        {
+            Id = Guid.NewGuid();
+        }
     }
 }
