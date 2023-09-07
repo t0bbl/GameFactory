@@ -2,60 +2,22 @@
 {
     internal class Match
     {
-        public GameBoard gameBoard;
-        public string game;
-        public string choosenGame = null;
 
-        public enum ValidGames
+        public (Player[], int) StartGame(GamesAvailable game, Player[] players, int draw)
         {
-            TTT = 1,
-            Wins = 2
-        }
-
-        public (Player[], int) StartGame(Player[] players, int draw)
-        {
-
-            List<string> gameOptions = new List<string>(Enum.GetNames(typeof(ValidGames)));
-
-
-            while (true)
+            
+            do
             {
-                if (choosenGame == null)
-                {
-                    game = Menu.ShowMenu(gameOptions);
-                    choosenGame = game;
-                }
-                else
-                {
-                    game = choosenGame;
-                }
+                Random random = new Random();
+                int startingPlayerIndex = random.Next(0, players.Length);
+                // if there are several methods for determening a starting player refactor to Mechanics
+                Console.WriteLine($"{players[startingPlayerIndex].Name} starts!");
 
-                Random rand = new Random();
-                int startingPlayer = rand.Next(0, players.Length);
-                Console.WriteLine($"{players[startingPlayer].Name} starts!");
+                (players, draw) = game.Start(players, draw, startingPlayerIndex);
+                Console.WriteLine("Want a rematch? Y/N?");
+            } while (Console.ReadLine().ToLower() == "y");
 
-
-
-                if (Enum.TryParse(game, out ValidGames gameType))
-                {
-                    switch (gameType)
-                    {
-                        case ValidGames.TTT:
-                            TTT tttGame = new();
-                            (players, draw) = tttGame.Start(players, draw);
-                            break;
-                        case ValidGames.Wins:
-                            FourW fourwGame = new();
-                            (players, draw) = fourwGame.Start(players, draw);
-                            break;
-                    }
-                    return (players, draw);
-                }
-                else
-                {
-                    Console.WriteLine("Invalid game. Try again.");
-                }
+            return (players, draw);
             }
-        }
     }
 }

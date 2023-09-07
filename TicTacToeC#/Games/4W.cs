@@ -1,15 +1,16 @@
 namespace TicTacToe
 {
-    public class FourW
+    public class FourW : GamesAvailable
     {
         private GameBoard gameBoard;
         private Dictionary<int, int> stack;
 
-        public (Player[], int) Start(Player[] players, int draw)
+        public (Player[], int) Start(Player[] players, int draw, int startingPlayerIndex)
         {
+
+            int currentPlayerIndex = startingPlayerIndex;
             gameBoard = new GameBoard(6, 7);
             stack = new Dictionary<int, int>();
-            int currentPlayerIndex = 0;
 
             for (int i = 0; i < 8; i++)
             {
@@ -43,18 +44,9 @@ namespace TicTacToe
             }
 
             int winnerNumber = CheckForWinner.CheckWinner(gameBoard, 4);
-            Player winner = players[winnerNumber - 1];
 
-            if (winnerNumber > 0)
-            {
-                Console.WriteLine($"{winner.Name} won the game!");
-                winner.Score++;
-            }
-            else
-            {
-                Console.WriteLine("It's a draw!");
-                draw++;
-            }
+            (players, draw) = Stats.UpdateTTT(players, winnerNumber, draw);
+
 
             return (players, draw);
         }

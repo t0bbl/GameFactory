@@ -1,15 +1,16 @@
 namespace TicTacToe
 {
-    public class TTT
+    public class TTT : GamesAvailable
     {
         private GameBoard gameBoard;
 
-        public (Player[], int) Start(Player[] players, int draw)
+        public (Player[], int) Start(Player[] players, int draw, int startingPlayerIndex)
         {
-            gameBoard = new GameBoard(3, 3);
-            int currentPlayerIndex = 0;
 
-            while (CheckForWinner.CheckWinner(gameBoard, 3) == 0)
+            int currentPlayerIndex = startingPlayerIndex;
+            gameBoard = new GameBoard(3, 3);
+
+            do
             {
                 Console.WriteLine($"{players[currentPlayerIndex].Name}, input a number from 0 to {gameBoard.Rows * gameBoard.Columns - 1}");
 
@@ -34,20 +35,11 @@ namespace TicTacToe
                 }
 
                 gameBoard.PrintBoard();
-            }
+            } while (CheckForWinner.CheckWinner(gameBoard, 3) == 0);
 
             int winnerNumber = CheckForWinner.CheckWinner(gameBoard, 3);
 
-            if (winnerNumber > 0)
-            {
-                Console.WriteLine($"{players[winnerNumber - 1].Name} won the game!");
-                players[winnerNumber - 1].Score += 1;
-            }
-            else
-            {
-                Console.WriteLine("It's a draw!");
-                draw++;
-            }
+            (players, draw) = Stats.UpdateTTT(players, winnerNumber, draw);
 
             gameBoard.ResetBoard();
             return (players, draw);

@@ -1,28 +1,21 @@
-﻿namespace TicTacToe
+﻿using System.ComponentModel.Design;
+using System.Net.NetworkInformation;
+
+namespace TicTacToe
 {
     class Program
     {
         static void Main(string[] args)
         {
             int draw = 0;
-            Match match = new Match();
+            Match match = new();
 
-
+            StartMenu.InitializeGameMenu();
             Player[] players = InitializePlayer.Initialize();
+            GamesAvailable gameInstance = InitializeGame.Initialize();
+            (players, draw) = match.StartGame(gameInstance, players, draw);
 
-            do
-            {
-                (players, draw) = match.StartGame(players, draw);
-
-                Console.WriteLine("Want a rematch? Y/N?");
-            } while (Console.ReadLine().ToLower() == "y");
-
-            foreach (var player in players)
-            {
-                Console.WriteLine($"{player.Name} has won {player.Score} times!");
-            }
-            Console.WriteLine($"There were {draw} draws.");
-            Console.ReadKey();
+            Stats.EndGameStats(players, draw);
         }
     }
 }
