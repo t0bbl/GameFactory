@@ -13,7 +13,6 @@
 
             foreach (var player in players)
             {
-
                 Console.WriteLine($"{player.Name} has won {player.Score} times!");
             }
             Console.WriteLine($"There were {draw} draws.");
