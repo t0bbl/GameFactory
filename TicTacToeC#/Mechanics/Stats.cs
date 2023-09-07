@@ -2,16 +2,18 @@ namespace TicTacToe
 {
     internal class Stats
     {
-        public static void UpdateDrawTTT(Player[] players)
+        public static (Player[], int) UpdateDrawTTT(Player[] players, int draw)
         {
-            foreach (var player in players)
+            for (int i = 0; i < players.Length; i++)
             {
-                Console.WriteLine("It's a draw!");
-                player.DrawsTTT += 1;
+                players[i].DrawsTTT += 1;
             }
+            draw++;
+            Console.WriteLine("It's a draw!");
+            return (players, draw);
         }
 
-        public static void UpdateTTT(Player[] players, int winnerNumber)
+        public static Player[] UpdateTTT(Player[] players, int winnerNumber)
         {
             for (int i = 0; i < players.Length; i++)
             {
@@ -26,18 +28,22 @@ namespace TicTacToe
                     players[i].LossesTTT += 1;
                 }
             }
+            return players;
+
         }
 
-        public static void UpdateDrawFourWins(Player[] players)
+        public static (Player[], int) UpdateDrawFourWins(Player[] players, int draw)
         {
-            foreach (var player in players)
+            for (int i = 0; i < players.Length; i++)
             {
-                Console.WriteLine("It's a draw!");
-                player.DrawsFourWins += 1;
+                players[i].DrawsFourWins += 1;
             }
+            draw++;
+            Console.WriteLine("It's a draw!");
+            return (players, draw);
         }
 
-        public static void UpdateFourWins(Player[] players, int winnerNumber)
+        public static Player[] UpdateFourWins(Player[] players, int winnerNumber)
         {
             for (int i = 0; i < players.Length; i++)
             {
@@ -52,6 +58,39 @@ namespace TicTacToe
                     players[i].LossesFourWins += 1;
                 }
             }
+            return players;
+
         }
+
+        public static void EndGameStats(Player[] players, int draw)
+        {
+            Console.WriteLine("Game over!");
+            Console.WriteLine("Final scores:");
+            foreach (var player in players)
+            {
+                Console.WriteLine($"{player.Name}: {player.Score}");
+            };
+            if (draw > 0)
+            {
+                Console.WriteLine($"Draws:{draw}");
+            }
+            Console.ReadLine();
+    
+        }
+
+
+        //public static void PrintAllPlayerInfo(Player[] players)
+        //{
+        //    foreach (var player in players)
+        //    {
+        //        Console.WriteLine($"--- Player {player.Id} ---");
+        //        foreach (var prop in player.GetType().GetProperties())
+        //        {
+        //            Console.WriteLine($"{prop.Name}: {prop.GetValue(player)}");
+        //        }
+        //    }
+        //}
+
     }
+
 }

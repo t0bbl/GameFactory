@@ -10,7 +10,7 @@ namespace TicTacToe
             int currentPlayerIndex = startingPlayerIndex;
             gameBoard = new GameBoard(3, 3);
 
-            while (CheckForWinner.CheckWinner(gameBoard, 3) == 0)
+            do
             {
                 Console.WriteLine($"{players[currentPlayerIndex].Name}, input a number from 0 to {gameBoard.Rows * gameBoard.Columns - 1}");
 
@@ -35,17 +35,17 @@ namespace TicTacToe
                 }
 
                 gameBoard.PrintBoard();
-            }
+            } while (CheckForWinner.CheckWinner(gameBoard, 3) == 0);
 
             int winnerNumber = CheckForWinner.CheckWinner(gameBoard, 3);
 
             if (winnerNumber > 0)
             {
-                Stats.UpdateTTT(players, winnerNumber);
+                players = Stats.UpdateTTT(players, winnerNumber);
             }
             else
             {
-                Stats.UpdateDrawTTT(players);
+                (players, draw) = Stats.UpdateDrawTTT(players, draw);
             }
 
             gameBoard.ResetBoard();

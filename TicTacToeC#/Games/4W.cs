@@ -48,12 +48,12 @@ namespace TicTacToe
 
             if (winnerNumber > 0)
             {
-                Stats.UpdateFourWins(players, winnerNumber);
+                players = Stats.UpdateFourWins(players, winnerNumber);
 
             }
             else
             {
-                Stats.UpdateDrawFourWins(players);
+                (players, draw) = Stats.UpdateDrawFourWins(players, draw);
             }
 
             return (players, draw);
