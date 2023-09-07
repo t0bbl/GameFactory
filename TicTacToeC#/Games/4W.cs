@@ -44,17 +44,9 @@ namespace TicTacToe
             }
 
             int winnerNumber = CheckForWinner.CheckWinner(gameBoard, 4);
-            Player winner = players[winnerNumber - 1];
 
-            if (winnerNumber > 0)
-            {
-                players = Stats.UpdateFourWins(players, winnerNumber);
+            (players, draw) = Stats.UpdateTTT(players, winnerNumber, draw);
 
-            }
-            else
-            {
-                (players, draw) = Stats.UpdateDrawFourWins(players, draw);
-            }
 
             return (players, draw);
         }
