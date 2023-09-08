@@ -1,17 +1,16 @@
-﻿using System;
+﻿using TicTacToeC;
 
 namespace TicTacToeC.Model
 {
     internal class TTT : Game
     {
-         public TTT()
+
+        public TTT(Player[] players) : base(players)
         {
-            WinningLength = 3;
+            winningLength = 3;
             rows = 3;
             columns = 3;
             board = new int[rows, columns];
-
-
         }
     }
 }

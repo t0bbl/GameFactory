@@ -1,5 +1,7 @@
-﻿
+﻿using System;
+using System.Collections.Generic;
 using TicTacToeC;
+using TicTacToeC.Model;
 
 namespace TicTacToeC
 {
@@ -9,12 +11,11 @@ namespace TicTacToeC
         {
             int draw = 0;
              ValidGames validGames;
-            Game start = new Game(); 
+
 
             InitializeGameMenu();
             Player[] players = InitializePlayer();
-            string gameInstance = InitializeGame();
-            (players, draw) = start.Start(gameInstance, players, draw);
+            InitializeGame(players);
 
             Player.EndGameStats(players, draw);
         }
@@ -105,7 +106,7 @@ namespace TicTacToeC
             return players;
         }
 
-        static string InitializeGame()
+        static string InitializeGame(Player[] players)
         {
             List<string> gameOptions = new List<string>(Enum.GetNames(typeof(ValidGames)));
             string game = null;
@@ -120,10 +121,13 @@ namespace TicTacToeC
                 {
                     switch (game)
                     {
-                        case "TTT":
-                            return "TTT";
-                        case "FourW":
-                            return "FourW";
+                        case "TTT": //this is line 124
+                            var tttGame = new TTT(players);
+                            tttGame.StartGame(players); 
+                            break;
+                        //case "FourW":
+                        //    new FourW() { players = this.players };
+                        //    break;
                         default:
                             throw new Exception("Invalid game type.");
                     }

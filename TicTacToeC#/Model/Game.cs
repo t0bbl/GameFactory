@@ -1,5 +1,5 @@
 using TicTacToeC;
-
+using TicTacToeC.Model;
 
 namespace TicTacToeC
 {
@@ -8,12 +8,20 @@ namespace TicTacToeC
         public int[,] board;
         public int rows { get; set; }
         public int columns { get; set; }
-        public int WinningLength { get; set; }
+        public int winningLength { get; set; }
+        public Player[] players { get; set; }
+        public int draw { get; set; }
+        
         Random random = new Random();
 
-
-        public (Player[], int) Start(string game, Player[] players, int draw)
+        public Game(Player[] players)
         {
+            this.players = players;
+        }
+
+        public (Player[], int) StartGame(Player[] players)
+        {
+            this.players = players;
 
             int currentPlayerIndex = random.Next(0, players.Length); ;
 
@@ -42,9 +50,9 @@ namespace TicTacToeC
                 }
 
                 PrintBoard();
-            } while (CheckWinner(WinningLength) == 0);
+            } while (CheckWinner(winningLength) == 0);
 
-            int winnerNumber = CheckWinner(WinningLength);
+            int winnerNumber = CheckWinner(winningLength);
 
             (players, draw) = Player.UpdateTTT(players, winnerNumber, draw);
 
