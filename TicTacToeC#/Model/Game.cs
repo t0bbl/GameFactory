@@ -11,7 +11,7 @@ namespace TicTacToeC
         public int winningLength { get; set; }
         public Player[] players { get; set; }
         public int draw { get; set; }
-        
+
         Random random = new Random();
 
         public Game(Player[] players)
@@ -53,8 +53,8 @@ namespace TicTacToeC
             } while (CheckWinner(winningLength) == 0);
 
             int winnerNumber = CheckWinner(winningLength);
+            (players, draw) = UpdateStats(players, winnerNumber, draw);
 
-            (players, draw) = Player.UpdateTTT(players, winnerNumber, draw);
             ReMatch();
 
             ResetBoard();
@@ -132,9 +132,10 @@ namespace TicTacToeC
 
         }
         public void ReMatch()
-        {             Console.WriteLine("Do you want to rematch? (y/n)");
-                   string rematch = Console.ReadLine();
-                   if (rematch == "y")
+        {
+            Console.WriteLine("Do you want to rematch? (y/n)");
+            string rematch = Console.ReadLine();
+            if (rematch == "y")
             {
                 ResetBoard();
                 StartGame(players);
@@ -150,5 +151,11 @@ namespace TicTacToeC
                 ReMatch();
             }
         }
+        public virtual (Player[] players, int draw) UpdateStats(Player[] players, int winnerNumber, int draw)
+        {
+            Console.WriteLine($"Something went probably horribly wrong.");
+            return (players, draw);
+        }
+
     }
 }
