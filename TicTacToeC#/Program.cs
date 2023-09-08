@@ -124,9 +124,10 @@ namespace TicTacToeC
                             var tttGame = new TTT(players);
                             tttGame.StartGame(players); 
                             break;
-                        //case "FourW":
-                        //    new FourW() { players = this.players };
-                        //    break;
+                        case "FourW":
+                            var fourWGame = new FourW(players);
+                            fourWGame.StartGame(players);
+                            break;
                         default:
                             throw new Exception("Invalid game type.");
                     }

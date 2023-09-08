@@ -1,3 +1,4 @@
+using System.Security.Cryptography.X509Certificates;
 using TicTacToeC;
 using TicTacToeC.Model;
 
@@ -25,32 +26,8 @@ namespace TicTacToeC
 
             int currentPlayerIndex = random.Next(0, players.Length); ;
 
-            do
-            {
-                Console.WriteLine($"{players[currentPlayerIndex].Name}, input a number from 0 to {rows * columns - 1}");
+            GameMechanic(currentPlayerIndex);
 
-                if (!int.TryParse(Console.ReadLine(), out int chosenCell) || chosenCell < 0 || chosenCell >= rows * columns)
-                {
-                    Console.WriteLine("Invalid number. Try again.");
-                    continue;
-                }
-
-                int row = chosenCell / columns;
-                int col = chosenCell % columns;
-
-                if (GetCell(row, col) == 0)
-                {
-                    SetCell(row, col, currentPlayerIndex + 1);
-                    currentPlayerIndex = (currentPlayerIndex + 1) % players.Length;
-                }
-                else
-                {
-                    Console.WriteLine("Invalid move. Try again.");
-                    continue;
-                }
-
-                PrintBoard();
-            } while (CheckWinner(winningLength) == 0);
 
             int winnerNumber = CheckWinner(winningLength);
             (players, draw) = UpdateStats(players, winnerNumber, draw);
@@ -151,10 +128,24 @@ namespace TicTacToeC
                 ReMatch();
             }
         }
+        private int FindLowestAvailableRow(int column)
+        {
+            for (int row = rows - 1; row >= 0; row--)
+            {
+                if (GetCell(row, column) == 0)
+                {
+                    return row;
+                }
+            }
+            return -1; // Return -1 if the column is full
+        }
         public virtual (Player[] players, int draw) UpdateStats(Player[] players, int winnerNumber, int draw)
         {
             Console.WriteLine($"Something went probably horribly wrong.");
             return (players, draw);
+        }
+        public virtual void GameMechanic(int currentPlayerIndex)
+        {
         }
 
     }

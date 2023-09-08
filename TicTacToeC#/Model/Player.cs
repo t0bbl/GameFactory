@@ -54,7 +54,7 @@ namespace TicTacToeC
 
         }
 
-        public static (Player[], int) UpdateFourWins(Player[] players, int winnerNumber, int draw)
+        public static (Player[], int) UpdateFourW(Player[] players, int winnerNumber, int draw)
         {
 
             if (winnerNumber > 0)
