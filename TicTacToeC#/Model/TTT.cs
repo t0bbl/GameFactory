@@ -17,7 +17,6 @@ namespace TicTacToeC.Model
             Player.UpdateTTT(players, winnerNumber, draw);
             return (players, draw);
         }
-
         public override void GameMechanic(int currentPlayerIndex)
         {
             do
