@@ -17,5 +17,36 @@ namespace TicTacToeC.Model
             Player.UpdateFourW(players, winnerNumber, draw);
             return (players, draw);
         }
+        public override void GameMechanic(int currentPlayerIndex)
+        {
+            do
+            {
+                Console.WriteLine($"{players[currentPlayerIndex].Name}, input a column number from 0 to {columns - 1}");
+
+                if (!int.TryParse(Console.ReadLine(), out int chosenColumn) || chosenColumn < 0 || chosenColumn >= columns)
+                {
+                    Console.WriteLine("Invalid number. Try again.");
+                    continue;
+                }
+
+                int row = FindLowestAvailableRow(chosenColumn);
+
+                if (row != -1)
+                {
+                    SetCell(row, chosenColumn, currentPlayerIndex + 1);
+                    currentPlayerIndex = (currentPlayerIndex + 1) % players.Length;
+                }
+                else
+                {
+                    Console.WriteLine("Column is full. Try again.");
+                    continue;
+                }
+
+                PrintBoard();
+            }
+            while (CheckWinner(winningLength) == 0);
+        }
+
     }
+
 }

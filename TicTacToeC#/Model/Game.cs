@@ -128,7 +128,7 @@ namespace TicTacToeC
                 ReMatch();
             }
         }
-        private int FindLowestAvailableRow(int column)
+        public int FindLowestAvailableRow(int column)
         {
             for (int row = rows - 1; row >= 0; row--)
             {
