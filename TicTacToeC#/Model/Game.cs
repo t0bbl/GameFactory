@@ -1,39 +1,34 @@
 using TicTacToeC;
 
 
-namespace TicTacToe
+namespace TicTacToeC
 {
-    internal class Game : GamesAvailable
+    internal class Game
     {
-        private int[,] board;
-        public int Rows { get; set; }
-        public int Columns { get; set; }
+        public int[,] board;
+        public int rows { get; set; }
+        public int columns { get; set; }
+        public int WinningLength { get; set; }
+        Random random = new Random();
 
-        public Game(int rows, int columns)
-        {
-            this.Rows = rows;
-            this.Columns = columns;
-            this.board = new int[rows, columns];
-            ResetBoard();
-        }
 
-        public (Player[], int) Start(Player[] players, int draw, int startingPlayerIndex)
+        public (Player[], int) Start(string game, Player[] players, int draw)
         {
 
-            int currentPlayerIndex = startingPlayerIndex;
+            int currentPlayerIndex = random.Next(0, players.Length); ;
 
             do
             {
-                Console.WriteLine($"{players[currentPlayerIndex].Name}, input a number from 0 to {Rows * Columns - 1}");
+                Console.WriteLine($"{players[currentPlayerIndex].Name}, input a number from 0 to {rows * columns - 1}");
 
-                if (!int.TryParse(Console.ReadLine(), out int chosenCell) || chosenCell < 0 || chosenCell >= Rows * Columns)
+                if (!int.TryParse(Console.ReadLine(), out int chosenCell) || chosenCell < 0 || chosenCell >= rows * columns)
                 {
                     Console.WriteLine("Invalid number. Try again.");
                     continue;
                 }
 
-                int row = chosenCell / Columns;
-                int col = chosenCell % Columns;
+                int row = chosenCell / columns;
+                int col = chosenCell % columns;
 
                 if (GetCell(row, col) == 0)
                 {
@@ -47,20 +42,21 @@ namespace TicTacToe
                 }
 
                 PrintBoard();
-            } while (CheckWinner(3) == 0);
+            } while (CheckWinner(WinningLength) == 0);
 
-            int winnerNumber = CheckWinner(3);
+            int winnerNumber = CheckWinner(WinningLength);
 
             (players, draw) = Player.UpdateTTT(players, winnerNumber, draw);
 
             ResetBoard();
             return (players, draw);
         }
+
         public int CheckWinner(int winningLength)
         {
-            for (int row = 0; row < Rows; row++)
+            for (int row = 0; row < rows; row++)
             {
-                for (int col = 0; col < Columns; col++)
+                for (int col = 0; col < columns; col++)
                 {
                     int cellValue = GetCell(row, col);
                     if (cellValue == 0) continue;
@@ -73,7 +69,7 @@ namespace TicTacToe
                         {
                             int newRow = row + dir[0] * i;
                             int newCol = col + dir[1] * i;
-                            if (newRow < 0 || newRow >= Rows || newCol < 0 || newCol >= Columns) break;
+                            if (newRow < 0 || newRow >= rows || newCol < 0 || newCol >= columns) break;
                             if (GetCell(newRow, newCol) == cellValue) count++;
                             else break;
                         }
@@ -82,13 +78,13 @@ namespace TicTacToe
                 }
             }
 
-            bool isDraw = !Enumerable.Range(0, Rows).Any(row => Enumerable.Range(0, Columns).Any(col => GetCell(row, col) == 0));
+            bool isDraw = !Enumerable.Range(0, rows).Any(row => Enumerable.Range(0, columns).Any(col => GetCell(row, col) == 0));
             return isDraw ? -1 : 0;
         }
         public void ResetBoard()
         {
-            for (int i = 0; i < Rows; i++)
-                for (int j = 0; j < Columns; j++)
+            for (int i = 0; i < rows; i++)
+                for (int j = 0; j < columns; j++)
                     board[i, j] = 0;
         }
         public int GetCell(int row, int col)
@@ -97,14 +93,14 @@ namespace TicTacToe
         }
         public void SetCell(int row, int col, int value)
         {
-            if (row >= 0 && row < Rows && col >= 0 && col < Columns)
+            if (row >= 0 && row < rows && col >= 0 && col < columns)
                 board[row, col] = value;
         }
         public void PrintBoard()
         {
-            for (int row = 0; row < Rows; row++)
+            for (int row = 0; row < rows; row++)
             {
-                for (int col = 0; col < Columns; col++)
+                for (int col = 0; col < columns; col++)
                 {
                     int cellValue = GetCell(row, col);
 

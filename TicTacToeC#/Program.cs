@@ -1,19 +1,20 @@
 ﻿
 using TicTacToeC;
 
-namespace TicTacToe
+namespace TicTacToeC
 {
     class Program
     {
         static void Main(string[] args)
         {
             int draw = 0;
-            Match match = new();
+             ValidGames validGames;
+            Game start = new Game(); 
 
             InitializeGameMenu();
             Player[] players = InitializePlayer();
-            GamesAvailable gameInstance = InitializeGame();
-            (players, draw) = match.StartGame(gameInstance, players, draw);
+            string gameInstance = InitializeGame();
+            (players, draw) = start.Start(gameInstance, players, draw);
 
             Player.EndGameStats(players, draw);
         }
@@ -103,13 +104,8 @@ namespace TicTacToe
 
             return players;
         }
-        public enum ValidGames
-        {
-            TTT = 1,
-            FourW = 2
-        }
 
-        static GamesAvailable InitializeGame()
+        static string InitializeGame()
         {
             List<string> gameOptions = new List<string>(Enum.GetNames(typeof(ValidGames)));
             string game = null;
@@ -125,9 +121,9 @@ namespace TicTacToe
                     switch (game)
                     {
                         case "TTT":
-                            return new Game(3, 3);
+                            return "TTT";
                         case "FourW":
-                            return new FourW(6, 7);
+                            return "FourW";
                         default:
                             throw new Exception("Invalid game type.");
                     }
@@ -136,10 +132,6 @@ namespace TicTacToe
         }
     }
 
-    internal interface GamesAvailable
-    {
-        (Player[], int) Start(Player[] players, int draw, int startingPlayerIndex);
-    }
 }
 
 
