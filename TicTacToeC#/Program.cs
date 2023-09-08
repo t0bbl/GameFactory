@@ -17,7 +17,6 @@ namespace TicTacToeC
             Player[] players = InitializePlayer();
             InitializeGame(players);
 
-            Player.EndGameStats(players, draw);
         }
         public enum StartMenuOptions
         {

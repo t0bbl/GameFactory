@@ -55,6 +55,7 @@ namespace TicTacToeC
             int winnerNumber = CheckWinner(winningLength);
 
             (players, draw) = Player.UpdateTTT(players, winnerNumber, draw);
+            ReMatch();
 
             ResetBoard();
             return (players, draw);
@@ -129,6 +130,25 @@ namespace TicTacToeC
             }
 
 
+        }
+        public void ReMatch()
+        {             Console.WriteLine("Do you want to rematch? (y/n)");
+                   string rematch = Console.ReadLine();
+                   if (rematch == "y")
+            {
+                ResetBoard();
+                StartGame(players);
+            }
+            else if (rematch == "n")
+            {
+                Player.EndGameStats(players, draw);
+                Environment.Exit(0);
+            }
+            else
+            {
+                Console.WriteLine("Invalid input. Try again.");
+                ReMatch();
+            }
         }
     }
 }
