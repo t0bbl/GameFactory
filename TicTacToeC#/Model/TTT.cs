@@ -1,5 +1,4 @@
-﻿using TicTacToeC;
-
+﻿
 namespace TicTacToeC.Model
 {
     internal class TTT : Game

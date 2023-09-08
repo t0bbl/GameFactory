@@ -1,4 +1,3 @@
-using TicTacToeC;
 
 namespace TicTacToeC.Model
 {

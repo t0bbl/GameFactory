@@ -1,6 +1,4 @@
-using System.Security.Cryptography.X509Certificates;
-using TicTacToeC;
-using TicTacToeC.Model;
+
 
 namespace TicTacToeC
 {
