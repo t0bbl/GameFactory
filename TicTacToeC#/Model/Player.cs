@@ -3,14 +3,11 @@ namespace TicTacToeC
     internal class Player
     {
         public string Name;
-        public int score { get; set; }
-        public int winsTTT { get; set; }
-        public int losesTTT { get; set; }
-        public int drawsTTT { get; set; }
-        public int winsFourWins { get; set; }
-        public int lossesFourWins { get; set; }
-        public int drawsFourWins { get; set; }
-        public int number { get; set; }
+        public int Wins { get; set; }
+        public int Losses { get; set; }
+        public int Draws { get; set; }
+        public int Score { get; set; }
+        public int Number { get; set; }
 
         public Guid id { get; private set; }
 
@@ -19,83 +16,48 @@ namespace TicTacToeC
             id = Guid.NewGuid();
         }
 
-        public static (Player[], int) UpdateTTT(Player[] players, int winnerNumber, int draw)
+        public static (List<Player> Players, int) UpdateStats(List<Player> Players, int winnerNumber, int draw)
         {
 
             if (winnerNumber > 0)
             {
-                for (int i = 0; i < players.Length; i++)
+                for (int i = 0; i < Players.Count; i++)
                 {
                     if (i == winnerNumber - 1)
                     {
-                        Console.WriteLine($"{players[i].Name} won the game!");
-                        players[i].score += 1;
-                        players[i].winsTTT += 1;
+                        Console.WriteLine($"{Players[i].Name} won the game!");
+                        Players[i].Score += 1;
+                        Players[i].Wins += 1;
                     }
                     else
                     {
-                        players[i].losesTTT += 1;
+                        Players[i].Losses += 1;
                     }
                 }
-                return (players, draw);
+                return (Players, draw);
             }
             else
             {
-                for (int i = 0; i < players.Length; i++)
+                for (int i = 0; i < Players.Count; i++)
                 {
-                    players[i].drawsTTT += 1;
+                    Players[i].Draws += 1;
                 }
                 draw++;
                 Console.WriteLine("It's a draw!");
-                return (players, draw);
+                return (Players, draw);
             }
 
 
 
         }
 
-        public static (Player[], int) UpdateFourW(Player[] players, int winnerNumber, int draw)
-        {
-
-            if (winnerNumber > 0)
-            {
-                for (int i = 0; i < players.Length; i++)
-                {
-                    if (i == winnerNumber - 1)
-                    {
-                        Console.WriteLine($"{players[i].Name} won the game!");
-                        players[i].score += 1;
-                        players[i].winsFourWins += 1;
-                    }
-                    else
-                    {
-                        players[i].lossesFourWins += 1;
-                    }
-                }
-                return (players, draw);
-            }
-            else
-            {
-                for (int i = 0; i < players.Length; i++)
-                {
-                    players[i].drawsFourWins += 1;
-                }
-                draw++;
-                Console.WriteLine("It's a draw!");
-                return (players, draw);
-            }
-
-
-
-        }
-
-        public static void EndGameStats(Player[] players, int draw)
+        public static void EndGameStats(List<Player> Players, int draw)
         {
             Console.WriteLine("Game over!");
             Console.WriteLine("Final scores:");
-            foreach (var player in players)
+            foreach (var player in Players)
             {
-                Console.WriteLine($"{player.Name}: {player.score}");
+                Console.WriteLine($"{player.Name}: {player.Score}");
             };
             if (draw > 0)
             {

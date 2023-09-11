@@ -8,34 +8,28 @@ namespace TicTacToeC
         public int rows { get; set; }
         public int columns { get; set; }
         public int winningLength { get; set; }
-        public Player[] players { get; set; }
         public int draw { get; set; }
 
         public int currentPlayerIndex { get; set; }
 
         Random random = new Random();
 
-        public Game(Player[] players)
-        {
-            this.players = players;
-        }
 
-        public (Player[], int) StartGame(Player[] players)
+        public (List<Player> Players, int) StartGame(List<Player> Players)
         {
-            this.players = players;
-
+            ShufflePlayers(Players);
             do
             {
-                GameMechanic();
+                GameMechanic(Players);
             } while (CheckWinner() == 0);
             //TODO: checkwinner = checkgamestate (draw, win, lose)
-            int winnerNumber = CheckWinner(winningLength);
-            (players, draw) = UpdateStats(players, winnerNumber, draw);
+            int winnerNumber = CheckWinner();
+            (Players, draw) = Player.UpdateStats(Players, winnerNumber, draw);
 
-            ReMatch();
+            ReMatch(Players);
 
             ResetBoard();
-            return (players, draw);
+            return (Players, draw);
         }
 
         public int CheckWinner()
@@ -108,33 +102,40 @@ namespace TicTacToeC
 
 
         }
-        public void ReMatch()
+        public void ReMatch(List<Player> Players)
         {
             Console.WriteLine("Do you want to rematch? (y/n)");
             string rematch = Console.ReadLine();
             if (rematch == "y")
             {
                 ResetBoard();
-                StartGame(players);
+                StartGame(Players);
             }
             else if (rematch == "n")
             {
-                Player.EndGameStats(players, draw);
+                Player.EndGameStats(Players, draw);
                 Environment.Exit(0);
             }
             else
             {
                 Console.WriteLine("Invalid input. Try again.");
-                ReMatch();
+                ReMatch(Players);
             }
         }
-        public virtual (Player[] players, int draw) UpdateStats(Player[] players, int winnerNumber, int draw)
+        public virtual void GameMechanic(List<Player> Players)
         {
-            return (players, draw);
         }
-        public virtual void GameMechanic()
+        public void ShufflePlayers(List<Player> Players)
         {
-            currentPlayerIndex = random.Next(0, players.Length); 
+            int n = Players.Count;
+            for (int i = n - 1; i > 0; i--)
+            {
+                int j = random.Next(i + 1);
+                // Swap Players[i] and Players[j]
+                Player temp = Players[i];
+                Players[i] = Players[j];
+                Players[j] = temp;
+            }
         }
 
     }

@@ -4,28 +4,23 @@ namespace TicTacToeC.Model
     internal class FourW : Game
     {
 
-        public FourW(Player[] players) : base(players)
+        public FourW()
         {
             winningLength = 4;
             rows = 6;
             columns = 7;
             board = new int[rows, columns];
         }
-        public override (Player[] players, int draw) UpdateStats(Player[] players, int winnerNumber, int draw)
+    
+    
+        public override void GameMechanic(List<Player> Players)
         {
-            Player.UpdateFourW(players, winnerNumber, draw);
-            return (players, draw);
-        }
-        public override void GameMechanic()
-        {
-            base.GameMechanic();
-  
-                Console.WriteLine($"{players[currentPlayerIndex].Name}, input a column number from 0 to {columns - 1}");
+
+            Console.WriteLine($"{Players[1]}, input a column number from 0 to {columns - 1}");
 
                 if (!int.TryParse(Console.ReadLine(), out int chosenColumn) || chosenColumn < 0 || chosenColumn >= columns)
                 {
                     Console.WriteLine("Invalid number. Try again.");
-                    continue;
                 }
 
                 int row = FindLowestAvailableRow(chosenColumn);
@@ -33,12 +28,11 @@ namespace TicTacToeC.Model
                 if (row != -1)
                 {
                     SetCell(row, chosenColumn, currentPlayerIndex + 1);
-                    currentPlayerIndex = (currentPlayerIndex + 1) % players.Length;
+                    currentPlayerIndex = (currentPlayerIndex + 1) % Players.Count;
                 }
                 else
                 {
                     Console.WriteLine("Column is full. Try again.");
-                    continue;
                 }
 
                 PrintBoard();
