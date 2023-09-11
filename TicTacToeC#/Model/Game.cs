@@ -22,7 +22,6 @@ namespace TicTacToeC
             {
                 GameMechanic(p_Players);
             } while (CheckWinner() == 0);
-            //TODO: checkwinner = checkgamestate (draw, win, lose)
             int p_winnerNumber = CheckWinner();
             if (p_winnerNumber != 0)
             {

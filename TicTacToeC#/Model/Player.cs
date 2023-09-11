@@ -6,7 +6,6 @@ namespace TicTacToeC
         public int p_wins { get; set; }
         public int p_losses { get; set; }
         public int p_draws { get; set; }
-        public int p_score { get; set; }
         public int p_number { get; set; }
 
         public Guid p_id { get; private set; }
@@ -25,7 +24,6 @@ namespace TicTacToeC
                     if (p_gamer == p_winnerNumber - 1)
                     {
                         Console.WriteLine($"{p_players[p_gamer].p_name} won the game!");
-                        p_players[p_gamer].p_score += 1;
                         p_players[p_gamer].p_wins += 1;
                     }
                     else
@@ -55,6 +53,7 @@ namespace TicTacToeC
                 Console.WriteLine($"{p_player.p_name}: {p_player.p_wins} Wins");
                 Console.WriteLine($"{p_player.p_name}: {p_player.p_losses} Losses");
                 Console.WriteLine($"Draws: {p_player.p_draws}");
+                Console.WriteLine($"Player: {p_player.p_id}");
             };
         }
     }
