@@ -102,10 +102,10 @@ namespace TicTacToeC
             for (int i = 0; i < numberOfPlayers; i++)
             {
                 players[i] = new Player();
-                players[i].Number = i + 1;
-                Console.WriteLine($"Enter the name of player {players[i].Number}: ");
+                players[i].number = i + 1;
+                Console.WriteLine($"Enter the name of player {players[i].number}: ");
                 players[i].Name = Console.ReadLine();
-                players[i].Score = 0;
+                players[i].score = 0;
             }
 
             return players;

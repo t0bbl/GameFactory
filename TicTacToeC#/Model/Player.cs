@@ -3,20 +3,20 @@ namespace TicTacToeC
     internal class Player
     {
         public string Name;
-        public int Score { get; set; }
-        public int WinsTTT { get; set; }
-        public int LossesTTT { get; set; }
-        public int DrawsTTT { get; set; }
-        public int WinsFourWins { get; set; }
-        public int LossesFourWins { get; set; }
-        public int DrawsFourWins { get; set; }
-        public int Number { get; set; }
+        public int score { get; set; }
+        public int winsTTT { get; set; }
+        public int losesTTT { get; set; }
+        public int drawsTTT { get; set; }
+        public int winsFourWins { get; set; }
+        public int lossesFourWins { get; set; }
+        public int drawsFourWins { get; set; }
+        public int number { get; set; }
 
-        public Guid Id { get; private set; }
+        public Guid id { get; private set; }
 
         public Player()
         {
-            Id = Guid.NewGuid();
+            id = Guid.NewGuid();
         }
 
         public static (Player[], int) UpdateTTT(Player[] players, int winnerNumber, int draw)
@@ -29,12 +29,12 @@ namespace TicTacToeC
                     if (i == winnerNumber - 1)
                     {
                         Console.WriteLine($"{players[i].Name} won the game!");
-                        players[i].Score += 1;
-                        players[i].WinsTTT += 1;
+                        players[i].score += 1;
+                        players[i].winsTTT += 1;
                     }
                     else
                     {
-                        players[i].LossesTTT += 1;
+                        players[i].losesTTT += 1;
                     }
                 }
                 return (players, draw);
@@ -43,7 +43,7 @@ namespace TicTacToeC
             {
                 for (int i = 0; i < players.Length; i++)
                 {
-                    players[i].DrawsTTT += 1;
+                    players[i].drawsTTT += 1;
                 }
                 draw++;
                 Console.WriteLine("It's a draw!");
@@ -64,12 +64,12 @@ namespace TicTacToeC
                     if (i == winnerNumber - 1)
                     {
                         Console.WriteLine($"{players[i].Name} won the game!");
-                        players[i].Score += 1;
-                        players[i].WinsFourWins += 1;
+                        players[i].score += 1;
+                        players[i].winsFourWins += 1;
                     }
                     else
                     {
-                        players[i].LossesFourWins += 1;
+                        players[i].lossesFourWins += 1;
                     }
                 }
                 return (players, draw);
@@ -78,7 +78,7 @@ namespace TicTacToeC
             {
                 for (int i = 0; i < players.Length; i++)
                 {
-                    players[i].DrawsFourWins += 1;
+                    players[i].drawsFourWins += 1;
                 }
                 draw++;
                 Console.WriteLine("It's a draw!");
@@ -95,7 +95,7 @@ namespace TicTacToeC
             Console.WriteLine("Final scores:");
             foreach (var player in players)
             {
-                Console.WriteLine($"{player.Name}: {player.Score}");
+                Console.WriteLine($"{player.Name}: {player.score}");
             };
             if (draw > 0)
             {
