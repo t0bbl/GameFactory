@@ -96,7 +96,7 @@ namespace TicTacToeC
             {
                 Console.WriteLine($"Enter the name of player {Gamer + 1}: ");
                 string playerName = Console.ReadLine();
-                Player newPlayer = new Player { Name = playerName };
+                Player newPlayer = new Player { p_name = playerName };
                 Players.Add(newPlayer);
             }
             return Players;
@@ -118,11 +118,11 @@ namespace TicTacToeC
                     switch (game)
                     {
                         case "TTT": 
-                            var tttGame = new TTT(Players);
+                            var tttGame = new TTT();
                             tttGame.StartGame(Players); 
                             break;
                         case "FourW":
-                            var fourWGame = new FourW(Players);
+                            var fourWGame = new FourW();
                             fourWGame.StartGame(Players);
                             break;
                         default:

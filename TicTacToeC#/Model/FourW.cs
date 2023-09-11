@@ -6,19 +6,19 @@ namespace TicTacToeC.Model
 
         public FourW()
         {
-            winningLength = 4;
-            rows = 6;
-            columns = 7;
-            board = new int[rows, columns];
+            p_winningLength = 4;
+            p_rows = 6;
+            p_columns = 7;
+            p_board = new int[p_rows, p_columns];
         }
     
     
         public override void GameMechanic(List<Player> Players)
         {
 
-            Console.WriteLine($"{Players[1]}, input a column number from 0 to {columns - 1}");
+            Console.WriteLine($"{Players[1]}, input a column number from 0 to {p_columns - 1}");
 
-                if (!int.TryParse(Console.ReadLine(), out int chosenColumn) || chosenColumn < 0 || chosenColumn >= columns)
+                if (!int.TryParse(Console.ReadLine(), out int chosenColumn) || chosenColumn < 0 || chosenColumn >= p_columns)
                 {
                     Console.WriteLine("Invalid number. Try again.");
                 }
@@ -27,8 +27,8 @@ namespace TicTacToeC.Model
 
                 if (row != -1)
                 {
-                    SetCell(row, chosenColumn, currentPlayerIndex + 1);
-                    currentPlayerIndex = (currentPlayerIndex + 1) % Players.Count;
+                    SetCell(row, chosenColumn, p_currentPlayerIndex + 1);
+                p_currentPlayerIndex = (p_currentPlayerIndex + 1) % Players.Count;
                 }
                 else
                 {
@@ -40,7 +40,7 @@ namespace TicTacToeC.Model
         }
         public int FindLowestAvailableRow(int column)
         {
-            for (int row = rows - 1; row >= 0; row--)
+            for (int row = p_rows - 1; row >= 0; row--)
             {
                 if (GetCell(row, column) == 0)
                 {
