@@ -12,8 +12,6 @@ namespace TicTacToeC
             int draw = 0;
              ValidGames validGames;
 
-
-
             InitializeGameMenu();
             Player[] players = InitializePlayer();
             InitializeGame(players);
