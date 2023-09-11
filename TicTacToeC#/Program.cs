@@ -7,10 +7,8 @@ namespace TicTacToeC
 {
     class Program
     {
-        static void Main(string[] args)
+        static void Main()
         {
-            int draw = 0;
-             ValidGames validGames;
 
             InitializeGameMenu();
             Player[] players = InitializePlayer();
@@ -22,8 +20,8 @@ namespace TicTacToeC
         {
             List<string> menuPoints = new List<string>(Enum.GetNames(typeof(StartMenuOptions)));
             string choosing = null;
-
-            while (true)
+            //TODO: Do , kopfgesteuert
+            do
             {
                 if (choosing == null)
                 {
@@ -42,31 +40,29 @@ namespace TicTacToeC
                             throw new Exception("Invalid Input.");
                     }
                 }
-            }
+            } while (true);
         }
-        static string ShowMenu(List<string> menuItems)
+        //TODO: p_Paramaeter
+        //TODO: alles Pascal
+        static string ShowMenu(List<string> p_menuItems)
         {
             Console.WriteLine("Please make a Choice:");
+            p_menuItems.ForEach(CurrentItem => Console.WriteLine($"{p_menuItems.IndexOf(CurrentItem) + 1}. {p_menuItems}"));
 
-            for (int i = 0; i < menuItems.Count; i++)
-            {
-                Console.WriteLine($"{i + 1}. {menuItems[i]}");
-            }
-
-            while (true)
+            do 
             {
                 Console.Write("Enter the number of your choice: ");
-                ConsoleKeyInfo keyInfo = Console.ReadKey();
-                char keyChar = keyInfo.KeyChar;
-                string input = keyChar.ToString();
+                string input = Console.ReadKey().KeyChar.ToString();
+                //char keyChar = keyInfo.KeyChar;
+                //string input = keyChar.ToString();
                 Console.WriteLine();
 
 
                 if (int.TryParse(input, out int choice))
                 {
-                    if (choice >= 1 && choice <= menuItems.Count)
+                    if (choice >= 1 && choice <= p_menuItems.Count)
                     {
-                        return menuItems[choice - 1];
+                        return p_menuItems[choice - 1];
                     }
                     else
                     {
@@ -77,10 +73,11 @@ namespace TicTacToeC
                 {
                     Console.WriteLine("Please enter a valid number.");
                 }
-            }
+            } while (true);
         }
         static Player[] InitializePlayer()
         {
+            //TODO: generische liste
             bool isValidNumber;
             int numberOfPlayers;
 
@@ -98,7 +95,7 @@ namespace TicTacToeC
             } while (!isValidNumber);
             Player[] players = new Player[numberOfPlayers];
             Console.WriteLine();
-
+            //TODO: i ersetzen
             for (int i = 0; i < numberOfPlayers; i++)
             {
                 players[i] = new Player();

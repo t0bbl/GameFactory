@@ -11,6 +11,8 @@ namespace TicTacToeC
         public Player[] players { get; set; }
         public int draw { get; set; }
 
+        public int currentPlayerIndex { get; set; }
+
         Random random = new Random();
 
         public Game(Player[] players)
@@ -22,10 +24,11 @@ namespace TicTacToeC
         {
             this.players = players;
 
-            int currentPlayerIndex = random.Next(0, players.Length); ;
-
-            GameMechanic(currentPlayerIndex);
-
+            do
+            {
+                GameMechanic();
+            } while (CheckWinner() == 0);
+            //TODO: checkwinner = checkgamestate (draw, win, lose)
             int winnerNumber = CheckWinner(winningLength);
             (players, draw) = UpdateStats(players, winnerNumber, draw);
 
@@ -35,7 +38,7 @@ namespace TicTacToeC
             return (players, draw);
         }
 
-        public int CheckWinner(int winningLength)
+        public int CheckWinner()
         {
             for (int row = 0; row < rows; row++)
             {
@@ -129,8 +132,9 @@ namespace TicTacToeC
         {
             return (players, draw);
         }
-        public virtual void GameMechanic(int currentPlayerIndex)
+        public virtual void GameMechanic()
         {
+            currentPlayerIndex = random.Next(0, players.Length); 
         }
 
     }

@@ -16,10 +16,10 @@ namespace TicTacToeC.Model
             Player.UpdateFourW(players, winnerNumber, draw);
             return (players, draw);
         }
-        public override void GameMechanic(int currentPlayerIndex)
+        public override void GameMechanic()
         {
-            do
-            {
+            base.GameMechanic();
+  
                 Console.WriteLine($"{players[currentPlayerIndex].Name}, input a column number from 0 to {columns - 1}");
 
                 if (!int.TryParse(Console.ReadLine(), out int chosenColumn) || chosenColumn < 0 || chosenColumn >= columns)
@@ -42,8 +42,7 @@ namespace TicTacToeC.Model
                 }
 
                 PrintBoard();
-            }
-            while (CheckWinner(winningLength) == 0);
+
         }
         public int FindLowestAvailableRow(int column)
         {

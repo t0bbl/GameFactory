@@ -16,8 +16,9 @@ namespace TicTacToeC.Model
             Player.UpdateTTT(players, winnerNumber, draw);
             return (players, draw);
         }
-        public override void GameMechanic(int currentPlayerIndex)
+        public override void GameMechanic()
         {
+            base.GameMechanic();            
             do
             {
                 Console.WriteLine($"{players[currentPlayerIndex].Name}, input a number from 0 to {rows * columns - 1}");
