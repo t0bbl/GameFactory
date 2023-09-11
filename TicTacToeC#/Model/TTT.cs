@@ -4,47 +4,39 @@ namespace TicTacToeC.Model
     internal class TTT : Game
     {
 
-        public TTT(Player[] players) : base(players)
+        public TTT() 
         {
-            winningLength = 3;
-            rows = 3;
-            columns = 3;
-            board = new int[rows, columns];
+            p_winningLength = 3;
+            p_rows = 3;
+            p_columns = 3;
+            p_board = new int[p_rows, p_columns];
         }
-        public override (Player[] players, int draw) UpdateStats(Player[] players, int winnerNumber, int draw)
-        {
-            Player.UpdateTTT(players, winnerNumber, draw);
-            return (players, draw);
-        }
-        public override void GameMechanic(int currentPlayerIndex)
-        {
-            do
-            {
-                Console.WriteLine($"{players[currentPlayerIndex].Name}, input a number from 0 to {rows * columns - 1}");
 
-                if (!int.TryParse(Console.ReadLine(), out int chosenCell) || chosenCell < 0 || chosenCell >= rows * columns)
+        public override void GameMechanic(List<Player> Players)
+        {
+
+                Console.WriteLine($"{Players[0].p_name}, input a number from 0 to {p_rows * p_columns - 1}");
+
+                if (!int.TryParse(Console.ReadLine(), out int chosenCell) || chosenCell < 0 || chosenCell >= p_rows * p_columns)
                 {
                     Console.WriteLine("Invalid number. Try again.");
-                    continue;
                 }
 
-                int row = chosenCell / columns;
-                int col = chosenCell % columns;
+                int row = chosenCell / p_columns;
+                int col = chosenCell % p_columns;
 
                 if (GetCell(row, col) == 0)
                 {
-                    SetCell(row, col, currentPlayerIndex + 1);
-                    currentPlayerIndex = (currentPlayerIndex + 1) % players.Length;
+                    SetCell(row, col, p_currentPlayerIndex + 1);
+                    p_currentPlayerIndex = (p_currentPlayerIndex + 1) % Players.Count;
                 }
                 else
                 {
                     Console.WriteLine("Invalid move. Try again.");
-                    continue;
                 }
 
                 PrintBoard();
-            }
-            while (CheckWinner(winningLength) == 0);
+
         }
     }
 }

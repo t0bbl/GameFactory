@@ -7,28 +7,20 @@ namespace TicTacToeC
 {
     class Program
     {
-        static void Main(string[] args)
+        static void Main()
         {
-            int draw = 0;
-             ValidGames validGames;
 
             InitializeGameMenu();
-            Player[] players = InitializePlayer();
-            InitializeGame(players);
+            var Players = InitializePlayer();
+            InitializeGame(Players);
 
-        }
-        public enum StartMenuOptions
-        {
-            NewGame = 1,
-            Quit = 2
         }
 
         static void InitializeGameMenu()
         {
             List<string> menuPoints = new List<string>(Enum.GetNames(typeof(StartMenuOptions)));
             string choosing = null;
-
-            while (true)
+            do
             {
                 if (choosing == null)
                 {
@@ -47,31 +39,27 @@ namespace TicTacToeC
                             throw new Exception("Invalid Input.");
                     }
                 }
-            }
+            } while (true);
         }
-        static string ShowMenu(List<string> menuItems)
+        static string ShowMenu(List<string> p_menuItems)
         {
             Console.WriteLine("Please make a Choice:");
+            p_menuItems.ForEach(CurrentItem => Console.WriteLine($"{p_menuItems.IndexOf(CurrentItem) + 1}. {CurrentItem}"));
 
-            for (int i = 0; i < menuItems.Count; i++)
-            {
-                Console.WriteLine($"{i + 1}. {menuItems[i]}");
-            }
-
-            while (true)
+            do 
             {
                 Console.Write("Enter the number of your choice: ");
-                ConsoleKeyInfo keyInfo = Console.ReadKey();
-                char keyChar = keyInfo.KeyChar;
-                string input = keyChar.ToString();
+                string input = Console.ReadKey().KeyChar.ToString();
+                //char keyChar = keyInfo.KeyChar;
+                //string input = keyChar.ToString();
                 Console.WriteLine();
 
 
                 if (int.TryParse(input, out int choice))
                 {
-                    if (choice >= 1 && choice <= menuItems.Count)
+                    if (choice >= 1 && choice <= p_menuItems.Count)
                     {
-                        return menuItems[choice - 1];
+                        return p_menuItems[choice - 1];
                     }
                     else
                     {
@@ -82,10 +70,12 @@ namespace TicTacToeC
                 {
                     Console.WriteLine("Please enter a valid number.");
                 }
-            }
+            } while (true);
         }
-        static Player[] InitializePlayer()
+        static List<Player> InitializePlayer()
         {
+            var Players = new List<Player>();
+
             bool isValidNumber;
             int numberOfPlayers;
 
@@ -101,22 +91,18 @@ namespace TicTacToeC
                 }
 
             } while (!isValidNumber);
-            Player[] players = new Player[numberOfPlayers];
             Console.WriteLine();
-
-            for (int i = 0; i < numberOfPlayers; i++)
+            for (int Gamer = 0; Gamer < numberOfPlayers; Gamer++)
             {
-                players[i] = new Player();
-                players[i].Number = i + 1;
-                Console.WriteLine($"Enter the name of player {players[i].Number}: ");
-                players[i].Name = Console.ReadLine();
-                players[i].Score = 0;
+                Console.WriteLine($"Enter the name of player {Gamer + 1}: ");
+                string playerName = Console.ReadLine();
+                Player newPlayer = new Player { p_name = playerName };
+                Players.Add(newPlayer);
             }
+            return Players;
 
-            return players;
         }
-
-        static string InitializeGame(Player[] players)
+        static string InitializeGame(List<Player> Players)
         {
             List<string> gameOptions = new List<string>(Enum.GetNames(typeof(ValidGames)));
             string game = null;
@@ -132,12 +118,12 @@ namespace TicTacToeC
                     switch (game)
                     {
                         case "TTT": 
-                            var tttGame = new TTT(players);
-                            tttGame.StartGame(players); 
+                            var tttGame = new TTT();
+                            tttGame.StartGame(Players); 
                             break;
                         case "FourW":
-                            var fourWGame = new FourW(players);
-                            fourWGame.StartGame(players);
+                            var fourWGame = new FourW();
+                            fourWGame.StartGame(Players);
                             break;
                         default:
                             throw new Exception("Invalid game type.");

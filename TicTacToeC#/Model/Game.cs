@@ -4,43 +4,43 @@ namespace TicTacToeC
 {
     internal class Game
     {
-        public int[,] board;
-        public int rows { get; set; }
-        public int columns { get; set; }
-        public int winningLength { get; set; }
-        public Player[] players { get; set; }
-        public int draw { get; set; }
+        public int[,] p_board;
+        public int p_rows { get; set; }
+        public int p_columns { get; set; }
+        public int p_winningLength { get; set; }
 
-        Random random = new Random();
+        public int p_currentPlayerIndex { get; set; }
 
-        public Game(Player[] players)
+        Random p_random = new Random();
+
+
+
+        public List<Player> StartGame(List<Player> p_Players)
         {
-            this.players = players;
-        }
+            ShufflePlayers(p_Players);
+            do
+            {
+                GameMechanic(p_Players);
+            } while (CheckWinner() == 0);
+            int p_winnerNumber = CheckWinner();
+            if (p_winnerNumber != 0)
+            {
+                (p_Players) = Player.UpdateStats(p_Players, p_winnerNumber);
 
-        public (Player[], int) StartGame(Player[] players)
-        {
-            this.players = players;
-
-            int currentPlayerIndex = random.Next(0, players.Length); ;
-
-            GameMechanic(currentPlayerIndex);
+            }
 
 
-            int winnerNumber = CheckWinner(winningLength);
-            (players, draw) = UpdateStats(players, winnerNumber, draw);
-
-            ReMatch();
+            ReMatch(p_Players);
 
             ResetBoard();
-            return (players, draw);
+            return (p_Players);
         }
 
-        public int CheckWinner(int winningLength)
+        public int CheckWinner()
         {
-            for (int row = 0; row < rows; row++)
+            for (int row = 0; row < p_rows; row++)
             {
-                for (int col = 0; col < columns; col++)
+                for (int col = 0; col < p_columns; col++)
                 {
                     int cellValue = GetCell(row, col);
                     if (cellValue == 0) continue;
@@ -49,42 +49,42 @@ namespace TicTacToeC
                     foreach (var dir in directions)
                     {
                         int count = 1;
-                        for (int i = 1; i < winningLength; i++)
+                        for (int playerRow = 1; playerRow < p_winningLength; playerRow++)
                         {
-                            int newRow = row + dir[0] * i;
-                            int newCol = col + dir[1] * i;
-                            if (newRow < 0 || newRow >= rows || newCol < 0 || newCol >= columns) break;
+                            int newRow = row + dir[0] * playerRow;
+                            int newCol = col + dir[1] * playerRow;
+                            if (newRow < 0 || newRow >= p_rows || newCol < 0 || newCol >= p_columns) break;
                             if (GetCell(newRow, newCol) == cellValue) count++;
                             else break;
                         }
-                        if (count >= winningLength) return cellValue;
+                        if (count >= p_winningLength) return cellValue;
                     }
                 }
             }
 
-            bool isDraw = !Enumerable.Range(0, rows).Any(row => Enumerable.Range(0, columns).Any(col => GetCell(row, col) == 0));
+            bool isDraw = !Enumerable.Range(0, p_rows).Any(row => Enumerable.Range(0, p_columns).Any(col => GetCell(row, col) == 0));
             return isDraw ? -1 : 0;
         }
         public void ResetBoard()
         {
-            for (int i = 0; i < rows; i++)
-                for (int j = 0; j < columns; j++)
-                    board[i, j] = 0;
+            for (int playedRow = 0; playedRow < p_rows; playedRow++)
+                for (int playedColumn = 0; playedColumn < p_columns; playedColumn++)
+                    p_board[playedRow, playedColumn] = 0;
         }
         public int GetCell(int row, int col)
         {
-            return board[row, col];
+            return p_board[row, col];
         }
         public void SetCell(int row, int col, int value)
         {
-            if (row >= 0 && row < rows && col >= 0 && col < columns)
-                board[row, col] = value;
+            if (row >= 0 && row < p_rows && col >= 0 && col < p_columns)
+                p_board[row, col] = value;
         }
         public void PrintBoard()
         {
-            for (int row = 0; row < rows; row++)
+            for (int row = 0; row < p_rows; row++)
             {
-                for (int col = 0; col < columns; col++)
+                for (int col = 0; col < p_columns; col++)
                 {
                     int cellValue = GetCell(row, col);
 
@@ -106,33 +106,40 @@ namespace TicTacToeC
 
 
         }
-        public void ReMatch()
+        public void ReMatch(List<Player> Players)
         {
             Console.WriteLine("Do you want to rematch? (y/n)");
             string rematch = Console.ReadLine();
             if (rematch == "y")
             {
                 ResetBoard();
-                StartGame(players);
+                StartGame(Players);
             }
             else if (rematch == "n")
             {
-                Player.EndGameStats(players, draw);
+                Player.EndGameStats(Players);
                 Environment.Exit(0);
             }
             else
             {
                 Console.WriteLine("Invalid input. Try again.");
-                ReMatch();
+                ReMatch(Players);
             }
         }
-        public virtual (Player[] players, int draw) UpdateStats(Player[] players, int winnerNumber, int draw)
+        public virtual void GameMechanic(List<Player> Players)
         {
-            Console.WriteLine($"Something went probably horribly wrong.");
-            return (players, draw);
         }
-        public virtual void GameMechanic(int currentPlayerIndex)
+        public void ShufflePlayers(List<Player> Players)
         {
+            int n = Players.Count;
+            for (int i = n - 1; i > 0; i--)
+            {
+                int j = p_random.Next(i + 1);
+                // Swap Players[i] and Players[j]
+                Player temp = Players[i];
+                Players[i] = Players[j];
+                Players[j] = temp;
+            }
         }
 
     }
