@@ -45,6 +45,17 @@ namespace TicTacToeC.Model
             }
             while (CheckWinner(winningLength) == 0);
         }
+        public int FindLowestAvailableRow(int column)
+        {
+            for (int row = rows - 1; row >= 0; row--)
+            {
+                if (GetCell(row, column) == 0)
+                {
+                    return row;
+                }
+            }
+            return -1;
+        }
 
     }
 

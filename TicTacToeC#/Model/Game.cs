@@ -126,17 +126,6 @@ namespace TicTacToeC
                 ReMatch();
             }
         }
-        public int FindLowestAvailableRow(int column)
-        {
-            for (int row = rows - 1; row >= 0; row--)
-            {
-                if (GetCell(row, column) == 0)
-                {
-                    return row;
-                }
-            }
-            return -1; // Return -1 if the column is full
-        }
         public virtual (Player[] players, int draw) UpdateStats(Player[] players, int winnerNumber, int draw)
         {
             Console.WriteLine($"Something went probably horribly wrong.");
