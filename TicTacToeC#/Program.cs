@@ -17,11 +17,6 @@ namespace TicTacToeC
             InitializeGame(players);
 
         }
-        public enum StartMenuOptions
-        {
-            NewGame = 1,
-            Quit = 2
-        }
 
         static void InitializeGameMenu()
         {
@@ -115,7 +110,6 @@ namespace TicTacToeC
 
             return players;
         }
-
         static string InitializeGame(Player[] players)
         {
             List<string> gameOptions = new List<string>(Enum.GetNames(typeof(ValidGames)));

@@ -26,7 +26,6 @@ namespace TicTacToeC
 
             GameMechanic(currentPlayerIndex);
 
-
             int winnerNumber = CheckWinner(winningLength);
             (players, draw) = UpdateStats(players, winnerNumber, draw);
 
@@ -49,10 +48,10 @@ namespace TicTacToeC
                     foreach (var dir in directions)
                     {
                         int count = 1;
-                        for (int i = 1; i < winningLength; i++)
+                        for (int playerRow = 1; playerRow < winningLength; playerRow++)
                         {
-                            int newRow = row + dir[0] * i;
-                            int newCol = col + dir[1] * i;
+                            int newRow = row + dir[0] * playerRow;
+                            int newCol = col + dir[1] * playerRow;
                             if (newRow < 0 || newRow >= rows || newCol < 0 || newCol >= columns) break;
                             if (GetCell(newRow, newCol) == cellValue) count++;
                             else break;
@@ -67,9 +66,9 @@ namespace TicTacToeC
         }
         public void ResetBoard()
         {
-            for (int i = 0; i < rows; i++)
-                for (int j = 0; j < columns; j++)
-                    board[i, j] = 0;
+            for (int playedRow = 0; playedRow < rows; playedRow++)
+                for (int playedColumn = 0; playedColumn < columns; playedColumn++)
+                    board[playedRow, playedColumn] = 0;
         }
         public int GetCell(int row, int col)
         {
@@ -128,7 +127,6 @@ namespace TicTacToeC
         }
         public virtual (Player[] players, int draw) UpdateStats(Player[] players, int winnerNumber, int draw)
         {
-            Console.WriteLine($"Something went probably horribly wrong.");
             return (players, draw);
         }
         public virtual void GameMechanic(int currentPlayerIndex)
