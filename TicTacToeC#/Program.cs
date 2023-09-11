@@ -13,6 +13,7 @@ namespace TicTacToeC
              ValidGames validGames;
 
 
+
             InitializeGameMenu();
             Player[] players = InitializePlayer();
             InitializeGame(players);
@@ -87,9 +88,21 @@ namespace TicTacToeC
         }
         static Player[] InitializePlayer()
         {
-            Console.WriteLine("Enter the number of players: ");
-            ConsoleKeyInfo keyInfo = Console.ReadKey();
-            int numberOfPlayers = Convert.ToInt32(keyInfo.KeyChar.ToString());
+            bool isValidNumber;
+            int numberOfPlayers;
+
+            do
+            {
+                Console.WriteLine("Enter the number of players: ");
+                ConsoleKeyInfo keyInfo = Console.ReadKey();
+                isValidNumber = int.TryParse(keyInfo.KeyChar.ToString(), out numberOfPlayers);
+
+                if (!isValidNumber)
+                {
+                    Console.WriteLine("\nInvalid input. Please enter a number.");
+                }
+
+            } while (!isValidNumber);
             Player[] players = new Player[numberOfPlayers];
             Console.WriteLine();
 
