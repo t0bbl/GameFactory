@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using GameFactory;
-using GameFactory.Model;
+﻿using GameFactory.Model;
 
 namespace GameFactory
 {
