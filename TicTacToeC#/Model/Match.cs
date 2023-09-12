@@ -1,5 +1,4 @@
 namespace GameFactory
-
 {
     internal class Match
     {
@@ -10,16 +9,12 @@ namespace GameFactory
             p_winningLength = winningLength;
             p_board = new int[rows, columns];
         }
-
         public int[,] p_board;
         public int p_rows { get; set; }
         public int p_columns { get; set; }
         public int p_winningLength { get; set; }
-
         public int p_currentPlayerIndex { get; set; }
-
         readonly Random p_random = new();
-
         public List<Player> StartMatch(List<Player> p_Players)
         {
             ShufflePlayers(p_Players);
@@ -39,7 +34,6 @@ namespace GameFactory
             ResetBoard();
             return (p_Players);
         }
-
         public int CheckWinner()
         {
             for (int row = 0; row < p_rows; row++)

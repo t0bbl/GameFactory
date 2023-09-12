@@ -5,8 +5,6 @@ namespace GameFactory.Model
 
         public FourW() : base(6, 7, 4)
         { }
-
-
         public override void GameMechanic(List<Player> Players)
         {
             int chosenColumn;
@@ -28,7 +26,6 @@ namespace GameFactory.Model
             }
             PrintBoard();
         }
-
         public int FindLowestAvailableRow(int column)
         {
             for (int row = p_rows - 1; row >= 0; row--)

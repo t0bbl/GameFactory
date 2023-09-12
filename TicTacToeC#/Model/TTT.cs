@@ -4,7 +4,6 @@
     {
         public TTT() : base(3, 3, 3)
         { }
-
         public override void GameMechanic(List<Player> Players)
         {
             int chosenCell;
@@ -31,7 +30,6 @@
                     }
                 }
             }
-
             PrintBoard();
         }
     }

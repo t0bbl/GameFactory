@@ -12,7 +12,6 @@ namespace GameFactory
             InitializeGame(Players);
 
         }
-
         static void InitializeGameMenu()
         {
             List<string> menuPoints = new(Enum.GetNames(typeof(StartMenuOptions)));
@@ -42,8 +41,7 @@ namespace GameFactory
         {
             Console.WriteLine("Please make a Choice:");
             p_menuItems.ForEach(CurrentItem => Console.WriteLine($"{p_menuItems.IndexOf(CurrentItem) + 1}. {CurrentItem}"));
-
-            do 
+            do
             {
                 Console.Write("Enter the number of your choice: ");
                 string input = Console.ReadKey().KeyChar.ToString();
@@ -101,7 +99,6 @@ namespace GameFactory
         {
             List<string> gameOptions = new(Enum.GetNames(typeof(ValidGames)));
             string game = null;
-
             while (true)
             {
                 if (game == null)

@@ -7,14 +7,11 @@ namespace GameFactory
         public int p_losses { get; set; }
         public int p_draws { get; set; }
         public int p_number { get; set; }
-
         public Guid p_id { get; private set; }
-
         public Player()
         {
             p_id = Guid.NewGuid();
         }
-
         public static List<Player> UpdateStats(List<Player> p_players, int p_winnerNumber)
         {
             if (p_winnerNumber > 0)
@@ -43,7 +40,6 @@ namespace GameFactory
                 return p_players;
             }
         }
-
         public static void EndGameStats(List<Player> p_players)
         {
             Console.WriteLine("Game over!");
