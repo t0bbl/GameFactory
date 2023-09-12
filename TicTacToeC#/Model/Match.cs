@@ -16,7 +16,7 @@ namespace GameFactory
 
 
 
-        public List<Player> StartGame(List<Player> p_Players)
+        public List<Player> StartMatch(List<Player> p_Players)
         {
             ShufflePlayers(p_Players);
             do
@@ -113,7 +113,7 @@ namespace GameFactory
             if (rematch == "y")
             {
                 ResetBoard();
-                StartGame(Players);
+                StartMatch(Players);
             }
             else if (rematch == "n")
             {

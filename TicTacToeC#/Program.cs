@@ -117,11 +117,11 @@ namespace GameFactory
                     {
                         case "TTT": 
                             var tttGame = new TTT();
-                            tttGame.StartGame(Players); 
+                            tttGame.StartMatch(Players); 
                             break;
                         case "FourW":
                             var fourWGame = new FourW();
-                            fourWGame.StartGame(Players);
+                            fourWGame.StartMatch(Players);
                             break;
                         default:
                             throw new Exception("Invalid game type.");
