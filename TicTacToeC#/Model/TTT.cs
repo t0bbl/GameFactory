@@ -1,5 +1,5 @@
 ﻿
-namespace TicTacToeC.Model
+namespace GameFactory.Model
 {
     internal class TTT : Game
     {

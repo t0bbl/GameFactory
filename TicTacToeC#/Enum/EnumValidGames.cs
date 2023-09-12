@@ -1,7 +1,7 @@
-using TicTacToeC;
+using GameFactory;
 
 
-namespace TicTacToeC
+namespace GameFactory
 {
     public enum ValidGames
     {

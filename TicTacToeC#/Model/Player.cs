@@ -1,4 +1,4 @@
-namespace TicTacToeC
+namespace GameFactory
 {
     internal class Player
     {

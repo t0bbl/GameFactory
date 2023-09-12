@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using TicTacToeC;
-using TicTacToeC.Model;
+using GameFactory;
+using GameFactory.Model;
 
-namespace TicTacToeC
+namespace GameFactory
 {
     class Program
     {
