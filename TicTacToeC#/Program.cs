@@ -50,8 +50,6 @@ namespace GameFactory
             {
                 Console.Write("Enter the number of your choice: ");
                 string input = Console.ReadKey().KeyChar.ToString();
-                //char keyChar = keyInfo.KeyChar;
-                //string input = keyChar.ToString();
                 Console.WriteLine();
 
 

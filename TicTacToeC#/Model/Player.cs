@@ -53,7 +53,6 @@ namespace GameFactory
                 Console.WriteLine($"{p_player.p_name}: {p_player.p_wins} Wins");
                 Console.WriteLine($"{p_player.p_name}: {p_player.p_losses} Losses");
                 Console.WriteLine($"Draws: {p_player.p_draws}");
-                Console.WriteLine($"Player: {p_player.p_id}");
             };
         }
     }

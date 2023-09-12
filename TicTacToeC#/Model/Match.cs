@@ -3,7 +3,7 @@
 namespace GameFactory
 
 {
-    internal class Game
+    internal class Match
     {
         public int[,] p_board;
         public int p_rows { get; set; }
@@ -27,7 +27,6 @@ namespace GameFactory
             if (p_winnerNumber != 0)
             {
                 (p_Players) = Player.UpdateStats(p_Players, p_winnerNumber);
-
             }
 
 

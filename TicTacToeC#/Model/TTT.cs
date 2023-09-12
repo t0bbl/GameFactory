@@ -1,7 +1,7 @@
 ﻿
 namespace GameFactory.Model
 {
-    internal class TTT : Game
+    internal class TTT : Match
     {
 
         public TTT() 

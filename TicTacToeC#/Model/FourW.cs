@@ -1,7 +1,7 @@
 
 namespace GameFactory.Model
 {
-    internal class FourW : Game
+    internal class FourW : Match
     {
 
         public FourW()
