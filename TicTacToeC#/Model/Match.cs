@@ -10,7 +10,7 @@ namespace GameFactory
 
         public int p_currentPlayerIndex { get; set; }
 
-        Random p_random = new();
+        readonly Random p_random = new();
 
 
 
