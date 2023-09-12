@@ -1,22 +1,22 @@
-
-
 namespace GameFactory
-
 {
-    internal class Game
+    internal class Match
     {
+        public Match(int rows, int columns, int winningLength)
+        {
+            p_rows = rows;
+            p_columns = columns;
+            p_winningLength = winningLength;
+            p_board = new int[rows, columns];
+        }
         public int[,] p_board;
         public int p_rows { get; set; }
         public int p_columns { get; set; }
         public int p_winningLength { get; set; }
-
         public int p_currentPlayerIndex { get; set; }
+        readonly Random p_random = new();
 
-        Random p_random = new Random();
-
-
-
-        public List<Player> StartGame(List<Player> p_Players)
+        public List<Player> StartMatch(List<Player> p_Players)
         {
             ShufflePlayers(p_Players);
             do
@@ -27,7 +27,6 @@ namespace GameFactory
             if (p_winnerNumber != 0)
             {
                 (p_Players) = Player.UpdateStats(p_Players, p_winnerNumber);
-
             }
 
 
@@ -114,7 +113,7 @@ namespace GameFactory
             if (rematch == "y")
             {
                 ResetBoard();
-                StartGame(Players);
+                StartMatch(Players);
             }
             else if (rematch == "n")
             {
@@ -141,6 +140,15 @@ namespace GameFactory
                 Players[i] = Players[j];
                 Players[j] = temp;
             }
+        }
+        protected bool TryGetValidInput(out int chosenValue, int maxValue)
+        {
+            if (int.TryParse(Console.ReadLine(), out chosenValue) && chosenValue >= 0 && chosenValue < maxValue)
+            {
+                return true;
+            }
+            Console.WriteLine("Invalid input. Try again.");
+            return false;
         }
 
     }

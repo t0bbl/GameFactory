@@ -1,6 +1,3 @@
-using GameFactory;
-
-
 namespace GameFactory
 {
     public enum StartMenuOptions

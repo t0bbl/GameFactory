@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using GameFactory;
-using GameFactory.Model;
+﻿using GameFactory.Model;
 
 namespace GameFactory
 {
@@ -15,10 +12,9 @@ namespace GameFactory
             InitializeGame(Players);
 
         }
-
         static void InitializeGameMenu()
         {
-            List<string> menuPoints = new List<string>(Enum.GetNames(typeof(StartMenuOptions)));
+            List<string> menuPoints = new(Enum.GetNames(typeof(StartMenuOptions)));
             string choosing = null;
             do
             {
@@ -45,13 +41,10 @@ namespace GameFactory
         {
             Console.WriteLine("Please make a Choice:");
             p_menuItems.ForEach(CurrentItem => Console.WriteLine($"{p_menuItems.IndexOf(CurrentItem) + 1}. {CurrentItem}"));
-
-            do 
+            do
             {
                 Console.Write("Enter the number of your choice: ");
                 string input = Console.ReadKey().KeyChar.ToString();
-                //char keyChar = keyInfo.KeyChar;
-                //string input = keyChar.ToString();
                 Console.WriteLine();
 
 
@@ -96,7 +89,7 @@ namespace GameFactory
             {
                 Console.WriteLine($"Enter the name of player {Gamer + 1}: ");
                 string playerName = Console.ReadLine();
-                Player newPlayer = new Player { p_name = playerName };
+                Player newPlayer = new() { p_name = playerName };
                 Players.Add(newPlayer);
             }
             return Players;
@@ -104,9 +97,8 @@ namespace GameFactory
         }
         static string InitializeGame(List<Player> Players)
         {
-            List<string> gameOptions = new List<string>(Enum.GetNames(typeof(ValidGames)));
+            List<string> gameOptions = new(Enum.GetNames(typeof(ValidGames)));
             string game = null;
-
             while (true)
             {
                 if (game == null)
@@ -119,11 +111,11 @@ namespace GameFactory
                     {
                         case "TTT": 
                             var tttGame = new TTT();
-                            tttGame.StartGame(Players); 
+                            tttGame.StartMatch(Players); 
                             break;
                         case "FourW":
                             var fourWGame = new FourW();
-                            fourWGame.StartGame(Players);
+                            fourWGame.StartMatch(Players);
                             break;
                         default:
                             throw new Exception("Invalid game type.");
