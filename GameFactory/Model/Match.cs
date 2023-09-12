@@ -15,6 +15,7 @@ namespace GameFactory
         public int p_winningLength { get; set; }
         public int p_currentPlayerIndex { get; set; }
         readonly Random p_random = new();
+
         public List<Player> StartMatch(List<Player> p_Players)
         {
             ShufflePlayers(p_Players);
@@ -34,6 +35,7 @@ namespace GameFactory
             ResetBoard();
             return (p_Players);
         }
+
         public int CheckWinner()
         {
             for (int row = 0; row < p_rows; row++)
