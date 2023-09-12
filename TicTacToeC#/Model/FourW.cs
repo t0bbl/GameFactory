@@ -14,29 +14,38 @@ namespace GameFactory.Model
 
         public override void GameMechanic(List<Player> Players)
         {
+            bool validInput = false;
 
-            Console.WriteLine($"{Players[1]}, input a column number from 0 to {p_columns - 1}");
-
-            if (!int.TryParse(Console.ReadLine(), out int chosenColumn) || chosenColumn < 0 || chosenColumn >= p_columns)
+            while (!validInput)
             {
-                Console.WriteLine("Invalid number. Try again.");
-            }
+                Console.WriteLine($"{Players[0].p_name}, input a column number from 0 to {p_columns - 1}");
 
-            int row = FindLowestAvailableRow(chosenColumn);
+                bool isValidInput = int.TryParse(Console.ReadLine(), out int chosenColumn);
 
-            if (row != -1)
-            {
-                SetCell(row, chosenColumn, p_currentPlayerIndex + 1);
-                p_currentPlayerIndex = (p_currentPlayerIndex + 1) % Players.Count;
-            }
-            else
-            {
-                Console.WriteLine("Column is full. Try again.");
+                if (!isValidInput || chosenColumn < 0 || chosenColumn >= p_columns)
+                {
+                    Console.WriteLine("Invalid number. Try again.");
+                }
+                else
+                {
+                    int row = FindLowestAvailableRow(chosenColumn);
+
+                    if (row != -1)
+                    {
+                        SetCell(row, chosenColumn, p_currentPlayerIndex + 1);
+                        p_currentPlayerIndex = (p_currentPlayerIndex + 1) % Players.Count;
+                        validInput = true;
+                    }
+                    else
+                    {
+                        Console.WriteLine("Column is full. Try again.");
+                    }
+                }
             }
 
             PrintBoard();
-
         }
+
         public int FindLowestAvailableRow(int column)
         {
             for (int row = p_rows - 1; row >= 0; row--)
