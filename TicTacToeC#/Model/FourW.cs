@@ -3,46 +3,29 @@ namespace GameFactory.Model
     internal class FourW : Match
     {
 
-        public FourW()
-        {
-            p_winningLength = 4;
-            p_rows = 6;
-            p_columns = 7;
-            p_board = new int[p_rows, p_columns];
-        }
+        public FourW() : base(6, 7, 4)
+        { }
 
 
         public override void GameMechanic(List<Player> Players)
         {
-            bool validInput = false;
-
-            while (!validInput)
+            int chosenColumn;
+            do
             {
                 Console.WriteLine($"{Players[0].p_name}, input a column number from 0 to {p_columns - 1}");
+            } while (!TryGetValidInput(out chosenColumn, p_columns));
 
-                bool isValidInput = int.TryParse(Console.ReadLine(), out int chosenColumn);
+            int row = FindLowestAvailableRow(chosenColumn);
 
-                if (!isValidInput || chosenColumn < 0 || chosenColumn >= p_columns)
-                {
-                    Console.WriteLine("Invalid number. Try again.");
-                }
-                else
-                {
-                    int row = FindLowestAvailableRow(chosenColumn);
-
-                    if (row != -1)
-                    {
-                        SetCell(row, chosenColumn, p_currentPlayerIndex + 1);
-                        p_currentPlayerIndex = (p_currentPlayerIndex + 1) % Players.Count;
-                        validInput = true;
-                    }
-                    else
-                    {
-                        Console.WriteLine("Column is full. Try again.");
-                    }
-                }
+            if (row != -1)
+            {
+                SetCell(row, chosenColumn, p_currentPlayerIndex + 1);
+                p_currentPlayerIndex = (p_currentPlayerIndex + 1) % Players.Count;
             }
-
+            else
+            {
+                Console.WriteLine("Column is full. Try again.");
+            }
             PrintBoard();
         }
 

@@ -2,30 +2,19 @@
 {
     internal class TTT : Match
     {
-
-        public TTT()
-        {
-            p_winningLength = 3;
-            p_rows = 3;
-            p_columns = 3;
-            p_board = new int[p_rows, p_columns];
-        }
+        public TTT() : base(3, 3, 3)
+        { }
 
         public override void GameMechanic(List<Player> Players)
         {
+            int chosenCell;
             bool validInput = false;
 
             while (!validInput)
             {
                 Console.WriteLine($"{Players[0].p_name}, input a number from 0 to {p_rows * p_columns - 1}");
 
-                bool isValidInput = int.TryParse(Console.ReadLine(), out int chosenCell);
-
-                if (!isValidInput || chosenCell < 0 || chosenCell >= p_rows * p_columns)
-                {
-                    Console.WriteLine("Invalid number. Try again.");
-                }
-                else
+                if (TryGetValidInput(out chosenCell, p_rows * p_columns))
                 {
                     int row = chosenCell / p_columns;
                     int col = chosenCell % p_columns;
@@ -38,13 +27,12 @@
                     }
                     else
                     {
-                        Console.WriteLine("Invalid move. Try again.");
+                        Console.WriteLine("Cell already occupied. Try again.");
                     }
                 }
             }
 
             PrintBoard();
         }
-
     }
 }
