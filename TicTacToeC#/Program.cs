@@ -15,7 +15,7 @@ namespace GameFactory
 
         static void InitializeGameMenu()
         {
-            List<string> menuPoints = new List<string>(Enum.GetNames(typeof(StartMenuOptions)));
+            List<string> menuPoints = new(Enum.GetNames(typeof(StartMenuOptions)));
             string choosing = null;
             do
             {
@@ -91,7 +91,7 @@ namespace GameFactory
             {
                 Console.WriteLine($"Enter the name of player {Gamer + 1}: ");
                 string playerName = Console.ReadLine();
-                Player newPlayer = new Player { p_name = playerName };
+                Player newPlayer = new() { p_name = playerName };
                 Players.Add(newPlayer);
             }
             return Players;
@@ -99,7 +99,7 @@ namespace GameFactory
         }
         static string InitializeGame(List<Player> Players)
         {
-            List<string> gameOptions = new List<string>(Enum.GetNames(typeof(ValidGames)));
+            List<string> gameOptions = new(Enum.GetNames(typeof(ValidGames)));
             string game = null;
 
             while (true)
