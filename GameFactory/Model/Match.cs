@@ -18,6 +18,7 @@ namespace GameFactory
 
         public List<Player> StartMatch(List<Player> p_Players)
         {
+            ResetFirstTurn();
             ShufflePlayers(p_Players);
             do
             {
@@ -170,6 +171,8 @@ namespace GameFactory
             Console.WriteLine("Invalid input. Try again.");
             return false;
         }
-
+        public virtual void ResetFirstTurn()
+        {
+        }
     }
 }

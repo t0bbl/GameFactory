@@ -2,13 +2,19 @@
 {
     internal class TTT : Match
     {
+        private bool firstTurn = true;
         public TTT() : base(3, 3, 3)
         { }
         public override void GameMechanic(List<Player> Players)
         {
             int chosenCell;
             bool validInput = false;
-
+            if (firstTurn)
+            {
+                PrintBoard(false, false);
+                Console.WriteLine();
+                firstTurn = false;
+            }
             while (!validInput)
             {
                 Console.WriteLine($"{Players[p_currentPlayerIndex].p_name}, input a number from 1 to {p_rows * p_columns}");
@@ -32,5 +38,10 @@
             }
             PrintBoard(false, false);
         }
+        public override void ResetFirstTurn()
+        {
+            firstTurn = true;
+        }
+
     }
 }

@@ -2,12 +2,19 @@ namespace GameFactory.Model
 {
     internal class FourW : Match
     {
+        private bool firstTurn = true;
 
         public FourW() : base(6, 7, 4)
         { }
         public override void GameMechanic(List<Player> Players)
         {
             int chosenColumn;
+            if (firstTurn)
+            {
+                PrintBoard(false, true);
+                Console.WriteLine();
+                firstTurn = false;
+            }
             do
             {
                 Console.WriteLine($"{Players[p_currentPlayerIndex].p_name}, input a column number from 1 to {p_columns}");
@@ -37,6 +44,11 @@ namespace GameFactory.Model
             }
             return -1;
         }
+        public override void ResetFirstTurn()
+        {
+            firstTurn = true;
+        }
+
 
     }
 
