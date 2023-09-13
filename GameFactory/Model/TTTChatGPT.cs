@@ -12,7 +12,6 @@ namespace GameFactory.Model
         }
         public override void GameMechanic(List<Player> Players)
         {
-            string apiKey = Environment.GetEnvironmentVariable("CHATGPT_API_KEY");
 
             int chosenCell;
             bool validInput = false;
@@ -54,15 +53,24 @@ namespace GameFactory.Model
         }
         public void ChatGPTMove(string board)
         {
-            Console.WriteLine("ChatGPT is thinking...");
-            string apiKey = "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";
-            var chatGPTClient = new ChatGPTClient(apiKey);
-            string message = ($"Here is the current Tic-Tac-Toe board: {board}Your turn. Make a move by changing one empty '.' to 'O' and return the new board. Note: You cannot override cells already occupied by 'X' or 'O'.");
-            string response = chatGPTClient.SendMessage(message);
-            Console.WriteLine("ChatGPT´s Move: ");
-            Console.WriteLine();
-            Console.WriteLine($" {response}");
-            StringToBoard(response);
+            string apiKey = Environment.GetEnvironmentVariable("CHATGPT_API_KEY", EnvironmentVariableTarget.Machine);
+            if (apiKey != null)
+            {
+                Console.WriteLine("ChatGPT is thinking...");
+                var chatGPTClient = new ChatGPTClient(apiKey);
+                string message = ($"Here is the current Tic-Tac-Toe board: {board}Your turn. Make a move by changing one empty '.' to 'O' and return the new board. Note: You cannot override cells already occupied by 'X' or 'O'.");
+                string response = chatGPTClient.SendMessage(message);
+                Console.WriteLine("ChatGPT´s Move: ");
+                Console.WriteLine();
+                Console.WriteLine($" {response}");
+                StringToBoard(response);
+            }
+            else
+            {
+                Console.WriteLine("Please set the environment variable CHATGPT_API_KEY to your ChatGPT API key.");
+                Environment.Exit(0);
+            }
+
         }
         public string BoardToString()
         {
