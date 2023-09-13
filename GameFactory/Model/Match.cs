@@ -5,16 +5,16 @@ namespace GameFactory
         public Match(int rows, int columns, int winningLength)
         {
             p_rows = rows;
-            p_columns = columns;
-            p_winningLength = winningLength;
-            p_board = new int[rows, columns];
+            p_Columns = columns;
+            p_WinningLength = winningLength;
+            p_Board = new int[rows, columns];
         }
-        public int[,] p_board;
+        public int[,] p_Board;
         public int p_rows { get; set; }
-        public int p_columns { get; set; }
-        public int p_winningLength { get; set; }
-        public int p_currentPlayerIndex { get; set; }
-        readonly Random p_random = new();
+        public int p_Columns { get; set; }
+        public int p_WinningLength { get; set; }
+        public int p_CurrentPlayerIndex { get; set; }
+        readonly Random p_Random = new();
 
         public List<Player> StartMatch(List<Player> p_Players)
         {
@@ -39,64 +39,65 @@ namespace GameFactory
 
         public int CheckWinner()
         {
-            for (int row = 0; row < p_rows; row++)
+            for (int p_row = 0; p_row < p_rows; p_row++)
             {
-                for (int col = 0; col < p_columns; col++)
+                for (int col = 0; col < p_Columns; col++)
                 {
-                    int cellValue = GetCell(row, col);
+                    int cellValue = GetCell(p_row, col);
                     if (cellValue == 0) continue;
 
                     int[][] directions = new int[][] { new int[] { 0, 1 }, new int[] { 1, 0 }, new int[] { 1, 1 }, new int[] { 1, -1 } };
                     foreach (var dir in directions)
                     {
                         int count = 1;
-                        for (int playerRow = 1; playerRow < p_winningLength; playerRow++)
+                        for (int playerRow = 1; playerRow < p_WinningLength; playerRow++)
                         {
-                            int newRow = row + dir[0] * playerRow;
+                            int newRow = p_row + dir[0] * playerRow;
                             int newCol = col + dir[1] * playerRow;
-                            if (newRow < 0 || newRow >= p_rows || newCol < 0 || newCol >= p_columns) break;
+                            if (newRow < 0 || newRow >= p_rows || newCol < 0 || newCol >= p_Columns) break;
                             if (GetCell(newRow, newCol) == cellValue) count++;
                             else break;
                         }
-                        if (count >= p_winningLength) return cellValue;
+                        if (count >= p_WinningLength) return cellValue;
                     }
                 }
             }
 
-            bool isDraw = !Enumerable.Range(0, p_rows).Any(row => Enumerable.Range(0, p_columns).Any(col => GetCell(row, col) == 0));
+            bool isDraw = !Enumerable.Range(0, p_rows).Any(p_row => Enumerable.Range(0, p_Columns).Any(col => GetCell(p_row, col) == 0));
             return isDraw ? -1 : 0;
         }
         public void ResetBoard()
         {
             for (int playedRow = 0; playedRow < p_rows; playedRow++)
-                for (int playedColumn = 0; playedColumn < p_columns; playedColumn++)
-                    p_board[playedRow, playedColumn] = 0;
+                for (int playedColumn = 0; playedColumn < p_Columns; playedColumn++)
+                    p_Board[playedRow, playedColumn] = 0;
         }
-        public int GetCell(int row, int col)
+        public int GetCell(int p_row, int col)
         {
-            return p_board[row, col];
+            return p_Board[p_row, col];
         }
-        public void SetCell(int row, int col, int value)
+        public void SetCell(int p_row, int col, int value)
         {
-            if (row >= 0 && row < p_rows && col >= 0 && col < p_columns)
-                p_board[row, col] = value;
+            if (p_row >= 0 && p_row < p_rows && col >= 0 && col < p_Columns)
+                p_Board[p_row, col] = value;
         }
         public void PrintBoard(bool p_showRow, bool p_showCol)
         {
-            for (int row = 0; row < p_rows; row++)
+            for (int p_row = 0; p_row < p_rows; p_row++)
             {
                 if (p_showRow)
                 {
-                    Console.Write(row + 1 + " ");
-                } else
+                    Console.Write(p_row + 1 + " ");
+                }
+                else
                 {
                     Console.Write("  ");
                 }
-                
 
-                for (int col = 0; col < p_columns; col++)
+
+                for (int col = 0; col < p_Columns; col++)
                 {
-                    int cellValue = GetCell(row, col);
+                    int cellValue = GetCell(p_row, col);
                     switch (cellValue)
                     {
                         case 0:
@@ -116,7 +117,7 @@ namespace GameFactory
             {
                 Console.Write("  ");
 
-                for (int col = 0; col < p_columns; col++)
+                for (int col = 0; col < p_Columns; col++)
                 {
                     Console.Write($" {col + 1} ");
                 }
@@ -155,7 +156,7 @@ namespace GameFactory
             int n = Players.Count;
             for (int i = n - 1; i > 0; i--)
             {
-                int j = p_random.Next(i + 1);
+                int j = p_Random.Next(i + 1);
                 // Swap Players[i] and Players[j]
                 Player temp = Players[i];
                 Players[i] = Players[j];

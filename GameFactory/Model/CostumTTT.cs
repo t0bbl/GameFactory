@@ -1,23 +1,23 @@
 ﻿namespace GameFactory.Model
 {
-    internal class CostumTTT : Match
+    internal class CustomTTT : Match
     {
-        private bool firstTurn = true;
+        private bool FirstTurn = true;
 
-        public CostumTTT() : base(AskForRows(), AskForColumns(), AskForWinningLength())
+        public CustomTTT() : base(AskForRows(), AskForColumns(), AskForWinningLength())
         { }
-        public override void GameMechanic(List<Player> Players)
+        public override void GameMechanic(List<Player> p_Players)
         {
-            if (firstTurn)
+            if (FirstTurn)
             {
                 PrintBoard(true, true);
-                firstTurn = false;
+                FirstTurn = false;
             }
             bool validInput = false;
             while (!validInput)
             {
                 Console.WriteLine();
-                Console.WriteLine($"{Players[p_currentPlayerIndex].p_name}, input a coordinate X/Y");
+                Console.WriteLine($"{p_Players[p_CurrentPlayerIndex].Name}, input a coordinate X/Y");
 
                 string input = Console.ReadLine();
                 string[] parts = input.Split('/');
@@ -26,15 +26,15 @@
                     && int.TryParse(parts[0], out int row)
                     && int.TryParse(parts[1], out int col)
                     && row >= 1 && row <= p_rows
-                    && col >= 1 && col <= p_columns)
+                    && col >= 1 && col <= p_Columns)
                 {
                     row--; // Adjust for 0-based index
                     col--; // Adjust for 0-based index
 
                     if (GetCell(row, col) == 0)
                     {
-                        SetCell(row, col, p_currentPlayerIndex + 1);
-                        p_currentPlayerIndex = (p_currentPlayerIndex + 1) % Players.Count;
+                        SetCell(row, col, p_CurrentPlayerIndex + 1);
+                        p_CurrentPlayerIndex = (p_CurrentPlayerIndex + 1) % p_Players.Count;
                         validInput = true;
                     }
                     else
@@ -87,7 +87,7 @@
         }
         public override void ResetFirstTurn()
         {
-            firstTurn = true;
+            FirstTurn = true;
         }
 
     }

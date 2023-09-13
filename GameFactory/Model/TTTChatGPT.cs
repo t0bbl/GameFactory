@@ -9,7 +9,7 @@ namespace GameFactory.Model
         {
 
         }
-        public override void GameMechanic(List<Player> Players)
+        public override void GameMechanic(List<Player> p_players)
         {
 
             gameMechanicCallCount++;
@@ -19,7 +19,7 @@ namespace GameFactory.Model
             }
             else
             {
-            base.GameMechanic(Players);
+                base.GameMechanic(p_players);
             }
 
 
@@ -51,7 +51,7 @@ namespace GameFactory.Model
             StringBuilder sb = new StringBuilder();
             for (int row = 0; row < p_rows; row++)
             {
-                for (int col = 0; col < p_columns; col++)
+                for (int col = 0; col < p_Columns; col++)
                 {
                     int cellValue = GetCell(row, col);
                     switch (cellValue)
@@ -67,18 +67,18 @@ namespace GameFactory.Model
                             break;
                     }
                 }
-                sb.AppendLine();  // Adds a new line at the end of each row
+                sb.AppendLine();  // Adds a new line at the end of each p_row
             }
             return sb.ToString();
         }
 
         public void StringToBoard(string boardString)
         {
-            string[] rows = boardString.Split(new[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
-            for (int row = 0; row < p_rows; row++)
+            string[] p_rows = boardString.Split(new[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
+            for (int row = 0; row < p_rows.Length; row++)
             {
-                string[] cells = rows[row].Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
-                for (int col = 0; col < p_columns; col++)
+                string[] cells = p_rows[row].Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+                for (int col = 0; col < p_Columns; col++)
                 {
                     switch (cells[col])
                     {

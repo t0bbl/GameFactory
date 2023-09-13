@@ -5,6 +5,6 @@ namespace GameFactory
         TTT = 1,
         TTTChatGPT = 2,
         FourW = 3,
-        CostumTTT = 4
+        CustomTTT = 4
     }
 }

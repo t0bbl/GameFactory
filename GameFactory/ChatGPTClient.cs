@@ -1,6 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
 using RestSharp;
-using Newtonsoft.Json;
 
 public class ChatGPTClient
 {

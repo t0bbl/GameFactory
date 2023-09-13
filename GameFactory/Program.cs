@@ -8,8 +8,8 @@ namespace GameFactory
         {
 
             InitializeGameMenu();
-            var Players = InitializePlayer();
-            InitializeGame(Players);
+            var players = InitializePlayer();
+            InitializeGame(players);
 
         }
         static void InitializeGameMenu()
@@ -68,7 +68,7 @@ namespace GameFactory
         static List<Player> InitializePlayer()
         {
             Console.Clear();
-            var Players = new List<Player>();
+            var players = new List<Player>();
 
             bool isValidNumber;
             int numberOfPlayers;
@@ -90,10 +90,10 @@ namespace GameFactory
             {
                 Console.WriteLine($"Enter the name of player {Gamer + 1}: ");
                 string playerName = Console.ReadLine();
-                Player newPlayer = new() { p_name = playerName };
-                Players.Add(newPlayer);
+                Player newPlayer = new() { Name = playerName };
+                players.Add(newPlayer);
             }
-            return Players;
+            return players;
 
         }
         static string InitializeGame(List<Player> Players)
@@ -126,9 +126,9 @@ namespace GameFactory
                             var fourWGame = new FourW();
                             fourWGame.StartMatch(Players);
                             break;
-                        case "CostumTTT":
+                        case "CustomTTT":
                             Console.Clear();
-                            var costumTTTGame = new CostumTTT();
+                            var costumTTTGame = new CustomTTT();
                             costumTTTGame.StartMatch(Players);
                             break;
                         default:

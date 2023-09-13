@@ -2,30 +2,30 @@ namespace GameFactory.Model
 {
     internal class FourW : Match
     {
-        private bool firstTurn = true;
+        private bool FirstTurn = true;
 
         public FourW() : base(6, 7, 4)
         { }
-        public override void GameMechanic(List<Player> Players)
+        public override void GameMechanic(List<Player> p_Players)
         {
             int chosenColumn;
-            if (firstTurn)
+            if (FirstTurn)
             {
                 PrintBoard(false, true);
                 Console.WriteLine();
-                firstTurn = false;
+                FirstTurn = false;
             }
             do
             {
-                Console.WriteLine($"{Players[p_currentPlayerIndex].p_name}, input a column number from 1 to {p_columns}");
-            } while (!TryGetValidInput(out chosenColumn, p_columns));
+                Console.WriteLine($"{p_Players[p_CurrentPlayerIndex].Name}, input a column number from 1 to {p_Columns}");
+            } while (!TryGetValidInput(out chosenColumn, p_Columns));
 
             int row = FindLowestAvailableRow(chosenColumn - 1);
 
             if (row != -1)
             {
-                SetCell(row, chosenColumn - 1, p_currentPlayerIndex + 1);
-                p_currentPlayerIndex = (p_currentPlayerIndex + 1) % Players.Count;
+                SetCell(row, chosenColumn - 1, p_CurrentPlayerIndex + 1);
+                p_CurrentPlayerIndex = (p_CurrentPlayerIndex + 1) % p_Players.Count;
             }
             else
             {
@@ -46,7 +46,7 @@ namespace GameFactory.Model
         }
         public override void ResetFirstTurn()
         {
-            firstTurn = true;
+            FirstTurn = true;
         }
 
 
