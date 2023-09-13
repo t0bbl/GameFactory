@@ -111,15 +111,18 @@ namespace GameFactory
                 {
                     switch (game)
                     {
-                        case "TTT": 
+                        case "TTT":
+                            Console.Clear();
                             var tttGame = new TTT();
-                            tttGame.StartMatch(Players); 
+                            tttGame.StartMatch(Players);
                             break;
                         case "TTTChatGPT":
+                            Console.Clear();
                             var tttChatGPTGame = new TTTChatGPT();
                             tttChatGPTGame.StartMatch(Players);
                             break;
                         case "FourW":
+                            Console.Clear();
                             var fourWGame = new FourW();
                             fourWGame.StartMatch(Players);
                             break;
@@ -128,6 +131,7 @@ namespace GameFactory
                     }
                 }
             }
+
         }
     }
 
