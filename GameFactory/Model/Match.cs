@@ -103,8 +103,6 @@ namespace GameFactory
                 }
                 Console.WriteLine();
             }
-
-
         }
         public void ReMatch(List<Player> Players)
         {

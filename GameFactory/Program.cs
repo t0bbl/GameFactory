@@ -113,6 +113,10 @@ namespace GameFactory
                             var tttGame = new TTT();
                             tttGame.StartMatch(Players); 
                             break;
+                        case "TTTChatGPT":
+                            var tttChatGPTGame = new TTTChatGPT();
+                            tttChatGPTGame.StartMatch(Players);
+                            break;
                         case "FourW":
                             var fourWGame = new FourW();
                             fourWGame.StartMatch(Players);
