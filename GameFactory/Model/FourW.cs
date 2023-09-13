@@ -10,7 +10,7 @@ namespace GameFactory.Model
             int chosenColumn;
             do
             {
-                Console.WriteLine($"{Players[0].p_name}, input a column number from 0 to {p_columns - 1}");
+                Console.WriteLine($"{Players[p_currentPlayerIndex].p_name}, input a column number from 0 to {p_columns - 1}");
             } while (!TryGetValidInput(out chosenColumn, p_columns));
 
             int row = FindLowestAvailableRow(chosenColumn);

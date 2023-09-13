@@ -11,7 +11,7 @@
 
             while (!validInput)
             {
-                Console.WriteLine($"{Players[0].p_name}, input a number from 0 to {p_rows * p_columns - 1}");
+                Console.WriteLine($"{Players[p_currentPlayerIndex].p_name}, input a number from 0 to {p_rows * p_columns - 1}");
 
                 if (TryGetValidInput(out chosenCell, p_rows * p_columns))
                 {
