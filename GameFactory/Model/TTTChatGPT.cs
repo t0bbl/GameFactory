@@ -12,6 +12,8 @@ namespace GameFactory.Model
         }
         public override void GameMechanic(List<Player> Players)
         {
+            string apiKey = Environment.GetEnvironmentVariable("CHATGPT_API_KEY");
+
             int chosenCell;
             bool validInput = false;
             gameMechanicCallCount++;
