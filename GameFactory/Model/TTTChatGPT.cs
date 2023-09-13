@@ -4,6 +4,7 @@ namespace GameFactory.Model
 {
     internal class TTTChatGPT : Match
     {
+        private int gameMechanicCallCount = 0;
 
         public TTTChatGPT() : base(3, 3, 3)
         {
@@ -11,45 +12,54 @@ namespace GameFactory.Model
         }
         public override void GameMechanic(List<Player> Players)
         {
-
             int chosenCell;
             bool validInput = false;
-            while (!validInput )
+            gameMechanicCallCount++;
+
+            if (gameMechanicCallCount % 2 == 0)
             {
-                Console.WriteLine($"{Players[0].p_name}, input a number from 0 to {p_rows * p_columns - 1}");
-
-                if (TryGetValidInput(out chosenCell, p_rows * p_columns))
-                {
-                    int row = chosenCell / p_columns;
-                    int col = chosenCell % p_columns;
-
-                    if (GetCell(row, col) == 0)
-                    {
-                        SetCell(row, col, p_currentPlayerIndex + 1);
-                        p_currentPlayerIndex = (p_currentPlayerIndex + 1) % Players.Count;
-                        validInput = true;
-                    }
-                    else
-                    {
-                        Console.WriteLine("Cell already occupied. Try again.");
-                    }
-                }
-                PrintBoard();
-                string board = BoardToString();
-                ChatGPTMove(board);
+                ChatGPTMove(BoardToString());
             }
+            else
+            {
+                do 
+                {
+                    Console.WriteLine($"{Players[0].p_name}, input a number from 0 to {p_rows * p_columns - 1}");
+
+                    if (TryGetValidInput(out chosenCell, p_rows * p_columns))
+                    {
+                        int row = chosenCell / p_columns;
+                        int col = chosenCell % p_columns;
+
+                        if (GetCell(row, col) == 0)
+                        {
+                            SetCell(row, col, p_currentPlayerIndex + 1);
+                            p_currentPlayerIndex = (p_currentPlayerIndex + 1) % Players.Count;
+                            validInput = true;
+                        }
+                        else
+                        {
+                            Console.WriteLine("Cell already occupied. Try again.");
+                        }
+                    }
+                    PrintBoard();
+                }
+                while (!validInput);
+            }
+
+
 
         }
         public void ChatGPTMove(string board)
         {
-            Console.WriteLine(board);
+            Console.WriteLine("ChatGPT is thinking...");
             string apiKey = "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";
             var chatGPTClient = new ChatGPTClient(apiKey);
-            string input = "this is a TicTacToe board. i want you to just return the string of the board with a next move of your choosing while not changing any previous moves. nothing else to return!";
-            string message = board + input;
+            string message = ($"Here is the current Tic-Tac-Toe board: {board}Your turn. Make a move by changing one empty '.' to 'O' and return the new board. Note: You cannot override cells already occupied by 'X' or 'O'.");
             string response = chatGPTClient.SendMessage(message);
-            Console.WriteLine("ChatGPT´s Move:");
-            Console.WriteLine(response);
+            Console.WriteLine("ChatGPT´s Move: ");
+            Console.WriteLine();
+            Console.WriteLine($" {response}");
             StringToBoard(response);
         }
         public string BoardToString()
@@ -97,8 +107,7 @@ namespace GameFactory.Model
                         case "O":
                             SetCell(row, col, 2);
                             break;
-                        default:
-                            throw new Exception("Invalid cell value in string");
+
                     }
                 }
             }
