@@ -10,14 +10,14 @@ namespace GameFactory.Model
             int chosenColumn;
             do
             {
-                Console.WriteLine($"{Players[p_currentPlayerIndex].p_name}, input a column number from 0 to {p_columns - 1}");
+                Console.WriteLine($"{Players[p_currentPlayerIndex].p_name}, input a column number from 1 to {p_columns}");
             } while (!TryGetValidInput(out chosenColumn, p_columns));
 
-            int row = FindLowestAvailableRow(chosenColumn);
+            int row = FindLowestAvailableRow(chosenColumn - 1);
 
             if (row != -1)
             {
-                SetCell(row, chosenColumn, p_currentPlayerIndex + 1);
+                SetCell(row, chosenColumn - 1, p_currentPlayerIndex + 1);
                 p_currentPlayerIndex = (p_currentPlayerIndex + 1) % Players.Count;
             }
             else

@@ -145,7 +145,7 @@ namespace GameFactory
         }
         protected bool TryGetValidInput(out int chosenValue, int maxValue)
         {
-            if (int.TryParse(Console.ReadLine(), out chosenValue) && chosenValue >= 0 && chosenValue < maxValue)
+            if (int.TryParse(Console.ReadLine(), out chosenValue) && chosenValue >= 0 && chosenValue <= maxValue)
             {
                 return true;
             }

@@ -11,12 +11,12 @@
 
             while (!validInput)
             {
-                Console.WriteLine($"{Players[p_currentPlayerIndex].p_name}, input a number from 0 to {p_rows * p_columns - 1}");
+                Console.WriteLine($"{Players[p_currentPlayerIndex].p_name}, input a number from 1 to {p_rows * p_columns}");
 
                 if (TryGetValidInput(out chosenCell, p_rows * p_columns))
                 {
-                    int row = chosenCell / p_columns;
-                    int col = chosenCell % p_columns;
+                    int row = (chosenCell - 1) / p_columns;
+                    int col = (chosenCell - 1) % p_columns;
 
                     if (GetCell(row, col) == 0)
                     {
