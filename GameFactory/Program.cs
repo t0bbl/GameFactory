@@ -126,6 +126,11 @@ namespace GameFactory
                             var fourWGame = new FourW();
                             fourWGame.StartMatch(Players);
                             break;
+                        case "CostumTTT":
+                            Console.Clear();
+                            var costumTTTGame = new CostumTTT();
+                            costumTTTGame.StartMatch(Players);
+                            break;
                         default:
                             throw new Exception("Invalid game type.");
                     }
