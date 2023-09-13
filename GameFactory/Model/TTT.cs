@@ -30,7 +30,7 @@
                     }
                 }
             }
-            PrintBoard();
+            PrintBoard(false, false);
         }
     }
 }

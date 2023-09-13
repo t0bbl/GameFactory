@@ -30,7 +30,7 @@
                     }
                 }
             }
-            PrintBoard();
+            PrintBoard(true, true);
         }
         private static int AskForRows()
         {

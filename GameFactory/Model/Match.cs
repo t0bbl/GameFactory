@@ -80,14 +80,22 @@ namespace GameFactory
             if (row >= 0 && row < p_rows && col >= 0 && col < p_columns)
                 p_board[row, col] = value;
         }
-        public void PrintBoard()
+        public void PrintBoard(bool p_showRow, bool p_showCol)
         {
             for (int row = 0; row < p_rows; row++)
             {
+                if (p_showRow)
+                {
+                    Console.Write(row + 1 + " ");
+                } else
+                {
+                    Console.Write("  ");
+                }
+                
+
                 for (int col = 0; col < p_columns; col++)
                 {
                     int cellValue = GetCell(row, col);
-
                     switch (cellValue)
                     {
                         case 0:
@@ -103,6 +111,16 @@ namespace GameFactory
                 }
                 Console.WriteLine();
             }
+            if (p_showCol)
+            {
+                Console.Write("  ");
+
+                for (int col = 0; col < p_columns; col++)
+                {
+                    Console.Write($" {col + 1} ");
+                }
+            }
+
         }
         public void ReMatch(List<Player> Players)
         {

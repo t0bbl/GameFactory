@@ -24,7 +24,7 @@ namespace GameFactory.Model
             {
                 Console.WriteLine("Column is full. Try again.");
             }
-            PrintBoard();
+            PrintBoard(false, true);
         }
         public int FindLowestAvailableRow(int column)
         {
