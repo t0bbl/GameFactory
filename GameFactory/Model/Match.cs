@@ -110,11 +110,13 @@ namespace GameFactory
             string rematch = Console.ReadLine();
             if (rematch == "y")
             {
+                Console.Clear();
                 ResetBoard();
                 StartMatch(Players);
             }
             else if (rematch == "n")
             {
+                Console.Clear();
                 Player.EndGameStats(Players);
                 Console.WriteLine("Thanks for playing!");
                 Console.ReadKey();
