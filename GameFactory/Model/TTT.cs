@@ -2,26 +2,32 @@
 {
     internal class TTT : Match
     {
+        private bool FirstTurn = true;
         public TTT() : base(3, 3, 3)
         { }
-        public override void GameMechanic(List<Player> Players)
+        public override void GameMechanic(List<Player> p_players)
         {
             int chosenCell;
             bool validInput = false;
-
+            if (FirstTurn)
+            {
+                PrintBoard(false, false);
+                Console.WriteLine();
+                FirstTurn = false;
+            }
             while (!validInput)
             {
-                Console.WriteLine($"{Players[0].p_name}, input a number from 0 to {p_rows * p_columns - 1}");
+                Console.WriteLine($"{p_players[p_CurrentPlayerIndex].Name}, input a number from 1 to {p_rows * p_Columns}");
 
-                if (TryGetValidInput(out chosenCell, p_rows * p_columns))
+                if (TryGetValidInput(out chosenCell, p_rows * p_Columns))
                 {
-                    int row = chosenCell / p_columns;
-                    int col = chosenCell % p_columns;
+                    int row = (chosenCell - 1) / p_Columns;
+                    int col = (chosenCell - 1) % p_Columns;
 
                     if (GetCell(row, col) == 0)
                     {
-                        SetCell(row, col, p_currentPlayerIndex + 1);
-                        p_currentPlayerIndex = (p_currentPlayerIndex + 1) % Players.Count;
+                        SetCell(row, col, p_CurrentPlayerIndex + 1);
+                        p_CurrentPlayerIndex = (p_CurrentPlayerIndex + 1) % p_players.Count;
                         validInput = true;
                     }
                     else
@@ -30,7 +36,12 @@
                     }
                 }
             }
-            PrintBoard();
+            PrintBoard(false, false);
         }
+        public override void ResetFirstTurn()
+        {
+            FirstTurn = true;
+        }
+
     }
 }

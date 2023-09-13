@@ -2,29 +2,36 @@ namespace GameFactory.Model
 {
     internal class FourW : Match
     {
+        private bool FirstTurn = true;
 
         public FourW() : base(6, 7, 4)
         { }
-        public override void GameMechanic(List<Player> Players)
+        public override void GameMechanic(List<Player> p_Players)
         {
             int chosenColumn;
+            if (FirstTurn)
+            {
+                PrintBoard(false, true);
+                Console.WriteLine();
+                FirstTurn = false;
+            }
             do
             {
-                Console.WriteLine($"{Players[0].p_name}, input a column number from 0 to {p_columns - 1}");
-            } while (!TryGetValidInput(out chosenColumn, p_columns));
+                Console.WriteLine($"{p_Players[p_CurrentPlayerIndex].Name}, input a column number from 1 to {p_Columns}");
+            } while (!TryGetValidInput(out chosenColumn, p_Columns));
 
-            int row = FindLowestAvailableRow(chosenColumn);
+            int row = FindLowestAvailableRow(chosenColumn - 1);
 
             if (row != -1)
             {
-                SetCell(row, chosenColumn, p_currentPlayerIndex + 1);
-                p_currentPlayerIndex = (p_currentPlayerIndex + 1) % Players.Count;
+                SetCell(row, chosenColumn - 1, p_CurrentPlayerIndex + 1);
+                p_CurrentPlayerIndex = (p_CurrentPlayerIndex + 1) % p_Players.Count;
             }
             else
             {
                 Console.WriteLine("Column is full. Try again.");
             }
-            PrintBoard();
+            PrintBoard(false, true);
         }
         public int FindLowestAvailableRow(int column)
         {
@@ -37,6 +44,11 @@ namespace GameFactory.Model
             }
             return -1;
         }
+        public override void ResetFirstTurn()
+        {
+            FirstTurn = true;
+        }
+
 
     }
 

@@ -2,15 +2,14 @@ namespace GameFactory
 {
     internal class Player
     {
-        public string p_name;
-        public int p_wins { get; set; }
-        public int p_losses { get; set; }
-        public int p_draws { get; set; }
-        public int p_number { get; set; }
-        public Guid p_id { get; private set; }
+        public string Name;
+        public int Wins { get; set; }
+        public int Losses { get; set; }
+        public int Draws { get; set; }
+        public Guid Id { get; private set; }
         public Player()
         {
-            p_id = Guid.NewGuid();
+            Id = Guid.NewGuid();
         }
         public static List<Player> UpdateStats(List<Player> p_players, int p_winnerNumber)
         {
@@ -20,12 +19,12 @@ namespace GameFactory
                 {
                     if (p_gamer == p_winnerNumber - 1)
                     {
-                        Console.WriteLine($"{p_players[p_gamer].p_name} won the game!");
-                        p_players[p_gamer].p_wins += 1;
+                        Console.WriteLine($"{p_players[p_gamer].Name} won the game!");
+                        p_players[p_gamer].Wins += 1;
                     }
                     else
                     {
-                        p_players[p_gamer].p_losses += 1;
+                        p_players[p_gamer].Losses += 1;
                     }
                 }
                 return p_players;
@@ -34,7 +33,7 @@ namespace GameFactory
             {
                 for (int p_gamer = 0; p_gamer < p_players.Count; p_gamer++)
                 {
-                    p_players[p_gamer].p_draws += 1;
+                    p_players[p_gamer].Draws += 1;
                 }
                 Console.WriteLine("It's a draw!");
                 return p_players;
@@ -46,9 +45,9 @@ namespace GameFactory
             Console.WriteLine("Final scores:");
             foreach (var p_player in p_players)
             {
-                Console.WriteLine($"{p_player.p_name}: {p_player.p_wins} Wins");
-                Console.WriteLine($"{p_player.p_name}: {p_player.p_losses} Losses");
-                Console.WriteLine($"Draws: {p_player.p_draws}");
+                Console.WriteLine($"{p_player.Name}: {p_player.Wins} Wins");
+                Console.WriteLine($"{p_player.Name}: {p_player.Losses} Losses");
+                Console.WriteLine($"Draws: {p_player.Draws}");
             };
         }
     }

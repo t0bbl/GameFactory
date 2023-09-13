@@ -8,8 +8,8 @@ namespace GameFactory
         {
 
             InitializeGameMenu();
-            var Players = InitializePlayer();
-            InitializeGame(Players);
+            var players = InitializePlayer();
+            InitializeGame(players);
 
         }
         static void InitializeGameMenu()
@@ -67,7 +67,8 @@ namespace GameFactory
         }
         static List<Player> InitializePlayer()
         {
-            var Players = new List<Player>();
+            Console.Clear();
+            var players = new List<Player>();
 
             bool isValidNumber;
             int numberOfPlayers;
@@ -89,14 +90,15 @@ namespace GameFactory
             {
                 Console.WriteLine($"Enter the name of player {Gamer + 1}: ");
                 string playerName = Console.ReadLine();
-                Player newPlayer = new() { p_name = playerName };
-                Players.Add(newPlayer);
+                Player newPlayer = new() { Name = playerName };
+                players.Add(newPlayer);
             }
-            return Players;
+            return players;
 
         }
         static string InitializeGame(List<Player> Players)
         {
+            Console.Clear();
             List<string> gameOptions = new(Enum.GetNames(typeof(ValidGames)));
             string game = null;
             while (true)
@@ -109,19 +111,32 @@ namespace GameFactory
                 {
                     switch (game)
                     {
-                        case "TTT": 
+                        case "TTT":
+                            Console.Clear();
                             var tttGame = new TTT();
-                            tttGame.StartMatch(Players); 
+                            tttGame.StartMatch(Players);
+                            break;
+                        case "TTTChatGPT":
+                            Console.Clear();
+                            var tttChatGPTGame = new TTTChatGPT();
+                            tttChatGPTGame.StartMatch(Players);
                             break;
                         case "FourW":
+                            Console.Clear();
                             var fourWGame = new FourW();
                             fourWGame.StartMatch(Players);
+                            break;
+                        case "CustomTTT":
+                            Console.Clear();
+                            var costumTTTGame = new CustomTTT();
+                            costumTTTGame.StartMatch(Players);
                             break;
                         default:
                             throw new Exception("Invalid game type.");
                     }
                 }
             }
+
         }
     }
 
