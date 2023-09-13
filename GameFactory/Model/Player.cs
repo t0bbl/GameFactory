@@ -19,6 +19,7 @@ namespace GameFactory
                 {
                     if (p_gamer == p_winnerNumber - 1)
                     {
+                        Console.WriteLine();
                         Console.WriteLine($"{p_players[p_gamer].Name} won the game!");
                         p_players[p_gamer].Wins += 1;
                     }

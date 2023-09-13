@@ -17,6 +17,7 @@ namespace GameFactory.Model
             }
             do
             {
+                Console.WriteLine();
                 Console.WriteLine($"{p_Players[p_CurrentPlayerIndex].Name}, input a column number from 1 to {p_Columns}");
             } while (!TryGetValidInput(out chosenColumn, p_Columns));
 
