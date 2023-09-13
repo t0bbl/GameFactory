@@ -67,6 +67,7 @@ namespace GameFactory
         }
         static List<Player> InitializePlayer()
         {
+            Console.Clear();
             var Players = new List<Player>();
 
             bool isValidNumber;
@@ -97,6 +98,7 @@ namespace GameFactory
         }
         static string InitializeGame(List<Player> Players)
         {
+            Console.Clear();
             List<string> gameOptions = new(Enum.GetNames(typeof(ValidGames)));
             string game = null;
             while (true)

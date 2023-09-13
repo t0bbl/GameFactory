@@ -116,6 +116,8 @@ namespace GameFactory
             else if (rematch == "n")
             {
                 Player.EndGameStats(Players);
+                Console.WriteLine("Thanks for playing!");
+                Console.ReadKey();
                 Environment.Exit(0);
             }
             else
