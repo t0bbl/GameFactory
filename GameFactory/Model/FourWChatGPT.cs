@@ -65,8 +65,6 @@ namespace GameFactory.Model
                    $"- Drop your '{p_Players[1].Icon}' into any of the columns. You cannot choose a column that is already full.\n" +
                    $"Choose a column (1-7) and return just this one number!:";
         }
-
-
         private string GetApiKey()
         {
             return Environment.GetEnvironmentVariable("CHATGPT_API_KEY", EnvironmentVariableTarget.Machine);
@@ -96,34 +94,6 @@ namespace GameFactory.Model
             }
             return sb.ToString();
         }
-
-        public int StringToBoard(string boardString, List<Player> p_Players)
-        {
-            int dotCount = 0;
-            string[] p_rows = boardString.Split(new[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
-            for (int row = 0; row < p_rows.Length; row++)
-            {
-                string[] cells = p_rows[row].Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
-                for (int col = 0; col < p_Columns; col++)
-                {
-                    if (cells[col] == ".")
-                    {
-                        SetCell(row, col, 0);
-                        dotCount++;
-                    }
-                    else if (cells[col] == p_Players[0].Icon)
-                    {
-                        SetCell(row, col, 1);
-                    }
-                    else if (cells[col] == p_Players[1].Icon)
-                    {
-                        SetCell(row, col, 2);
-                    }
-                }
-            }
-            return dotCount;
-        }
-
         public int ValidateColumnChoice(string response, List<Player> p_Players)
         {
             // Attempt to parse the column choice as an integer
