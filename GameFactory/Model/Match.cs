@@ -98,17 +98,20 @@ namespace GameFactory
                 for (int col = 0; col < p_Columns; col++)
                 {
                     int cellValue = GetCell(p_row, col);
-                    switch (cellValue)
+                    if (cellValue == 0)
                     {
-                        case 0:
-                            Console.Write(" . ");
-                            break;
-                        case 1:
-                            Console.Write($" {p_Players[0].Icon} ");
-                            break;
-                        case 2:
-                            Console.Write($" {p_Players[1].Icon} ");
-                            break;
+                        Console.Write(" . ");
+                    }
+                    else
+                    {
+                        for (int i = 0; i < p_Players.Count; i++)
+                        {
+                            if (cellValue == i + 1) 
+                            {
+                                Console.Write($" {p_Players[i].Icon} ");
+                                break;
+                            }
+                        }        
                     }
                 }
                 Console.WriteLine();

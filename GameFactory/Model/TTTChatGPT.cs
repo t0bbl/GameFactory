@@ -23,9 +23,6 @@ namespace GameFactory.Model
             {
                 base.GameMechanic(p_Players);
             }
-
-
-
         }
         public void ChatGPTMove(string board, List<Player> p_Players)
         {
