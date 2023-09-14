@@ -36,8 +36,11 @@ namespace GameFactory.Model
                 string response = chatGPTClient.SendMessage(message);
                 Console.WriteLine("ChatGPT´s Move: ");
                 Console.WriteLine();
-                Console.WriteLine($" {response}");
-                StringToBoard(response);
+                int dotCount = StringToBoard(response);
+                if (dotCount != 8) {
+                    PrintBoard(false, false);
+                }
+                
             }
             else
             {
@@ -72,8 +75,9 @@ namespace GameFactory.Model
             return sb.ToString();
         }
 
-        public void StringToBoard(string boardString)
+        public int StringToBoard(string boardString)
         {
+            int dotCount = 0;
             string[] p_rows = boardString.Split(new[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
             for (int row = 0; row < p_rows.Length; row++)
             {
@@ -84,6 +88,7 @@ namespace GameFactory.Model
                     {
                         case ".":
                             SetCell(row, col, 0);
+                            dotCount++;
                             break;
                         case "X":
                             SetCell(row, col, 1);
@@ -95,6 +100,7 @@ namespace GameFactory.Model
                     }
                 }
             }
+            return dotCount;
         }
 
     }
