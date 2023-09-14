@@ -19,6 +19,17 @@ namespace GameFactory.Model
                 base.GameMechanic(p_Players);
             }
         }
+        protected override string BuildMessage(string board, List<Player> p_Players)
+        {
+            return $"Objective: Win the Tic-Tac-Toe game.\n" +
+                   $"Current board:\n{board}\n" +
+                   $"Your turn:\n" +
+                   $"- You are '{p_Players[1].Icon}'.\n" +
+                   $"- Change one empty '.' to '{p_Players[1].Icon}' and return the new board.\n" +
+                   $"- You cannot override cells already occupied by '{p_Players[0].Icon}' or '{p_Players[1].Icon}'.\n" +
+                   $"- You are only allowed to change 1 cell at a time.\n" +
+                   $"Make your move:";
+        }
         public void ChatGPTMove(string board, List<Player> p_Players)
         {
             ConsoleColor OriginalForegroundColour = Console.ForegroundColor;
@@ -50,52 +61,6 @@ namespace GameFactory.Model
             }
             Console.ForegroundColor = OriginalForegroundColour;
         }
-        private string SendMessageToChatGPT(string apiKey, string message)
-        {
-            var chatGPTClient = new ChatGPTClient(apiKey);
-            return chatGPTClient.SendMessage(message);
-        }
-        private string BuildMessage(string board, List<Player> p_Players)
-        {
-            return $"Objective: Win the Tic-Tac-Toe game.\n" +
-                   $"Current board:\n{board}\n" +
-                   $"Your turn:\n" +
-                   $"- You are '{p_Players[1].Icon}'.\n" +
-                   $"- Change one empty '.' to '{p_Players[1].Icon}' and return the new board.\n" +
-                   $"- You cannot override cells already occupied by '{p_Players[0].Icon}' or '{p_Players[1].Icon}'.\n" +
-                   $"- You are only allowed to change 1 cell at a time.\n" +
-                   $"Make your move:";
-        }
-        private string GetApiKey()
-        {
-            return Environment.GetEnvironmentVariable("CHATGPT_API_KEY", EnvironmentVariableTarget.Machine);
-        }
-        public string BoardToString(List<Player> p_Players)
-        {
-            StringBuilder sb = new StringBuilder();
-            for (int row = 0; row < p_rows; row++)
-            {
-                for (int col = 0; col < p_Columns; col++)
-                {
-                    int cellValue = GetCell(row, col);
-                    switch (cellValue)
-                    {
-                        case 0:
-                            sb.Append(" . ");
-                            break;
-                        case 1:
-                            sb.Append($" {p_Players[0].Icon} ");
-                            break;
-                        case 2:
-                            sb.Append($" {p_Players[1].Icon} ");
-                            break;
-                    }
-                }
-                sb.AppendLine();
-            }
-            return sb.ToString();
-        }
-
         public int StringToBoard(string boardString, List<Player> p_Players)
         {
             int dotCount = 0;

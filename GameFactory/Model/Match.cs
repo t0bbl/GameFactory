@@ -1,3 +1,5 @@
+using System.Text;
+
 namespace GameFactory
 {
     internal class Match
@@ -192,6 +194,44 @@ namespace GameFactory
         }
         public virtual void ResetFirstTurn()
         {
+        }
+        protected string SendMessageToChatGPT(string apiKey, string message)
+        {
+            var chatGPTClient = new ChatGPTClient(apiKey);
+            return chatGPTClient.SendMessage(message);
+        }
+        protected virtual string BuildMessage(string board, List<Player> p_Players)
+        {
+            return "error";
+        }
+        protected string GetApiKey()
+        {
+            return Environment.GetEnvironmentVariable("CHATGPT_API_KEY", EnvironmentVariableTarget.Machine);
+        }
+        public string BoardToString(List<Player> p_Players)
+        {
+            StringBuilder sb = new StringBuilder();
+            for (int row = 0; row < p_rows; row++)
+            {
+                for (int col = 0; col < p_Columns; col++)
+                {
+                    int cellValue = GetCell(row, col);
+                    switch (cellValue)
+                    {
+                        case 0:
+                            sb.Append(" . ");
+                            break;
+                        case 1:
+                            sb.Append($" {p_Players[0].Icon} ");
+                            break;
+                        case 2:
+                            sb.Append($" {p_Players[1].Icon} ");
+                            break;
+                    }
+                }
+                sb.AppendLine();
+            }
+            return sb.ToString();
         }
     }
 }
