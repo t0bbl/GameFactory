@@ -23,15 +23,17 @@ namespace GameFactory.Model
         }
         public void ChatGPTMove(string board, List<Player> p_Players)
         {
-            string apiKey = Environment.GetEnvironmentVariable("CHATGPT_API_KEY", EnvironmentVariableTarget.Machine);
+            ConsoleColor OriginalForegroundColor = Console.ForegroundColor;
+            Console.ForegroundColor = ConsoleColor.Green;
+
+            string apiKey = GetApiKey();
             if (apiKey != null)
             {
-                ConsoleColor OriginalForegroundColor = Console.ForegroundColor;
-                Console.ForegroundColor = ConsoleColor.Green;
                 Console.WriteLine("ChatGPT is thinking...");
-                var chatGPTClient = new ChatGPTClient(apiKey);
-                string message = ($"Here is the current Tic-Tac-Toe board: {board}Your turn. Make a move by changing one empty '.' to '{p_Players[1].Icon}' and return the new board. Note: You cannot override cells already occupied by '{p_Players[0].Icon}' or '{p_Players[1].Icon}'.");
-                string response = chatGPTClient.SendMessage(message);
+
+                string message = BuildMessage(board, p_Players);
+                string response = SendMessageToChatGPT(apiKey, message);
+                
                 Console.WriteLine("ChatGPT´s Move: ");
                 Console.WriteLine();
                 int dotCount = StringToBoard(response, p_Players);
@@ -39,8 +41,8 @@ namespace GameFactory.Model
                 {
                     PrintBoard(false, false, p_Players);
                 }
+                
                 p_CurrentPlayerIndex = (p_CurrentPlayerIndex + 1) % p_Players.Count;
-                Console.ForegroundColor = OriginalForegroundColor;
 
             }
             else
@@ -48,7 +50,21 @@ namespace GameFactory.Model
                 Console.WriteLine("Please set the environment variable CHATGPT_API_KEY to your ChatGPT API key.");
                 Environment.Exit(0);
             }
+            Console.ForegroundColor = OriginalForegroundColor;
+        }
+        private string SendMessageToChatGPT(string apiKey, string message)
+        {
+            var chatGPTClient = new ChatGPTClient(apiKey);
+            return chatGPTClient.SendMessage(message);
+        }
+        private string BuildMessage(string board, List<Player> p_Players)
+        {
+            return $"Here is the current Tic-Tac-Toe board: {board} !Your turn. Make a move by changing one empty '.' to '{p_Players[1].Icon}' and return the new board. Note: You cannot override cells already occupied by '{p_Players[0].Icon}' or '{p_Players[1].Icon}'.";
 
+        }
+        private string GetApiKey()
+        {
+            return Environment.GetEnvironmentVariable("CHATGPT_API_KEY", EnvironmentVariableTarget.Machine);
         }
         public string BoardToString(List<Player> p_Players)
         {
