@@ -87,7 +87,9 @@ namespace GameFactory
             {
                 if (p_showRow)
                 {
+                    Console.BackgroundColor = ConsoleColor.DarkGray;
                     Console.Write(p_row + 1 + " ");
+                    Console.BackgroundColor = ConsoleColor.Black;
                 }
                 else
                 {
@@ -122,7 +124,9 @@ namespace GameFactory
 
                 for (int col = 0; col < p_Columns; col++)
                 {
+                    Console.BackgroundColor = ConsoleColor.DarkGray;
                     Console.Write($" {col + 1} ");
+                    Console.BackgroundColor = ConsoleColor.Black;
                 }
             }
 
