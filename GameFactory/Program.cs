@@ -1,4 +1,5 @@
-﻿using GameFactory.Model;
+﻿using GameFactory;
+using GameFactory.Model;
 
 namespace GameFactory
 {
@@ -7,9 +8,9 @@ namespace GameFactory
         static void Main()
         {
 
-            var GameMode = InitializeGameMenu();
-            var players = InitializePlayer(GameMode);
-            InitializeGame(players);
+            var gameMode = InitializeGameMenu();
+            var players = InitializePlayer(gameMode);
+            InitializeGame(players, gameMode);
 
         }
         static string InitializeGameMenu()
@@ -67,14 +68,14 @@ namespace GameFactory
                 }
             } while (true);
         }
-        static List<Player> InitializePlayer(string GameMode)
+        static List<Player> InitializePlayer(string p_gameMode)
         {
             Console.Clear();
             var players = new List<Player>();
 
             bool isValidNumber;
             int numberOfPlayers;
-            if (GameMode == "SP")
+            if (p_gameMode == "SP")
             {
                 numberOfPlayers = 1;
             }
@@ -111,69 +112,89 @@ namespace GameFactory
             return players;
 
         }
-        static string InitializeGame(List<Player> Players)
+        static void InitializeGame(List<Player> Players, string p_gameMode)
         {
             Console.Clear();
-            List<string> gameOptions = new(Enum.GetNames(typeof(ValidGames)));
+
             string game = null;
             while (true)
             {
-                if (game == null)
+                do
                 {
-                    game = ShowMenu(gameOptions);
-                }
-                else
-                {
-                    switch (game)
+                    if (p_gameMode == "SP")
                     {
-                        case "TTT":
-                            Console.Clear();
-                            var tttGame = new TTT();
-                            tttGame.StartMatch(Players);
-                            break;
-                        case "TTTChatGPT":
-                            if (Players.Count == 1)
+                        List<string> gameOptions = new(Enum.GetNames(typeof(SinglePlayerGames)));
+                        Player GPT = new() { Name = "chatGPT", Icon = "C", Colour = "green", IsHuman = false };
+                        Players.Add(GPT);
+                        while (true)
+                        {
+                            if (game == null)
                             {
-                                Console.Clear();
-                                Player GPT = new() { Name = "chatGPT", Icon = "C", Colour = "green", IsHuman = false };
-                                Players.Add(GPT);
-                                var tttChatGPTGame = new TTTChatGPT();
-                                tttChatGPTGame.StartMatch(Players);
-                                break;
+                                game = ShowMenu(gameOptions);
                             }
                             else
                             {
-                                Console.Clear();
-                                Console.WriteLine("Invalid number of players for this game. Please choose another game.");
-                                game = null;
-                                break;
+                                switch (game)
+                                {
+                                    case "TTTChatGPT":
+                                        Console.Clear();
+                                        var tttChatGPTGame = new TTTChatGPT();
+                                        tttChatGPTGame.StartMatch(Players);
+                                        break;
+                                    case "FourWChatGPT":
+                                        Console.Clear();
+                                        var fourWChatGPTGame = new FourWChatGPT();
+                                        fourWChatGPTGame.StartMatch(Players);
+                                        break;
+
+                                    default:
+                                        throw new Exception("Invalid game type.");
+                                }
                             }
-                        case "FourW":
-                            Console.Clear();
-                            var fourWGame = new FourW();
-                            fourWGame.StartMatch(Players);
-                            break;
-                        case "FourWChatGPT":
-                                Console.Clear();
-                                Player GPT = new() { Name = "chatGPT", Icon = "C", Colour = "green", IsHuman = false };
-                                Players.Add(GPT);
-                                var fourWChatGPTGame = new FourWChatGPT();
-                                fourWChatGPTGame.StartMatch(Players);
-                                break;
-                        case "CustomTTT":
-                            Console.Clear();
-                            var costumTTTGame = new CustomTTT();
-                            costumTTTGame.StartMatch(Players);
-                            break;
-                        default:
-                            throw new Exception("Invalid game type.");
+                        }
                     }
+                    else if (p_gameMode == "MP")
+                    {
+                        List<string> gameOptions = new(Enum.GetNames(typeof(MultiPlayerGames)));
+
+                        while (true)
+                        {
+                            if (game == null)
+                            {
+                                game = ShowMenu(gameOptions);
+                            }
+                            else
+                            {
+                                switch (game)
+                                {
+                                    case "TTT":
+                                        Console.Clear();
+                                        var tttGame = new TTT();
+                                        tttGame.StartMatch(Players);
+                                        break;
+                                    case "FourW":
+                                        Console.Clear();
+                                        var fourWGame = new FourW();
+                                        fourWGame.StartMatch(Players);
+                                        break;
+                                    case "CustomTTT":
+                                        Console.Clear();
+                                        var costumTTTGame = new CustomTTT();
+                                        costumTTTGame.StartMatch(Players);
+                                        break;
+                                    default:
+                                        throw new Exception("Invalid game type.");
+
+                                }
+
+                            }
+                        }
+
+                    }
+                } while (game == null);
                 }
             }
-
         }
+
+
     }
-
-}
-
-
