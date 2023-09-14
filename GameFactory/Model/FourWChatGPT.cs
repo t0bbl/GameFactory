@@ -1,6 +1,4 @@
-﻿using System.Text;
-
-namespace GameFactory.Model
+﻿namespace GameFactory.Model
 {
     internal class FourWChatGPT : FourW
     {

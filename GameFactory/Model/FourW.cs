@@ -21,7 +21,7 @@ namespace GameFactory.Model
                 Console.WriteLine($"{p_Players[p_CurrentPlayerIndex].Name}, input a column number from 1 to {p_Columns}");
             } while (!TryGetValidInput(out chosenColumn, p_Columns));
 
-            MakeMove(chosenColumn,  p_CurrentPlayerIndex, p_Players);
+            MakeMove(chosenColumn, p_CurrentPlayerIndex, p_Players);
             p_CurrentPlayerIndex = (p_CurrentPlayerIndex + 1) % p_Players.Count;
 
             PrintBoard(false, true, p_Players);
