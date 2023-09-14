@@ -115,7 +115,7 @@ namespace GameFactory
         static void SinglePlayerGames(List<Player> Players, string p_game)
         {
             List<string> gameOptions = new(Enum.GetNames(typeof(SinglePlayerGames)));
-            Player GPT = new() { Name = "chatGPT", Icon = "C", Colour = "green", IsHuman = false };
+            Player GPT = new() { Name = "ChatGPT", Icon = "C", Colour = "Green", IsHuman = false };
             Players.Add(GPT);
             while (true)
             {
