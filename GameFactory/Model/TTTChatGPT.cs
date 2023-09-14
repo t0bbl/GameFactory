@@ -21,7 +21,7 @@ namespace GameFactory.Model
         }
         public void ChatGPTMove(string board, List<Player> p_Players)
         {
-            ConsoleColor OriginalForegroundColor = Console.ForegroundColor;
+            ConsoleColor OriginalForegroundColour = Console.ForegroundColor;
             Console.ForegroundColor = ConsoleColor.Green;
 
             string apiKey = GetApiKey();
@@ -48,7 +48,7 @@ namespace GameFactory.Model
                 Console.WriteLine("Please set the environment variable CHATGPT_API_KEY to your ChatGPT API key.");
                 Environment.Exit(0);
             }
-            Console.ForegroundColor = OriginalForegroundColor;
+            Console.ForegroundColor = OriginalForegroundColour;
         }
         private string SendMessageToChatGPT(string apiKey, string message)
         {
