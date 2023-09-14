@@ -92,7 +92,10 @@ namespace GameFactory
                 string playerName = Console.ReadLine();
                 Console.WriteLine($"Enter the icon of player {Gamer + 1}: ");
                 string playerIcon = Console.ReadLine();
-                Player newPlayer = new() { Name = playerName, Icon =  playerIcon};
+                Console.WriteLine($"Choose your Colour: ");
+                List<string> colours = new(Enum.GetNames(typeof(ValidColours)));
+                string playerColour = ShowMenu(colours);
+                Player newPlayer = new() { Name = playerName, Icon =  playerIcon, Colour = playerColour};
                 players.Add(newPlayer);
             }
             return players;
@@ -122,6 +125,8 @@ namespace GameFactory
                             if (Players.Count == 1)
                             {
                                 Console.Clear();
+                                Player GPT = new() { Name = "chatGPT", Icon = "C", Colour = "green", IsHuman = false };
+                                Players.Add(GPT);
                                 var tttChatGPTGame = new TTTChatGPT();
                                 tttChatGPTGame.StartMatch(Players);
                                 break;

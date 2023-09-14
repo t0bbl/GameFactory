@@ -19,7 +19,8 @@ namespace GameFactory
         public List<Player> StartMatch(List<Player> p_Players)
         {
             ResetFirstTurn();
-            ShufflePlayers(p_Players);
+            if (p_Players.All(player => player.IsHuman))
+            { ShufflePlayers(p_Players); }
             do
             {
                 GameMechanic(p_Players);
@@ -110,7 +111,17 @@ namespace GameFactory
                         {
                             if (cellValue == p_player + 1) 
                             {
+                                ConsoleColor OriginalForegroundColor = Console.ForegroundColor;
+                                if (Enum.TryParse(p_Players[p_player].Colour, out ConsoleColor parsedColor))
+                                {
+                                    Console.ForegroundColor = parsedColor;
+                                }
+                                else
+                                {
+                                    Console.ForegroundColor = ConsoleColor.White;
+                                }
                                 Console.Write($" {p_Players[p_player].Icon} ");
+                                Console.ForegroundColor = OriginalForegroundColor;
                                 break;
                             }
                         }        
