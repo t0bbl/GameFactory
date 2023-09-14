@@ -112,89 +112,94 @@ namespace GameFactory
             return players;
 
         }
+        static void SinglePlayerGames(List<Player> Players, string game)
+        {
+            List<string> gameOptions = new(Enum.GetNames(typeof(SinglePlayerGames)));
+            Player GPT = new() { Name = "chatGPT", Icon = "C", Colour = "green", IsHuman = false };
+            Players.Add(GPT);
+            while (true)
+            {
+                if (game == null)
+                {
+                    game = ShowMenu(gameOptions);
+                }
+                else
+                {
+                    switch (game)
+                    {
+                        case "TTTChatGPT":
+                            Console.Clear();
+                            var tttChatGPTGame = new TTTChatGPT();
+                            tttChatGPTGame.StartMatch(Players);
+                            break;
+                        case "FourWChatGPT":
+                            Console.Clear();
+                            var fourWChatGPTGame = new FourWChatGPT();
+                            fourWChatGPTGame.StartMatch(Players);
+                            break;
+
+                        default:
+                            throw new Exception("Invalid game type.");
+                    }
+                }
+            }
+        }
+        static void MultiPlayerGames(List<Player> Players, string game)
+        {
+            List<string> gameOptions = new(Enum.GetNames(typeof(MultiPlayerGames)));
+
+            while (true)
+            {
+                if (game == null)
+                {
+                    game = ShowMenu(gameOptions);
+                }
+                else
+                {
+                    switch (game)
+                    {
+                        case "TTT":
+                            Console.Clear();
+                            var tttGame = new TTT();
+                            tttGame.StartMatch(Players);
+                            break;
+                        case "FourW":
+                            Console.Clear();
+                            var fourWGame = new FourW();
+                            fourWGame.StartMatch(Players);
+                            break;
+                        case "CustomTTT":
+                            Console.Clear();
+                            var costumTTTGame = new CustomTTT();
+                            costumTTTGame.StartMatch(Players);
+                            break;
+                        default:
+                            throw new Exception("Invalid game type.");
+
+                    }
+
+                }
+            }
+        }
         static void InitializeGame(List<Player> Players, string p_gameMode)
         {
             Console.Clear();
 
             string game = null;
-            while (true)
+            do
             {
                 do
                 {
                     if (p_gameMode == "SP")
                     {
-                        List<string> gameOptions = new(Enum.GetNames(typeof(SinglePlayerGames)));
-                        Player GPT = new() { Name = "chatGPT", Icon = "C", Colour = "green", IsHuman = false };
-                        Players.Add(GPT);
-                        while (true)
-                        {
-                            if (game == null)
-                            {
-                                game = ShowMenu(gameOptions);
-                            }
-                            else
-                            {
-                                switch (game)
-                                {
-                                    case "TTTChatGPT":
-                                        Console.Clear();
-                                        var tttChatGPTGame = new TTTChatGPT();
-                                        tttChatGPTGame.StartMatch(Players);
-                                        break;
-                                    case "FourWChatGPT":
-                                        Console.Clear();
-                                        var fourWChatGPTGame = new FourWChatGPT();
-                                        fourWChatGPTGame.StartMatch(Players);
-                                        break;
-
-                                    default:
-                                        throw new Exception("Invalid game type.");
-                                }
-                            }
-                        }
+                        SinglePlayerGames(Players, game);
                     }
                     else if (p_gameMode == "MP")
                     {
-                        List<string> gameOptions = new(Enum.GetNames(typeof(MultiPlayerGames)));
-
-                        while (true)
-                        {
-                            if (game == null)
-                            {
-                                game = ShowMenu(gameOptions);
-                            }
-                            else
-                            {
-                                switch (game)
-                                {
-                                    case "TTT":
-                                        Console.Clear();
-                                        var tttGame = new TTT();
-                                        tttGame.StartMatch(Players);
-                                        break;
-                                    case "FourW":
-                                        Console.Clear();
-                                        var fourWGame = new FourW();
-                                        fourWGame.StartMatch(Players);
-                                        break;
-                                    case "CustomTTT":
-                                        Console.Clear();
-                                        var costumTTTGame = new CustomTTT();
-                                        costumTTTGame.StartMatch(Players);
-                                        break;
-                                    default:
-                                        throw new Exception("Invalid game type.");
-
-                                }
-
-                            }
-                        }
-
+                        MultiPlayerGames(Players, game);
                     }
                 } while (game == null);
-                }
-            }
+            } while (true);
         }
-
-
     }
+}
