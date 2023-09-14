@@ -7,11 +7,23 @@ namespace GameFactory
     {
         static void Main()
         {
-
-            var gameMode = InitializeGameMenu();
-            var players = InitializePlayer(gameMode);
-            InitializeGame(players, gameMode);
-
+            while (true)
+            {
+                var gameMode = InitializeGameMenu();
+                if (gameMode == "Options")
+                {
+                    var options = new Options();
+                    if (!options.StartOptions())
+                    {
+                        continue; // If StartOptions returns false, go back to InitializeGameMenu
+                    }
+                }
+                else
+                {
+                    var players = InitializePlayer(gameMode);
+                    InitializeGame(players, gameMode);
+                }
+            }
         }
         static string InitializeGameMenu()
         {
@@ -31,6 +43,8 @@ namespace GameFactory
                             return "SP";
                         case "MultiPlayer":
                             return "MP";
+                        case "Options":
+                            return "Options";
                         case "Quit":
                             Environment.Exit(0);
                             return "quit";
@@ -40,7 +54,7 @@ namespace GameFactory
                 }
             } while (true);
         }
-        static string ShowMenu(List<string> p_menuItems)
+        internal static string ShowMenu(List<string> p_menuItems)
         {
             Console.WriteLine("Please make a Choice:");
             p_menuItems.ForEach(CurrentItem => Console.WriteLine($"{p_menuItems.IndexOf(CurrentItem) + 1}. {CurrentItem}"));
