@@ -178,7 +178,6 @@ namespace GameFactory
             for (int i = n - 1; i > 0; i--)
             {
                 int j = p_Random.Next(i + 1);
-                // Swap Players[i] and Players[j]
                 Player temp = Players[i];
                 Players[i] = Players[j];
                 Players[j] = temp;

@@ -14,7 +14,7 @@ namespace GameFactory
                     var options = new Options();
                     if (!options.StartOptions())
                     {
-                        continue; // If StartOptions returns false, go back to InitializeGameMenu
+                        continue;
                     }
                 }
                 else

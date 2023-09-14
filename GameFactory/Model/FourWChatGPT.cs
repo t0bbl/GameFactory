@@ -60,18 +60,15 @@
         }
         public int ValidateColumnChoice(string response, List<Player> p_Players)
         {
-            // Attempt to parse the column choice as an integer
             if (int.TryParse(response, out int chosenColumn))
             {
-                // Validate if it is within the board range
                 if (chosenColumn >= 1 && chosenColumn <= p_Columns)
                 {
-                    // Further checks could be added here, like checking if the column is full
                     return chosenColumn;
                 }
             }
 
-            return -1;  // Invalid column choice
+            return -1;
         }
 
     }
