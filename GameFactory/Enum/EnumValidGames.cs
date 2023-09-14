@@ -1,10 +1,15 @@
 namespace GameFactory
 {
-    public enum ValidGames
+    public enum SinglePlayerGames
+    {
+        TTTChatGPT = 1,
+        FourWChatGPT = 2,
+    }
+    public enum MultiPlayerGames
     {
         TTT = 1,
-        TTTChatGPT = 2,
-        FourW = 3,
-        CustomTTT = 4
+        FourW = 2,
+        CustomTTT = 3
     }
+
 }

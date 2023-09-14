@@ -1,4 +1,5 @@
-﻿using GameFactory.Model;
+﻿using GameFactory;
+using GameFactory.Model;
 
 namespace GameFactory
 {
@@ -6,38 +7,54 @@ namespace GameFactory
     {
         static void Main()
         {
-
-            InitializeGameMenu();
-            var players = InitializePlayer();
-            InitializeGame(players);
-
-        }
-        static void InitializeGameMenu()
-        {
-            List<string> menuPoints = new(Enum.GetNames(typeof(StartMenuOptions)));
-            string choosing = null;
-            do
+            while (true)
             {
-                if (choosing == null)
+                var gameMode = InitializeGameMenu();
+                if (gameMode == "Options")
                 {
-                    choosing = ShowMenu(menuPoints);
+                    var options = new Options();
+                    if (!options.StartOptions())
+                    {
+                        continue; // If StartOptions returns false, go back to InitializeGameMenu
+                    }
                 }
                 else
                 {
-                    switch (choosing)
+                    var players = InitializePlayer(gameMode);
+                    InitializeGame(players, gameMode);
+                }
+            }
+        }
+        static string InitializeGameMenu()
+        {
+            List<string> menuPoints = new(Enum.GetNames(typeof(StartMenuOptions)));
+            string p_choosing = null;
+            do
+            {
+                if (p_choosing == null)
+                {
+                    p_choosing = ShowMenu(menuPoints);
+                }
+                else
+                {
+                    switch (p_choosing)
                     {
-                        case "NewGame":
-                            return;
+                        case "SinglePlayer":
+                            return "SP";
+                        case "MultiPlayer":
+                            return "MP";
+                        case "Options":
+                            return "Options";
                         case "Quit":
                             Environment.Exit(0);
-                            return;
+                            return "quit";
                         default:
                             throw new Exception("Invalid Input.");
                     }
                 }
             } while (true);
         }
-        static string ShowMenu(List<string> p_menuItems)
+        internal static string ShowMenu(List<string> p_menuItems)
         {
             Console.WriteLine("Please make a Choice:");
             p_menuItems.ForEach(CurrentItem => Console.WriteLine($"{p_menuItems.IndexOf(CurrentItem) + 1}. {CurrentItem}"));
@@ -65,72 +82,121 @@ namespace GameFactory
                 }
             } while (true);
         }
-        static List<Player> InitializePlayer()
+        static List<Player> InitializePlayer(string p_gameMode)
         {
             Console.Clear();
             var players = new List<Player>();
 
-            bool isValidNumber;
-            int numberOfPlayers;
-
-            do
+            bool p_isValidNumber;
+            int p_numberOfPlayers;
+            if (p_gameMode == "SP")
             {
-                Console.WriteLine("Enter the number of players: ");
-                ConsoleKeyInfo keyInfo = Console.ReadKey();
-                isValidNumber = int.TryParse(keyInfo.KeyChar.ToString(), out numberOfPlayers);
-
-                if (!isValidNumber)
+                p_numberOfPlayers = 1;
+            }
+            else
+            {
+                do
                 {
-                    Console.WriteLine("\nInvalid input. Please enter a number.");
-                }
+                    Console.WriteLine("Enter the number of players: ");
+                    ConsoleKeyInfo keyInfo = Console.ReadKey();
+                    p_isValidNumber = int.TryParse(keyInfo.KeyChar.ToString(), out p_numberOfPlayers);
 
-            } while (!isValidNumber);
-            Console.WriteLine();
-            for (int Gamer = 0; Gamer < numberOfPlayers; Gamer++)
+                    if (!p_isValidNumber)
+                    {
+                        Console.WriteLine("\nInvalid input. Please enter a number.");
+                    }
+
+                } while (!p_isValidNumber);
+                Console.WriteLine();
+            }
+
+            for (int p_gamer = 0; p_gamer < p_numberOfPlayers; p_gamer++)
             {
-                Console.WriteLine($"Enter the name of player {Gamer + 1}: ");
-                string playerName = Console.ReadLine();
-                Player newPlayer = new() { Name = playerName };
+                Console.Clear();
+                string playerName;
+                string playerIcon;
+                do
+                {
+                    Console.WriteLine($"\n Enter the name of player {p_gamer + 1}: \n");
+                    playerName = Console.ReadLine();
+                    if (string.IsNullOrEmpty(playerName))
+                    {
+                        Console.WriteLine("Error: Name cannot be empty.");
+                    }
+                } while (string.IsNullOrEmpty(playerName));
+                do
+                {
+                    Console.WriteLine($"\n Enter the icon of player {p_gamer + 1}: \n");
+                    ConsoleKeyInfo icon = Console.ReadKey();
+                    Console.WriteLine();
+                    playerIcon = icon.KeyChar.ToString();
+
+                    if (string.IsNullOrWhiteSpace(playerIcon) || playerIcon == "\r" || playerIcon == " ")
+                    {
+                        Console.WriteLine("Error: Icon cannot be empty or whitespace.");
+                        playerIcon = "";
+                    }
+                } while (string.IsNullOrEmpty(playerIcon) || playerIcon == "\r" || playerIcon == " ");
+                Console.WriteLine($"\n Choose your Colour: \n");
+                List<string> colours = new(Enum.GetNames(typeof(ValidColours)));
+                string playerColour = ShowMenu(colours);
+                Player newPlayer = new() { Name = playerName, Icon = playerIcon, Colour = playerColour };
                 players.Add(newPlayer);
             }
             return players;
 
         }
-        static string InitializeGame(List<Player> Players)
+        static void SinglePlayerGames(List<Player> Players, string p_game)
         {
-            Console.Clear();
-            List<string> gameOptions = new(Enum.GetNames(typeof(ValidGames)));
-            string game = null;
+            List<string> gameOptions = new(Enum.GetNames(typeof(SinglePlayerGames)));
+            Player GPT = new() { Name = "ChatGPT", Icon = "C", Colour = "Green", IsHuman = false };
+            Players.Add(GPT);
             while (true)
             {
-                if (game == null)
+                if (p_game == null)
                 {
-                    game = ShowMenu(gameOptions);
+                    p_game = ShowMenu(gameOptions);
                 }
                 else
                 {
-                    switch (game)
+                    switch (p_game)
+                    {
+                        case "TTTChatGPT":
+                            Console.Clear();
+                            var tttChatGPTGame = new TTTChatGPT();
+                            tttChatGPTGame.StartMatch(Players);
+                            break;
+                        case "FourWChatGPT":
+                            Console.Clear();
+                            var fourWChatGPTGame = new FourWChatGPT();
+                            fourWChatGPTGame.StartMatch(Players);
+                            break;
+
+                        default:
+                            throw new Exception("Invalid game type.");
+                    }
+                }
+            }
+        }
+        static void MultiPlayerGames(List<Player> Players, string p_game)
+        {
+            List<string> gameOptions = new(Enum.GetNames(typeof(MultiPlayerGames)));
+
+            while (true)
+            {
+                if (p_game == null)
+                {
+                    p_game = ShowMenu(gameOptions);
+                }
+                else
+                {
+                    switch (p_game)
                     {
                         case "TTT":
                             Console.Clear();
                             var tttGame = new TTT();
                             tttGame.StartMatch(Players);
                             break;
-                        case "TTTChatGPT":
-                            if (Players.Count == 1)
-                            {
-                                Console.Clear();
-                                var tttChatGPTGame = new TTTChatGPT();
-                                tttChatGPTGame.StartMatch(Players);
-                                break;
-                            }
-                            else
-                            {
-                                Console.Clear();
-                                Console.WriteLine("Invalid number of players for this game. Please choose another game.");
-                                game = null;
-                                break;
-                            }
                         case "FourW":
                             Console.Clear();
                             var fourWGame = new FourW();
@@ -143,13 +209,29 @@ namespace GameFactory
                             break;
                         default:
                             throw new Exception("Invalid game type.");
+
                     }
+
                 }
             }
+        }
+        static void InitializeGame(List<Player> Players, string p_gameMode)
+        {
+            Console.Clear();
 
+            string game = null;
+
+            do
+            {
+                if (p_gameMode == "SP")
+                {
+                    SinglePlayerGames(Players, game);
+                }
+                else if (p_gameMode == "MP")
+                {
+                    MultiPlayerGames(Players, game);
+                }
+            } while (game == null);
         }
     }
-
 }
-
-

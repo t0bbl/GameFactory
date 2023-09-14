@@ -3,6 +3,9 @@ namespace GameFactory
     internal class Player
     {
         public string Name;
+        public string Icon;
+        public string Colour;
+        public bool IsHuman;
         public int Wins { get; set; }
         public int Losses { get; set; }
         public int Draws { get; set; }

@@ -1,3 +1,5 @@
+using System.Text;
+
 namespace GameFactory
 {
     internal class Match
@@ -19,7 +21,8 @@ namespace GameFactory
         public List<Player> StartMatch(List<Player> p_Players)
         {
             ResetFirstTurn();
-            ShufflePlayers(p_Players);
+            if (p_Players.All(player => player.IsHuman))
+            { ShufflePlayers(p_Players); }
             do
             {
                 GameMechanic(p_Players);
@@ -81,13 +84,15 @@ namespace GameFactory
             if (p_row >= 0 && p_row < p_rows && col >= 0 && col < p_Columns)
                 p_Board[p_row, col] = value;
         }
-        public void PrintBoard(bool p_showRow, bool p_showCol)
+        public void PrintBoard(bool p_showRow, bool p_showCol, List<Player> p_Players)
         {
             for (int p_row = 0; p_row < p_rows; p_row++)
             {
                 if (p_showRow)
                 {
+                    Console.BackgroundColor = ConsoleColor.DarkGray;
                     Console.Write(p_row + 1 + " ");
+                    Console.BackgroundColor = ConsoleColor.Black;
                 }
                 else
                 {
@@ -98,17 +103,30 @@ namespace GameFactory
                 for (int col = 0; col < p_Columns; col++)
                 {
                     int cellValue = GetCell(p_row, col);
-                    switch (cellValue)
+                    if (cellValue == 0)
                     {
-                        case 0:
-                            Console.Write(" . ");
-                            break;
-                        case 1:
-                            Console.Write(" X ");
-                            break;
-                        case 2:
-                            Console.Write(" O ");
-                            break;
+                        Console.Write(" . ");
+                    }
+                    else
+                    {
+                        for (int p_player = 0; p_player < p_Players.Count; p_player++)
+                        {
+                            if (cellValue == p_player + 1)
+                            {
+                                ConsoleColor OriginalForegroundColor = Console.ForegroundColor;
+                                if (Enum.TryParse(p_Players[p_player].Colour, out ConsoleColor parsedColor))
+                                {
+                                    Console.ForegroundColor = parsedColor;
+                                }
+                                else
+                                {
+                                    Console.ForegroundColor = ConsoleColor.White;
+                                }
+                                Console.Write($" {p_Players[p_player].Icon} ");
+                                Console.ForegroundColor = OriginalForegroundColor;
+                                break;
+                            }
+                        }
                     }
                 }
                 Console.WriteLine();
@@ -119,7 +137,9 @@ namespace GameFactory
 
                 for (int col = 0; col < p_Columns; col++)
                 {
+                    Console.BackgroundColor = ConsoleColor.DarkGray;
                     Console.Write($" {col + 1} ");
+                    Console.BackgroundColor = ConsoleColor.Black;
                 }
             }
 
@@ -127,7 +147,8 @@ namespace GameFactory
         public void ReMatch(List<Player> Players)
         {
             Console.WriteLine("Do you want to rematch? (y/n)");
-            string rematch = Console.ReadLine();
+            ConsoleKeyInfo keyInfo = Console.ReadKey();
+            string rematch = keyInfo.KeyChar.ToString();
             if (rematch == "y")
             {
                 Console.Clear();
@@ -174,6 +195,44 @@ namespace GameFactory
         }
         public virtual void ResetFirstTurn()
         {
+        }
+        protected string SendMessageToChatGPT(string apiKey, string message)
+        {
+            var chatGPTClient = new ChatGPTClient(apiKey);
+            return chatGPTClient.SendMessage(message);
+        }
+        protected virtual string BuildMessage(string board, List<Player> p_Players)
+        {
+            return "error";
+        }
+        protected string GetApiKey()
+        {
+            return Environment.GetEnvironmentVariable("CHATGPT_API_KEY", EnvironmentVariableTarget.Machine);
+        }
+        public string BoardToString(List<Player> p_Players)
+        {
+            StringBuilder sb = new StringBuilder();
+            for (int row = 0; row < p_rows; row++)
+            {
+                for (int col = 0; col < p_Columns; col++)
+                {
+                    int cellValue = GetCell(row, col);
+                    switch (cellValue)
+                    {
+                        case 0:
+                            sb.Append(" . ");
+                            break;
+                        case 1:
+                            sb.Append($" {p_Players[0].Icon} ");
+                            break;
+                        case 2:
+                            sb.Append($" {p_Players[1].Icon} ");
+                            break;
+                    }
+                }
+                sb.AppendLine();
+            }
+            return sb.ToString();
         }
     }
 }

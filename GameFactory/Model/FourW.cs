@@ -11,7 +11,7 @@ namespace GameFactory.Model
             int chosenColumn;
             if (FirstTurn)
             {
-                PrintBoard(false, true);
+                PrintBoard(false, true, p_Players);
                 Console.WriteLine();
                 FirstTurn = false;
             }
@@ -21,18 +21,10 @@ namespace GameFactory.Model
                 Console.WriteLine($"{p_Players[p_CurrentPlayerIndex].Name}, input a column number from 1 to {p_Columns}");
             } while (!TryGetValidInput(out chosenColumn, p_Columns));
 
-            int row = FindLowestAvailableRow(chosenColumn - 1);
+            MakeMove(chosenColumn,  p_CurrentPlayerIndex, p_Players);
+            p_CurrentPlayerIndex = (p_CurrentPlayerIndex + 1) % p_Players.Count;
 
-            if (row != -1)
-            {
-                SetCell(row, chosenColumn - 1, p_CurrentPlayerIndex + 1);
-                p_CurrentPlayerIndex = (p_CurrentPlayerIndex + 1) % p_Players.Count;
-            }
-            else
-            {
-                Console.WriteLine("Column is full. Try again.");
-            }
-            PrintBoard(false, true);
+            PrintBoard(false, true, p_Players);
         }
         public int FindLowestAvailableRow(int column)
         {
@@ -50,7 +42,21 @@ namespace GameFactory.Model
             FirstTurn = true;
         }
 
+        public bool MakeMove(int chosenColumn, int p_CurrentPlayerIndex, List<Player> p_Players)
+        {
+            int row = FindLowestAvailableRow(chosenColumn - 1);
 
+            if (row != -1)
+            {
+                SetCell(row, chosenColumn - 1, p_CurrentPlayerIndex + 1);
+                return true;
+            }
+            else
+            {
+                Console.WriteLine("Column is full. Try again.");
+                return false;
+            }
+        }
     }
 
 }

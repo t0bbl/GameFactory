@@ -10,7 +10,7 @@
         {
             if (FirstTurn)
             {
-                PrintBoard(true, true);
+                PrintBoard(true, true, p_Players);
                 FirstTurn = false;
             }
             bool validInput = false;
@@ -28,8 +28,8 @@
                     && row >= 1 && row <= p_rows
                     && col >= 1 && col <= p_Columns)
                 {
-                    row--; // Adjust for 0-based index
-                    col--; // Adjust for 0-based index
+                    row--; 
+                    col--; 
 
                     if (GetCell(row, col) == 0)
                     {
@@ -47,7 +47,7 @@
                     Console.WriteLine("Invalid input. Try again.");
                 }
             }
-            PrintBoard(true, true);
+            PrintBoard(true, true, p_Players);
         }
 
         private static int AskForRows()

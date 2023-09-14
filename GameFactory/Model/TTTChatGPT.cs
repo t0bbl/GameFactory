@@ -4,78 +4,64 @@ namespace GameFactory.Model
 {
     internal class TTTChatGPT : TTT
     {
-        private int gameMechanicCallCount = 0;
         public TTTChatGPT()
         {
 
         }
-        public override void GameMechanic(List<Player> p_players)
+        public override void GameMechanic(List<Player> p_Players)
         {
-
-            gameMechanicCallCount++;
-            if (gameMechanicCallCount % 2 == 0)
+            if (p_CurrentPlayerIndex == 1)
             {
-                ChatGPTMove(BoardToString());
+                ChatGPTMove(BoardToString(p_Players), p_Players);
             }
             else
             {
-                base.GameMechanic(p_players);
+                base.GameMechanic(p_Players);
             }
-
-
-
         }
-        public void ChatGPTMove(string board)
+        protected override string BuildMessage(string board, List<Player> p_Players)
         {
-            string apiKey = Environment.GetEnvironmentVariable("CHATGPT_API_KEY", EnvironmentVariableTarget.Machine);
+            return $"Objective: Win the Tic-Tac-Toe game.\n" +
+                   $"Current board:\n{board}\n" +
+                   $"Your turn:\n" +
+                   $"- You are '{p_Players[1].Icon}'.\n" +
+                   $"- Change one empty '.' to '{p_Players[1].Icon}' and return the new board.\n" +
+                   $"- You cannot override cells already occupied by '{p_Players[0].Icon}' or '{p_Players[1].Icon}'.\n" +
+                   $"- You are only allowed to change 1 cell at a time.\n" +
+                   $"Make your move:";
+        }
+        public void ChatGPTMove(string board, List<Player> p_Players)
+        {
+            ConsoleColor OriginalForegroundColour = Console.ForegroundColor;
+            Console.ForegroundColor = ConsoleColor.Green;
+
+            string apiKey = GetApiKey();
             if (apiKey != null)
             {
                 Console.WriteLine("ChatGPT is thinking...");
-                var chatGPTClient = new ChatGPTClient(apiKey);
-                string message = ($"Here is the current Tic-Tac-Toe board: {board}Your turn. Make a move by changing one empty '.' to 'O' and return the new board. Note: You cannot override cells already occupied by 'X' or 'O'.");
-                string response = chatGPTClient.SendMessage(message);
+
+                string message = BuildMessage(board, p_Players);
+                string response = SendMessageToChatGPT(apiKey, message);
+
                 Console.WriteLine("ChatGPT´s Move: ");
                 Console.WriteLine();
-                int dotCount = StringToBoard(response);
-                if (dotCount != 8) {
-                    PrintBoard(false, false);
+                int dotCount = StringToBoard(response, p_Players);
+                if (dotCount != 8)
+                {
+                    PrintBoard(false, false, p_Players);
                 }
-                
+
+                p_CurrentPlayerIndex = (p_CurrentPlayerIndex + 1) % p_Players.Count;
+
             }
             else
             {
                 Console.WriteLine("Please set the environment variable CHATGPT_API_KEY to your ChatGPT API key.");
                 Environment.Exit(0);
             }
-
+            Console.ForegroundColor = OriginalForegroundColour;
         }
-        public string BoardToString()
-        {
-            StringBuilder sb = new StringBuilder();
-            for (int row = 0; row < p_rows; row++)
-            {
-                for (int col = 0; col < p_Columns; col++)
-                {
-                    int cellValue = GetCell(row, col);
-                    switch (cellValue)
-                    {
-                        case 0:
-                            sb.Append(" . ");
-                            break;
-                        case 1:
-                            sb.Append(" X ");
-                            break;
-                        case 2:
-                            sb.Append(" O ");
-                            break;
-                    }
-                }
-                sb.AppendLine();  // Adds a new line at the end of each p_row
-            }
-            return sb.ToString();
-        }
-
-        public int StringToBoard(string boardString)
+        public int StringToBoard(string boardString, List<Player> p_Players)
         {
             int dotCount = 0;
             string[] p_rows = boardString.Split(new[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
@@ -84,19 +70,18 @@ namespace GameFactory.Model
                 string[] cells = p_rows[row].Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
                 for (int col = 0; col < p_Columns; col++)
                 {
-                    switch (cells[col])
+                    if (cells[col] == ".")
                     {
-                        case ".":
-                            SetCell(row, col, 0);
-                            dotCount++;
-                            break;
-                        case "X":
-                            SetCell(row, col, 1);
-                            break;
-                        case "O":
-                            SetCell(row, col, 2);
-                            break;
-
+                        SetCell(row, col, 0);
+                        dotCount++;
+                    }
+                    else if (cells[col] == p_Players[0].Icon)
+                    {
+                        SetCell(row, col, 1);
+                    }
+                    else if (cells[col] == p_Players[1].Icon)
+                    {
+                        SetCell(row, col, 2);
                     }
                 }
             }
