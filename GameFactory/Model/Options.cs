@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿
 
 namespace GameFactory.Model
 {
@@ -27,7 +23,7 @@ namespace GameFactory.Model
                         case "NightMode":
                             Console.BackgroundColor = (Console.BackgroundColor == ConsoleColor.Black) ? ConsoleColor.White : ConsoleColor.Black;
                             Console.ForegroundColor = (Console.ForegroundColor == ConsoleColor.Black) ? ConsoleColor.White : ConsoleColor.Black;
-                            Console.Clear(); 
+                            Console.Clear();
                             p_choosing = null;
                             break;
                         case "Back":
@@ -38,7 +34,7 @@ namespace GameFactory.Model
                     }
                 }
             } while (!p_exitMenu);
-        return false;
+            return false;
         }
     }
 }

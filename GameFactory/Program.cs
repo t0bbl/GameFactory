@@ -112,11 +112,31 @@ namespace GameFactory
 
             for (int p_gamer = 0; p_gamer < p_numberOfPlayers; p_gamer++)
             {
-                Console.WriteLine($"\n Enter the name of player {p_gamer + 1}: \n");
-                string playerName = Console.ReadLine();
-                Console.WriteLine($"\n Enter the icon of player {p_gamer + 1}: \n");
-                ConsoleKeyInfo icon = Console.ReadKey();
-                string playerIcon = icon.KeyChar.ToString();
+                Console.Clear();
+                string playerName;
+                string playerIcon;
+                do
+                {
+                    Console.WriteLine($"\n Enter the name of player {p_gamer + 1}: \n");
+                    playerName = Console.ReadLine();
+                    if (string.IsNullOrEmpty(playerName))
+                    {
+                        Console.WriteLine("Error: Name cannot be empty.");
+                    }
+                } while (string.IsNullOrEmpty(playerName));
+                do
+                {
+                    Console.WriteLine($"\n Enter the icon of player {p_gamer + 1}: \n");
+                    ConsoleKeyInfo icon = Console.ReadKey();
+                    Console.WriteLine();
+                    playerIcon = icon.KeyChar.ToString();
+
+                    if (string.IsNullOrWhiteSpace(playerIcon) || playerIcon == "\r" || playerIcon == " ")
+                    {
+                        Console.WriteLine("Error: Icon cannot be empty or whitespace.");
+                        playerIcon = "";
+                    }
+                } while (string.IsNullOrEmpty(playerIcon) || playerIcon == "\r" || playerIcon == " ");
                 Console.WriteLine($"\n Choose your Colour: \n");
                 List<string> colours = new(Enum.GetNames(typeof(ValidColours)));
                 string playerColour = ShowMenu(colours);
@@ -201,17 +221,17 @@ namespace GameFactory
 
             string game = null;
 
-                do
+            do
+            {
+                if (p_gameMode == "SP")
                 {
-                    if (p_gameMode == "SP")
-                    {
-                        SinglePlayerGames(Players, game);
-                    }
-                    else if (p_gameMode == "MP")
-                    {
-                        MultiPlayerGames(Players, game);
-                    }
-                } while (game == null);
+                    SinglePlayerGames(Players, game);
+                }
+                else if (p_gameMode == "MP")
+                {
+                    MultiPlayerGames(Players, game);
+                }
+            } while (game == null);
         }
     }
 }
