@@ -143,6 +143,23 @@ namespace GameFactory
                             var fourWGame = new FourW();
                             fourWGame.StartMatch(Players);
                             break;
+                        case "FourWChatGPT":
+                            if (Players.Count == 1)
+                            {
+                                Console.Clear();
+                                Player GPT = new() { Name = "chatGPT", Icon = "C", Colour = "green", IsHuman = false };
+                                Players.Add(GPT);
+                                var fourWChatGPTGame = new FourWChatGPT();
+                                fourWChatGPTGame.StartMatch(Players);
+                                break;
+                            }
+                            else
+                            {
+                                Console.Clear();
+                                Console.WriteLine("Invalid number of players for this game. Please choose another game.");
+                                game = null;
+                                break;
+                            }
                         case "CustomTTT":
                             Console.Clear();
                             var costumTTTGame = new CustomTTT();
