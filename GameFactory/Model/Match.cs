@@ -147,7 +147,8 @@ namespace GameFactory
         public void ReMatch(List<Player> Players)
         {
             Console.WriteLine("Do you want to rematch? (y/n)");
-            string rematch = Console.ReadLine();
+            ConsoleKeyInfo keyInfo = Console.ReadKey();
+            string rematch = keyInfo.KeyChar.ToString();
             if (rematch == "y")
             {
                 Console.Clear();

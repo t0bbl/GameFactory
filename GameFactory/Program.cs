@@ -16,20 +16,20 @@ namespace GameFactory
         static string InitializeGameMenu()
         {
             List<string> menuPoints = new(Enum.GetNames(typeof(StartMenuOptions)));
-            string choosing = null;
+            string p_choosing = null;
             do
             {
-                if (choosing == null)
+                if (p_choosing == null)
                 {
-                    choosing = ShowMenu(menuPoints);
+                    p_choosing = ShowMenu(menuPoints);
                 }
                 else
                 {
-                    switch (choosing)
+                    switch (p_choosing)
                     {
-                        case "Singleplayer":
+                        case "SinglePlayer":
                             return "SP";
-                        case "Multiplayer":
+                        case "MultiPlayer":
                             return "MP";
                         case "Quit":
                             Environment.Exit(0);
@@ -73,11 +73,11 @@ namespace GameFactory
             Console.Clear();
             var players = new List<Player>();
 
-            bool isValidNumber;
-            int numberOfPlayers;
+            bool p_isValidNumber;
+            int p_numberOfPlayers;
             if (p_gameMode == "SP")
             {
-                numberOfPlayers = 1;
+                p_numberOfPlayers = 1;
             }
             else
             {
@@ -85,24 +85,24 @@ namespace GameFactory
                 {
                     Console.WriteLine("Enter the number of players: ");
                     ConsoleKeyInfo keyInfo = Console.ReadKey();
-                    isValidNumber = int.TryParse(keyInfo.KeyChar.ToString(), out numberOfPlayers);
+                    p_isValidNumber = int.TryParse(keyInfo.KeyChar.ToString(), out p_numberOfPlayers);
 
-                    if (!isValidNumber)
+                    if (!p_isValidNumber)
                     {
                         Console.WriteLine("\nInvalid input. Please enter a number.");
                     }
 
-                } while (!isValidNumber);
+                } while (!p_isValidNumber);
                 Console.WriteLine();
             }
 
-            for (int Gamer = 0; Gamer < numberOfPlayers; Gamer++)
+            for (int p_gamer = 0; p_gamer < p_numberOfPlayers; p_gamer++)
             {
-                Console.WriteLine($"\n Enter the name of player {Gamer + 1}: \n");
+                Console.WriteLine($"\n Enter the name of player {p_gamer + 1}: \n");
                 string playerName = Console.ReadLine();
-                Console.WriteLine($"\n Enter the icon of player {Gamer + 1}: \n");
-                ConsoleKeyInfo keyInfo = Console.ReadKey();
-                string playerIcon = keyInfo.KeyChar.ToString();
+                Console.WriteLine($"\n Enter the icon of player {p_gamer + 1}: \n");
+                ConsoleKeyInfo icon = Console.ReadKey();
+                string playerIcon = icon.KeyChar.ToString();
                 Console.WriteLine($"\n Choose your Colour: \n");
                 List<string> colours = new(Enum.GetNames(typeof(ValidColours)));
                 string playerColour = ShowMenu(colours);
@@ -112,20 +112,20 @@ namespace GameFactory
             return players;
 
         }
-        static void SinglePlayerGames(List<Player> Players, string game)
+        static void SinglePlayerGames(List<Player> Players, string p_game)
         {
             List<string> gameOptions = new(Enum.GetNames(typeof(SinglePlayerGames)));
             Player GPT = new() { Name = "chatGPT", Icon = "C", Colour = "green", IsHuman = false };
             Players.Add(GPT);
             while (true)
             {
-                if (game == null)
+                if (p_game == null)
                 {
-                    game = ShowMenu(gameOptions);
+                    p_game = ShowMenu(gameOptions);
                 }
                 else
                 {
-                    switch (game)
+                    switch (p_game)
                     {
                         case "TTTChatGPT":
                             Console.Clear();
@@ -144,19 +144,19 @@ namespace GameFactory
                 }
             }
         }
-        static void MultiPlayerGames(List<Player> Players, string game)
+        static void MultiPlayerGames(List<Player> Players, string p_game)
         {
             List<string> gameOptions = new(Enum.GetNames(typeof(MultiPlayerGames)));
 
             while (true)
             {
-                if (game == null)
+                if (p_game == null)
                 {
-                    game = ShowMenu(gameOptions);
+                    p_game = ShowMenu(gameOptions);
                 }
                 else
                 {
-                    switch (game)
+                    switch (p_game)
                     {
                         case "TTT":
                             Console.Clear();
@@ -186,8 +186,7 @@ namespace GameFactory
             Console.Clear();
 
             string game = null;
-            do
-            {
+
                 do
                 {
                     if (p_gameMode == "SP")
@@ -199,7 +198,6 @@ namespace GameFactory
                         MultiPlayerGames(Players, game);
                     }
                 } while (game == null);
-            } while (true);
         }
     }
 }
