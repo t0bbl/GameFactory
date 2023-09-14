@@ -117,10 +117,20 @@ namespace GameFactory
                             tttGame.StartMatch(Players);
                             break;
                         case "TTTChatGPT":
-                            Console.Clear();
-                            var tttChatGPTGame = new TTTChatGPT();
-                            tttChatGPTGame.StartMatch(Players);
-                            break;
+                            if (Players.Count == 1)
+                            {
+                                Console.Clear();
+                                var tttChatGPTGame = new TTTChatGPT();
+                                tttChatGPTGame.StartMatch(Players);
+                                break;
+                            }
+                            else
+                            {
+                                Console.Clear();
+                                Console.WriteLine("Invalid number of players for this game. Please choose another game.");
+                                game = null;
+                                break;
+                            }
                         case "FourW":
                             Console.Clear();
                             var fourWGame = new FourW();
