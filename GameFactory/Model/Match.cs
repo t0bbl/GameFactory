@@ -104,11 +104,11 @@ namespace GameFactory
                     }
                     else
                     {
-                        for (int i = 0; i < p_Players.Count; i++)
+                        for (int player = 0; player < p_Players.Count; player++)
                         {
-                            if (cellValue == i + 1) 
+                            if (cellValue == player + 1) 
                             {
-                                Console.Write($" {p_Players[i].Icon} ");
+                                Console.Write($" {p_Players[player].Icon} ");
                                 break;
                             }
                         }        
