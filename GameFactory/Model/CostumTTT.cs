@@ -10,7 +10,7 @@
         {
             if (FirstTurn)
             {
-                PrintBoard(true, true);
+                PrintBoard(true, true, p_Players);
                 FirstTurn = false;
             }
             bool validInput = false;
@@ -47,7 +47,7 @@
                     Console.WriteLine("Invalid input. Try again.");
                 }
             }
-            PrintBoard(true, true);
+            PrintBoard(true, true, p_Players);
         }
 
         private static int AskForRows()

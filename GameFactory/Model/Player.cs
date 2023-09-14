@@ -6,6 +6,7 @@ namespace GameFactory
         public int Wins { get; set; }
         public int Losses { get; set; }
         public int Draws { get; set; }
+        public string Icon;
         public Guid Id { get; private set; }
         public Player()
         {

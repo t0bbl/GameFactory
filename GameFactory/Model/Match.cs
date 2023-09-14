@@ -81,7 +81,7 @@ namespace GameFactory
             if (p_row >= 0 && p_row < p_rows && col >= 0 && col < p_Columns)
                 p_Board[p_row, col] = value;
         }
-        public void PrintBoard(bool p_showRow, bool p_showCol)
+        public void PrintBoard(bool p_showRow, bool p_showCol, List<Player> p_Players)
         {
             for (int p_row = 0; p_row < p_rows; p_row++)
             {
@@ -104,10 +104,10 @@ namespace GameFactory
                             Console.Write(" . ");
                             break;
                         case 1:
-                            Console.Write(" X ");
+                            Console.Write($" {p_Players[0].Icon} ");
                             break;
                         case 2:
-                            Console.Write(" O ");
+                            Console.Write($" {p_Players[1].Icon} ");
                             break;
                     }
                 }

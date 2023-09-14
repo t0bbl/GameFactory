@@ -11,7 +11,7 @@
             bool validInput = false;
             if (FirstTurn)
             {
-                PrintBoard(false, false);
+                PrintBoard(false, false, p_players);
                 Console.WriteLine();
                 FirstTurn = false;
             }
@@ -36,7 +36,7 @@
                     }
                 }
             }
-            PrintBoard(false, false);
+            PrintBoard(false, false, p_players);
         }
         public override void ResetFirstTurn()
         {

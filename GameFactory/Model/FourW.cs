@@ -11,7 +11,7 @@ namespace GameFactory.Model
             int chosenColumn;
             if (FirstTurn)
             {
-                PrintBoard(false, true);
+                PrintBoard(false, true, p_Players);
                 Console.WriteLine();
                 FirstTurn = false;
             }
@@ -32,7 +32,7 @@ namespace GameFactory.Model
             {
                 Console.WriteLine("Column is full. Try again.");
             }
-            PrintBoard(false, true);
+            PrintBoard(false, true, p_Players);
         }
         public int FindLowestAvailableRow(int column)
         {

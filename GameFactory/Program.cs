@@ -90,7 +90,9 @@ namespace GameFactory
             {
                 Console.WriteLine($"Enter the name of player {Gamer + 1}: ");
                 string playerName = Console.ReadLine();
-                Player newPlayer = new() { Name = playerName };
+                Console.WriteLine($"Enter the icon of player {Gamer + 1}: ");
+                string playerIcon = Console.ReadLine();
+                Player newPlayer = new() { Name = playerName, Icon =  playerIcon};
                 players.Add(newPlayer);
             }
             return players;

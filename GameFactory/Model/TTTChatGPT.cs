@@ -9,23 +9,25 @@ namespace GameFactory.Model
         {
 
         }
-        public override void GameMechanic(List<Player> p_players)
+        public override void GameMechanic(List<Player> p_Players)
         {
 
             gameMechanicCallCount++;
             if (gameMechanicCallCount % 2 == 0)
             {
-                ChatGPTMove(BoardToString());
+                Console.ForegroundColor = ConsoleColor.Green;
+                ChatGPTMove(BoardToString(), p_Players);
+                Console.ForegroundColor = ConsoleColor.White;
             }
             else
             {
-                base.GameMechanic(p_players);
+                base.GameMechanic(p_Players);
             }
 
 
 
         }
-        public void ChatGPTMove(string board)
+        public void ChatGPTMove(string board, List<Player> p_Players)
         {
             string apiKey = Environment.GetEnvironmentVariable("CHATGPT_API_KEY", EnvironmentVariableTarget.Machine);
             if (apiKey != null)
@@ -38,7 +40,7 @@ namespace GameFactory.Model
                 Console.WriteLine();
                 int dotCount = StringToBoard(response);
                 if (dotCount != 8) {
-                    PrintBoard(false, false);
+                    PrintBoard(false, false, p_Players);
                 }
                 
             }
