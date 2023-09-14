@@ -95,7 +95,7 @@ namespace GameFactory
                 Console.WriteLine($"Choose your Colour: ");
                 List<string> colours = new(Enum.GetNames(typeof(ValidColours)));
                 string playerColour = ShowMenu(colours);
-                Player newPlayer = new() { Name = playerName, Icon =  playerIcon, Colour = playerColour};
+                Player newPlayer = new() { Name = playerName, Icon = playerIcon, Colour = playerColour };
                 players.Add(newPlayer);
             }
             return players;

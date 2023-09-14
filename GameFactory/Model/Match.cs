@@ -109,7 +109,7 @@ namespace GameFactory
                     {
                         for (int p_player = 0; p_player < p_Players.Count; p_player++)
                         {
-                            if (cellValue == p_player + 1) 
+                            if (cellValue == p_player + 1)
                             {
                                 ConsoleColor OriginalForegroundColor = Console.ForegroundColor;
                                 if (Enum.TryParse(p_Players[p_player].Colour, out ConsoleColor parsedColor))
@@ -124,7 +124,7 @@ namespace GameFactory
                                 Console.ForegroundColor = OriginalForegroundColor;
                                 break;
                             }
-                        }        
+                        }
                     }
                 }
                 Console.WriteLine();

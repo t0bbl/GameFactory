@@ -1,11 +1,9 @@
-﻿using System.Collections.Generic;
-using System.Text;
+﻿using System.Text;
 
 namespace GameFactory.Model
 {
     internal class TTTChatGPT : TTT
     {
-        private int gameMechanicCallCount = 0;
         public TTTChatGPT()
         {
 
@@ -33,7 +31,7 @@ namespace GameFactory.Model
 
                 string message = BuildMessage(board, p_Players);
                 string response = SendMessageToChatGPT(apiKey, message);
-                
+
                 Console.WriteLine("ChatGPT´s Move: ");
                 Console.WriteLine();
                 int dotCount = StringToBoard(response, p_Players);
@@ -41,7 +39,7 @@ namespace GameFactory.Model
                 {
                     PrintBoard(false, false, p_Players);
                 }
-                
+
                 p_CurrentPlayerIndex = (p_CurrentPlayerIndex + 1) % p_Players.Count;
 
             }
@@ -59,8 +57,14 @@ namespace GameFactory.Model
         }
         private string BuildMessage(string board, List<Player> p_Players)
         {
-            return $"Here is the current Tic-Tac-Toe board: {board} !Your turn. Make a move by changing one empty '.' to '{p_Players[1].Icon}' and return the new board. Note: You cannot override cells already occupied by '{p_Players[0].Icon}' or '{p_Players[1].Icon}'.";
-
+            return $"Objective: Win the Tic-Tac-Toe game.\n" +
+                   $"Current board:\n{board}\n" +
+                   $"Your turn:\n" +
+                   $"- You are '{p_Players[1].Icon}'.\n" +
+                   $"- Change one empty '.' to '{p_Players[1].Icon}' and return the new board.\n" +
+                   $"- You cannot override cells already occupied by '{p_Players[0].Icon}' or '{p_Players[1].Icon}'.\n" +
+                   $"- You are only allowed to change 1 cell at a time.\n" +
+                   $"Make your move:";
         }
         private string GetApiKey()
         {
