@@ -7,12 +7,12 @@ namespace GameFactory
         static void Main()
         {
 
-            InitializeGameMenu();
-            var players = InitializePlayer();
+            var GameMode = InitializeGameMenu();
+            var players = InitializePlayer(GameMode);
             InitializeGame(players);
 
         }
-        static void InitializeGameMenu()
+        static string InitializeGameMenu()
         {
             List<string> menuPoints = new(Enum.GetNames(typeof(StartMenuOptions)));
             string choosing = null;
@@ -26,11 +26,13 @@ namespace GameFactory
                 {
                     switch (choosing)
                     {
-                        case "NewGame":
-                            return;
+                        case "Singleplayer":
+                            return "SP";
+                        case "Multiplayer":
+                            return "MP";
                         case "Quit":
                             Environment.Exit(0);
-                            return;
+                            return "quit";
                         default:
                             throw new Exception("Invalid Input.");
                     }
@@ -65,34 +67,42 @@ namespace GameFactory
                 }
             } while (true);
         }
-        static List<Player> InitializePlayer()
+        static List<Player> InitializePlayer(string GameMode)
         {
             Console.Clear();
             var players = new List<Player>();
 
             bool isValidNumber;
             int numberOfPlayers;
-
-            do
+            if (GameMode == "SP")
             {
-                Console.WriteLine("Enter the number of players: ");
-                ConsoleKeyInfo keyInfo = Console.ReadKey();
-                isValidNumber = int.TryParse(keyInfo.KeyChar.ToString(), out numberOfPlayers);
-
-                if (!isValidNumber)
+                numberOfPlayers = 1;
+            }
+            else
+            {
+                do
                 {
-                    Console.WriteLine("\nInvalid input. Please enter a number.");
-                }
+                    Console.WriteLine("Enter the number of players: ");
+                    ConsoleKeyInfo keyInfo = Console.ReadKey();
+                    isValidNumber = int.TryParse(keyInfo.KeyChar.ToString(), out numberOfPlayers);
 
-            } while (!isValidNumber);
-            Console.WriteLine();
+                    if (!isValidNumber)
+                    {
+                        Console.WriteLine("\nInvalid input. Please enter a number.");
+                    }
+
+                } while (!isValidNumber);
+                Console.WriteLine();
+            }
+
             for (int Gamer = 0; Gamer < numberOfPlayers; Gamer++)
             {
-                Console.WriteLine($"Enter the name of player {Gamer + 1}: ");
+                Console.WriteLine($"\n Enter the name of player {Gamer + 1}: \n");
                 string playerName = Console.ReadLine();
-                Console.WriteLine($"Enter the icon of player {Gamer + 1}: ");
-                string playerIcon = Console.ReadLine();
-                Console.WriteLine($"Choose your Colour: ");
+                Console.WriteLine($"\n Enter the icon of player {Gamer + 1}: \n");
+                ConsoleKeyInfo keyInfo = Console.ReadKey();
+                string playerIcon = keyInfo.KeyChar.ToString();
+                Console.WriteLine($"\n Choose your Colour: \n");
                 List<string> colours = new(Enum.GetNames(typeof(ValidColours)));
                 string playerColour = ShowMenu(colours);
                 Player newPlayer = new() { Name = playerName, Icon = playerIcon, Colour = playerColour };
@@ -144,22 +154,12 @@ namespace GameFactory
                             fourWGame.StartMatch(Players);
                             break;
                         case "FourWChatGPT":
-                            if (Players.Count == 1)
-                            {
                                 Console.Clear();
                                 Player GPT = new() { Name = "chatGPT", Icon = "C", Colour = "green", IsHuman = false };
                                 Players.Add(GPT);
                                 var fourWChatGPTGame = new FourWChatGPT();
                                 fourWChatGPTGame.StartMatch(Players);
                                 break;
-                            }
-                            else
-                            {
-                                Console.Clear();
-                                Console.WriteLine("Invalid number of players for this game. Please choose another game.");
-                                game = null;
-                                break;
-                            }
                         case "CustomTTT":
                             Console.Clear();
                             var costumTTTGame = new CustomTTT();

@@ -2,7 +2,8 @@ namespace GameFactory
 {
     public enum StartMenuOptions
     {
-        NewGame = 1,
-        Quit = 2
+        Singleplayer = 1,
+        Multiplayer = 2,
+        Quit = 3
     }
 }
