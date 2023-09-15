@@ -3,11 +3,13 @@
     internal class TTT : Match
     {
         private bool FirstTurn = true;
-        public TTT() : base(3, 3, 3)
-        { }
+        private bool p_gpt;
+        public TTT(bool p_gpt) : base(3, 3, 3)
+        {
+        }
         public override void GameMechanic(List<Player> p_players, bool p_gpt)
         {
-            if (p_gpt)
+            if (this.p_gpt && p_CurrentPlayerIndex == 1)
             {
                 ChatGPTMove(BoardToString(p_players), p_players);
             }

@@ -8,7 +8,7 @@ namespace GameFactory.Model
         { }
         public override void GameMechanic(List<Player> p_Players, bool p_gpt)
         {
-            if (p_gpt)
+            if (p_gpt && p_CurrentPlayerIndex == 1)
             {
                 ChatGPTMove(BoardToString(p_Players), p_Players);
             }
