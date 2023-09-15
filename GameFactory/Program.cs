@@ -81,6 +81,7 @@ namespace GameFactory
                 }
             } while (true);
         }
+        
         static List<Player> InitializePlayer(string p_gameMode)
         {
             Console.Clear();
@@ -101,7 +102,6 @@ namespace GameFactory
             }
             return players;
         }
-
         static int DetermineNumberOfPlayers(string p_gameMode)
         {
             if (p_gameMode == "SP") return 1;
@@ -118,7 +118,6 @@ namespace GameFactory
                 Console.WriteLine("Invalid input. Please enter a valid number.");
             } while (true);
         }
-
         static void InitializePlayerName(Player p_player, int p_gamerIndex)
         {
             do
@@ -131,7 +130,6 @@ namespace GameFactory
                 }
             } while (string.IsNullOrEmpty(p_player.Name));
         }
-
         static void InitializePlayerIcon(Player p_player, int p_gamerIndex)
         {
             do
@@ -145,12 +143,30 @@ namespace GameFactory
                 }
             } while (string.IsNullOrEmpty(p_player.Icon) || p_player.Icon == "\r" || p_player.Icon == " ");
         }
-
         static void InitializePlayerColor(Player p_player, int p_gamerIndex)
         {
             Console.WriteLine($"\n Choose a Colour for player {p_gamerIndex + 1}: ");
             List<string> colours = new(Enum.GetNames(typeof(ValidColours)));
             p_player.Colour = ShowMenu(colours);
+        }
+
+        static void InitializeGame(List<Player> Players, string p_gameMode)
+        {
+            Console.Clear();
+
+            string game = null;
+
+            do
+            {
+                if (p_gameMode == "SP")
+                {
+                    SinglePlayerGames(Players, game);
+                }
+                else if (p_gameMode == "MP")
+                {
+                    MultiPlayerGames(Players, game);
+                }
+            } while (game == null);
         }
         static void SinglePlayerGames(List<Player> Players, string p_game)
         {
@@ -220,24 +236,6 @@ namespace GameFactory
 
                 }
             }
-        }
-        static void InitializeGame(List<Player> Players, string p_gameMode)
-        {
-            Console.Clear();
-
-            string game = null;
-
-            do
-            {
-                if (p_gameMode == "SP")
-                {
-                    SinglePlayerGames(Players, game);
-                }
-                else if (p_gameMode == "MP")
-                {
-                    MultiPlayerGames(Players, game);
-                }
-            } while (game == null);
         }
     }
 }
