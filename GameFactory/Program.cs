@@ -202,6 +202,7 @@ namespace GameFactory
         }
         static void MultiPlayerGames(List<Player> Players, string p_game)
         {
+            bool p_twist;
             List<string> gameOptions = new(Enum.GetNames(typeof(MultiPlayerGames)));
 
             while (true)
@@ -226,12 +227,14 @@ namespace GameFactory
                             break;
                         case "TwistFourW":
                             Console.Clear();
-                            var twistFourWGame = new TwistFourW();
+                            p_twist = true;
+                            var twistFourWGame = new CustomTTT(p_twist);
                             twistFourWGame.StartMatch(Players);
                             break;
                         case "CustomTTT":
                             Console.Clear();
-                            var costumTTTGame = new CustomTTT();
+                            p_twist = false;
+                            var costumTTTGame = new CustomTTT(p_twist);
                             costumTTTGame.StartMatch(Players);
                             break;
                         default:

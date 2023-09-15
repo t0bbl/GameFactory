@@ -3,9 +3,15 @@
     internal class CustomTTT : Match
     {
         private bool FirstTurn = true;
+        private bool p_twist;
 
-        public CustomTTT() : base(AskForRows(), AskForColumns(), AskForWinningLength())
-        { }
+        public CustomTTT(bool p_twist)
+            : base(p_twist ? 8 : AskForRows(),
+                   p_twist ? 5 : AskForColumns(),
+                   p_twist ? 4 : AskForWinningLength())
+        {
+            this.p_twist = p_twist;
+        }
         public override void GameMechanic(List<Player> p_Players)
         {
             if (FirstTurn)
@@ -36,6 +42,10 @@
                         SetCell(row, col, p_CurrentPlayerIndex + 1);
                         p_CurrentPlayerIndex = (p_CurrentPlayerIndex + 1) % p_Players.Count;
                         validInput = true;
+                        if (p_twist)
+                        {
+                            TwistColumn(col);
+                        }
                     }
                     else
                     {
@@ -47,6 +57,7 @@
                     Console.WriteLine("Invalid input. Try again.");
                 }
             }
+
             PrintBoard(true, true, p_Players);
         }
 
@@ -89,6 +100,29 @@
         {
             FirstTurn = true;
         }
+        public void TwistColumn(int chosenColumn)
+        {
+            Random random = new Random();
+            bool TwistOrNot = random.Next(0, 2) == 0;
+            if (TwistOrNot)
+            {
+                Console.WriteLine("Twist!");
+
+                List<int> tempColumn = new List<int>();
+                for (int i = 0; i < p_rows; i++)
+                {
+                    tempColumn.Add(GetCell(i, chosenColumn));
+                }
+
+                tempColumn.Reverse();
+
+                for (int i = 0; i < p_rows; i++)
+                {
+                    SetCell(i, chosenColumn, tempColumn[i]);
+                }
+            }
+        }
+
 
     }
 }
