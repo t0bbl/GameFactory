@@ -86,64 +86,69 @@ namespace GameFactory
             Console.Clear();
             var players = new List<Player>();
 
-            bool p_isValidNumber;
-            int p_numberOfPlayers;
-            if (p_gameMode == "SP")
-            {
-                p_numberOfPlayers = 1;
-            }
-            else
-            {
-                do
-                {
-                    Console.WriteLine("Enter the number of players: ");
-                    ConsoleKeyInfo keyInfo = Console.ReadKey();
-                    p_isValidNumber = int.TryParse(keyInfo.KeyChar.ToString(), out p_numberOfPlayers);
-
-                    if (!p_isValidNumber)
-                    {
-                        Console.WriteLine("\nInvalid input. Please enter a number.");
-                    }
-
-                } while (!p_isValidNumber);
-                Console.WriteLine();
-            }
+            int p_numberOfPlayers = DetermineNumberOfPlayers(p_gameMode);
 
             for (int p_gamer = 0; p_gamer < p_numberOfPlayers; p_gamer++)
             {
-                Console.Clear();
-                string playerName;
-                string playerIcon;
-                do
-                {
-                    Console.WriteLine($"\n Enter the name of player {p_gamer + 1}: \n");
-                    playerName = Console.ReadLine();
-                    if (string.IsNullOrEmpty(playerName))
-                    {
-                        Console.WriteLine("Error: Name cannot be empty.");
-                    }
-                } while (string.IsNullOrEmpty(playerName));
-                do
-                {
-                    Console.WriteLine($"\n Enter the icon of player {p_gamer + 1}: \n");
-                    ConsoleKeyInfo icon = Console.ReadKey();
-                    Console.WriteLine();
-                    playerIcon = icon.KeyChar.ToString();
+                Player newPlayer = new Player();
+                InitializePlayerName(newPlayer, p_gamer);
+                InitializePlayerIcon(newPlayer, p_gamer);
+                InitializePlayerColor(newPlayer);
 
-                    if (string.IsNullOrWhiteSpace(playerIcon) || playerIcon == "\r" || playerIcon == " ")
-                    {
-                        Console.WriteLine("Error: Icon cannot be empty or whitespace.");
-                        playerIcon = "";
-                    }
-                } while (string.IsNullOrEmpty(playerIcon) || playerIcon == "\r" || playerIcon == " ");
-                Console.WriteLine($"\n Choose your Colour: \n");
-                List<string> colours = new(Enum.GetNames(typeof(ValidColours)));
-                string playerColour = ShowMenu(colours);
-                Player newPlayer = new() { Name = playerName, Icon = playerIcon, Colour = playerColour };
                 players.Add(newPlayer);
             }
             return players;
+        }
 
+        static int DetermineNumberOfPlayers(string p_gameMode)
+        {
+            if (p_gameMode == "SP") return 1;
+
+            int p_numberOfPlayers;
+            do
+            {
+                Console.WriteLine("Enter the number of players: ");
+                string input = Console.ReadLine();
+                if (int.TryParse(input, out p_numberOfPlayers) && p_numberOfPlayers > 0)
+                {
+                    return p_numberOfPlayers;
+                }
+                Console.WriteLine("Invalid input. Please enter a valid number.");
+            } while (true);
+        }
+
+        static void InitializePlayerName(Player p_player, int p_gamerIndex)
+        {
+            do
+            {
+                Console.WriteLine($"\n Enter the name of player {p_gamerIndex + 1}: ");
+                p_player.Name = Console.ReadLine();
+                if (string.IsNullOrEmpty(p_player.Name))
+                {
+                    Console.WriteLine("Error: Name cannot be empty.");
+                }
+            } while (string.IsNullOrEmpty(p_player.Name));
+        }
+
+        static void InitializePlayerIcon(Player p_player, int p_gamerIndex)
+        {
+            do
+            {
+                Console.WriteLine($"\n Enter the icon of player {p_gamerIndex + 1}: ");
+                p_player.Icon = Console.ReadKey().KeyChar.ToString();
+                Console.WriteLine();
+                if (string.IsNullOrEmpty(p_player.Icon) || p_player.Icon == "\r" || p_player.Icon == " ")
+                {
+                    Console.WriteLine("Error: Icon cannot be empty or whitespace.");
+                }
+            } while (string.IsNullOrEmpty(p_player.Icon) || p_player.Icon == "\r" || p_player.Icon == " ");
+        }
+
+        static void InitializePlayerColor(Player p_player)
+        {
+            Console.WriteLine("\n Choose your Colour: ");
+            List<string> colours = new(Enum.GetNames(typeof(ValidColours)));
+            p_player.Colour = ShowMenu(colours);
         }
         static void SinglePlayerGames(List<Player> Players, string p_game)
         {
