@@ -18,14 +18,14 @@ namespace GameFactory
         public int p_CurrentPlayerIndex { get; set; }
         readonly Random p_Random = new();
 
-        public List<Player> StartMatch(List<Player> p_Players)
+        public List<Player> StartMatch(List<Player> p_Players, bool p_gpt)
         {
             ResetFirstTurn();
             if (p_Players.All(player => player.IsHuman))
             { ShufflePlayers(p_Players); }
             do
             {
-                GameMechanic(p_Players);
+                GameMechanic(p_Players, p_gpt);
             } while (CheckWinner() == 0);
             int p_winnerNumber = CheckWinner();
             if (p_winnerNumber != 0)
@@ -34,7 +34,7 @@ namespace GameFactory
             }
 
 
-            ReMatch(p_Players);
+            ReMatch(p_Players, p_gpt);
 
             ResetBoard();
             return (p_Players);
@@ -144,7 +144,7 @@ namespace GameFactory
             }
 
         }
-        public void ReMatch(List<Player> Players)
+        public void ReMatch(List<Player> Players, bool p_gpt)
         {
             Console.WriteLine("Do you want to rematch? (y/n)");
             ConsoleKeyInfo keyInfo = Console.ReadKey();
@@ -153,7 +153,7 @@ namespace GameFactory
             {
                 Console.Clear();
                 ResetBoard();
-                StartMatch(Players);
+                StartMatch(Players, p_gpt);
             }
             else if (rematch == "n")
             {
@@ -166,10 +166,10 @@ namespace GameFactory
             else
             {
                 Console.WriteLine("Invalid input. Try again.");
-                ReMatch(Players);
+                ReMatch(Players, p_gpt);
             }
         }
-        public virtual void GameMechanic(List<Player> Players)
+        public virtual void GameMechanic(List<Player> Players, bool p_gpt)
         {
         }
         public void ShufflePlayers(List<Player> Players)

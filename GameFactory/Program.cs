@@ -155,20 +155,22 @@ namespace GameFactory
             Console.Clear();
 
             string game = null;
-
+            bool p_gpt = false;
             do
             {
                 if (p_gameMode == "SP")
                 {
-                    SinglePlayerGames(Players, game);
+                    p_gpt = true;
+                    SinglePlayerGames(Players, game, p_gpt);
                 }
                 else if (p_gameMode == "MP")
-                {
-                    MultiPlayerGames(Players, game);
+                {   
+                    p_gpt = false;
+                    MultiPlayerGames(Players, game, p_gpt);
                 }
             } while (game == null);
         }
-        static void SinglePlayerGames(List<Player> Players, string p_game)
+        static void SinglePlayerGames(List<Player> Players, string p_game, bool p_gpt)
         {
             List<string> gameOptions = new(Enum.GetNames(typeof(SinglePlayerGames)));
             Player GPT = new() { Name = "ChatGPT", Icon = "C", Colour = "Green", IsHuman = false };
@@ -185,13 +187,13 @@ namespace GameFactory
                     {
                         case "TTTChatGPT":
                             Console.Clear();
-                            var tttChatGPTGame = new TTTChatGPT();
-                            tttChatGPTGame.StartMatch(Players);
+                            var tttChatGPTGame = new TTT(p_gpt);
+                            tttChatGPTGame.StartMatch(Players, p_gpt);
                             break;
                         case "FourWChatGPT":
                             Console.Clear();
-                            var fourWChatGPTGame = new FourWChatGPT();
-                            fourWChatGPTGame.StartMatch(Players);
+                            var fourWChatGPTGame = new FourW(p_gpt);
+                            fourWChatGPTGame.StartMatch(Players, p_gpt);
                             break;
 
                         default:
@@ -200,7 +202,7 @@ namespace GameFactory
                 }
             }
         }
-        static void MultiPlayerGames(List<Player> Players, string p_game)
+        static void MultiPlayerGames(List<Player> Players, string p_game, bool p_gpt)
         {
             bool p_twist;
             List<string> gameOptions = new(Enum.GetNames(typeof(MultiPlayerGames)));
@@ -217,25 +219,25 @@ namespace GameFactory
                     {
                         case "TTT":
                             Console.Clear();
-                            var tttGame = new TTT();
-                            tttGame.StartMatch(Players);
+                            var tttGame = new TTT(p_gpt);
+                            tttGame.StartMatch(Players, p_gpt);
                             break;
                         case "FourW":
                             Console.Clear();
-                            var fourWGame = new FourW();
-                            fourWGame.StartMatch(Players);
+                            var fourWGame = new FourW(p_gpt);
+                            fourWGame.StartMatch(Players, p_gpt);
                             break;
                         case "TwistFourW":
                             Console.Clear();
                             p_twist = true;
                             var twistFourWGame = new CustomTTT(p_twist);
-                            twistFourWGame.StartMatch(Players);
+                            twistFourWGame.StartMatch(Players, p_gpt);
                             break;
                         case "CustomTTT":
                             Console.Clear();
                             p_twist = false;
                             var costumTTTGame = new CustomTTT(p_twist);
-                            costumTTTGame.StartMatch(Players);
+                            costumTTTGame.StartMatch(Players, p_gpt);
                             break;
                         default:
                             throw new Exception("Invalid game type.");

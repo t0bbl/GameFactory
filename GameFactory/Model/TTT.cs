@@ -5,8 +5,12 @@
         private bool FirstTurn = true;
         public TTT() : base(3, 3, 3)
         { }
-        public override void GameMechanic(List<Player> p_players)
+        public override void GameMechanic(List<Player> p_players, bool p_gpt)
         {
+            if (p_gpt)
+            {
+                ChatGPTMove(BoardToString(p_players), p_players);
+            }
             int chosenCell;
             bool validInput = false;
             if (FirstTurn)

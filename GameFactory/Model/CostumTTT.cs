@@ -12,7 +12,7 @@
         {
             this.p_twist = p_twist;
         }
-        public override void GameMechanic(List<Player> p_Players)
+        public override void GameMechanic(List<Player> p_Players, bool p_gpt)
         {
             if (FirstTurn)
             {
