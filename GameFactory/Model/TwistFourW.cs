@@ -4,7 +4,7 @@
     {
         private bool FirstTurn = true;
 
-        public TwistFourW() : base(7, 6, 4)
+        public TwistFourW() : base(8, 5, 4)
         { }
         public override void GameMechanic(List<Player> p_Players)
         {
