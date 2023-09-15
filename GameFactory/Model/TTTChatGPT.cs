@@ -28,63 +28,63 @@
 //                   $"- You are only allowed to change 1 cell at a time.\n" +
 //                   $"Make your move:";
 //        }
-//        public override void ChatGPTMove(string board, List<Player> p_Players)
+//public override void ChatGPTMove(string board, List<Player> p_Players)
+//{
+//    ConsoleColor OriginalForegroundColour = Console.ForegroundColor;
+//    Console.ForegroundColor = ConsoleColor.Green;
+
+//    string apiKey = GetApiKey();
+//    if (apiKey != null)
+//    {
+//        Console.WriteLine("ChatGPT is thinking...");
+
+//        string message = BuildMessage(board, p_Players);
+//        string response = SendMessageToChatGPT(apiKey, message);
+
+//        Console.WriteLine("ChatGPT´s Move: ");
+//        Console.WriteLine();
+//        int dotCount = StringToBoard(response, p_Players);
+//        if (dotCount != 8)
 //        {
-//            ConsoleColor OriginalForegroundColour = Console.ForegroundColor;
-//            Console.ForegroundColor = ConsoleColor.Green;
-
-//            string apiKey = GetApiKey();
-//            if (apiKey != null)
-//            {
-//                Console.WriteLine("ChatGPT is thinking...");
-
-//                string message = BuildMessage(board, p_Players);
-//                string response = SendMessageToChatGPT(apiKey, message);
-
-//                Console.WriteLine("ChatGPT´s Move: ");
-//                Console.WriteLine();
-//                int dotCount = StringToBoard(response, p_Players);
-//                if (dotCount != 8)
-//                {
-//                    PrintBoard(false, false, p_Players);
-//                }
-
-//                p_CurrentPlayerIndex = (p_CurrentPlayerIndex + 1) % p_Players.Count;
-
-//            }
-//            else
-//            {
-//                Console.WriteLine("Please set the environment variable CHATGPT_API_KEY to your ChatGPT API key.");
-//                Environment.Exit(0);
-//            }
-//            Console.ForegroundColor = OriginalForegroundColour;
+//            PrintBoard(false, false, p_Players);
 //        }
-//        public int StringToBoard(string boardString, List<Player> p_Players)
+
+//        p_CurrentPlayerIndex = (p_CurrentPlayerIndex + 1) % p_Players.Count;
+
+//    }
+//    else
+//    {
+//        Console.WriteLine("Please set the environment variable CHATGPT_API_KEY to your ChatGPT API key.");
+//        Environment.Exit(0);
+//    }
+//    Console.ForegroundColor = OriginalForegroundColour;
+//}
+//public int StringToBoard(string boardString, List<Player> p_Players)
+//{
+//    int dotCount = 0;
+//    string[] p_rows = boardString.Split(new[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
+//    for (int row = 0; row < p_rows.Length; row++)
+//    {
+//        string[] cells = p_rows[row].Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+//        for (int col = 0; col < p_Columns; col++)
 //        {
-//            int dotCount = 0;
-//            string[] p_rows = boardString.Split(new[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
-//            for (int row = 0; row < p_rows.Length; row++)
+//            if (cells[col] == ".")
 //            {
-//                string[] cells = p_rows[row].Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
-//                for (int col = 0; col < p_Columns; col++)
-//                {
-//                    if (cells[col] == ".")
-//                    {
-//                        SetCell(row, col, 0);
-//                        dotCount++;
-//                    }
-//                    else if (cells[col] == p_Players[0].Icon)
-//                    {
-//                        SetCell(row, col, 1);
-//                    }
-//                    else if (cells[col] == p_Players[1].Icon)
-//                    {
-//                        SetCell(row, col, 2);
-//                    }
-//                }
+//                SetCell(row, col, 0);
+//                dotCount++;
 //            }
-//            return dotCount;
+//            else if (cells[col] == p_Players[0].Icon)
+//            {
+//                SetCell(row, col, 1);
+//            }
+//            else if (cells[col] == p_Players[1].Icon)
+//            {
+//                SetCell(row, col, 2);
+//            }
 //        }
+//    }
+//    return dotCount;
+//}
 
 //    }
 //}
