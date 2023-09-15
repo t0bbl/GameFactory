@@ -233,5 +233,8 @@ namespace GameFactory
             }
             return sb.ToString();
         }
+        public virtual void ChatGPTMove(string board, List<Player> p_Players)
+        {
+        }
     }
 }

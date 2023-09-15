@@ -28,7 +28,7 @@
                    $"- You are only allowed to change 1 cell at a time.\n" +
                    $"Make your move:";
         }
-        public void ChatGPTMove(string board, List<Player> p_Players)
+        public override void ChatGPTMove(string board, List<Player> p_Players)
         {
             ConsoleColor OriginalForegroundColour = Console.ForegroundColor;
             Console.ForegroundColor = ConsoleColor.Green;

@@ -27,7 +27,7 @@
                    $"- Drop your '{p_Players[1].Icon}' into any of the columns. You cannot choose a column that is already full.\n" +
                    $"Choose a column (1-7) and return just this one number!:";
         }
-        public void ChatGPTMove(string board, List<Player> p_Players)
+        public override void ChatGPTMove(string board, List<Player> p_Players)
         {
             ConsoleColor OriginalForegroundColour = Console.ForegroundColor;
             Console.ForegroundColor = ConsoleColor.Green;

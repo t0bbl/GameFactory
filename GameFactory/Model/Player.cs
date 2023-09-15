@@ -51,7 +51,7 @@ namespace GameFactory
             {
                 Console.WriteLine($"{p_player.Name}: {p_player.Wins} Wins");
                 Console.WriteLine($"{p_player.Name}: {p_player.Losses} Losses");
-                Console.WriteLine($"Draws: {p_player.Draws}");
+                Console.WriteLine($"{p_player.Name}: {p_player.Draws} Draws");
             };
         }
     }
