@@ -10,6 +10,9 @@
         {
             if (FirstTurn)
             {
+                Console.WriteLine("Twist FourW!");
+                Console.WriteLine("Twist FourW is a variation of FourW where there is a 50/50 chance ");
+                Console.WriteLine("that the column you choose will be twisted, reversing the order of the cells in that column.");
                 PrintBoard(true, true, p_Players);
                 FirstTurn = false;
             }
