@@ -12,18 +12,18 @@
         {
             this.p_twist = p_twist;
         }
-        public override void GameMechanic(List<Player> p_Players)
+        public override void GameMechanic(List<Player> p_players)
         {
             if (FirstTurn)
             {
-                PrintBoard(true, true, p_Players);
+                PrintBoard(true, true, p_players);
                 FirstTurn = false;
             }
             bool validInput = false;
             while (!validInput)
             {
                 Console.WriteLine();
-                Console.WriteLine($"{p_Players[p_CurrentPlayerIndex].Name}, input a coordinate X/Y");
+                Console.WriteLine($"{p_players[p_CurrentPlayerIndex].Name}, input a coordinate X/Y");
 
                 string input = Console.ReadLine();
                 string[] parts = input.Split('/');
@@ -40,7 +40,7 @@
                     if (GetCell(row, col) == 0)
                     {
                         SetCell(row, col, p_CurrentPlayerIndex + 1);
-                        p_CurrentPlayerIndex = (p_CurrentPlayerIndex + 1) % p_Players.Count;
+                        p_CurrentPlayerIndex = (p_CurrentPlayerIndex + 1) % p_players.Count;
                         validInput = true;
                         if (p_twist)
                         {
@@ -58,7 +58,7 @@
                 }
             }
 
-            PrintBoard(true, true, p_Players);
+            PrintBoard(true, true, p_players);
         }
 
         private static int AskForRows()

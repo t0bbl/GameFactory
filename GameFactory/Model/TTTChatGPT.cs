@@ -6,29 +6,29 @@
         {
 
         }
-        public override void GameMechanic(List<Player> p_Players)
+        public override void GameMechanic(List<Player> p_players)
         {
             if (p_CurrentPlayerIndex == 1)
             {
-                ChatGPTMove(BoardToString(p_Players), p_Players);
+                ChatGPTMove(BoardToString(p_players), p_players);
             }
             else
             {
-                base.GameMechanic(p_Players);
+                base.GameMechanic(p_players);
             }
         }
-        protected override string BuildMessage(string board, List<Player> p_Players)
+        protected override string BuildMessage(string board, List<Player> p_players)
         {
             return $"Objective: Win the Tic-Tac-Toe game.\n" +
                    $"Current board:\n{board}\n" +
                    $"Your turn:\n" +
-                   $"- You are '{p_Players[1].Icon}'.\n" +
-                   $"- Change one empty '.' to '{p_Players[1].Icon}' and return the new board.\n" +
-                   $"- You cannot override cells already occupied by '{p_Players[0].Icon}' or '{p_Players[1].Icon}'.\n" +
+                   $"- You are '{p_players[1].Icon}'.\n" +
+                   $"- Change one empty '.' to '{p_players[1].Icon}' and return the new board.\n" +
+                   $"- You cannot override cells already occupied by '{p_players[0].Icon}' or '{p_players[1].Icon}'.\n" +
                    $"- You are only allowed to change 1 cell at a time.\n" +
                    $"Make your move:";
         }
-        public override void ChatGPTMove(string board, List<Player> p_Players)
+        public override void ChatGPTMove(string board, List<Player> p_players)
         {
             ConsoleColor OriginalForegroundColour = Console.ForegroundColor;
             Console.ForegroundColor = ConsoleColor.Green;
@@ -38,18 +38,18 @@
             {
                 Console.WriteLine("ChatGPT is thinking...");
 
-                string message = BuildMessage(board, p_Players);
+                string message = BuildMessage(board, p_players);
                 string response = SendMessageToChatGPT(apiKey, message);
 
                 Console.WriteLine("ChatGPT´s Move: ");
                 Console.WriteLine();
-                int dotCount = StringToBoard(response, p_Players);
+                int dotCount = StringToBoard(response, p_players);
                 if (dotCount != 8)
                 {
-                    PrintBoard(false, false, p_Players);
+                    PrintBoard(false, false, p_players);
                 }
 
-                p_CurrentPlayerIndex = (p_CurrentPlayerIndex + 1) % p_Players.Count;
+                p_CurrentPlayerIndex = (p_CurrentPlayerIndex + 1) % p_players.Count;
 
             }
             else
@@ -59,7 +59,7 @@
             }
             Console.ForegroundColor = OriginalForegroundColour;
         }
-        public int StringToBoard(string boardString, List<Player> p_Players)
+        public int StringToBoard(string boardString, List<Player> p_players)
         {
             int dotCount = 0;
             string[] p_rows = boardString.Split(new[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
@@ -73,11 +73,11 @@
                         SetCell(row, col, 0);
                         dotCount++;
                     }
-                    else if (cells[col] == p_Players[0].Icon)
+                    else if (cells[col] == p_players[0].Icon)
                     {
                         SetCell(row, col, 1);
                     }
-                    else if (cells[col] == p_Players[1].Icon)
+                    else if (cells[col] == p_players[1].Icon)
                     {
                         SetCell(row, col, 2);
                     }

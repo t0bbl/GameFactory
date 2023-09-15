@@ -6,25 +6,25 @@ namespace GameFactory.Model
 
         public FourW() : base(6, 7, 4)
         { }
-        public override void GameMechanic(List<Player> p_Players)
+        public override void GameMechanic(List<Player> p_players)
         {
             int chosenColumn;
             if (FirstTurn)
             {
-                PrintBoard(false, true, p_Players);
+                PrintBoard(false, true, p_players);
                 Console.WriteLine();
                 FirstTurn = false;
             }
             do
             {
                 Console.WriteLine();
-                Console.WriteLine($"{p_Players[p_CurrentPlayerIndex].Name}, input a column number from 1 to {p_Columns}");
+                Console.WriteLine($"{p_players[p_CurrentPlayerIndex].Name}, input a column number from 1 to {p_Columns}");
             } while (!TryGetValidInput(out chosenColumn, p_Columns));
 
-            MakeMove(chosenColumn, p_CurrentPlayerIndex, p_Players);
-            p_CurrentPlayerIndex = (p_CurrentPlayerIndex + 1) % p_Players.Count;
+            MakeMove(chosenColumn, p_CurrentPlayerIndex, p_players);
+            p_CurrentPlayerIndex = (p_CurrentPlayerIndex + 1) % p_players.Count;
 
-            PrintBoard(false, true, p_Players);
+            PrintBoard(false, true, p_players);
         }
         public int FindLowestAvailableRow(int column)
         {
@@ -42,7 +42,7 @@ namespace GameFactory.Model
             FirstTurn = true;
         }
 
-        public bool MakeMove(int chosenColumn, int p_CurrentPlayerIndex, List<Player> p_Players)
+        public bool MakeMove(int chosenColumn, int p_CurrentPlayerIndex, List<Player> p_players)
         {
             int row = FindLowestAvailableRow(chosenColumn - 1);
 

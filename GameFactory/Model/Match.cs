@@ -18,26 +18,26 @@ namespace GameFactory
         public int p_CurrentPlayerIndex { get; set; }
         readonly Random p_Random = new();
 
-        public List<Player> StartMatch(List<Player> p_Players)
+        public List<Player> StartMatch(List<Player> p_players)
         {
             ResetFirstTurn();
-            if (p_Players.All(player => player.IsHuman))
-            { ShufflePlayers(p_Players); }
+            if (p_players.All(player => player.IsHuman))
+            { ShufflePlayers(p_players); }
             do
             {
-                GameMechanic(p_Players);
+                GameMechanic(p_players);
             } while (CheckWinner() == 0);
             int p_winnerNumber = CheckWinner();
             if (p_winnerNumber != 0)
             {
-                (p_Players) = Player.UpdateStats(p_Players, p_winnerNumber);
+                (p_players) = Player.UpdateStats(p_players, p_winnerNumber);
             }
 
 
-            ReMatch(p_Players);
+            ReMatch(p_players);
 
             ResetBoard();
-            return (p_Players);
+            return (p_players);
         }
 
         public int CheckWinner()
@@ -84,7 +84,7 @@ namespace GameFactory
             if (p_row >= 0 && p_row < p_rows && col >= 0 && col < p_Columns)
                 p_Board[p_row, col] = value;
         }
-        public void PrintBoard(bool p_showRow, bool p_showCol, List<Player> p_Players)
+        public void PrintBoard(bool p_showRow, bool p_showCol, List<Player> p_players)
         {
             for (int p_row = 0; p_row < p_rows; p_row++)
             {
@@ -109,12 +109,12 @@ namespace GameFactory
                     }
                     else
                     {
-                        for (int p_player = 0; p_player < p_Players.Count; p_player++)
+                        for (int p_player = 0; p_player < p_players.Count; p_player++)
                         {
                             if (cellValue == p_player + 1)
                             {
                                 ConsoleColor OriginalForegroundColor = Console.ForegroundColor;
-                                if (Enum.TryParse(p_Players[p_player].Colour, out ConsoleColor parsedColor))
+                                if (Enum.TryParse(p_players[p_player].Colour, out ConsoleColor parsedColor))
                                 {
                                     Console.ForegroundColor = parsedColor;
                                 }
@@ -122,7 +122,7 @@ namespace GameFactory
                                 {
                                     Console.ForegroundColor = ConsoleColor.White;
                                 }
-                                Console.Write($" {p_Players[p_player].Icon} ");
+                                Console.Write($" {p_players[p_player].Icon} ");
                                 Console.ForegroundColor = OriginalForegroundColor;
                                 break;
                             }
@@ -200,7 +200,7 @@ namespace GameFactory
             var chatGPTClient = new ChatGPTClient(apiKey);
             return chatGPTClient.SendMessage(message);
         }
-        protected virtual string BuildMessage(string board, List<Player> p_Players)
+        protected virtual string BuildMessage(string board, List<Player> p_players)
         {
             return "error";
         }
@@ -208,7 +208,7 @@ namespace GameFactory
         {
             return Environment.GetEnvironmentVariable("CHATGPT_API_KEY", EnvironmentVariableTarget.Machine);
         }
-        public string BoardToString(List<Player> p_Players)
+        public string BoardToString(List<Player> p_players)
         {
             StringBuilder sb = new StringBuilder();
             for (int row = 0; row < p_rows; row++)
@@ -222,10 +222,10 @@ namespace GameFactory
                             sb.Append(" . ");
                             break;
                         case 1:
-                            sb.Append($" {p_Players[0].Icon} ");
+                            sb.Append($" {p_players[0].Icon} ");
                             break;
                         case 2:
-                            sb.Append($" {p_Players[1].Icon} ");
+                            sb.Append($" {p_players[1].Icon} ");
                             break;
                     }
                 }
@@ -233,7 +233,7 @@ namespace GameFactory
             }
             return sb.ToString();
         }
-        public virtual void ChatGPTMove(string board, List<Player> p_Players)
+        public virtual void ChatGPTMove(string board, List<Player> p_players)
         {
         }
     }
