@@ -9,7 +9,8 @@ namespace GameFactory
     {
         TTT = 1,
         FourW = 2,
-        CustomTTT = 3
+        TwistFourW = 3,
+        CustomTTT = 4
     }
 
 }

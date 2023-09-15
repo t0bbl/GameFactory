@@ -81,7 +81,7 @@ namespace GameFactory
                 }
             } while (true);
         }
-        
+
         static List<Player> InitializePlayer(string p_gameMode)
         {
             Console.Clear();
@@ -223,6 +223,11 @@ namespace GameFactory
                             Console.Clear();
                             var fourWGame = new FourW();
                             fourWGame.StartMatch(Players);
+                            break;
+                        case "TwistFourW":
+                            Console.Clear();
+                            var twistFourWGame = new TwistFourW();
+                            twistFourWGame.StartMatch(Players);
                             break;
                         case "CustomTTT":
                             Console.Clear();
