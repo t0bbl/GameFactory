@@ -55,7 +55,7 @@ namespace GameFactory
         }
         internal static string ShowMenu(List<string> p_menuItems)
         {
-            Console.WriteLine("Please make a Choice:");
+            Console.WriteLine("");
             p_menuItems.ForEach(CurrentItem => Console.WriteLine($"{p_menuItems.IndexOf(CurrentItem) + 1}. {CurrentItem}"));
             do
             {
@@ -95,7 +95,7 @@ namespace GameFactory
                 Player newPlayer = new Player();
                 InitializePlayerName(newPlayer, p_gamer);
                 InitializePlayerIcon(newPlayer, p_gamer);
-                InitializePlayerColor(newPlayer);
+                InitializePlayerColor(newPlayer, p_gamer);
 
                 players.Add(newPlayer);
             }
@@ -123,7 +123,7 @@ namespace GameFactory
         {
             do
             {
-                Console.WriteLine($"\n Enter the name of player {p_gamerIndex + 1}: ");
+                Console.WriteLine($"\n Enter the name of player {p_gamerIndex + 1}: \n");
                 p_player.Name = Console.ReadLine();
                 if (string.IsNullOrEmpty(p_player.Name))
                 {
@@ -136,7 +136,7 @@ namespace GameFactory
         {
             do
             {
-                Console.WriteLine($"\n Enter the icon of player {p_gamerIndex + 1}: ");
+                Console.WriteLine($"\n Enter the icon of player {p_gamerIndex + 1}: \n");
                 p_player.Icon = Console.ReadKey().KeyChar.ToString();
                 Console.WriteLine();
                 if (string.IsNullOrEmpty(p_player.Icon) || p_player.Icon == "\r" || p_player.Icon == " ")
@@ -146,9 +146,9 @@ namespace GameFactory
             } while (string.IsNullOrEmpty(p_player.Icon) || p_player.Icon == "\r" || p_player.Icon == " ");
         }
 
-        static void InitializePlayerColor(Player p_player)
+        static void InitializePlayerColor(Player p_player, int p_gamerIndex)
         {
-            Console.WriteLine("\n Choose your Colour: ");
+            Console.WriteLine($"\n Choose a Colour for player {p_gamerIndex + 1}: ");
             List<string> colours = new(Enum.GetNames(typeof(ValidColours)));
             p_player.Colour = ShowMenu(colours);
         }
