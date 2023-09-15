@@ -90,6 +90,8 @@ namespace GameFactory
 
             for (int p_gamer = 0; p_gamer < p_numberOfPlayers; p_gamer++)
             {
+                Console.Clear();
+
                 Player newPlayer = new Player();
                 InitializePlayerName(newPlayer, p_gamer);
                 InitializePlayerIcon(newPlayer, p_gamer);
