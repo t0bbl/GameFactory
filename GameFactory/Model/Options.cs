@@ -2,7 +2,7 @@
 
 namespace GameFactory.Model
 {
-    internal class Options : Program
+    internal class Options
     {
         public bool StartOptions()
         {
@@ -14,7 +14,7 @@ namespace GameFactory.Model
             {
                 if (p_choosing == null)
                 {
-                    p_choosing = ShowMenu(menuPoints);
+                    p_choosing = Program.ShowMenu(menuPoints);
                 }
                 else
                 {

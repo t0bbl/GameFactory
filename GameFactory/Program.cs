@@ -53,7 +53,7 @@ namespace GameFactory
                 }
             } while (true);
         }
-        internal static string ShowMenu(List<string> p_menuItems)
+        public static string ShowMenu(List<string> p_menuItems)
         {
             Console.WriteLine("");
             p_menuItems.ForEach(CurrentItem => Console.WriteLine($"{p_menuItems.IndexOf(CurrentItem) + 1}. {CurrentItem}"));
