@@ -105,6 +105,16 @@ namespace GameFactory.Model
 
             return -1;
         }
+        protected override string BuildMessage(string board, List<Player> p_Players)
+        {
+            return $"Objective: Win the Connect 4 game by connecting four of your '{p_Players[1].Icon}' vertically, horizontally, or diagonally.\n" +
+                   $"The board is 7 columns by 6 rows.\n" +
+                   $"Current board:\n{board}\n" +
+                   $"Your turn:\n" +
+                   $"- You are '{p_Players[1].Icon}'.\n" +
+                   $"- Drop your '{p_Players[1].Icon}' into any of the columns. You cannot choose a column that is already full.\n" +
+                   $"Choose a column (1-7) and return just this one number!:";
+        }
     }
 
 }

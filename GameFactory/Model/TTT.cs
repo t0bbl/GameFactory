@@ -10,9 +10,7 @@
         }
         public override void GameMechanic(List<Player> p_players, bool p_gpt)
         {
-            Console.WriteLine($"Debug: this.p_gpt = {this.p_gpt}");
-Console.WriteLine($"Debug: p_CurrentPlayerIndex = {p_CurrentPlayerIndex}");
-
+            
             if (this.p_gpt && p_CurrentPlayerIndex == 1)
             {
                 ChatGPTMove(BoardToString(p_players), p_players);
@@ -109,7 +107,16 @@ Console.WriteLine($"Debug: p_CurrentPlayerIndex = {p_CurrentPlayerIndex}");
             }
             return dotCount;
         }
-
-
+        protected override string BuildMessage(string board, List<Player> p_Players)
+        {
+            return $"Objective: Win the Tic-Tac-Toe game.\n" +
+                   $"Current board:\n{board}\n" +
+                   $"Your turn:\n" +
+                   $"- You are '{p_Players[1].Icon}'.\n" +
+                   $"- Change one empty '.' to '{p_Players[1].Icon}' and return the new board.\n" +
+                   $"- You cannot override cells already occupied by '{p_Players[0].Icon}' or '{p_Players[1].Icon}'.\n" +
+                   $"- You are only allowed to change 1 cell at a time.\n" +
+                   $"Make your move:";
+        }
     }
 }
