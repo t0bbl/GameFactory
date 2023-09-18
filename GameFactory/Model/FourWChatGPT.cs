@@ -10,7 +10,7 @@
         {
             if (p_CurrentPlayerIndex == 1)
             {
-                ChatGPTMove(BoardToString(p_players), p_players);
+                ChatGPTMove(BoardToString(p_board, p_players), p_players);
             }
             else
             {

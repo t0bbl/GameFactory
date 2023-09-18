@@ -1,97 +1,80 @@
+using GameFactory.Model;
 using System.Text;
 
 namespace GameFactory
 {
-    internal class Match
+    internal class Match : Game
     {
-        public Match(int rows, int columns, int winningLength)
-        {
-            p_rows = rows;
-            p_Columns = columns;
-            p_WinningLength = winningLength;
-            p_Board = new int[rows, columns];
-        }
-        public int[,] p_Board;
+        #region Variables
+        public char[,] p_board;
         public int p_rows { get; set; }
         public int p_Columns { get; set; }
         public int p_WinningLength { get; set; }
         public int p_CurrentPlayerIndex { get; set; }
+        public string p_boardString { get; set; }
+
         readonly Random p_Random = new();
-
-        public List<Player> StartMatch(List<Player> p_players)
+        #endregion
+        public Match()
         {
-            ResetFirstTurn();
-            if (p_players.All(player => player.IsHuman))
-            { ShufflePlayers(p_players); }
-            do
-            {
-                GameMechanic(p_players);
-            } while (CheckWinner() == 0);
-            int p_winnerNumber = CheckWinner();
-            if (p_winnerNumber != 0)
-            {
-                (p_players) = Player.UpdateStats(p_players, p_winnerNumber);
-            }
-
-
-            ReMatch(p_players);
-
-            ResetBoard();
-            return (p_players);
         }
 
-        public int CheckWinner()
+        public void StartMatch()
+        {
+            p_CurrentPlayerIndex = 0;
+            ResetBoard();
+
+            ResetFirstTurn();
+            if (p_player.All(player => player.IsHuman))
+            { ShufflePlayers(p_player); }
+            do
+            {
+                GameMechanic(p_player);
+            } while (CheckWinner(p_player) == null);
+
+            string p_winner = CheckWinner(p_player);
+
+            if (p_winner != null)
+            {
+               UpdateStats(p_player, p_winner);
+            }
+
+            ReMatch(p_player);
+        }
+        public virtual void GameMechanic(List<Player> p_player)
+        {
+        }
+
+        #region BoardSetup
+        public void ResetBoard()
         {
             for (int p_row = 0; p_row < p_rows; p_row++)
             {
-                for (int col = 0; col < p_Columns; col++)
+                for (int p_col = 0; p_col < p_Columns; p_col++)
                 {
-                    int cellValue = GetCell(p_row, col);
-                    if (cellValue == 0) continue;
-
-                    int[][] directions = new int[][] { new int[] { 0, 1 }, new int[] { 1, 0 }, new int[] { 1, 1 }, new int[] { 1, -1 } };
-                    foreach (var dir in directions)
-                    {
-                        int count = 1;
-                        for (int playerRow = 1; playerRow < p_WinningLength; playerRow++)
-                        {
-                            int newRow = p_row + dir[0] * playerRow;
-                            int newCol = col + dir[1] * playerRow;
-                            if (newRow < 0 || newRow >= p_rows || newCol < 0 || newCol >= p_Columns) break;
-                            if (GetCell(newRow, newCol) == cellValue) count++;
-                            else break;
-                        }
-                        if (count >= p_WinningLength) return cellValue;
-                    }
+                    SetCell(p_row, p_col, '0');
                 }
             }
-
-            bool isDraw = !Enumerable.Range(0, p_rows).Any(p_row => Enumerable.Range(0, p_Columns).Any(col => GetCell(p_row, col) == 0));
-            return isDraw ? -1 : 0;
         }
-        public void ResetBoard()
+        public char GetCell(int p_row, int p_col)
         {
-            for (int playedRow = 0; playedRow < p_rows; playedRow++)
-                for (int playedColumn = 0; playedColumn < p_Columns; playedColumn++)
-                    p_Board[playedRow, playedColumn] = 0;
+            return p_board[p_row, p_col];
         }
-        public int GetCell(int p_row, int col)
+        public void SetCell(int p_row, int p_col, char p_icon)
         {
-            return p_Board[p_row, col];
+            if (p_row >= 0 && p_row < p_rows && p_col >= 0 && p_col < p_Columns)
+            {
+                p_board[p_row, p_col] = p_icon;
+            }
         }
-        public void SetCell(int p_row, int col, int value)
-        {
-            if (p_row >= 0 && p_row < p_rows && col >= 0 && col < p_Columns)
-                p_Board[p_row, col] = value;
-        }
-        public void PrintBoard(bool p_showRow, bool p_showCol, List<Player> p_players)
+        public void PrintBoard(bool p_showRow, bool p_showCol, List<Player> p_player)
         {
             for (int p_row = 0; p_row < p_rows; p_row++)
             {
                 if (p_showRow)
                 {
                     Console.BackgroundColor = ConsoleColor.DarkGray;
-                    Console.Write(p_row + 1 + " ");
+                    Console.Write($"{p_row + 1} ");
                     Console.BackgroundColor = ConsoleColor.Black;
                 }
                 else
@@ -99,52 +82,98 @@ namespace GameFactory
                     Console.Write("  ");
                 }
 
-
-                for (int col = 0; col < p_Columns; col++)
+                for (int p_col = 0; p_col < p_Columns; p_col++)
                 {
-                    int cellValue = GetCell(p_row, col);
-                    if (cellValue == 0)
+                    char p_cellValue = GetCell(p_row, p_col);
+
+                    if (p_cellValue == '0') 
                     {
                         Console.Write(" . ");
                     }
                     else
                     {
-                        for (int p_player = 0; p_player < p_players.Count; p_player++)
+                        Player p_currentPlayer = p_player.FirstOrDefault(p => p.Icon == p_cellValue);
+
+                        if (p_currentPlayer != null)
                         {
-                            if (cellValue == p_player + 1)
+                            ConsoleColor p_originalForegroundColor = Console.ForegroundColor;
+
+                            if (Enum.TryParse(p_currentPlayer.Colour, out ConsoleColor p_parsedColor))
                             {
-                                ConsoleColor OriginalForegroundColor = Console.ForegroundColor;
-                                if (Enum.TryParse(p_players[p_player].Colour, out ConsoleColor parsedColor))
-                                {
-                                    Console.ForegroundColor = parsedColor;
-                                }
-                                else
-                                {
-                                    Console.ForegroundColor = ConsoleColor.White;
-                                }
-                                Console.Write($" {p_players[p_player].Icon} ");
-                                Console.ForegroundColor = OriginalForegroundColor;
-                                break;
+                                Console.ForegroundColor = p_parsedColor;
                             }
+                            else
+                            {
+                                Console.ForegroundColor = ConsoleColor.White;
+                            }
+
+                            Console.Write($" {p_cellValue} ");
+                            Console.ForegroundColor = p_originalForegroundColor;
                         }
                     }
                 }
                 Console.WriteLine();
             }
+
             if (p_showCol)
             {
                 Console.Write("  ");
-
-                for (int col = 0; col < p_Columns; col++)
+                for (int p_col = 0; p_col < p_Columns; p_col++)
                 {
                     Console.BackgroundColor = ConsoleColor.DarkGray;
-                    Console.Write($" {col + 1} ");
+                    Console.Write($" {p_col + 1} ");
                     Console.BackgroundColor = ConsoleColor.Black;
                 }
             }
-
         }
-        public void ReMatch(List<Player> Players)
+        #endregion
+        #region GameMechanics
+        public string CheckWinner(List<Player> p_player)
+        {
+            for (int p_row = 0; p_row < p_rows; p_row++)
+            {
+                for (int p_col = 0; p_col < p_Columns; p_col++)
+                {
+                    char p_cellValue = GetCell(p_row, p_col);
+                    if (p_cellValue == '0') continue;
+
+                    int[][] p_directions = new int[][] { new int[] { 0, 1 }, new int[] { 1, 0 }, new int[] { 1, 1 }, new int[] { 1, -1 } };
+                    foreach (var p_dir in p_directions)
+                    {
+                        int p_count = 1;
+                        for (int p_playerRow = 1; p_playerRow < p_WinningLength; p_playerRow++)
+                        {
+                            int p_newRow = p_row + p_dir[0] * p_playerRow;
+                            int p_newCol = p_col + p_dir[1] * p_playerRow;
+                            if (p_newRow < 0 || p_newRow >= p_rows || p_newCol < 0 || p_newCol >= p_Columns) break;
+
+                            if (GetCell(p_newRow, p_newCol) == p_cellValue)
+                            {
+                                p_count++;
+                            }
+                            else break;
+                        }
+
+                        if (p_count >= p_WinningLength)
+                        {
+                            Player p_winner = p_player.FirstOrDefault(p => p.Icon == p_cellValue);
+                            return p_winner?.Name ?? "Unknown"; // return the player's name or "Unknown" if not found
+                        }
+                    }
+                }
+            }
+
+            // Check for draw
+            bool p_isDraw = !Enumerable.Range(0, p_rows).Any(p_row => Enumerable.Range(0, p_Columns).Any(p_col => GetCell(p_row, p_col) == '0'));
+
+            if (p_isDraw)
+            {
+                return "Draw";
+            }
+
+            return null;
+        }
+        public void ReMatch(List<Player> p_player)
         {
             Console.WriteLine("Do you want to rematch? (y/n)");
             ConsoleKeyInfo keyInfo = Console.ReadKey();
@@ -153,12 +182,12 @@ namespace GameFactory
             {
                 Console.Clear();
                 ResetBoard();
-                StartMatch(Players);
+                StartMatch();
             }
             else if (rematch == "n")
             {
                 Console.Clear();
-                Player.EndGameStats(Players);
+                EndGameStats(p_player);
                 Console.WriteLine("Thanks for playing!");
                 Console.ReadKey();
                 Environment.Exit(0);
@@ -166,21 +195,18 @@ namespace GameFactory
             else
             {
                 Console.WriteLine("Invalid input. Try again.");
-                ReMatch(Players);
+                ReMatch(p_player);
             }
         }
-        public virtual void GameMechanic(List<Player> Players)
+        public void ShufflePlayers(List<Player> p_player)
         {
-        }
-        public void ShufflePlayers(List<Player> Players)
-        {
-            int n = Players.Count;
+            int n = p_player.Count;
             for (int i = n - 1; i > 0; i--)
             {
                 int j = p_Random.Next(i + 1);
-                Player temp = Players[i];
-                Players[i] = Players[j];
-                Players[j] = temp;
+                Player temp = p_player[i];
+                p_player[i] = p_player[j];
+                p_player[j] = temp;
             }
         }
         protected bool TryGetValidInput(out int chosenValue, int maxValue)
@@ -195,6 +221,52 @@ namespace GameFactory
         public virtual void ResetFirstTurn()
         {
         }
+        #endregion
+        #region Stats
+        public static List<Player> UpdateStats(List<Player> p_players, string p_winnerName)
+        {
+            if (p_winnerName != null && p_winnerName != "Draw")
+            {
+                foreach (var p_player in p_players)
+                {
+                    if (p_player.Name == p_winnerName)
+                    {
+                        Console.WriteLine();
+                        Console.WriteLine($"{p_player.Name} won the game!");
+                        p_player.Wins++;
+                    }
+                    else
+                    {
+                        p_player.Losses++;
+                    }
+                }
+            }
+            else if (p_winnerName == "Draw")
+            {
+                foreach (var p_player in p_players)
+                {
+                    p_player.Draws++;
+                }
+                Console.WriteLine("It's a draw!");
+            }
+
+            return p_players;
+        }
+        public static void EndGameStats(List<Player> p_player)
+        {
+            Console.WriteLine("Game over!");
+            Console.WriteLine("Final scores:");
+            foreach (var player in p_player)
+            {
+                Console.WriteLine($"{player.Name}: {player.Wins} Wins");
+                Console.WriteLine($"{player.Name}: {player.Losses} Losses");
+                Console.WriteLine($"{player.Name}: {player.Draws} Draws");
+            }
+        }
+
+        #endregion
+
+        #region ChatGPT
         protected string SendMessageToChatGPT(string apiKey, string message)
         {
             var chatGPTClient = new ChatGPTClient(apiKey);
@@ -208,33 +280,43 @@ namespace GameFactory
         {
             return Environment.GetEnvironmentVariable("CHATGPT_API_KEY", EnvironmentVariableTarget.Machine);
         }
-        public string BoardToString(List<Player> p_players)
+        public string BoardToString(char[,] p_board, List<Player> p_players)
         {
+            Console.WriteLine($"Rows: {p_rows}, Columns: {p_Columns}"); // Debug
+
             StringBuilder sb = new StringBuilder();
             for (int row = 0; row < p_rows; row++)
             {
                 for (int col = 0; col < p_Columns; col++)
                 {
-                    int cellValue = GetCell(row, col);
-                    switch (cellValue)
+                    char cellValue = p_board[row, col]; // Changed from GetCell(row, col);
+                    if (cellValue == '0')  // Assuming empty cells are '0'
                     {
-                        case 0:
-                            sb.Append(" . ");
-                            break;
-                        case 1:
-                            sb.Append($" {p_players[0].Icon} ");
-                            break;
-                        case 2:
-                            sb.Append($" {p_players[1].Icon} ");
-                            break;
+                        sb.Append(" . ");
+                    }
+                    else if (cellValue == p_players[0].Icon)
+                    {
+                        sb.Append($" {p_players[0].Icon} ");
+                    }
+                    else if (cellValue == p_players[1].Icon)
+                    {
+                        sb.Append($" {p_players[1].Icon} ");
+                    }
+                    else
+                    {
+                        sb.Append(" ? "); // Put something in case none of the above conditions are met
                     }
                 }
                 sb.AppendLine();
             }
-            return sb.ToString();
+
+            Console.WriteLine("this is the string: " + sb.ToString());
+            return p_boardString = sb.ToString();
         }
+
         public virtual void ChatGPTMove(string board, List<Player> p_players)
         {
         }
+        #endregion
     }
 }

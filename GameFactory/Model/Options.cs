@@ -7,14 +7,13 @@ namespace GameFactory.Model
         public bool StartOptions()
         {
             Console.Clear();
-            List<string> menuPoints = new(Enum.GetNames(typeof(OptionsMenu)));
             string p_choosing = null;
             bool p_exitMenu = false;
             do
             {
                 if (p_choosing == null)
                 {
-                    p_choosing = Program.ShowMenu(menuPoints);
+                    p_choosing = Game.ShowMenu(typeof(OptionsMenu));
                 }
                 else
                 {

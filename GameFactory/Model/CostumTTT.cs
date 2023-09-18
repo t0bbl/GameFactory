@@ -3,27 +3,40 @@
     internal class CustomTTT : Match
     {
         private bool FirstTurn = true;
-        private bool p_twist;
+        public bool p_twist;
+        private Random p_Random = new Random();
+
 
         public CustomTTT(bool p_twist)
-            : base(p_twist ? 8 : AskForRows(),
-                   p_twist ? 5 : AskForColumns(),
-                   p_twist ? 4 : AskForWinningLength())
         {
             this.p_twist = p_twist;
+            if (p_twist)
+            {
+                p_rows = 8;
+                p_Columns = 5;
+                p_WinningLength = 4;
+            }
+            else { 
+                p_rows = AskForRows();
+                p_Columns = AskForColumns();
+                p_WinningLength = AskForWinningLength();
+            }
+            p_board = new char[p_rows, p_Columns];
+            ResetBoard();
+
         }
-        public override void GameMechanic(List<Player> p_players)
+        public override void GameMechanic(List<Player> p_player)
         {
             if (FirstTurn)
             {
-                PrintBoard(true, true, p_players);
+                PrintBoard(true, true, p_player);
                 FirstTurn = false;
             }
             bool validInput = false;
             while (!validInput)
             {
                 Console.WriteLine();
-                Console.WriteLine($"{p_players[p_CurrentPlayerIndex].Name}, input a coordinate X/Y");
+                Console.WriteLine($"{p_player[p_CurrentPlayerIndex].Name}, input a coordinate X/Y");
 
                 string input = Console.ReadLine();
                 string[] parts = input.Split('/');
@@ -37,10 +50,10 @@
                     row--; 
                     col--; 
 
-                    if (GetCell(row, col) == 0)
+                    if (GetCell(row, col) == '0')
                     {
-                        SetCell(row, col, p_CurrentPlayerIndex + 1);
-                        p_CurrentPlayerIndex = (p_CurrentPlayerIndex + 1) % p_players.Count;
+                        SetCell(row, col, p_player[p_CurrentPlayerIndex].Icon);
+                        p_CurrentPlayerIndex = (p_CurrentPlayerIndex + 1) % p_player.Count;
                         validInput = true;
                         if (p_twist)
                         {
@@ -58,7 +71,7 @@
                 }
             }
 
-            PrintBoard(true, true, p_players);
+            PrintBoard(true, true, p_player);
         }
 
         private static int AskForRows()
@@ -100,28 +113,30 @@
         {
             FirstTurn = true;
         }
-        public void TwistColumn(int chosenColumn)
+
+        public void TwistColumn(int p_chosenColumn)
         {
-            Random random = new Random();
-            bool TwistOrNot = random.Next(0, 2) == 0;
-            if (TwistOrNot)
+            bool shouldTwist = p_Random.Next(0, 2) == 0;
+            if (shouldTwist)
             {
                 Console.WriteLine("Twist!");
 
-                List<int> tempColumn = new List<int>();
-                for (int i = 0; i < p_rows; i++)
+                List<char> p_tempColumn = new List<char>();
+                for (int p_rowIndex = 0; p_rowIndex < p_rows; p_rowIndex++)
                 {
-                    tempColumn.Add(GetCell(i, chosenColumn));
+                    p_tempColumn.Add(GetCell(p_rowIndex, p_chosenColumn));
                 }
 
-                tempColumn.Reverse();
+                p_tempColumn.Reverse();
 
-                for (int i = 0; i < p_rows; i++)
+                for (int p_rowIndex = 0; p_rowIndex < p_rows; p_rowIndex++)
                 {
-                    SetCell(i, chosenColumn, tempColumn[i]);
+                    SetCell(p_rowIndex, p_chosenColumn, p_tempColumn[p_rowIndex]);
                 }
             }
         }
+
+
 
 
     }

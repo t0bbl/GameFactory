@@ -10,7 +10,7 @@
         {
             if (p_CurrentPlayerIndex == 1)
             {
-                ChatGPTMove(BoardToString(p_players), p_players);
+                ChatGPTMove(BoardToString(p_board, p_players), p_players);
             }
             else
             {
@@ -26,20 +26,24 @@
                    $"- Change one empty '.' to '{p_players[1].Icon}' and return the new board.\n" +
                    $"- You cannot override cells already occupied by '{p_players[0].Icon}' or '{p_players[1].Icon}'.\n" +
                    $"- You are only allowed to change 1 cell at a time.\n" +
+                   $"- Dont Change the Icons of the players.\n" +
                    $"Make your move:";
         }
         public override void ChatGPTMove(string board, List<Player> p_players)
         {
             ConsoleColor OriginalForegroundColour = Console.ForegroundColor;
             Console.ForegroundColor = ConsoleColor.Green;
-
+            Console.WriteLine("this is the board", p_boardString);
             string apiKey = GetApiKey();
             if (apiKey != null)
             {
                 Console.WriteLine("ChatGPT is thinking...");
+                Console.WriteLine(board);
 
-                string message = BuildMessage(board, p_players);
+                string message = BuildMessage(p_boardString, p_players);
                 string response = SendMessageToChatGPT(apiKey, message);
+                Console.WriteLine($"Response from API: {response}");
+
 
                 Console.WriteLine("ChatGPT´s Move: ");
                 Console.WriteLine();
@@ -62,29 +66,36 @@
         public int StringToBoard(string boardString, List<Player> p_players)
         {
             int dotCount = 0;
-            string[] p_rows = boardString.Split(new[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
-            for (int row = 0; row < p_rows.Length; row++)
+            string[] p_rowsString = boardString.Split(new[] { '\n' }, StringSplitOptions.RemoveEmptyEntries);
+
+            // Remove the lines that contain '-' or '+'
+            p_rowsString = p_rowsString.Where(str => !str.Contains('-') && !str.Contains('+')).ToArray();
+
+            for (int row = 0; row < Math.Min(p_rowsString.Length, p_rows); row++)
             {
-                string[] cells = p_rows[row].Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
-                for (int col = 0; col < p_Columns; col++)
+                string[] cells = p_rowsString[row].Split(new[] { '|', ' ' }, StringSplitOptions.RemoveEmptyEntries);
+
+                for (int col = 0; col < Math.Min(cells.Length, p_Columns); col++)
                 {
                     if (cells[col] == ".")
                     {
-                        SetCell(row, col, 0);
+                        SetCell(row, col, '.');
                         dotCount++;
                     }
-                    else if (cells[col] == p_players[0].Icon)
+                    else if (cells[col] == p_players[0].Icon.ToString())
                     {
-                        SetCell(row, col, 1);
+                        SetCell(row, col, p_players[0].Icon);
                     }
-                    else if (cells[col] == p_players[1].Icon)
+                    else if (cells[col] == p_players[1].Icon.ToString())
                     {
-                        SetCell(row, col, 2);
+                        SetCell(row, col, p_players[1].Icon);
                     }
                 }
             }
             return dotCount;
         }
+
+
 
     }
 }
