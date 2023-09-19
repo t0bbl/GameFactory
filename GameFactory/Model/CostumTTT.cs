@@ -2,7 +2,6 @@
 {
     internal class CustomTTT : Match
     {
-        private bool FirstTurn = true;
         public bool p_twist;
         private Random p_Random = new Random();
 
@@ -27,10 +26,10 @@
         }
         public override void GameMechanic(List<Player> p_player)
         {
-            if (FirstTurn)
+            if (p_firstTurn)
             {
                 PrintBoard(true, true, p_player);
-                FirstTurn = false;
+                p_firstTurn = false;
             }
             bool validInput = false;
             while (!validInput)
@@ -74,6 +73,7 @@
             PrintBoard(true, true, p_player);
         }
 
+        #region CostumSetup
         private static int AskForRows()
         {
             Console.Write("Enter the number of rows: ");
@@ -85,7 +85,6 @@
             Console.WriteLine("Invalid input for rows. Using default value of 3.");
             return 3;
         }
-
         private static int AskForColumns()
         {
             Console.Write("Enter the number of columns: ");
@@ -97,7 +96,6 @@
             Console.WriteLine("Invalid input for columns. Using default value of 3.");
             return 3;
         }
-
         private static int AskForWinningLength()
         {
             Console.Write("Enter the winning length: ");
@@ -109,10 +107,8 @@
             Console.WriteLine("Invalid input for winning length. Using default value of 3.");
             return 3;
         }
-        public override void ResetFirstTurn()
-        {
-            FirstTurn = true;
-        }
+        #endregion
+
 
         public void TwistColumn(int p_chosenColumn)
         {

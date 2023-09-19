@@ -33,25 +33,20 @@
         {
             ConsoleColor OriginalForegroundColour = Console.ForegroundColor;
             Console.ForegroundColor = ConsoleColor.Green;
-            Console.WriteLine("this is the board", p_boardString);
+            Console.WriteLine("this is the board", board);
             string apiKey = GetApiKey();
             if (apiKey != null)
             {
                 Console.WriteLine("ChatGPT is thinking...");
-                Console.WriteLine(board);
 
-                string message = BuildMessage(p_boardString, p_players);
+                string message = BuildMessage(board, p_players);
                 string response = SendMessageToChatGPT(apiKey, message);
                 Console.WriteLine($"Response from API: {response}");
-
+                StringToBoard(response, p_players);
 
                 Console.WriteLine("ChatGPT´s Move: ");
-                Console.WriteLine();
-                int dotCount = StringToBoard(response, p_players);
-                if (dotCount != 8)
-                {
                     PrintBoard(false, false, p_players);
-                }
+
 
                 p_CurrentPlayerIndex = (p_CurrentPlayerIndex + 1) % p_players.Count;
 
@@ -63,13 +58,9 @@
             }
             Console.ForegroundColor = OriginalForegroundColour;
         }
-        public int StringToBoard(string boardString, List<Player> p_players)
+        public void StringToBoard(string boardString, List<Player> p_players)
         {
-            int dotCount = 0;
             string[] p_rowsString = boardString.Split(new[] { '\n' }, StringSplitOptions.RemoveEmptyEntries);
-
-            // Remove the lines that contain '-' or '+'
-            p_rowsString = p_rowsString.Where(str => !str.Contains('-') && !str.Contains('+')).ToArray();
 
             for (int row = 0; row < Math.Min(p_rowsString.Length, p_rows); row++)
             {
@@ -79,8 +70,7 @@
                 {
                     if (cells[col] == ".")
                     {
-                        SetCell(row, col, '.');
-                        dotCount++;
+                        SetCell(row, col, '0');
                     }
                     else if (cells[col] == p_players[0].Icon.ToString())
                     {
@@ -92,7 +82,6 @@
                     }
                 }
             }
-            return dotCount;
         }
 
 

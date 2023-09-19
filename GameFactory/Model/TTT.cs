@@ -2,7 +2,6 @@
 {
     internal class TTT : Match
     {
-        private bool FirstTurn = true;
         public TTT()
         {
             p_rows = 3;
@@ -15,11 +14,11 @@
 
             int chosenCell;
             bool validInput = false;
-            if (FirstTurn)
+            if (p_firstTurn)
             {
                 PrintBoard(false, false, p_player);
                 Console.WriteLine();
-                FirstTurn = false;
+                p_firstTurn = false;
             }
             while (!validInput)
             {
@@ -44,10 +43,7 @@
             }
             PrintBoard(false, false, p_player);
         }
-        public override void ResetFirstTurn()
-        {
-            FirstTurn = true;
-        }
+
 
     }
 }

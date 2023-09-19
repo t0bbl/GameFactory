@@ -12,7 +12,8 @@ namespace GameFactory
         public int p_WinningLength { get; set; }
         public int p_CurrentPlayerIndex { get; set; }
         public string p_boardString { get; set; }
-
+        public bool p_firstTurn { get; set; }
+        public string p_winner { get; set; }
         readonly Random p_Random = new();
         #endregion
         public Match()
@@ -23,23 +24,22 @@ namespace GameFactory
         {
             p_CurrentPlayerIndex = 0;
             ResetBoard();
-
             ResetFirstTurn();
-            if (p_player.All(player => player.IsHuman))
-            { ShufflePlayers(p_player); }
+            ShufflePlayers(p_player);
+
             do
             {
                 GameMechanic(p_player);
-            } while (CheckWinner(p_player) == null);
-
-            string p_winner = CheckWinner(p_player);
+                p_winner = CheckWinner(p_player);
+            } while (p_winner == null);
 
             if (p_winner != null)
             {
-               UpdateStats(p_player, p_winner);
+                UpdateStats(p_player, p_winner);
+                ReMatch(p_player);
+
             }
 
-            ReMatch(p_player);
         }
         public virtual void GameMechanic(List<Player> p_player)
         {
@@ -86,7 +86,7 @@ namespace GameFactory
                 {
                     char p_cellValue = GetCell(p_row, p_col);
 
-                    if (p_cellValue == '0') 
+                    if (p_cellValue == '0')
                     {
                         Console.Write(" . ");
                     }
@@ -200,13 +200,16 @@ namespace GameFactory
         }
         public void ShufflePlayers(List<Player> p_player)
         {
-            int n = p_player.Count;
-            for (int i = n - 1; i > 0; i--)
+            if (p_player.All(player => player.IsHuman))
             {
-                int j = p_Random.Next(i + 1);
-                Player temp = p_player[i];
-                p_player[i] = p_player[j];
-                p_player[j] = temp;
+                int n = p_player.Count;
+                for (int i = n - 1; i > 0; i--)
+                {
+                    int j = p_Random.Next(i + 1);
+                    Player temp = p_player[i];
+                    p_player[i] = p_player[j];
+                    p_player[j] = temp;
+                }
             }
         }
         protected bool TryGetValidInput(out int chosenValue, int maxValue)
@@ -220,6 +223,7 @@ namespace GameFactory
         }
         public virtual void ResetFirstTurn()
         {
+            p_firstTurn = true;
         }
         #endregion
         #region Stats
@@ -282,15 +286,15 @@ namespace GameFactory
         }
         public string BoardToString(char[,] p_board, List<Player> p_players)
         {
-            Console.WriteLine($"Rows: {p_rows}, Columns: {p_Columns}"); // Debug
+            Console.WriteLine($"Rows: {p_rows}, Columns: {p_Columns}"); 
 
             StringBuilder sb = new StringBuilder();
             for (int row = 0; row < p_rows; row++)
             {
                 for (int col = 0; col < p_Columns; col++)
                 {
-                    char cellValue = p_board[row, col]; // Changed from GetCell(row, col);
-                    if (cellValue == '0')  // Assuming empty cells are '0'
+                    char cellValue = p_board[row, col];
+                    if (cellValue == '0') 
                     {
                         sb.Append(" . ");
                     }
@@ -304,7 +308,7 @@ namespace GameFactory
                     }
                     else
                     {
-                        sb.Append(" ? "); // Put something in case none of the above conditions are met
+                        sb.Append(" ? ");
                     }
                 }
                 sb.AppendLine();
