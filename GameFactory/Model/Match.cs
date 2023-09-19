@@ -14,10 +14,14 @@ namespace GameFactory
         public string p_boardString { get; set; }
         public bool p_firstTurn { get; set; }
         public string p_winner { get; set; }
+        public Guid GameId { get; private set; }
+
         readonly Random p_random = new();
+
         #endregion
         public Match()
         {
+
         }
 
         public void StartMatch()
@@ -42,6 +46,8 @@ namespace GameFactory
         }
         public virtual void GameMechanic(List<Player> p_player)
         {
+            GameId = Guid.NewGuid();
+
         }
 
         #region BoardSetup

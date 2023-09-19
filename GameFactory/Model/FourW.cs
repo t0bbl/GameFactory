@@ -12,6 +12,8 @@ namespace GameFactory.Model
         }
         public override void GameMechanic(List<Player> p_player)
         {
+            base.GameMechanic(p_player);
+
             int p_chosenColumn;
             if (p_firstTurn)
             {

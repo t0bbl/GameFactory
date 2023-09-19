@@ -15,7 +15,8 @@
                 p_columns = 5;
                 p_winningLength = 4;
             }
-            else { 
+            else
+            {
                 p_rows = AskForRows();
                 p_columns = AskForColumns();
                 p_winningLength = AskForWinningLength();
@@ -26,6 +27,7 @@
         }
         public override void GameMechanic(List<Player> p_player)
         {
+            base.GameMechanic(p_player);
             if (p_firstTurn)
             {
                 PrintBoard(true, true, p_player);
@@ -47,7 +49,7 @@
                     && p_col >= 1 && p_col <= p_columns)
                 {
                     p_row--;
-                    p_col--; 
+                    p_col--;
 
                     if (GetCell(p_row, p_col) == '0')
                     {

@@ -11,6 +11,7 @@
         }
         public override void GameMechanic(List<Player> p_player)
         {
+            base.GameMechanic(p_player);
 
             int p_chosenCell;
             bool p_validInput = false;
