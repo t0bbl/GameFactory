@@ -8,7 +8,7 @@
         }
         public override void GameMechanic(List<Player> p_players)
         {
-            if (p_CurrentPlayerIndex == 1)
+            if (p_currentPlayerIndex == 1)
             {
                 ChatGPTMove(BoardToString(p_board, p_players), p_players);
             }
@@ -29,7 +29,7 @@
         }
         public override void ChatGPTMove(string board, List<Player> p_players)
         {
-            ConsoleColor OriginalForegroundColour = Console.ForegroundColor;
+            ConsoleColor p_originalForegroundColour = Console.ForegroundColor;
             Console.ForegroundColor = ConsoleColor.Green;
 
             string apiKey = GetApiKey();
@@ -46,7 +46,7 @@
                 MakeMove(chosenColumn, 1, p_players);
 
 
-                p_CurrentPlayerIndex = (p_CurrentPlayerIndex + 1) % p_players.Count;
+                p_currentPlayerIndex = (p_currentPlayerIndex + 1) % p_players.Count;
 
                 PrintBoard(false, true, p_players);
 
@@ -56,13 +56,13 @@
                 Console.WriteLine("Please set the environment variable CHATGPT_API_KEY to your ChatGPT API key.");
                 Environment.Exit(0);
             }
-            Console.ForegroundColor = OriginalForegroundColour;
+            Console.ForegroundColor = p_originalForegroundColour;
         }
         public int ValidateColumnChoice(string response, List<Player> p_players)
         {
             if (int.TryParse(response, out int chosenColumn))
             {
-                if (chosenColumn >= 1 && chosenColumn <= p_Columns)
+                if (chosenColumn >= 1 && chosenColumn <= p_columns)
                 {
                     return chosenColumn;
                 }

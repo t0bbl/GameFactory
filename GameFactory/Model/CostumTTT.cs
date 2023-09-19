@@ -12,15 +12,15 @@
             if (p_twist)
             {
                 p_rows = 8;
-                p_Columns = 5;
-                p_WinningLength = 4;
+                p_columns = 5;
+                p_winningLength = 4;
             }
             else { 
                 p_rows = AskForRows();
-                p_Columns = AskForColumns();
-                p_WinningLength = AskForWinningLength();
+                p_columns = AskForColumns();
+                p_winningLength = AskForWinningLength();
             }
-            p_board = new char[p_rows, p_Columns];
+            p_board = new char[p_rows, p_columns];
             ResetBoard();
 
         }
@@ -31,32 +31,32 @@
                 PrintBoard(true, true, p_player);
                 p_firstTurn = false;
             }
-            bool validInput = false;
-            while (!validInput)
+            bool p_validInput = false;
+            while (!p_validInput)
             {
                 Console.WriteLine();
-                Console.WriteLine($"{p_player[p_CurrentPlayerIndex].Name}, input a coordinate X/Y");
+                Console.WriteLine($"{p_player[p_currentPlayerIndex].Name}, input a coordinate X/Y");
 
-                string input = Console.ReadLine();
-                string[] parts = input.Split('/');
+                string p_input = Console.ReadLine();
+                string[] p_parts = p_input.Split('/');
 
-                if (parts.Length == 2
-                    && int.TryParse(parts[0], out int row)
-                    && int.TryParse(parts[1], out int col)
-                    && row >= 1 && row <= p_rows
-                    && col >= 1 && col <= p_Columns)
+                if (p_parts.Length == 2
+                    && int.TryParse(p_parts[0], out int p_row)
+                    && int.TryParse(p_parts[1], out int p_col)
+                    && p_row >= 1 && p_row <= p_rows
+                    && p_col >= 1 && p_col <= p_columns)
                 {
-                    row--; 
-                    col--; 
+                    p_row--;
+                    p_col--; 
 
-                    if (GetCell(row, col) == '0')
+                    if (GetCell(p_row, p_col) == '0')
                     {
-                        SetCell(row, col, p_player[p_CurrentPlayerIndex].Icon);
-                        p_CurrentPlayerIndex = (p_CurrentPlayerIndex + 1) % p_player.Count;
-                        validInput = true;
+                        SetCell(p_row, p_col, p_player[p_currentPlayerIndex].Icon);
+                        p_currentPlayerIndex = (p_currentPlayerIndex + 1) % p_player.Count;
+                        p_validInput = true;
                         if (p_twist)
                         {
-                            TwistColumn(col);
+                            TwistColumn(p_col);
                         }
                     }
                     else
@@ -73,7 +73,7 @@
             PrintBoard(true, true, p_player);
         }
 
-        #region CostumSetup
+        #region CustomSetup
         private static int AskForRows()
         {
             Console.Write("Enter the number of rows: ");
@@ -112,8 +112,8 @@
 
         public void TwistColumn(int p_chosenColumn)
         {
-            bool shouldTwist = p_random.Next(0, 2) == 0;
-            if (shouldTwist)
+            bool p_shouldTwist = p_random.Next(0, 2) == 0;
+            if (p_shouldTwist)
             {
                 Console.WriteLine("Twist!");
 

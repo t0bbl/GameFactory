@@ -5,35 +5,35 @@
         public TTT()
         {
             p_rows = 3;
-            p_Columns = 3;
-            p_WinningLength = 3;
-            p_board = new char[p_rows, p_Columns];
+            p_columns = 3;
+            p_winningLength = 3;
+            p_board = new char[p_rows, p_columns];
         }
         public override void GameMechanic(List<Player> p_player)
         {
 
-            int chosenCell;
-            bool validInput = false;
+            int p_chosenCell;
+            bool p_validInput = false;
             if (p_firstTurn)
             {
                 PrintBoard(false, false, p_player);
                 Console.WriteLine();
                 p_firstTurn = false;
             }
-            while (!validInput)
+            while (!p_validInput)
             {
-                Console.WriteLine($"{p_player[p_CurrentPlayerIndex].Name}, input a number from 1 to {p_rows * p_Columns}");
+                Console.WriteLine($"{p_player[p_currentPlayerIndex].Name}, input a number from 1 to {p_rows * p_columns}");
 
-                if (TryGetValidInput(out chosenCell, p_rows * p_Columns))
+                if (TryGetValidInput(out p_chosenCell, p_rows * p_columns))
                 {
-                    int row = (chosenCell - 1) / p_Columns;
-                    int col = (chosenCell - 1) % p_Columns;
+                    int row = (p_chosenCell - 1) / p_columns;
+                    int col = (p_chosenCell - 1) % p_columns;
 
                     if (GetCell(row, col) == '0')
                     {
-                        SetCell(row, col, p_player[p_CurrentPlayerIndex].Icon);
-                        p_CurrentPlayerIndex = (p_CurrentPlayerIndex + 1) % p_player.Count;
-                        validInput = true;
+                        SetCell(row, col, p_player[p_currentPlayerIndex].Icon);
+                        p_currentPlayerIndex = (p_currentPlayerIndex + 1) % p_player.Count;
+                        p_validInput = true;
                     }
                     else
                     {

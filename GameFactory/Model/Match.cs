@@ -8,9 +8,9 @@ namespace GameFactory
         #region Variables
         public char[,] p_board;
         public int p_rows { get; set; }
-        public int p_Columns { get; set; }
-        public int p_WinningLength { get; set; }
-        public int p_CurrentPlayerIndex { get; set; }
+        public int p_columns { get; set; }
+        public int p_winningLength { get; set; }
+        public int p_currentPlayerIndex { get; set; }
         public string p_boardString { get; set; }
         public bool p_firstTurn { get; set; }
         public string p_winner { get; set; }
@@ -22,7 +22,7 @@ namespace GameFactory
 
         public void StartMatch()
         {
-            p_CurrentPlayerIndex = 0;
+            p_currentPlayerIndex = 0;
             ResetBoard();
             ResetFirstTurn();
             ShufflePlayers(p_player);
@@ -49,7 +49,7 @@ namespace GameFactory
         {
             for (int p_row = 0; p_row < p_rows; p_row++)
             {
-                for (int p_col = 0; p_col < p_Columns; p_col++)
+                for (int p_col = 0; p_col < p_columns; p_col++)
                 {
                     SetCell(p_row, p_col, '0');
                 }
@@ -61,7 +61,7 @@ namespace GameFactory
         }
         public void SetCell(int p_row, int p_col, char p_icon)
         {
-            if (p_row >= 0 && p_row < p_rows && p_col >= 0 && p_col < p_Columns)
+            if (p_row >= 0 && p_row < p_rows && p_col >= 0 && p_col < p_columns)
             {
                 p_board[p_row, p_col] = p_icon;
             }
@@ -81,7 +81,7 @@ namespace GameFactory
                     Console.Write("  ");
                 }
 
-                for (int p_col = 0; p_col < p_Columns; p_col++)
+                for (int p_col = 0; p_col < p_columns; p_col++)
                 {
                     char p_cellValue = GetCell(p_row, p_col);
 
@@ -117,7 +117,7 @@ namespace GameFactory
             if (p_showCol)
             {
                 Console.Write("  ");
-                for (int p_col = 0; p_col < p_Columns; p_col++)
+                for (int p_col = 0; p_col < p_columns; p_col++)
                 {
                     Console.BackgroundColor = ConsoleColor.DarkGray;
                     Console.Write($" {p_col + 1} ");
@@ -131,7 +131,7 @@ namespace GameFactory
         {
             for (int p_row = 0; p_row < p_rows; p_row++)
             {
-                for (int p_col = 0; p_col < p_Columns; p_col++)
+                for (int p_col = 0; p_col < p_columns; p_col++)
                 {
                     char p_cellValue = GetCell(p_row, p_col);
                     if (p_cellValue == '0') continue;
@@ -140,11 +140,11 @@ namespace GameFactory
                     foreach (var p_dir in p_directions)
                     {
                         int p_count = 1;
-                        for (int p_playerRow = 1; p_playerRow < p_WinningLength; p_playerRow++)
+                        for (int p_playerRow = 1; p_playerRow < p_winningLength; p_playerRow++)
                         {
                             int p_newRow = p_row + p_dir[0] * p_playerRow;
                             int p_newCol = p_col + p_dir[1] * p_playerRow;
-                            if (p_newRow < 0 || p_newRow >= p_rows || p_newCol < 0 || p_newCol >= p_Columns) break;
+                            if (p_newRow < 0 || p_newRow >= p_rows || p_newCol < 0 || p_newCol >= p_columns) break;
 
                             if (GetCell(p_newRow, p_newCol) == p_cellValue)
                             {
@@ -153,7 +153,7 @@ namespace GameFactory
                             else break;
                         }
 
-                        if (p_count >= p_WinningLength)
+                        if (p_count >= p_winningLength)
                         {
                             Player p_winner = p_player.FirstOrDefault(p => p.Icon == p_cellValue);
                             return p_winner?.Name ?? "Unknown"; // return the player's name or "Unknown" if not found
@@ -163,7 +163,7 @@ namespace GameFactory
             }
 
             // Check for draw
-            bool p_isDraw = !Enumerable.Range(0, p_rows).Any(p_row => Enumerable.Range(0, p_Columns).Any(p_col => GetCell(p_row, p_col) == '0'));
+            bool p_isDraw = !Enumerable.Range(0, p_rows).Any(p_row => Enumerable.Range(0, p_columns).Any(p_col => GetCell(p_row, p_col) == '0'));
 
             if (p_isDraw)
             {
@@ -285,12 +285,12 @@ namespace GameFactory
         }
         public string BoardToString(char[,] p_board, List<Player> p_players)
         {
-            Console.WriteLine($"Rows: {p_rows}, Columns: {p_Columns}"); 
+            Console.WriteLine($"Rows: {p_rows}, Columns: {p_columns}"); 
 
             StringBuilder sb = new StringBuilder();
             for (int row = 0; row < p_rows; row++)
             {
-                for (int col = 0; col < p_Columns; col++)
+                for (int col = 0; col < p_columns; col++)
                 {
                     char cellValue = p_board[row, col];
                     if (cellValue == '0') 

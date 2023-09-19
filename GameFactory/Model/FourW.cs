@@ -6,13 +6,13 @@ namespace GameFactory.Model
         public FourW()
         {
             p_rows = 6;
-            p_Columns = 7;
-            p_WinningLength = 4;
-            p_board = new char[p_rows, p_Columns];
+            p_columns = 7;
+            p_winningLength = 4;
+            p_board = new char[p_rows, p_columns];
         }
         public override void GameMechanic(List<Player> p_player)
         {
-            int chosenColumn;
+            int p_chosenColumn;
             if (p_firstTurn)
             {
                 PrintBoard(false, true, p_player);
@@ -22,11 +22,11 @@ namespace GameFactory.Model
             do
             {
                 Console.WriteLine();
-                Console.WriteLine($"{p_player[p_CurrentPlayerIndex].Name}, input a column number from 1 to {p_Columns}");
-            } while (!TryGetValidInput(out chosenColumn, p_Columns));
+                Console.WriteLine($"{p_player[p_currentPlayerIndex].Name}, input a column number from 1 to {p_columns}");
+            } while (!TryGetValidInput(out p_chosenColumn, p_columns));
 
-            MakeMove(chosenColumn, p_CurrentPlayerIndex, p_player);
-            p_CurrentPlayerIndex = (p_CurrentPlayerIndex + 1) % p_player.Count;
+            MakeMove(p_chosenColumn, p_currentPlayerIndex, p_player);
+            p_currentPlayerIndex = (p_currentPlayerIndex + 1) % p_player.Count;
 
             PrintBoard(false, true, p_player);
         }
@@ -41,13 +41,13 @@ namespace GameFactory.Model
             }
             return -1;
         }
-        public bool MakeMove(int chosenColumn, int p_CurrentPlayerIndex, List<Player> p_players)
+        public bool MakeMove(int p_chosenColumn, int p_currentPlayerIndex, List<Player> p_players)
         {
-            int row = FindLowestAvailableRow(chosenColumn - 1);
+            int p_row = FindLowestAvailableRow(p_chosenColumn - 1);
 
-            if (row != -1)
+            if (p_row != -1)
             {
-                SetCell(row, chosenColumn - 1, p_players[p_CurrentPlayerIndex].Icon);
+                SetCell(p_row, p_chosenColumn - 1, p_players[p_currentPlayerIndex].Icon);
                 return true;
             }
             else
