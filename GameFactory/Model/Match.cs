@@ -37,11 +37,8 @@ namespace GameFactory
                 p_winner = CheckWinner(p_player);
             } while (p_winner == null);
 
-            if (p_winner != null)
-            {
-                UpdateStats(p_player, p_winner);
-                ReMatch(p_player);
-            }
+            UpdateStats(p_player, p_winner);
+            ReMatch(p_player);
 
         }
         public virtual void GameMechanic(List<Player> p_player)
@@ -291,7 +288,7 @@ namespace GameFactory
         }
         public string BoardToString(char[,] p_board, List<Player> p_players)
         {
-            Console.WriteLine($"Rows: {p_rows}, Columns: {p_columns}"); 
+            Console.WriteLine($"Rows: {p_rows}, Columns: {p_columns}");
 
             StringBuilder sb = new StringBuilder();
             for (int row = 0; row < p_rows; row++)
@@ -299,7 +296,7 @@ namespace GameFactory
                 for (int col = 0; col < p_columns; col++)
                 {
                     char cellValue = p_board[row, col];
-                    if (cellValue == '0') 
+                    if (cellValue == '0')
                     {
                         sb.Append(" . ");
                     }
