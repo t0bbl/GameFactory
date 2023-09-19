@@ -3,7 +3,7 @@
     internal class CustomTTT : Match
     {
         public bool p_twist;
-        private Random p_Random = new Random();
+        private Random p_random = new Random();
 
 
         public CustomTTT(bool p_twist)
@@ -112,7 +112,7 @@
 
         public void TwistColumn(int p_chosenColumn)
         {
-            bool shouldTwist = p_Random.Next(0, 2) == 0;
+            bool shouldTwist = p_random.Next(0, 2) == 0;
             if (shouldTwist)
             {
                 Console.WriteLine("Twist!");

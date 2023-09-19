@@ -14,7 +14,7 @@ namespace GameFactory
         public string p_boardString { get; set; }
         public bool p_firstTurn { get; set; }
         public string p_winner { get; set; }
-        readonly Random p_Random = new();
+        readonly Random p_random = new();
         #endregion
         public Match()
         {
@@ -37,7 +37,6 @@ namespace GameFactory
             {
                 UpdateStats(p_player, p_winner);
                 ReMatch(p_player);
-
             }
 
         }
@@ -205,16 +204,16 @@ namespace GameFactory
                 int n = p_player.Count;
                 for (int i = n - 1; i > 0; i--)
                 {
-                    int j = p_Random.Next(i + 1);
+                    int j = p_random.Next(i + 1);
                     Player temp = p_player[i];
                     p_player[i] = p_player[j];
                     p_player[j] = temp;
                 }
             }
         }
-        protected bool TryGetValidInput(out int chosenValue, int maxValue)
+        protected bool TryGetValidInput(out int p_chosenValue, int p_maxValue)
         {
-            if (int.TryParse(Console.ReadLine(), out chosenValue) && chosenValue >= 0 && chosenValue <= maxValue)
+            if (int.TryParse(Console.ReadLine(), out p_chosenValue) && p_chosenValue >= 0 && p_chosenValue <= p_maxValue)
             {
                 return true;
             }
@@ -271,12 +270,12 @@ namespace GameFactory
         #endregion
 
         #region ChatGPT
-        protected string SendMessageToChatGPT(string apiKey, string message)
+        protected string SendMessageToChatGPT(string apiKey, string p_message)
         {
             var chatGPTClient = new ChatGPTClient(apiKey);
-            return chatGPTClient.SendMessage(message);
+            return chatGPTClient.SendMessage(p_message);
         }
-        protected virtual string BuildMessage(string board, List<Player> p_players)
+        protected virtual string BuildMessage(string p_board, List<Player> p_players)
         {
             return "error";
         }
@@ -318,7 +317,7 @@ namespace GameFactory
             return p_boardString = sb.ToString();
         }
 
-        public virtual void ChatGPTMove(string board, List<Player> p_players)
+        public virtual void ChatGPTMove(string p_board, List<Player> p_players)
         {
         }
         #endregion

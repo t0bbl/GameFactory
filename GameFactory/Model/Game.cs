@@ -5,10 +5,11 @@ namespace GameFactory.Model
 {
     internal class Game
     {
+        #region Variables
         public List<Player> p_player { get; set; } = new List<Player>();
         internal string p_gameType { get; set; }
         internal string p_gameMode { get; set; }
-
+        #endregion
         public Match CreateMatch()
         {
             if (p_gameMode == "SP")
@@ -96,18 +97,18 @@ namespace GameFactory.Model
         }
         static char InitializePlayerIcon(int p_gamer)
         {
-            char icon;
+            char Icon;
             do
             {
                 Console.WriteLine($"\n Enter the icon of player {p_gamer + 1}: \n");
-                icon = Console.ReadKey().KeyChar;
+                Icon = Console.ReadKey().KeyChar;
                 Console.WriteLine();
-                if (icon == '\r' || icon == ' ')
+                if (Icon == '\r' || Icon == ' ')
                 {
                     Console.WriteLine("Error: Icon cannot be empty or whitespace.");
                 }
-            } while (icon == '\r' || icon == ' ');
-            return icon;
+            } while (Icon == '\r' || Icon == ' ');
+            return Icon;
         }
         static string InitializePlayerColor(int p_gamer)
         {
