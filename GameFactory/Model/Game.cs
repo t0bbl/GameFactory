@@ -1,5 +1,6 @@
 ﻿
 using System.Collections.Generic;
+using System.Linq;
 
 namespace GameFactory.Model
 {
@@ -18,8 +19,11 @@ namespace GameFactory.Model
         {
             if (p_gameMode == "SP")
             {
-                Player GPT = new() { Name = "ChatGPT", Icon = 'C', Colour = "Green", IsHuman = false };
-                p_player.Add(GPT);
+                if (!p_player.Any(x => x.Name == "ChatGPT"))
+                {
+                    Player GPT = new() { Name = "ChatGPT", Icon = 'C', Colour = "Green", IsHuman = false };
+                    p_player.Add(GPT);
+                }
 
                 if (p_gameType == "TTTChatGPT")
                 {

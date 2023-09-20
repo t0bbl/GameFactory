@@ -264,8 +264,6 @@ namespace GameFactory
         }
         public string BoardToString(char[,] p_board, List<Player> p_players)
         {
-            Console.WriteLine($"Rows: {p_rows}, Columns: {p_columns}");
-
             StringBuilder sb = new StringBuilder();
             for (int row = 0; row < p_rows; row++)
             {
@@ -292,7 +290,6 @@ namespace GameFactory
                 sb.AppendLine();
             }
 
-            Console.WriteLine("this is the string: " + sb.ToString());
             return p_boardString = sb.ToString();
         }
 

@@ -33,7 +33,6 @@
         {
             ConsoleColor p_originalForegroundColour = Console.ForegroundColor;
             Console.ForegroundColor = ConsoleColor.Green;
-            Console.WriteLine("this is the board", board);
             string apiKey = GetApiKey();
             if (apiKey != null)
             {
@@ -41,7 +40,6 @@
 
                 string message = BuildMessage(board, p_players);
                 string response = SendMessageToChatGPT(apiKey, message);
-                Console.WriteLine($"Response from API: {response}");
                 StringToBoard(response, p_players);
 
                 Console.WriteLine("ChatGPT´s Move: ");

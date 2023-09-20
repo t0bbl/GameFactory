@@ -41,7 +41,6 @@
 
                 string message = BuildMessage(board, p_players);
                 string response = SendMessageToChatGPT(apiKey, message);
-                Console.WriteLine("ChatGPT´s Move: " + response);
                 chosenColumn = ValidateColumnChoice(response.Trim(), p_players);
                 MakeMove(chosenColumn, 1, p_players);
 
