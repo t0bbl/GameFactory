@@ -20,7 +20,7 @@ namespace GameFactory
         internal Player Loser { get; set; }
         internal Player Draw { get; set; }
 
-        readonly Random p_random = new();
+        private static Random p_random = new();
 
         #endregion
         internal Match()
@@ -183,23 +183,23 @@ namespace GameFactory
 
             Console.WriteLine("Do you want to rematch? (y/n)");
             string keyInfo = Console.ReadLine();
+
             bool rematch = keyInfo == "y";
             return rematch;
+
         }
         public void ShufflePlayers(List<Player> p_player)
         {
+
             if (p_player.All(player => player.IsHuman))
             {
-                int n = p_player.Count;
-                for (int i = n - 1; i > 0; i--)
-                {
-                    int j = p_random.Next(i + 1);
-                    Player temp = p_player[i];
-                    p_player[i] = p_player[j];
-                    p_player[j] = temp;
-                }
+                p_currentPlayerIndex = p_random.Next(p_player.Count);
+
             }
+
         }
+
+
         protected bool TryGetValidInput(out int p_chosenValue, int p_maxValue)
         {
             if (int.TryParse(Console.ReadLine(), out p_chosenValue) && p_chosenValue >= 0 && p_chosenValue <= p_maxValue)
