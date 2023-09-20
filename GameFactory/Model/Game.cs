@@ -6,9 +6,13 @@ namespace GameFactory.Model
     internal class Game
     {
         #region Variables
-        public List<Player> p_player { get; set; } = new List<Player>();
+        internal List<Player> p_player { get; set; }
         internal string p_gameType { get; set; }
         internal string p_gameMode { get; set; }
+
+        internal List<Match> p_history = new();
+        internal Match CurrentMatch { get; set; }
+
         #endregion
         public Match CreateMatch()
         {
@@ -16,31 +20,49 @@ namespace GameFactory.Model
             {
                 Player GPT = new() { Name = "ChatGPT", Icon = 'C', Colour = "Green", IsHuman = false };
                 p_player.Add(GPT);
-                switch (p_gameType)
+
+                if (p_gameType == "TTTChatGPT")
                 {
-                    case "TTTChatGPT":
-                        return new TTTChatGPT() { p_player = p_player };
-                    case "FourWChatGPT":
-                        return new FourWChatGPT() { p_player = p_player };
-                    default:
-                        throw new Exception("Invalid single-player game type.");
+                    CurrentMatch = new TTTChatGPT() { p_player = p_player };
                 }
+                else if (p_gameType == "FourWChatGPT")
+                {
+                    CurrentMatch = new FourWChatGPT() { p_player = p_player };
+                }
+                else
+                {
+                    throw new Exception("Invalid single-player game type.");
+                }
+                p_history.Add(CurrentMatch);
+
+                return CurrentMatch;
             }
             else
             {
-                switch (p_gameType)
+
+                if (p_gameType == "TTT")
                 {
-                    case "TTT":
-                        return new TTT() { p_player = p_player} ;
-                    case "FourW":
-                        return new FourW() { p_player = p_player };
-                    case "TwistFourW":
-                        return new CustomTTT(true) { p_player = p_player };
-                    case "CustomTTT":
-                        return new CustomTTT(false) { p_player = p_player };
-                    default:
-                        throw new Exception("Invalid multiplayer game type.");
+                    CurrentMatch = new TTT() { p_player = p_player };
                 }
+                else if (p_gameType == "FourW")
+                {
+                    CurrentMatch = new FourW() { p_player = p_player };
+                }
+                else if (p_gameType == "TwistFourW")
+                {
+                    CurrentMatch = new CustomTTT(true) { p_player = p_player };
+                }
+                else if (p_gameType == "CustomTTT")
+                {
+                    CurrentMatch = new CustomTTT(false) { p_player = p_player };
+                }
+                else
+                {
+                    throw new Exception("Invalid multiplayer game type.");
+                }
+                p_history.Add(CurrentMatch);
+
+                return CurrentMatch;
             }
         }
 
@@ -48,6 +70,7 @@ namespace GameFactory.Model
         #region initializePlayer
         public void InitializePlayer()
         {
+            p_player = new List<Player>();
             Console.Clear();
             int p_numberOfPlayers = DetermineNumberOfPlayers();
 
@@ -60,6 +83,7 @@ namespace GameFactory.Model
                     Name = InitializePlayerName(p_gamer),
                     Icon = InitializePlayerIcon(p_gamer),
                     Colour = InitializePlayerColor(p_gamer),
+                    Id = Guid.NewGuid()
                 };
                 p_player.Add(newPlayer);
 
@@ -166,6 +190,27 @@ namespace GameFactory.Model
             } while (p_gameType == null);
         }
         #endregion
+
+        internal static void EndGameStats(List<Player> p_player, List<Match> p_history)
+        {
+
+            Console.WriteLine("Game over!");
+            Console.WriteLine("Final scores:");
+
+            foreach (var Player in p_player)
+            {
+                int Wins = p_history.Count(Match => Match.Winner == Player);
+                int Losses = p_history.Count(Match => Match.Loser == Player);
+                Console.WriteLine($"{Player.Name}:  Wins: {Wins}   Losses: {Losses} \n");
+            }
+            int Draws = p_history.Count(Match => Match.Draw != null);
+
+            Console.WriteLine($"Draws: {Draws}");
+
+            Console.ReadKey();
+            Environment.Exit(0);
+
+        }
 
 
 

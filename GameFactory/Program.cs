@@ -1,4 +1,5 @@
 ﻿using GameFactory.Model;
+using System.Collections.Generic;
 
 namespace GameFactory
 {
@@ -22,10 +23,12 @@ namespace GameFactory
 
                 CurrentGame.InitializePlayer();
                 CurrentGame.InitializeGame();
-
-                CurrentMatch = CurrentGame.CreateMatch();
-                CurrentMatch.StartMatch();
-
+                do
+                {
+                    CurrentMatch = CurrentGame.CreateMatch();
+                    CurrentMatch.StartMatch();
+                } while (CurrentMatch.ReMatch());
+                Game.EndGameStats(CurrentGame.p_player, CurrentGame.p_history);
             }
         }
 

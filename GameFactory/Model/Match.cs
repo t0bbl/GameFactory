@@ -1,4 +1,5 @@
 using GameFactory.Model;
+using System.Runtime.CompilerServices;
 using System.Text;
 
 namespace GameFactory
@@ -6,25 +7,28 @@ namespace GameFactory
     internal class Match : Game
     {
         #region Variables
-        public char[,] p_board;
-        public int p_rows { get; set; }
-        public int p_columns { get; set; }
-        public int p_winningLength { get; set; }
-        public int p_currentPlayerIndex { get; set; }
-        public string p_boardString { get; set; }
-        public bool p_firstTurn { get; set; }
-        public string p_winner { get; set; }
-        public Guid GameId { get; private set; }
+        internal char[,] p_board;
+        internal int p_rows { get; set; }
+        internal int p_columns { get; set; }
+        internal int p_winningLength { get; set; }
+        internal int p_currentPlayerIndex { get; set; }
+        internal string p_boardString { get; set; }
+        internal bool p_firstTurn { get; set; }
+        internal string p_winner { get; set; }
+        internal Guid GameId { get; private set; }
+        internal Player Winner { get; set; }
+        internal Player Loser { get; set; }
+        internal Player Draw { get; set; }
 
         readonly Random p_random = new();
 
         #endregion
-        public Match()
+        internal Match()
         {
 
         }
 
-        public void StartMatch()
+        internal void StartMatch()
         {
             p_currentPlayerIndex = 0;
             ResetBoard();
@@ -38,7 +42,6 @@ namespace GameFactory
             } while (p_winner == null);
 
             UpdateStats(p_player, p_winner);
-            ReMatch(p_player);
 
         }
         public virtual void GameMechanic(List<Player> p_player)
@@ -175,30 +178,13 @@ namespace GameFactory
 
             return null;
         }
-        public void ReMatch(List<Player> p_player)
+        public bool ReMatch()
         {
+
             Console.WriteLine("Do you want to rematch? (y/n)");
-            ConsoleKeyInfo keyInfo = Console.ReadKey();
-            string rematch = keyInfo.KeyChar.ToString();
-            if (rematch == "y")
-            {
-                Console.Clear();
-                ResetBoard();
-                StartMatch();
-            }
-            else if (rematch == "n")
-            {
-                Console.Clear();
-                EndGameStats(p_player);
-                Console.WriteLine("Thanks for playing!");
-                Console.ReadKey();
-                Environment.Exit(0);
-            }
-            else
-            {
-                Console.WriteLine("Invalid input. Try again.");
-                ReMatch(p_player);
-            }
+            string keyInfo = Console.ReadLine();
+            bool rematch = keyInfo == "y";
+            return rematch;
         }
         public void ShufflePlayers(List<Player> p_player)
         {
@@ -229,45 +215,35 @@ namespace GameFactory
         }
         #endregion
         #region Stats
-        public static List<Player> UpdateStats(List<Player> p_players, string p_winnerName)
+        internal List<Player> UpdateStats(List<Player> p_players, string p_winnerName)
         {
-            if (p_winnerName != null && p_winnerName != "Draw")
+            if (p_winnerName != null)
             {
                 foreach (var p_player in p_players)
                 {
+
                     if (p_player.Name == p_winnerName)
                     {
                         Console.WriteLine();
                         Console.WriteLine($"{p_player.Name} won the game!");
-                        p_player.Wins++;
+                        Winner = p_player;
+                    }
+                    else if (p_winnerName == "Draw")
+                    {
+                        Console.WriteLine();
+                        Console.WriteLine("It's a draw!");
+                        Draw = p_player;
                     }
                     else
                     {
-                        p_player.Losses++;
+                        Console.WriteLine();
+                        Loser = p_player;
                     }
                 }
             }
-            else if (p_winnerName == "Draw")
-            {
-                foreach (var p_player in p_players)
-                {
-                    p_player.Draws++;
-                }
-                Console.WriteLine("It's a draw!");
-            }
+
 
             return p_players;
-        }
-        public static void EndGameStats(List<Player> p_player)
-        {
-            Console.WriteLine("Game over!");
-            Console.WriteLine("Final scores:");
-            foreach (var player in p_player)
-            {
-                Console.WriteLine($"{player.Name}: {player.Wins} Wins");
-                Console.WriteLine($"{player.Name}: {player.Losses} Losses");
-                Console.WriteLine($"{player.Name}: {player.Draws} Draws");
-            }
         }
 
         #endregion

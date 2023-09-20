@@ -1,19 +1,12 @@
 namespace GameFactory
 {
-    public class Player
+    internal class Player
     {
-        public string Name { get; set; }
-        public char Icon { get; set; }
-        public string Colour { get; set; }
-        public bool IsHuman { get; set; }
-        public int Wins { get; set; }
-        public int Losses { get; set; }
-        public int Draws { get; set; }
-        public Guid Id { get; private set; }
-        public Player()
-        {
-            Id = Guid.NewGuid();
-        }
+        internal string Name;
+        internal char Icon;
+        internal string Colour;
+        internal bool IsHuman;
+        internal Guid Id;  
 
     }
 }
