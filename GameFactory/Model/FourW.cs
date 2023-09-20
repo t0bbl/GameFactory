@@ -32,11 +32,11 @@ namespace GameFactory.Model
 
             PrintBoard(false, true, p_player);
         }
-        public int FindLowestAvailableRow(int column)
+        public int FindLowestAvailableRow(int p_column)
         {
             for (int row = p_rows - 1; row >= 0; row--)
             {
-                if (GetCell(row, column) == '0')
+                if (GetCell(row, p_column) == '0')
                 {
                     return row;
                 }
