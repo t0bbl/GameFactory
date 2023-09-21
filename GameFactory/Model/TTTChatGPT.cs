@@ -17,10 +17,10 @@
                 base.GameMechanic(p_players);
             }
         }
-        protected override string BuildMessage(string board, List<Player> p_players)
+        protected override string BuildMessage(string p_board, List<Player> p_players)
         {
             return $"Objective: Win the Tic-Tac-Toe game.\n" +
-                   $"Current board:\n{board}\n" +
+                   $"Current board:\n{p_board}\n" +
                    $"Your turn:\n" +
                    $"- You are '{p_players[1].Icon}'.\n" +
                    $"- Change one empty '.' to '{p_players[1].Icon}' and return the new board.\n" +
@@ -29,7 +29,7 @@
                    $"- Dont Change the Icons of the players.\n" +
                    $"Make your move:";
         }
-        public override void ChatGPTMove(string board, List<Player> p_players)
+        public override void ChatGPTMove(string p_board, List<Player> p_players)
         {
             ConsoleColor p_originalForegroundColour = Console.ForegroundColor;
             Console.ForegroundColor = ConsoleColor.Green;
@@ -38,7 +38,7 @@
             {
                 Console.WriteLine("ChatGPT is thinking...");
 
-                string message = BuildMessage(board, p_players);
+                string message = BuildMessage(p_board, p_players);
                 string response = SendMessageToChatGPT(apiKey, message);
                 StringToBoard(response, p_players);
 
@@ -56,9 +56,9 @@
             }
             Console.ForegroundColor = p_originalForegroundColour;
         }
-        public void StringToBoard(string boardString, List<Player> p_players)
+        public void StringToBoard(string p_boardString, List<Player> p_players)
         {
-            string[] p_rowsString = boardString.Split(new[] { '\n' }, StringSplitOptions.RemoveEmptyEntries);
+            string[] p_rowsString = p_boardString.Split(new[] { '\n' }, StringSplitOptions.RemoveEmptyEntries);
 
             for (int row = 0; row < Math.Min(p_rowsString.Length, p_rows); row++)
             {
