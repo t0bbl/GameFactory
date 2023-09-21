@@ -57,7 +57,6 @@ namespace GameFactory.Model
                     Name = InitializePlayerName(p_gamer),
                     Icon = InitializePlayerIcon(p_gamer),
                     Colour = InitializePlayerColor(p_gamer),
-                    Id = Guid.NewGuid(),
                     IsHuman = true
                 };
                 p_player.Add(newPlayer);
