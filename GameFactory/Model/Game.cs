@@ -72,8 +72,8 @@ namespace GameFactory.Model
             do
             {
                 Console.WriteLine("Enter the number of players: ");
-                string input = Console.ReadLine();
-                if (int.TryParse(input, out p_numberOfPlayers) && p_numberOfPlayers > 0)
+                string p_input = Console.ReadLine();
+                if (int.TryParse(p_input, out p_numberOfPlayers) && p_numberOfPlayers > 0)
                 {
                     return p_numberOfPlayers;
                 }
@@ -158,29 +158,29 @@ namespace GameFactory.Model
 
 
         #region Utilities
-        internal static string ShowMenu(Type enumType)
+        internal static string ShowMenu(Type p_enumType)
         {
-            var enumValues = Enum.GetValues(enumType);
-            var menuItems = new List<string>();
+            var p_enumValues = Enum.GetValues(p_enumType);
+            var p_menuItems = new List<string>();
 
             Console.WriteLine("");
-            foreach (var value in enumValues)
+            foreach (var value in p_enumValues)
             {
-                menuItems.Add(value.ToString());
-                Console.WriteLine($"{menuItems.Count}. {value}");
+                p_menuItems.Add(value.ToString());
+                Console.WriteLine($"{p_menuItems.Count}. {value}");
             }
 
             do
             {
                 Console.Write("Enter the number of your choice: ");
-                string input = Console.ReadKey().KeyChar.ToString();
+                string p_input = Console.ReadKey().KeyChar.ToString();
                 Console.WriteLine();
 
-                if (int.TryParse(input, out int choice))
+                if (int.TryParse(p_input, out int p_choice))
                 {
-                    if (choice >= 1 && choice <= menuItems.Count)
+                    if (p_choice >= 1 && p_choice <= p_menuItems.Count)
                     {
-                        return menuItems[choice - 1];
+                        return p_menuItems[p_choice - 1];
                     }
                     else
                     {
