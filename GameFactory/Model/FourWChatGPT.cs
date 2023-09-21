@@ -17,17 +17,17 @@
                 base.GameMechanic(p_players);
             }
         }
-        protected override string BuildMessage(string board, List<Player> p_players)
+        protected override string BuildMessage(string p_board, List<Player> p_players)
         {
             return $"Objective: Win the Connect 4 game by connecting four of your '{p_players[1].Icon}' vertically, horizontally, or diagonally.\n" +
                    $"The board is 7 columns by 6 rows.\n" +
-                   $"Current board:\n{board}\n" +
+                   $"Current board:\n{p_board}\n" +
                    $"Your turn:\n" +
                    $"- You are '{p_players[1].Icon}'.\n" +
                    $"- Drop your '{p_players[1].Icon}' into any of the columns. You cannot choose a column that is already full.\n" +
                    $"Choose a column (1-7) and return just this one number!:";
         }
-        public override void ChatGPTMove(string board, List<Player> p_players)
+        public override void ChatGPTMove(string p_board, List<Player> p_players)
         {
             ConsoleColor p_originalForegroundColour = Console.ForegroundColor;
             Console.ForegroundColor = ConsoleColor.Green;
@@ -39,9 +39,9 @@
                 Console.WriteLine();
                 Console.WriteLine("ChatGPT is thinking...");
 
-                string message = BuildMessage(board, p_players);
-                string response = SendMessageToChatGPT(apiKey, message);
-                chosenColumn = ValidateColumnChoice(response.Trim(), p_players);
+                string p_message = BuildMessage(p_board, p_players);
+                string p_response = SendMessageToChatGPT(apiKey, p_message);
+                chosenColumn = ValidateColumnChoice(p_response.Trim(), p_players);
                 MakeMove(chosenColumn, 1, p_players);
 
 
@@ -57,9 +57,9 @@
             }
             Console.ForegroundColor = p_originalForegroundColour;
         }
-        public int ValidateColumnChoice(string response, List<Player> p_players)
+        public int ValidateColumnChoice(string p_response, List<Player> p_players)
         {
-            if (int.TryParse(response, out int chosenColumn))
+            if (int.TryParse(p_response, out int chosenColumn))
             {
                 if (chosenColumn >= 1 && chosenColumn <= p_columns)
                 {
