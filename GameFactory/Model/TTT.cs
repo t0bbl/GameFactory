@@ -4,6 +4,7 @@
     {
         public TTT()
         {
+            p_gameType = "TTT";
             p_rows = 3;
             p_columns = 3;
             p_winningLength = 3;

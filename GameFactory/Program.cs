@@ -10,11 +10,13 @@ namespace GameFactory
             while (true)
             {
                 Game CurrentGame = new();
+                var Options = new Options();
                 Match CurrentMatch;
+
                 string GameMode = CurrentGame.InitializeGameMenu();
+
                 if (GameMode == "Options")
                 {
-                    var Options = new Options();
                     if (!Options.StartOptions())
                     {
                         continue;
@@ -22,7 +24,6 @@ namespace GameFactory
                 }
                 if (GameMode == "PlayerOptions")
                 {
-                    var Options = new Options();
                     if (!Options.PlayerOptions())
                     {
                         continue;

@@ -11,12 +11,14 @@
             this.p_twist = p_twist;
             if (p_twist)
             {
+                p_gameType = "twist";
                 p_rows = 8;
                 p_columns = 5;
                 p_winningLength = 4;
             }
             else
             {
+                p_gameType = "customTTT";
                 p_rows = AskForRows();
                 p_columns = AskForColumns();
                 p_winningLength = AskForWinningLength();

@@ -5,6 +5,7 @@ namespace GameFactory.Model
 
         public FourW()
         {
+            p_gameType = "FourW";
             p_rows = 6;
             p_columns = 7;
             p_winningLength = 4;

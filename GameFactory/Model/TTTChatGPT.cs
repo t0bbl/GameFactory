@@ -4,7 +4,10 @@
     {
         public TTTChatGPT()
         {
-
+            p_gameType = "TTTChatGPT";
+            p_rows = 3;
+            p_columns = 3;
+            p_winningLength = 3;
         }
         public override void GameMechanic(List<Player> p_players)
         {
