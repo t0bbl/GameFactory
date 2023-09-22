@@ -5,6 +5,7 @@ using System.Text;
 using System.Security.Cryptography;
 
 using System.Threading.Tasks;
+using System.Text.RegularExpressions;
 
 namespace GameFactory.Model
 {
@@ -17,14 +18,27 @@ namespace GameFactory.Model
         internal bool PlayerSignup()
         {
             Console.Clear();
-            Console.WriteLine("Please enter the name you want to signup with:");
-            string loginName = Console.ReadLine();
-            Console.WriteLine("Please enter your password:");
-            string password = Console.ReadLine();
+            do
+            {
+                do
+                {
+                    Console.WriteLine("Please enter the name you want to signup with:");
+                    loginName = Console.ReadLine();
+                } while (!ValidateLoginName(loginName));
+                                
+            } while (!PlayerService.CheckLoginName(loginName));
+
+            do
+            {
+                Console.WriteLine("Please enter your password:");
+                password = Console.ReadLine();
+            } while (!ValidatePassword(password));
+
             string p_password = HashPassword(password);
             if (PlayerService.SignUpPlayer(loginName, p_password))
             {
-                Console.WriteLine("You have successfully signed up!");
+                Console.WriteLine("You have successfully signed up! Hit any key to continue");
+                Console.ReadLine();
                 return true;
             }
             else
@@ -35,7 +49,6 @@ namespace GameFactory.Model
 
 
         }
-
         internal bool PlayerSignIn()
         {
             Console.Clear();
@@ -46,7 +59,7 @@ namespace GameFactory.Model
             string p_password = HashPassword(password);
             if (PlayerService.LoginPlayer(loginName, p_password))
             {
-                Console.WriteLine("You have successfully logged in!");
+                Console.WriteLine("You have successfully logged in! Hit any key to continue");
                 Console.ReadLine();
                 return true;
             }
@@ -60,6 +73,7 @@ namespace GameFactory.Model
 
         }
 
+        #region Utility Methods
         public static string HashPassword(string password)
         {
             using (SHA256 sha256Hash = SHA256.Create())
@@ -74,7 +88,33 @@ namespace GameFactory.Model
                 return builder.ToString();
             }
         }
-    }
+        public bool ValidateLoginName(string loginName)
+        {
+            if (loginName.Length < 3 || loginName.Length > 16)
+            {
+                Console.WriteLine("Your login name must be between 3 and 16 characters long.");
+                return false;
+            }
 
+            Regex alphanumericRegex = new Regex("^[a-zA-Z0-9]+$");
+            if (!alphanumericRegex.IsMatch(loginName))
+            {
+                Console.WriteLine("Your login name must only contain alphanumeric characters.");
+                return false;
+            }
+            
+            return true;
+        }
+        public static bool ValidatePassword(string password)
+        {
+            if (password.Length < 8 || password.Length > 16)
+            {
+                Console.WriteLine("Your password must be between 8 and 16 characters long.");
+                return false;
+            }
+            return true;
+        }
+        #endregion
+    }
 
 }
