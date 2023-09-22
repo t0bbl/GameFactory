@@ -1,4 +1,5 @@
 using GameFactory.Model;
+using GameFactory.SQL;
 using System.Runtime.CompilerServices;
 using System.Text;
 
@@ -46,8 +47,8 @@ namespace GameFactory
         }
         public virtual void GameMechanic(List<Player> p_player)
         {
+            SQLGame.SaveSQLGame(p_rows, p_columns, p_winningLength, p_gameType);
             GameId = Guid.NewGuid();
-
         }
 
         #region BoardSetup
