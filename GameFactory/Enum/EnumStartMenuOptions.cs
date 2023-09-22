@@ -4,12 +4,19 @@ namespace GameFactory
     {
         SinglePlayer = 1,
         MultiPlayer = 2,
-        Options = 3,
-        Quit = 4,
+        PlayerOptions = 3,
+        Options = 4,
+        Quit = 5,
     }
     public enum OptionsMenu
     {
         NightMode = 1,
         Back = 2
+    }
+    public enum PlayerOptionsMenu
+    {
+        LogIn = 1,
+        SignUp = 2,
+        Back = 3
     }
 }

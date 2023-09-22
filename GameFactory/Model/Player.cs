@@ -6,7 +6,9 @@ namespace GameFactory
         internal char Icon;
         internal string Colour;
         internal bool IsHuman;
-        internal Guid Id;  
+        internal int Id;
+        internal string LoginName;
+        internal string Password;
 
     }
 }

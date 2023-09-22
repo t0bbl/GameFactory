@@ -11,11 +11,19 @@ namespace GameFactory
             {
                 Game CurrentGame = new();
                 Match CurrentMatch;
-                var GameMode = CurrentGame.InitializeGameMenu();
+                string GameMode = CurrentGame.InitializeGameMenu();
                 if (GameMode == "Options")
                 {
                     var Options = new Options();
                     if (!Options.StartOptions())
+                    {
+                        continue;
+                    }
+                }
+                if (GameMode == "PlayerOptions")
+                {
+                    var Options = new Options();
+                    if (!Options.PlayerOptions())
                     {
                         continue;
                     }
