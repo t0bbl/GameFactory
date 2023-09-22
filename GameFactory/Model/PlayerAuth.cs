@@ -12,8 +12,8 @@ namespace GameFactory.Model
     internal class PlayerAuth
     {
         SQLPlayerService PlayerService = new();
-        string loginName;
-        string password;
+        string p_loginName;
+        string p_password;
 
         internal bool PlayerSignup()
         {
@@ -23,19 +23,19 @@ namespace GameFactory.Model
                 do
                 {
                     Console.WriteLine("Please enter the name you want to signup with:");
-                    loginName = Console.ReadLine();
-                } while (!ValidateLoginName(loginName));
+                    p_loginName = Console.ReadLine();
+                } while (!ValidateLoginName(p_loginName));
                                 
-            } while (!PlayerService.CheckLoginName(loginName));
+            } while (!PlayerService.CheckLoginName(p_loginName));
 
             do
             {
                 Console.WriteLine("Please enter your password:");
-                password = Console.ReadLine();
-            } while (!ValidatePassword(password));
+                p_password = Console.ReadLine();
+            } while (!ValidatePassword(p_password));
 
-            string p_password = HashPassword(password);
-            if (PlayerService.SignUpPlayer(loginName, p_password))
+            string p_passwordSave = HashPassword(p_password);
+            if (PlayerService.SignUpPlayer(p_loginName, p_passwordSave))
             {
                 Console.WriteLine("You have successfully signed up! Hit any key to continue");
                 Console.ReadLine();
@@ -55,11 +55,11 @@ namespace GameFactory.Model
         {
             Console.Clear();
             Console.WriteLine("Please enter your login name:");
-            loginName = Console.ReadLine();
+            p_loginName = Console.ReadLine();
             Console.WriteLine("Please enter your password:");
-            password = Console.ReadLine();
-            string p_password = HashPassword(password);
-            if (PlayerService.LoginPlayer(loginName, p_password))
+            p_password = Console.ReadLine();
+            string p_passwordSave = HashPassword(p_password);
+            if (PlayerService.LoginPlayer(p_loginName, p_passwordSave))
             {
                 Console.WriteLine("You have successfully logged in! Hit any key to continue");
                 Console.ReadLine();

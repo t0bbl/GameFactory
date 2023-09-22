@@ -4,7 +4,7 @@ using System.Data.SqlClient;
 public class SQLPlayerService
 {
     private readonly SqlConnection conn = new SQLDatabaseUtility().GetConnection();
-    public bool SignUpPlayer(string loginName, string password)
+    public bool SignUpPlayer(string p_loginName, string p_password)
     {
         string connString = new SQLDatabaseUtility().GetSQLConnectionString();
 
@@ -14,8 +14,8 @@ public class SQLPlayerService
             {
                 cmd.CommandType = CommandType.StoredProcedure;
 
-                cmd.Parameters.Add(new SqlParameter("@LoginName", loginName));
-                cmd.Parameters.Add(new SqlParameter("@Password", password));
+                cmd.Parameters.Add(new SqlParameter("@LoginName", p_loginName));
+                cmd.Parameters.Add(new SqlParameter("@Password", p_password));
                 cmd.Parameters.Add(new SqlParameter("@IsHuman", 1));
 
                 SqlParameter resultParam = new SqlParameter("@Result", SqlDbType.Bit);
@@ -31,7 +31,7 @@ public class SQLPlayerService
         }
     }
 
-    public bool LoginPlayer(string loginName, string password)
+    public bool LoginPlayer(string p_loginName, string p_password)
     {
         string connString = new SQLDatabaseUtility().GetSQLConnectionString();
 
@@ -41,8 +41,8 @@ public class SQLPlayerService
             {
                 cmd.CommandType = CommandType.StoredProcedure;
 
-                cmd.Parameters.Add(new SqlParameter("@LoginName", loginName));
-                cmd.Parameters.Add(new SqlParameter("@Password", password));
+                cmd.Parameters.Add(new SqlParameter("@LoginName", p_loginName));
+                cmd.Parameters.Add(new SqlParameter("@Password", p_password));
 
                 SqlParameter resultParam = new SqlParameter("@Result", SqlDbType.Bit);
                 resultParam.Direction = ParameterDirection.Output;
@@ -57,7 +57,7 @@ public class SQLPlayerService
         }
     }
 
-    public bool CheckLoginName(string loginName)
+    public bool CheckLoginName(string p_loginName)
     {
         string connString = new SQLDatabaseUtility().GetSQLConnectionString();
 
@@ -67,7 +67,7 @@ public class SQLPlayerService
             {
                 cmd.CommandType = CommandType.StoredProcedure;
 
-                cmd.Parameters.Add(new SqlParameter("@LoginName", loginName));
+                cmd.Parameters.Add(new SqlParameter("@LoginName", p_loginName));
 
                 SqlParameter resultParam = new SqlParameter("@Result", SqlDbType.Bit);
                 resultParam.Direction = ParameterDirection.Output;
