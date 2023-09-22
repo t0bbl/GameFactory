@@ -53,7 +53,7 @@ namespace GameFactory.Model
                     {
                         case "LogIn":
                             PlayerAuth.PlayerSignIn();
-                            break;
+                            return false;
                         case "SignUp":
                             PlayerAuth.PlayerSignup();
                             return false;

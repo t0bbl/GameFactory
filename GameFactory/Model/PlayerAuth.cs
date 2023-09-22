@@ -39,11 +39,13 @@ namespace GameFactory.Model
             {
                 Console.WriteLine("You have successfully signed up! Hit any key to continue");
                 Console.ReadLine();
+                Console.Clear();
                 return true;
             }
             else
             {
                 Console.WriteLine("An error occurred while signing you up.");
+                Console.ReadLine();
                 return false;
             }
 
@@ -61,6 +63,7 @@ namespace GameFactory.Model
             {
                 Console.WriteLine("You have successfully logged in! Hit any key to continue");
                 Console.ReadLine();
+                Console.Clear();
                 return true;
             }
             else
