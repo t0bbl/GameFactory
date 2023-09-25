@@ -1,10 +1,10 @@
 ﻿using System.Data;
 using System.Data.SqlClient;
 
-public class SQLPlayerService
+internal class SQLPlayerService
 {
     private readonly SqlConnection conn = new SQLDatabaseUtility().GetConnection();
-    public bool SignUpPlayer(string p_loginName, string p_password)
+    internal bool SignUpPlayer(string p_loginName, string p_password)
     {
         string connString = new SQLDatabaseUtility().GetSQLConnectionString();
 
@@ -31,7 +31,7 @@ public class SQLPlayerService
         }
     }
 
-    public bool LoginPlayer(string p_loginName, string p_password)
+    internal bool LoginPlayer(string p_loginName, string p_password)
     {
         string connString = new SQLDatabaseUtility().GetSQLConnectionString();
 
@@ -57,7 +57,7 @@ public class SQLPlayerService
         }
     }
 
-    public bool CheckLoginName(string p_loginName)
+    internal bool CheckLoginName(string p_loginName)
     {
         string connString = new SQLDatabaseUtility().GetSQLConnectionString();
 

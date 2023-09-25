@@ -8,7 +8,7 @@ namespace GameFactory.SQL
     {
         private readonly SqlConnection conn = new SQLDatabaseUtility().GetConnection();
 
-        public static void SaveSQLGame(int p_rows, int p_columns,int p_winningLength, string p_gameType)
+        internal static (bool Result, int Ident) SaveGame(int p_rows, int p_columns, int p_winningLength, string p_gameType)
         {
             string connString = new SQLDatabaseUtility().GetSQLConnectionString();
 
@@ -27,13 +27,21 @@ namespace GameFactory.SQL
                     resultParam.Direction = ParameterDirection.Output;
                     cmd.Parameters.Add(resultParam);
 
+                    SqlParameter identParam = new SqlParameter("@Ident", SqlDbType.Int);
+                    identParam.Direction = ParameterDirection.Output;
+                    cmd.Parameters.Add(identParam);
+
                     conn.Open();
                     cmd.ExecuteNonQuery();
 
                     bool result = (bool)resultParam.Value;
-                    
+
+                    int ident = (int)identParam.Value;
+
+                    return (result, ident);
                 }
             }
         }
+
     }
 }

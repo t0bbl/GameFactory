@@ -25,7 +25,7 @@ namespace GameFactory.Model
                     Console.WriteLine("Please enter the name you want to signup with:");
                     p_loginName = Console.ReadLine();
                 } while (!ValidateLoginName(p_loginName));
-                                
+
             } while (!PlayerService.CheckLoginName(p_loginName));
 
             do
@@ -38,6 +38,7 @@ namespace GameFactory.Model
             if (PlayerService.SignUpPlayer(p_loginName, p_passwordSave))
             {
                 Console.WriteLine("You have successfully signed up! Hit any key to continue");
+
                 Console.ReadLine();
                 Console.Clear();
                 return true;
@@ -48,32 +49,45 @@ namespace GameFactory.Model
                 Console.ReadLine();
                 return false;
             }
-
-
         }
         internal bool PlayerSignIn()
         {
+            bool loggedIn = false;
             Console.Clear();
             Console.WriteLine("Please enter your login name:");
             p_loginName = Console.ReadLine();
             Console.WriteLine("Please enter your password:");
             p_password = Console.ReadLine();
             string p_passwordSave = HashPassword(p_password);
-            if (PlayerService.LoginPlayer(p_loginName, p_passwordSave))
+            do
             {
-                Console.WriteLine("You have successfully logged in! Hit any key to continue");
-                Console.ReadLine();
-                Console.Clear();
-                return true;
-            }
-            else
-            {
-                Console.WriteLine("An error occurred while you logged in.");
-                Console.ReadLine();
-
-                return false;
-            }
-
+                if (PlayerService.LoginPlayer(p_loginName, p_passwordSave))
+                {
+                    Console.WriteLine("You have successfully logged in! Hit any key to continue");
+                    Console.ReadLine();
+                    Console.Clear();
+                    return true;
+                }
+                else
+                {
+                    Console.WriteLine("An error occurred while you logged in.");
+                    Console.WriteLine("You want to try (a)gain or sign(U)p?");
+                    string loginAgainOrSignUp = Console.ReadLine();
+                    if (loginAgainOrSignUp == "a")
+                    {
+                        PlayerSignIn();
+                    }
+                    else if (loginAgainOrSignUp == "u")
+                    {
+                        PlayerSignup();
+                    }
+                    else
+                    {
+                        Console.WriteLine("You have entered an invalid input. Please try again.");
+                    }
+                    return false;
+                }
+            } while (!loggedIn);
         }
 
         #region Utility Methods
@@ -105,7 +119,7 @@ namespace GameFactory.Model
                 Console.WriteLine("Your login name must only contain alphanumeric characters.");
                 return false;
             }
-            
+
             return true;
         }
         public static bool ValidatePassword(string password)

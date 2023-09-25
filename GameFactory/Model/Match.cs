@@ -19,14 +19,14 @@ namespace GameFactory
         internal Guid GameId { get; private set; }
         internal Player Winner { get; set; }
         internal Player Loser { get; set; }
-        internal Player Draw { get; set; }
+        internal bool Draw { get; set; }
+        int p_gameTypeIdent { get; set; }
 
         private static Random p_random = new();
 
         #endregion
         internal Match()
         {
-
         }
 
         internal void StartMatch()
@@ -43,13 +43,17 @@ namespace GameFactory
             } while (p_winner == null);
 
             UpdateStats(p_player, p_winner);
-
         }
         public virtual void GameMechanic(List<Player> p_player)
         {
-            SQLGame.SaveSQLGame(p_rows, p_columns, p_winningLength, p_gameType);
+            var resultTuple = SQLGame.SaveGame(p_rows, p_columns, p_winningLength, p_gameType);
+
+            p_gameTypeIdent = resultTuple.Ident;
+
             GameId = Guid.NewGuid();
         }
+
+
 
         #region BoardSetup
         public void ResetBoard()
@@ -218,6 +222,7 @@ namespace GameFactory
         #region Stats
         internal List<Player> UpdateStats(List<Player> p_players, string p_winnerName)
         {
+            string p_loser = null;
             if (p_winnerName != null)
             {
                 foreach (var p_player in p_players)
@@ -227,22 +232,25 @@ namespace GameFactory
                     {
                         Console.WriteLine();
                         Console.WriteLine($"{p_player.Name} won the game!");
+                        p_winner = p_player.Name;
                         Winner = p_player;
                     }
                     else if (p_winnerName == "Draw")
                     {
                         Console.WriteLine();
                         Console.WriteLine("It's a draw!");
-                        Draw = p_player;
+                        Draw = true;
                     }
                     else
                     {
                         Console.WriteLine();
+                        p_loser = p_player.Name;
                         Loser = p_player;
                     }
                 }
             }
 
+            SQLMatch.SaveMatch(p_winner, p_loser, Draw, p_gameTypeIdent);
 
             return p_players;
         }
