@@ -152,6 +152,7 @@ namespace GameFactory.Model
             p_icon = Game.InitializePlayerIcon();
             p_colour = Game.InitializePlayerColor();
             PlayerService.SavePlayerVariables(p_loginName, p_name, p_icon, p_colour);
+            Console.Clear();
             return true;
         }
 

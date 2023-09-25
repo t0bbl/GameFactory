@@ -4,7 +4,7 @@ namespace GameFactory
     {
         SinglePlayer = 1,
         MultiPlayer = 2,
-        PlayerSignup = 3,
+        PlayerOptions = 3,
         Options = 4,
         Quit = 5,
     }

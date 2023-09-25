@@ -23,10 +23,11 @@ namespace GameFactory
                         continue;
                     }
                 }
-                if (GameMode == "PlayerSignup")
+                if (GameMode == "PlayerOptions")
                 {
-                    if (!playerAuth.PlayerSignup())
+                    if (playerAuth.PlayerSignIn() != 0)
                     {
+                        playerAuth.SavePlayerVariables();
                         continue;
                     }
                 }
