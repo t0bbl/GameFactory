@@ -8,7 +8,7 @@ namespace GameFactory.SQL
     internal class SQLMatch
     {
 
-        internal static bool SaveMatch(string p_winner, string p_loser, bool p_draw, int p_gameType)
+        internal static bool SaveMatch(int p_winner, int p_loser, int p_draw, int p_gameType)
         {
             string connString = new SQLDatabaseUtility().GetSQLConnectionString();
 
@@ -17,15 +17,13 @@ namespace GameFactory.SQL
                 using (SqlCommand cmd = new SqlCommand("SaveMatch", conn))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
-                    Console.WriteLine($"{p_winner} winner, {p_loser} loser, {p_draw} draw, {p_gameType} gametype");
-                    Console.ReadLine();
-                    cmd.Parameters.Add(new SqlParameter("@Loser", p_loser));
-                    cmd.Parameters.Add(new SqlParameter("@Winner", p_winner));
-                    cmd.Parameters.Add(new SqlParameter("@Draw", p_draw));
-                    cmd.Parameters.Add(new SqlParameter("@GameType", p_gameType));
+                    cmd.Parameters.Add(new SqlParameter("@p_loser", p_loser));
+                    cmd.Parameters.Add(new SqlParameter("@p_winner", p_winner));
+                    cmd.Parameters.Add(new SqlParameter("@p_draw", p_draw));
+                    cmd.Parameters.Add(new SqlParameter("@p_gameType", p_gameType));
 
 
-                    SqlParameter resultParam = new SqlParameter("@Result", SqlDbType.Bit);
+                    SqlParameter resultParam = new SqlParameter("@p_result", SqlDbType.Bit);
                     resultParam.Direction = ParameterDirection.Output;
                     cmd.Parameters.Add(resultParam);
 

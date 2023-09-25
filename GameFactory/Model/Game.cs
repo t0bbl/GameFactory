@@ -1,5 +1,4 @@
-﻿
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 
 namespace GameFactory.Model
@@ -7,7 +6,7 @@ namespace GameFactory.Model
     internal class Game
     {
         #region Variables
-        internal List<Player> p_player { get; set; }
+        internal List<Player> p_player { get; set; } = new();
         internal string p_gameType { get; set; }
         internal string p_gameMode { get; set; }
 
@@ -42,50 +41,48 @@ namespace GameFactory.Model
 
 
         #region initializePlayer
-        public void InitializePlayer()
+        internal void InitializePlayer()
         {
             var playerAuth = new PlayerAuth();
-            p_player = new List<Player>();
+            var sqlPlayerService = new SQLPlayerService();
             Console.Clear();
             int p_numberOfPlayers = DetermineNumberOfPlayers();
 
             for (int p_gamer = 0; p_gamer < p_numberOfPlayers; p_gamer++)
             {
-                do {
+                bool p_validInput = false;
+                do
+                {
                     Console.WriteLine($"Do you want to Log(i)n, Sign(U)p or play as a (G)uest?");
                     string p_input = Console.ReadKey().KeyChar.ToString();
                     if (p_input == "i")
                     {
-                        playerAuth.PlayerSignIn();
+                        var p_ident = playerAuth.PlayerSignIn();
+                        var playerVariables = sqlPlayerService.GetPlayerVariables(p_ident);
+                        Console.WriteLine($"Welcome back {playerVariables.Name}!");
+                        p_player.Add(playerVariables);
+                        p_validInput = true;
                     }
                     else if (p_input == "u")
                     {
                         playerAuth.PlayerSignup();
+                        p_validInput = true;
                     }
                     else if (p_input == "g")
                     {
                         Console.WriteLine("Playing as a guest.");
+                        p_validInput = true;
                     }
                     else
                     {
-                        Console.WriteLine("Invalid input.");
+                        Console.WriteLine("Invalid input. Please enter a valid input.");
                     }
-                    Console.Clear();
-                } while (p_gameMode == "PlayerSignup" && !playerAuth.PlayerSignup());
+                } while (!p_validInput);
 
-
-                Player newPlayer = new Player
-                {
-                    Name = InitializePlayerName(),
-                    Icon = InitializePlayerIcon(),
-                    Colour = InitializePlayerColor(),
-                    IsHuman = true
-                };
-                p_player.Add(newPlayer);
-
+                Console.Clear();
             }
         }
-        public int DetermineNumberOfPlayers()
+        internal int DetermineNumberOfPlayers()
         {
             if (p_gameMode == "SinglePlayer") return 1;
 
@@ -101,7 +98,7 @@ namespace GameFactory.Model
                 Console.WriteLine("Invalid input. Please enter a valid number.");
             } while (true);
         }
-        public static string InitializePlayerName()
+        internal static string InitializePlayerName()
         {
             string Name;
             do
@@ -115,7 +112,7 @@ namespace GameFactory.Model
             } while (string.IsNullOrEmpty(Name));
             return Name;
         }
-        public static char InitializePlayerIcon()
+        internal static char InitializePlayerIcon()
         {
             char Icon;
             do
@@ -130,7 +127,7 @@ namespace GameFactory.Model
             } while (Icon == '\r' || Icon == ' ');
             return Icon;
         }
-        public static string InitializePlayerColor()
+        internal static string InitializePlayerColor()
         {
             Console.WriteLine($"\n Choose a Color you want to use InGame: \n");
             string Colour = ShowMenu(typeof(ValidColours));

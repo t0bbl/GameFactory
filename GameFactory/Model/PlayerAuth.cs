@@ -19,7 +19,7 @@ namespace GameFactory.Model
         string p_name;
         char p_icon;
         string p_colour;
-        bool p_isHuman;
+
         internal bool PlayerSignup()
         {
             Console.Clear();
@@ -60,8 +60,9 @@ namespace GameFactory.Model
 
 
         }
-        internal bool PlayerSignIn()
+        internal int PlayerSignIn()
         {
+
             bool loggedIn = false;
             Console.Clear();
             Console.WriteLine("Please enter your login name:");
@@ -71,12 +72,13 @@ namespace GameFactory.Model
             string p_passwordSave = HashPassword(p_password);
             do
             {
-                if (PlayerService.LoginPlayer(p_loginName, p_passwordSave))
+                int p_ident = PlayerService.LoginPlayer(p_loginName, p_passwordSave);
+                if (p_ident != 0)
                 {
                     Console.WriteLine("You have successfully logged in! Hit any key to continue");
                     Console.ReadLine();
                     Console.Clear();
-                    return true;
+                    return p_ident;
                 }
                 else
                 {
@@ -85,28 +87,21 @@ namespace GameFactory.Model
                     string loginAgainOrSignUp = Console.ReadLine();
                     if (loginAgainOrSignUp == "a")
                     {
-                        PlayerSignIn();
+                        return 0;
                     }
                     else if (loginAgainOrSignUp == "u")
                     {
                         PlayerSignup();
+                        return 0;
                     }
                     else
                     {
                         Console.WriteLine("You have entered an invalid input. Please try again.");
+                        return 0;
                     }
-                    return false;
                 }
             } while (!loggedIn);
-        }
-        internal bool SavePlayerVariables()
-        {
-            Console.Clear();
-            p_name = Game.InitializePlayerName();
-            p_icon = Game.InitializePlayerIcon();
-            p_colour = Game.InitializePlayerColor();
-            PlayerService.SavePlayerVariables(p_loginName, p_name, p_icon, p_colour);
-            return true;
+
         }
 
         #region Utility Methods
@@ -150,6 +145,16 @@ namespace GameFactory.Model
             }
             return true;
         }
+        internal bool SavePlayerVariables()
+        {
+            Console.Clear();
+            p_name = Game.InitializePlayerName();
+            p_icon = Game.InitializePlayerIcon();
+            p_colour = Game.InitializePlayerColor();
+            PlayerService.SavePlayerVariables(p_loginName, p_name, p_icon, p_colour);
+            return true;
+        }
+
         #endregion
     }
 

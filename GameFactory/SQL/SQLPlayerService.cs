@@ -1,5 +1,8 @@
-﻿using System.Data;
+﻿using GameFactory;
+using System.Data;
 using System.Data.SqlClient;
+using System.Drawing;
+using System.Xml.Linq;
 
 internal class SQLPlayerService
 {
@@ -30,7 +33,7 @@ internal class SQLPlayerService
             }
         }
     }
-    internal bool LoginPlayer(string p_loginName, string p_password)
+    internal int LoginPlayer(string p_loginName, string p_password)
     {
         string connString = new SQLDatabaseUtility().GetSQLConnectionString();
 
@@ -40,17 +43,17 @@ internal class SQLPlayerService
             {
                 cmd.CommandType = CommandType.StoredProcedure;
 
-                cmd.Parameters.Add(new SqlParameter("@LoginName", p_loginName));
-                cmd.Parameters.Add(new SqlParameter("@Password", p_password));
+                cmd.Parameters.Add(new SqlParameter("@p_loginName", p_loginName));
+                cmd.Parameters.Add(new SqlParameter("@p_password", p_password));
 
-                SqlParameter resultParam = new SqlParameter("@Result", SqlDbType.Bit);
+                SqlParameter resultParam = new SqlParameter("@p_ident", SqlDbType.Int);
                 resultParam.Direction = ParameterDirection.Output;
                 cmd.Parameters.Add(resultParam);
 
                 conn.Open();
                 cmd.ExecuteNonQuery();
 
-                bool result = (bool)resultParam.Value; 
+                int result = (int)resultParam.Value; 
                 return result;
             }
         }
@@ -79,6 +82,60 @@ internal class SQLPlayerService
 
                 bool result = (bool)resultParam.Value;
                 return result;
+            }
+        }
+    }
+    internal Player GetPlayerVariables(int p_ident)
+    {
+        string connString = new SQLDatabaseUtility().GetSQLConnectionString();
+
+        using (SqlConnection conn = new SqlConnection(connString))
+        {
+            using (SqlCommand cmd = new SqlCommand("GetPlayerVariables", conn))
+            {
+                cmd.CommandType = CommandType.StoredProcedure;
+
+
+                SqlParameter nameParam = new SqlParameter("@p_name", SqlDbType.NVarChar, 50);
+                SqlParameter iconParam = new SqlParameter("@p_icon", SqlDbType.NVarChar, 1);
+                SqlParameter colorParam = new SqlParameter("@p_color", SqlDbType.NVarChar, 20);
+                SqlParameter identParam = new SqlParameter("@p_ident", SqlDbType.Int);
+                
+
+
+                nameParam.Direction = ParameterDirection.Output;
+                iconParam.Direction = ParameterDirection.Output;
+                colorParam.Direction = ParameterDirection.Output;
+
+                cmd.Parameters.Add(nameParam);
+                cmd.Parameters.Add(iconParam);
+                cmd.Parameters.Add(colorParam);
+                cmd.Parameters.Add(new SqlParameter("@p_ident", p_ident));  // Add this line
+
+
+                conn.Open();
+                cmd.ExecuteNonQuery();
+
+                string p_name = nameParam.Value as string;
+                char p_icon = Convert.ToChar(iconParam.Value);
+                string p_color = colorParam.Value as string;
+
+                Console.Write($"{p_name}, {p_icon}, {p_color}");
+
+                if (p_name != null && p_icon != null && p_color != null)
+                {
+                    return new Player
+                    {
+                        Name = p_name,
+                        Icon = p_icon,
+                        Colour = p_color,
+                        Ident = p_ident
+                    };
+                }
+                else
+                {
+                    return null;
+                }
             }
         }
     }
