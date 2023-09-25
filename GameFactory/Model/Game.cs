@@ -44,19 +44,41 @@ namespace GameFactory.Model
         #region initializePlayer
         public void InitializePlayer()
         {
+            var playerAuth = new PlayerAuth();
             p_player = new List<Player>();
             Console.Clear();
             int p_numberOfPlayers = DetermineNumberOfPlayers();
 
             for (int p_gamer = 0; p_gamer < p_numberOfPlayers; p_gamer++)
             {
-                Console.Clear();
+                do {
+                    Console.WriteLine($"Do you want to Log(i)n, Sign(U)p or play as a (G)uest?");
+                    string p_input = Console.ReadKey().KeyChar.ToString();
+                    if (p_input == "i")
+                    {
+                        playerAuth.PlayerSignIn();
+                    }
+                    else if (p_input == "u")
+                    {
+                        playerAuth.PlayerSignup();
+                    }
+                    else if (p_input == "g")
+                    {
+                        Console.WriteLine("Playing as a guest.");
+                    }
+                    else
+                    {
+                        Console.WriteLine("Invalid input.");
+                    }
+                    Console.Clear();
+                } while (p_gameMode == "PlayerSignup" && !playerAuth.PlayerSignup());
+
 
                 Player newPlayer = new Player
                 {
-                    Name = InitializePlayerName(p_gamer),
-                    Icon = InitializePlayerIcon(p_gamer),
-                    Colour = InitializePlayerColor(p_gamer),
+                    Name = InitializePlayerName(),
+                    Icon = InitializePlayerIcon(),
+                    Colour = InitializePlayerColor(),
                     IsHuman = true
                 };
                 p_player.Add(newPlayer);
@@ -79,12 +101,12 @@ namespace GameFactory.Model
                 Console.WriteLine("Invalid input. Please enter a valid number.");
             } while (true);
         }
-        static string InitializePlayerName(int p_gamer)
+        public static string InitializePlayerName()
         {
             string Name;
             do
             {
-                Console.WriteLine($"\n Enter the name of player {p_gamer + 1}: \n");
+                Console.WriteLine($"\n Enter the name you want to use InGame: \n");
                 Name = Console.ReadLine();
                 if (string.IsNullOrEmpty(Name))
                 {
@@ -93,12 +115,12 @@ namespace GameFactory.Model
             } while (string.IsNullOrEmpty(Name));
             return Name;
         }
-        static char InitializePlayerIcon(int p_gamer)
+        public static char InitializePlayerIcon()
         {
             char Icon;
             do
             {
-                Console.WriteLine($"\n Enter the icon of player {p_gamer + 1}: \n");
+                Console.WriteLine($"\n Enter the Icon you want to use InGame: \n");
                 Icon = Console.ReadKey().KeyChar;
                 Console.WriteLine();
                 if (Icon == '\r' || Icon == ' ')
@@ -108,9 +130,9 @@ namespace GameFactory.Model
             } while (Icon == '\r' || Icon == ' ');
             return Icon;
         }
-        static string InitializePlayerColor(int p_gamer)
+        public static string InitializePlayerColor()
         {
-            Console.WriteLine($"\n Choose a Colour for player {p_gamer + 1}: ");
+            Console.WriteLine($"\n Choose a Color you want to use InGame: \n");
             string Colour = ShowMenu(typeof(ValidColours));
             return Colour;
         }

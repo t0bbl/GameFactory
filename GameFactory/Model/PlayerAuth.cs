@@ -6,6 +6,8 @@ using System.Security.Cryptography;
 
 using System.Threading.Tasks;
 using System.Text.RegularExpressions;
+using System.Drawing;
+using System.Runtime.CompilerServices;
 
 namespace GameFactory.Model
 {
@@ -14,7 +16,10 @@ namespace GameFactory.Model
         SQLPlayerService PlayerService = new();
         string p_loginName;
         string p_password;
-
+        string p_name;
+        char p_icon;
+        string p_colour;
+        bool p_isHuman;
         internal bool PlayerSignup()
         {
             Console.Clear();
@@ -40,8 +45,10 @@ namespace GameFactory.Model
                 Console.WriteLine("You have successfully signed up! Hit any key to continue");
 
                 Console.ReadLine();
+                SavePlayerVariables();
+
                 Console.Clear();
-                return true;
+                return false;
             }
             else
             {
@@ -49,6 +56,9 @@ namespace GameFactory.Model
                 Console.ReadLine();
                 return false;
             }
+
+
+
         }
         internal bool PlayerSignIn()
         {
@@ -88,6 +98,15 @@ namespace GameFactory.Model
                     return false;
                 }
             } while (!loggedIn);
+        }
+        internal bool SavePlayerVariables()
+        {
+            Console.Clear();
+            p_name = Game.InitializePlayerName();
+            p_icon = Game.InitializePlayerIcon();
+            p_colour = Game.InitializePlayerColor();
+            PlayerService.SavePlayerVariables(p_loginName, p_name, p_icon, p_colour);
+            return true;
         }
 
         #region Utility Methods

@@ -1,5 +1,5 @@
-﻿using GameFactory.Model;
-using System.Collections.Generic;
+﻿using GameFactory;
+using GameFactory.Model;
 
 namespace GameFactory
 {
@@ -10,6 +10,7 @@ namespace GameFactory
             while (true)
             {
                 Game CurrentGame = new();
+                var playerAuth = new PlayerAuth();
                 var Options = new Options();
                 Match CurrentMatch;
 
@@ -22,9 +23,9 @@ namespace GameFactory
                         continue;
                     }
                 }
-                if (GameMode == "PlayerOptions")
+                if (GameMode == "PlayerSignup")
                 {
-                    if (!Options.PlayerOptions())
+                    if (!playerAuth.PlayerSignup())
                     {
                         continue;
                     }
