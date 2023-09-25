@@ -1,7 +1,9 @@
 ﻿using GameFactory;
+using System;
 using System.Data;
 using System.Data.SqlClient;
 using System.Drawing;
+using System.Reflection.Metadata;
 using System.Xml.Linq;
 
 internal class SQLPlayerService
@@ -53,7 +55,7 @@ internal class SQLPlayerService
                 conn.Open();
                 cmd.ExecuteNonQuery();
 
-                int result = (int)resultParam.Value; 
+                int result = (int)resultParam.Value;
                 return result;
             }
         }
@@ -100,7 +102,7 @@ internal class SQLPlayerService
                 SqlParameter iconParam = new SqlParameter("@p_icon", SqlDbType.NVarChar, 1);
                 SqlParameter colorParam = new SqlParameter("@p_color", SqlDbType.NVarChar, 20);
                 SqlParameter identParam = new SqlParameter("@p_ident", SqlDbType.Int);
-                
+
 
 
                 nameParam.Direction = ParameterDirection.Output;
@@ -140,6 +142,43 @@ internal class SQLPlayerService
         }
     }
 
+    public (int, int, int) GetPlayerStats(int ident)
+    {
+        string connString = new SQLDatabaseUtility().GetSQLConnectionString();
+
+        using (SqlConnection conn = new SqlConnection(connString))
+        {
+            using (SqlCommand cmd = new SqlCommand("GetPlayerStats", conn))
+            {
+                cmd.CommandType = CommandType.StoredProcedure;
+
+                // Input parameter
+                cmd.Parameters.Add(new SqlParameter("@p_ident", ident));
+
+                // Output parameters
+                SqlParameter winsParam = new SqlParameter("@p_wins", SqlDbType.Int);
+                SqlParameter lossesParam = new SqlParameter("@p_losses", SqlDbType.Int);
+                SqlParameter drawsParam = new SqlParameter("@p_draws", SqlDbType.Int);
+
+                winsParam.Direction = ParameterDirection.Output;
+                lossesParam.Direction = ParameterDirection.Output;
+                drawsParam.Direction = ParameterDirection.Output;
+
+                cmd.Parameters.Add(winsParam);
+                cmd.Parameters.Add(lossesParam);
+                cmd.Parameters.Add(drawsParam);
+
+                conn.Open();
+                cmd.ExecuteNonQuery();
+
+                int Wins = (int)winsParam.Value;
+                int Losses = (int)lossesParam.Value;
+                int Draws = (int)drawsParam.Value;
+
+                return (Wins, Losses, Draws);
+            }
+        }
+    }
     internal bool CheckLoginName(string p_loginName)
     {
         string connString = new SQLDatabaseUtility().GetSQLConnectionString();

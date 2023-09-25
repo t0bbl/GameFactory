@@ -148,9 +148,14 @@ namespace GameFactory.Model
         internal bool SavePlayerVariables()
         {
             Console.Clear();
+            if (p_loginName == null)
+            {
+                p_loginName = "Guest";
+            }
             p_name = Game.InitializePlayerName();
             p_icon = Game.InitializePlayerIcon();
             p_colour = Game.InitializePlayerColor();
+
             PlayerService.SavePlayerVariables(p_loginName, p_name, p_icon, p_colour);
             Console.Clear();
             return true;

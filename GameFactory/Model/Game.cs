@@ -1,5 +1,9 @@
 ﻿using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
+using System.Xml.Linq;
+using static Azure.Core.HttpHeader;
+using static SQLPlayerService;
 
 namespace GameFactory.Model
 {
@@ -57,7 +61,10 @@ namespace GameFactory.Model
                     string p_input = Console.ReadKey().KeyChar.ToString();
                     if (p_input == "i")
                     {
-                        var p_ident = playerAuth.PlayerSignIn();
+                        var p_ident = 0;
+                        do {
+                            p_ident = playerAuth.PlayerSignIn();
+                        } while (p_ident == 0);
                         var playerVariables = sqlPlayerService.GetPlayerVariables(p_ident);
                         Console.WriteLine($"Welcome back {playerVariables.Name}!");
                         p_player.Add(playerVariables);
@@ -66,11 +73,14 @@ namespace GameFactory.Model
                     else if (p_input == "u")
                     {
                         playerAuth.PlayerSignup();
-                        p_validInput = true;
+                        p_validInput = false;
                     }
                     else if (p_input == "g")
                     {
                         Console.WriteLine("Playing as a guest.");
+                        var tempVariables = playerAuth.SavePlayerVariables();
+                        var GuestVariables = sqlPlayerService.GetPlayerVariables(12);
+                        p_player.Add(GuestVariables);
                         p_validInput = true;
                     }
                     else
@@ -155,19 +165,16 @@ namespace GameFactory.Model
 
         internal static void EndGameStats(List<Player> p_player, List<Match> p_history)
         {
-
             Console.WriteLine("Game over!");
             Console.WriteLine("Final scores:");
 
             foreach (var Player in p_player)
             {
-                int Wins = p_history.Count(Match => Match.Winner == Player);
-                int Losses = p_history.Count(Match => Match.Loser == Player);
-                Console.WriteLine($"{Player.Name}:  Wins: {Wins}   Losses: {Losses} \n");
-            }
-            int Draws = p_history.Count(Match => Match.Draw != null);
+                SQLPlayerService service = new SQLPlayerService();
+                var (Wins, Losses, Draws) = service.GetPlayerStats(Player.Ident);
 
-            Console.WriteLine($"Draws: {Draws}");
+                Console.WriteLine($"{Player.Name}:  Wins: {Wins}   Losses: {Losses}     Draws: {Draws}\n");
+            }
 
             Console.ReadKey();
             Environment.Exit(0);
