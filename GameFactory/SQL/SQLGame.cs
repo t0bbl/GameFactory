@@ -22,11 +22,11 @@ namespace GameFactory.SQL
                     cmd.Parameters.Add(new SqlParameter("@p_winningLength", p_winningLength));
                     cmd.Parameters.Add(new SqlParameter("@p_gameType", p_gameType));
 
-                    SqlParameter resultParam = new SqlParameter("@p_Result", SqlDbType.Bit);
+                    SqlParameter resultParam = new SqlParameter("@p_result", SqlDbType.Bit);
                     resultParam.Direction = ParameterDirection.Output;
                     cmd.Parameters.Add(resultParam);
 
-                    SqlParameter identParam = new SqlParameter("@p_Ident", SqlDbType.Int);
+                    SqlParameter identParam = new SqlParameter("@p_ident", SqlDbType.Int);
                     identParam.Direction = ParameterDirection.Output;
                     cmd.Parameters.Add(identParam);
 

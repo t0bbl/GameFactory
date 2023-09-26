@@ -18,8 +18,7 @@ namespace GameFactory
         internal int? p_loser { get; set; }
         internal int p_draw { get; set; }
         internal int p_gameTypeIdent { get; set; }
-        internal int p_matchId { get; set; }
-        internal bool p_twistStat { get; set; }
+        protected int p_matchId { get; set; }
 
         private static Random p_random = new();
 

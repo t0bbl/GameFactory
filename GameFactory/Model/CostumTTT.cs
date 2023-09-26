@@ -5,6 +5,7 @@ namespace GameFactory.Model
     internal class CustomTTT : Match
     {
         public bool p_twist;
+        public bool p_twistStat;
         private Random p_random = new Random();
 
 

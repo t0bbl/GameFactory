@@ -9,6 +9,7 @@
 
         internal List<Match> p_history = new();
         internal Match CurrentMatch { get; set; }
+        internal int p_guestCount { get; set; } = 0;
 
         #endregion
         internal Match CreateMatch()
@@ -72,8 +73,9 @@
                     else if (p_input == "g")
                     {
                         Console.WriteLine("Playing as a guest.");
-                        var GuestVariables = sqlPlayerService.GetPlayerVariables(1);
+                        var GuestVariables = sqlPlayerService.GetPlayerVariables(p_guestCount + 1);
                         p_player.Add(GuestVariables);
+                        p_guestCount++;
                         p_validInput = true;
                     }
                     else
