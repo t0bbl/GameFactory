@@ -34,7 +34,7 @@ namespace GameFactory.Model
 
             MakeMove(p_chosenColumn, p_currentPlayerIndex, p_player);
             string p_cell = p_chosenColumn.ToString();
-            SQLMoveHistory.SaveMoveHistory(p_player[p_currentPlayerIndex].Ident, p_cell, p_matchId);
+            SQLMoveHistory.SaveMoveHistory(p_player[p_currentPlayerIndex].Ident, p_cell, p_matchId, p_twistStat);
 
             p_currentPlayerIndex = (p_currentPlayerIndex + 1) % p_player.Count;
 

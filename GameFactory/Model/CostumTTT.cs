@@ -64,9 +64,9 @@ namespace GameFactory.Model
                         p_validInput = true;
                         if (p_twist)
                         {
-                            TwistColumn(p_col);
+                            p_twistStat = TwistColumn(p_col);
                         }
-                        SQLMoveHistory.SaveMoveHistory(p_player[p_currentPlayerIndex].Ident, p_input, p_matchId);
+                        SQLMoveHistory.SaveMoveHistory(p_player[p_currentPlayerIndex].Ident, p_input, p_matchId, p_twistStat);
 
                     }
                     else
@@ -120,7 +120,7 @@ namespace GameFactory.Model
         #endregion
 
 
-        public void TwistColumn(int p_chosenColumn)
+        public bool TwistColumn(int p_chosenColumn)
         {
             bool p_shouldTwist = p_random.Next(0, 2) == 0;
             if (p_shouldTwist)
@@ -139,7 +139,9 @@ namespace GameFactory.Model
                 {
                     SetCell(p_rowIndex, p_chosenColumn, p_tempColumn[p_rowIndex]);
                 }
+                return true;
             }
+            return false;
         }
 
 

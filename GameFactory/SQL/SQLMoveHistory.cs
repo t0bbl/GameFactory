@@ -6,7 +6,7 @@ namespace GameFactory.SQL
 {
     internal class SQLMoveHistory
     {
-        internal static bool SaveMoveHistory(int p_player, string p_input, int p_matchId)
+        internal static bool SaveMoveHistory(int p_player, string p_input, int p_matchId, bool p_twist)
         {
             string connString = new SQLDatabaseUtility().GetSQLConnectionString();
 
@@ -18,10 +18,7 @@ namespace GameFactory.SQL
                     cmd.Parameters.Add(new SqlParameter("@p_player", p_player));
                     cmd.Parameters.Add(new SqlParameter("@p_input", p_input));
                     cmd.Parameters.Add(new SqlParameter("@p_matchId", p_matchId));
-
-
-
-
+                    cmd.Parameters.Add(new SqlParameter("@p_twist", p_twist));
                     conn.Open();
                     cmd.ExecuteNonQuery();
 

@@ -49,7 +49,7 @@ namespace GameFactory.Model
             }
             PrintBoard(false, false, p_player);
             string p_cell = p_chosenCell.ToString();
-            SQLMoveHistory.SaveMoveHistory(p_player[p_currentPlayerIndex].Ident, p_cell, p_matchId);
+            SQLMoveHistory.SaveMoveHistory(p_player[p_currentPlayerIndex].Ident, p_cell, p_matchId, p_twistStat);
 
         }
     }

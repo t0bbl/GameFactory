@@ -24,6 +24,8 @@ namespace GameFactory
         internal bool Draw { get; set; }
         internal int p_gameTypeIdent { get; set; }
         internal int p_matchId { get; set; }
+        internal bool p_twistStat { get; set; }
+
 
         private static Random p_random = new();
 
@@ -53,7 +55,6 @@ namespace GameFactory
         }
         public virtual void GameMechanic(List<Player> p_player)
         {
-
             var resultTuple = SQLGame.SaveGame(p_rows, p_columns, p_winningLength, p_gameType);
             p_gameTypeIdent = resultTuple.Ident;
 
