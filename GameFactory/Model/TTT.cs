@@ -15,6 +15,7 @@ namespace GameFactory.Model
         public override void GameMechanic(List<Player> p_player)
         {
             base.GameMechanic(p_player);
+            SQLPlayerService playerService = new SQLPlayerService();
 
             int p_chosenCell = 0;
             bool p_validInput = false;
@@ -26,7 +27,6 @@ namespace GameFactory.Model
             }
             while (!p_validInput)
             {
-                SQLPlayerService playerService = new SQLPlayerService();
                 Console.WriteLine($"{p_player[p_currentPlayerIndex].Name}, input a number from 1 to {p_rows * p_columns}");
 
                 if (TryGetValidInput(out p_chosenCell, p_rows * p_columns))
