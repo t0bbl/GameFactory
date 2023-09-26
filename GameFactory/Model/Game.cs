@@ -24,8 +24,9 @@ namespace GameFactory.Model
             {
                 if (!p_player.Any(x => x.Name == "ChatGPT"))
                 {
-                    Player GPT = new() { Name = "ChatGPT", Icon = 'C', Colour = "Green", IsHuman = false };
-                    p_player.Add(GPT);
+                    SQLPlayerService sqlPlayerService = new SQLPlayerService();
+                    var p_GPTVariables = sqlPlayerService.GetPlayerVariables(2);
+                    p_player.Add(p_GPTVariables); 
                 }
             }
             CurrentMatch = CurrentMatch = p_gameType switch
@@ -77,8 +78,7 @@ namespace GameFactory.Model
                     else if (p_input == "g")
                     {
                         Console.WriteLine("Playing as a guest.");
-                        var tempVariables = playerAuth.SavePlayerVariables();
-                        var GuestVariables = sqlPlayerService.GetPlayerVariables(12);
+                        var GuestVariables = sqlPlayerService.GetPlayerVariables(1);
                         p_player.Add(GuestVariables);
                         p_validInput = true;
                     }

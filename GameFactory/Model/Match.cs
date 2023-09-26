@@ -18,15 +18,10 @@ namespace GameFactory
         internal int? p_winner { get; set; }
         internal int? p_loser { get; set; }
         internal int p_draw { get; set; }
-        internal Guid GameId { get; private set; }
-        internal Player Winner { get; set; }
-        internal Player Loser { get; set; }
-        internal bool Draw { get; set; }
         internal int p_gameTypeIdent { get; set; }
         internal int p_matchId { get; set; }
         internal bool p_twistStat { get; set; }
-
-
+        
         private static Random p_random = new();
 
         #endregion
@@ -48,8 +43,6 @@ namespace GameFactory
                 p_winner = CheckWinner(p_player);
             } while (p_winner == null);
             UpdateStats(p_player);
-            Console.WriteLine($"winner {p_winner}");
-            Console.WriteLine($"loser {p_loser}");
             SQLMatch.SaveMatch(p_winner, p_loser, p_draw, p_gameTypeIdent, p_matchId);
 
         }

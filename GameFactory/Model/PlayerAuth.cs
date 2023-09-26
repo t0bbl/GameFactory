@@ -84,7 +84,8 @@ namespace GameFactory.Model
                 {
                     Console.WriteLine("An error occurred while you logged in.");
                     Console.WriteLine("You want to try (a)gain or sign(U)p?");
-                    string loginAgainOrSignUp = Console.ReadLine();
+                    string loginAgainOrSignUp = Console.ReadKey().KeyChar.ToString();
+
                     if (loginAgainOrSignUp == "a")
                     {
                         return 0;
