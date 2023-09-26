@@ -150,7 +150,7 @@ internal class SQLPlayerService
             }
         }
     }
-    internal int GetPlayerIdentFromName(string p_name = null, string p_loginName = null)
+    internal int GetPlayerIdentFromName(string p_name = null)
     {
         string connString = new SQLDatabaseUtility().GetSQLConnectionString();
         int p_ident = 0;
@@ -164,14 +164,8 @@ internal class SQLPlayerService
 
             if (!string.IsNullOrEmpty(p_name))
             {
-                sqlQuery.Append(" AND Name = @p_name");
+                sqlQuery.Append(" AND (Name = @p_name OR LoginName = @p_name)");
                 parameters.Add(new SqlParameter("@p_name", p_name));
-            }
-
-            if (!string.IsNullOrEmpty(p_loginName))
-            {
-                sqlQuery.Append(" AND LoginName = @p_loginName");
-                parameters.Add(new SqlParameter("@p_loginName", p_loginName));
             }
 
             using (SqlCommand cmd = new SqlCommand(sqlQuery.ToString(), conn))
@@ -185,41 +179,13 @@ internal class SQLPlayerService
                 }
             }
         }
-
+        Console.WriteLine(p_ident);
+        Console.ReadKey();
         return p_ident;
     }
 
 
-    internal (int Wins, int Losses, int Draws) GetPlayerStats(int ident)
-    {
-        string connString = new SQLDatabaseUtility().GetSQLConnectionString();
-        int wins = 0, losses = 0, draws = 0;
 
-        using (SqlConnection conn = new SqlConnection(connString))
-        {
-            conn.Open();
-
-            using (SqlCommand cmd = new SqlCommand("SELECT COUNT(*) FROM Match WHERE Winner = @p_ident", conn))
-            {
-                cmd.Parameters.AddWithValue("@p_ident", ident);
-                wins = (int)cmd.ExecuteScalar();
-            }
-
-            using (SqlCommand cmd = new SqlCommand("SELECT COUNT(*) FROM Match WHERE Loser = @p_ident", conn))
-            {
-                cmd.Parameters.AddWithValue("@p_ident", ident);
-                losses = (int)cmd.ExecuteScalar();
-            }
-
-            using (SqlCommand cmd = new SqlCommand("SELECT COUNT(*) FROM Match WHERE Draw = 1 AND (Winner = @p_ident OR Loser = @p_ident)", conn))
-            {
-                cmd.Parameters.AddWithValue("@p_ident", ident);
-                draws = (int)cmd.ExecuteScalar();
-            }
-        }
-
-        return (Wins: wins, Losses: losses, Draws: draws);
-    }
 
     internal bool CheckLoginName(string p_loginName)
     {

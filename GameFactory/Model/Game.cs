@@ -163,8 +163,8 @@
 
             foreach (var Player in p_player)
             {
-                SQLPlayerService service = new SQLPlayerService();
-                var (Wins, Losses, Draws) = service.GetPlayerStats(Player.Ident);
+                    SQLStats sQLStats = new SQLStats();
+                    var (Wins, Losses, Draws) = sQLStats.GetPlayerStats(Player.Ident);
 
                 Console.WriteLine($"{Player.Name}:  Wins: {Wins}   Losses: {Losses}     Draws: {Draws}\n");
             }
