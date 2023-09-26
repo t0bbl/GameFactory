@@ -15,6 +15,7 @@ namespace GameFactory.Model
         public override void GameMechanic(List<Player> p_player)
         {
             base.GameMechanic(p_player);
+
             int p_chosenCell = 0;
             bool p_validInput = false;
             if (p_firstTurn)
@@ -36,9 +37,6 @@ namespace GameFactory.Model
                     if (GetCell(row, col) == '0')
                     {
                         SetCell(row, col, p_player[p_currentPlayerIndex].Icon);
-                        Console.WriteLine($"{p_player[p_currentPlayerIndex].Name} has chosen cell {p_chosenCell}");
-                        Console.WriteLine($"{p_player[p_currentPlayerIndex].Ident} has chosen cell {p_chosenCell}");
-
                         playerService.SavePlayerList(p_player[p_currentPlayerIndex].Ident, p_matchId);
                         p_currentPlayerIndex = (p_currentPlayerIndex + 1) % p_player.Count;
                         p_validInput = true;

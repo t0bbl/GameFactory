@@ -22,7 +22,7 @@ namespace GameFactory
         internal Player Winner { get; set; }
         internal Player Loser { get; set; }
         internal bool Draw { get; set; }
-        int p_gameTypeIdent { get; set; }
+        internal int p_gameTypeIdent { get; set; }
         internal int p_matchId { get; set; }
 
         private static Random p_random = new();
@@ -46,17 +46,18 @@ namespace GameFactory
                 p_winner = CheckWinner(p_player);
             } while (p_winner == null);
             UpdateStats(p_player);
+            Console.WriteLine($"winner {p_winner}");
+            Console.WriteLine($"loser {p_loser}");
+            SQLMatch.SaveMatch(p_winner, p_loser, p_draw, p_gameTypeIdent, p_matchId);
+
         }
         public virtual void GameMechanic(List<Player> p_player)
         {
 
             var resultTuple = SQLGame.SaveGame(p_rows, p_columns, p_winningLength, p_gameType);
             p_gameTypeIdent = resultTuple.Ident;
-            Console.WriteLine($"{p_winner}this is p_winner");
-            Console.WriteLine($"{p_loser}this is p_loser");
 
             p_matchId = SQLMatch.SaveMatch(p_winner, p_loser, p_draw, p_gameTypeIdent, p_matchId);
-
 
         }
 
