@@ -1,5 +1,5 @@
 using GameFactory.Model;
-using System.Runtime.CompilerServices;
+using GameFactory.SQL;
 using System.Text;
 
 namespace GameFactory
@@ -14,22 +14,23 @@ namespace GameFactory
         internal int p_currentPlayerIndex { get; set; }
         internal string p_boardString { get; set; }
         internal bool p_firstTurn { get; set; }
-        internal string p_winner { get; set; }
-        internal Guid GameId { get; private set; }
-        internal Player Winner { get; set; }
-        internal Player Loser { get; set; }
-        internal Player Draw { get; set; }
+        internal int? p_winner { get; set; }
+        internal int? p_loser { get; set; }
+        internal int p_draw { get; set; }
+        internal int p_gameTypeIdent { get; set; }
+        internal int p_matchId { get; set; }
+        internal bool p_twistStat { get; set; }
 
         private static Random p_random = new();
 
         #endregion
         internal Match()
         {
-
         }
 
         internal void StartMatch()
         {
+
             p_currentPlayerIndex = 0;
             ResetBoard();
             ResetFirstTurn();
@@ -40,15 +41,20 @@ namespace GameFactory
                 GameMechanic(p_player);
                 p_winner = CheckWinner(p_player);
             } while (p_winner == null);
-
-            UpdateStats(p_player, p_winner);
+            UpdateStats(p_player);
+            SQLMatch.SaveMatch(p_winner, p_loser, p_draw, p_gameTypeIdent, p_matchId);
 
         }
         public virtual void GameMechanic(List<Player> p_player)
         {
-            GameId = Guid.NewGuid();
+            var resultTuple = SQLGame.SaveGame(p_rows, p_columns, p_winningLength, p_gameType);
+            p_gameTypeIdent = resultTuple.Ident;
+
+            p_matchId = SQLMatch.SaveMatch(p_winner, p_loser, p_draw, p_gameTypeIdent, p_matchId);
 
         }
+
+
 
         #region BoardSetup
         public void ResetBoard()
@@ -133,7 +139,7 @@ namespace GameFactory
         }
         #endregion
         #region GameMechanics
-        public string CheckWinner(List<Player> p_player)
+        public int? CheckWinner(List<Player> p_player)
         {
             for (int p_row = 0; p_row < p_rows; p_row++)
             {
@@ -162,7 +168,7 @@ namespace GameFactory
                         if (p_count >= p_winningLength)
                         {
                             Player p_winner = p_player.FirstOrDefault(p => p.Icon == p_cellValue);
-                            return p_winner?.Name ?? "Unknown"; // return the player's name or "Unknown" if not found
+                            return p_winner.Ident;
                         }
                     }
                 }
@@ -173,7 +179,8 @@ namespace GameFactory
 
             if (p_isDraw)
             {
-                return "Draw";
+                p_draw = 1;
+                return 0;
             }
 
             return null;
@@ -198,8 +205,6 @@ namespace GameFactory
             }
 
         }
-
-
         protected bool TryGetValidInput(out int p_chosenValue, int p_maxValue)
         {
             if (int.TryParse(Console.ReadLine(), out p_chosenValue) && p_chosenValue >= 0 && p_chosenValue <= p_maxValue)
@@ -215,34 +220,36 @@ namespace GameFactory
         }
         #endregion
         #region Stats
-        internal List<Player> UpdateStats(List<Player> p_players, string p_winnerName)
+        internal List<Player> UpdateStats(List<Player> p_players)
         {
-            if (p_winnerName != null)
+            if (p_winner != null)
             {
-                foreach (var p_player in p_players)
+                if (p_draw == 0)
                 {
+                    foreach (var p_player in p_players)
+                    {
+                        if (p_player.Ident == p_winner)
+                        {
+                            Console.WriteLine();
+                            Console.WriteLine($"{p_player.Name} won the game!");
+                            p_winner = p_player.Ident;
+                        }
 
-                    if (p_player.Name == p_winnerName)
-                    {
-                        Console.WriteLine();
-                        Console.WriteLine($"{p_player.Name} won the game!");
-                        Winner = p_player;
-                    }
-                    else if (p_winnerName == "Draw")
-                    {
-                        Console.WriteLine();
-                        Console.WriteLine("It's a draw!");
-                        Draw = p_player;
-                    }
-                    else
-                    {
-                        Console.WriteLine();
-                        Loser = p_player;
+                        else
+                        {
+                            Console.WriteLine();
+                            p_loser = p_player.Ident;
+                        }
                     }
                 }
+                else
+                {
+                    Console.WriteLine();
+                    Console.WriteLine("It's a draw!");
+                    p_winner = p_players[0].Ident;
+                    p_loser = p_players[1].Ident;
+                }
             }
-
-
             return p_players;
         }
 

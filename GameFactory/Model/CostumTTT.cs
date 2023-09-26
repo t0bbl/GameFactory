@@ -1,4 +1,6 @@
-﻿namespace GameFactory.Model
+﻿using GameFactory.SQL;
+
+namespace GameFactory.Model
 {
     internal class CustomTTT : Match
     {
@@ -11,12 +13,14 @@
             this.p_twist = p_twist;
             if (p_twist)
             {
+                p_gameType = "twist";
                 p_rows = 8;
                 p_columns = 5;
                 p_winningLength = 4;
             }
             else
             {
+                p_gameType = "customTTT";
                 p_rows = AskForRows();
                 p_columns = AskForColumns();
                 p_winningLength = AskForWinningLength();
@@ -28,6 +32,8 @@
         public override void GameMechanic(List<Player> p_player)
         {
             base.GameMechanic(p_player);
+            SQLPlayerService playerService = new SQLPlayerService();
+
             if (p_firstTurn)
             {
                 PrintBoard(true, true, p_player);
@@ -38,7 +44,7 @@
             {
                 Console.WriteLine();
                 Console.WriteLine($"{p_player[p_currentPlayerIndex].Name}, input a coordinate X/Y");
-
+                playerService.SavePlayerList(p_player[p_currentPlayerIndex].Ident, p_matchId);
                 string p_input = Console.ReadLine();
                 string[] p_parts = p_input.Split('/');
 
@@ -58,8 +64,10 @@
                         p_validInput = true;
                         if (p_twist)
                         {
-                            TwistColumn(p_col);
+                            p_twistStat = TwistColumn(p_col);
                         }
+                        SQLMoveHistory.SaveMoveHistory(p_player[p_currentPlayerIndex].Ident, p_input, p_matchId, p_twistStat);
+
                     }
                     else
                     {
@@ -112,7 +120,7 @@
         #endregion
 
 
-        public void TwistColumn(int p_chosenColumn)
+        public bool TwistColumn(int p_chosenColumn)
         {
             bool p_shouldTwist = p_random.Next(0, 2) == 0;
             if (p_shouldTwist)
@@ -131,7 +139,9 @@
                 {
                     SetCell(p_rowIndex, p_chosenColumn, p_tempColumn[p_rowIndex]);
                 }
+                return true;
             }
+            return false;
         }
 
 

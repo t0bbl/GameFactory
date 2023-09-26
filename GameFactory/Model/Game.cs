@@ -1,13 +1,9 @@
-﻿
-using System.Collections.Generic;
-using System.Linq;
-
-namespace GameFactory.Model
+﻿namespace GameFactory.Model
 {
     internal class Game
     {
         #region Variables
-        internal List<Player> p_player { get; set; }
+        internal List<Player> p_player { get; set; } = new();
         internal string p_gameType { get; set; }
         internal string p_gameMode { get; set; }
 
@@ -21,8 +17,9 @@ namespace GameFactory.Model
             {
                 if (!p_player.Any(x => x.Name == "ChatGPT"))
                 {
-                    Player GPT = new() { Name = "ChatGPT", Icon = 'C', Colour = "Green", IsHuman = false };
-                    p_player.Add(GPT);
+                    SQLPlayerService sqlPlayerService = new SQLPlayerService();
+                    var p_GPTVariables = sqlPlayerService.GetPlayerVariables(2);
+                    p_player.Add(p_GPTVariables);
                 }
             }
             CurrentMatch = CurrentMatch = p_gameType switch
@@ -34,7 +31,6 @@ namespace GameFactory.Model
                 "TwistFourW" => new CustomTTT(true) { p_player = p_player },
                 "CustomTTT" => new CustomTTT(false) { p_player = p_player },
             };
-            p_history.Add(CurrentMatch);
 
             return CurrentMatch;
         }
@@ -42,28 +38,54 @@ namespace GameFactory.Model
 
 
         #region initializePlayer
-        public void InitializePlayer()
+        internal void InitializePlayer()
         {
-            p_player = new List<Player>();
+            var playerAuth = new PlayerAuth();
+            var sqlPlayerService = new SQLPlayerService();
             Console.Clear();
             int p_numberOfPlayers = DetermineNumberOfPlayers();
 
             for (int p_gamer = 0; p_gamer < p_numberOfPlayers; p_gamer++)
             {
-                Console.Clear();
-
-                Player newPlayer = new Player
+                bool p_validInput = false;
+                do
                 {
-                    Name = InitializePlayerName(p_gamer),
-                    Icon = InitializePlayerIcon(p_gamer),
-                    Colour = InitializePlayerColor(p_gamer),
-                    IsHuman = true
-                };
-                p_player.Add(newPlayer);
+                    Console.WriteLine($"Do you want to Log(i)n, Sign(U)p or play as a (G)uest?");
+                    string p_input = Console.ReadKey().KeyChar.ToString();
+                    if (p_input == "i")
+                    {
+                        var p_ident = 0;
+                        do
+                        {
+                            p_ident = playerAuth.PlayerSignIn();
+                        } while (p_ident == 0);
+                        var playerVariables = sqlPlayerService.GetPlayerVariables(p_ident);
+                        Console.WriteLine($"Welcome back {playerVariables.Name}!");
+                        p_player.Add(playerVariables);
+                        p_validInput = true;
+                    }
+                    else if (p_input == "u")
+                    {
+                        playerAuth.PlayerSignup();
+                        p_validInput = false;
+                    }
+                    else if (p_input == "g")
+                    {
+                        Console.WriteLine("Playing as a guest.");
+                        var GuestVariables = sqlPlayerService.GetPlayerVariables(1);
+                        p_player.Add(GuestVariables);
+                        p_validInput = true;
+                    }
+                    else
+                    {
+                        Console.WriteLine("Invalid input. Please enter a valid input.");
+                    }
+                } while (!p_validInput);
 
+                Console.Clear();
             }
         }
-        public int DetermineNumberOfPlayers()
+        internal int DetermineNumberOfPlayers()
         {
             if (p_gameMode == "SinglePlayer") return 1;
 
@@ -79,12 +101,12 @@ namespace GameFactory.Model
                 Console.WriteLine("Invalid input. Please enter a valid number.");
             } while (true);
         }
-        static string InitializePlayerName(int p_gamer)
+        internal static string InitializePlayerName()
         {
             string Name;
             do
             {
-                Console.WriteLine($"\n Enter the name of player {p_gamer + 1}: \n");
+                Console.WriteLine($"\n Enter the name you want to use InGame: \n");
                 Name = Console.ReadLine();
                 if (string.IsNullOrEmpty(Name))
                 {
@@ -93,12 +115,12 @@ namespace GameFactory.Model
             } while (string.IsNullOrEmpty(Name));
             return Name;
         }
-        static char InitializePlayerIcon(int p_gamer)
+        internal static char InitializePlayerIcon()
         {
             char Icon;
             do
             {
-                Console.WriteLine($"\n Enter the icon of player {p_gamer + 1}: \n");
+                Console.WriteLine($"\n Enter the Icon you want to use InGame: \n");
                 Icon = Console.ReadKey().KeyChar;
                 Console.WriteLine();
                 if (Icon == '\r' || Icon == ' ')
@@ -108,9 +130,9 @@ namespace GameFactory.Model
             } while (Icon == '\r' || Icon == ' ');
             return Icon;
         }
-        static string InitializePlayerColor(int p_gamer)
+        internal static string InitializePlayerColor()
         {
-            Console.WriteLine($"\n Choose a Colour for player {p_gamer + 1}: ");
+            Console.WriteLine($"\n Choose a Color you want to use InGame: \n");
             string Colour = ShowMenu(typeof(ValidColours));
             return Colour;
         }
@@ -134,21 +156,18 @@ namespace GameFactory.Model
         }
         #endregion
 
-        internal static void EndGameStats(List<Player> p_player, List<Match> p_history)
+        internal static void EndGameStats(List<Player> p_player)
         {
-
             Console.WriteLine("Game over!");
             Console.WriteLine("Final scores:");
 
             foreach (var Player in p_player)
             {
-                int Wins = p_history.Count(Match => Match.Winner == Player);
-                int Losses = p_history.Count(Match => Match.Loser == Player);
-                Console.WriteLine($"{Player.Name}:  Wins: {Wins}   Losses: {Losses} \n");
-            }
-            int Draws = p_history.Count(Match => Match.Draw != null);
+                SQLPlayerService service = new SQLPlayerService();
+                var (Wins, Losses, Draws) = service.GetPlayerStats(Player.Ident);
 
-            Console.WriteLine($"Draws: {Draws}");
+                Console.WriteLine($"{Player.Name}:  Wins: {Wins}   Losses: {Losses}     Draws: {Draws}\n");
+            }
 
             Console.ReadKey();
             Environment.Exit(0);

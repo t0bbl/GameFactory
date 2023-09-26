@@ -4,7 +4,10 @@
     {
         public TTTChatGPT()
         {
-
+            p_gameType = "TTTChatGPT";
+            p_rows = 3;
+            p_columns = 3;
+            p_winningLength = 3;
         }
         public override void GameMechanic(List<Player> p_players)
         {
@@ -43,7 +46,7 @@
                 StringToBoard(response, p_players);
 
                 Console.WriteLine("ChatGPT´s Move: ");
-                    PrintBoard(false, false, p_players);
+                PrintBoard(false, false, p_players);
 
 
                 p_currentPlayerIndex = (p_currentPlayerIndex + 1) % p_players.Count;

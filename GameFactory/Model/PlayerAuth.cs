@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Security.Cryptography;
 using System.Text;
-using System.Security.Cryptography;
-
-using System.Threading.Tasks;
 using System.Text.RegularExpressions;
 
 namespace GameFactory.Model
@@ -14,6 +9,9 @@ namespace GameFactory.Model
         SQLPlayerService PlayerService = new();
         string p_loginName;
         string p_password;
+        string p_name;
+        char p_icon;
+        string p_colour;
 
         internal bool PlayerSignup()
         {
@@ -25,7 +23,7 @@ namespace GameFactory.Model
                     Console.WriteLine("Please enter the name you want to signup with:");
                     p_loginName = Console.ReadLine();
                 } while (!ValidateLoginName(p_loginName));
-                                
+
             } while (!PlayerService.CheckLoginName(p_loginName));
 
             do
@@ -38,9 +36,12 @@ namespace GameFactory.Model
             if (PlayerService.SignUpPlayer(p_loginName, p_passwordSave))
             {
                 Console.WriteLine("You have successfully signed up! Hit any key to continue");
+
                 Console.ReadLine();
+                SavePlayerVariables();
+
                 Console.Clear();
-                return true;
+                return false;
             }
             else
             {
@@ -50,29 +51,50 @@ namespace GameFactory.Model
             }
 
 
+
         }
-        internal bool PlayerSignIn()
+        internal int PlayerSignIn()
         {
+
+            bool loggedIn = false;
             Console.Clear();
             Console.WriteLine("Please enter your login name:");
             p_loginName = Console.ReadLine();
             Console.WriteLine("Please enter your password:");
             p_password = Console.ReadLine();
             string p_passwordSave = HashPassword(p_password);
-            if (PlayerService.LoginPlayer(p_loginName, p_passwordSave))
+            do
             {
-                Console.WriteLine("You have successfully logged in! Hit any key to continue");
-                Console.ReadLine();
-                Console.Clear();
-                return true;
-            }
-            else
-            {
-                Console.WriteLine("An error occurred while you logged in.");
-                Console.ReadLine();
+                int p_ident = PlayerService.LoginPlayer(p_loginName, p_passwordSave);
+                if (p_ident != 0)
+                {
+                    Console.WriteLine("You have successfully logged in! Hit any key to continue");
+                    Console.ReadLine();
+                    Console.Clear();
+                    return p_ident;
+                }
+                else
+                {
+                    Console.WriteLine("An error occurred while you logged in.");
+                    Console.WriteLine("You want to try (a)gain or sign(U)p?");
+                    string loginAgainOrSignUp = Console.ReadKey().KeyChar.ToString();
 
-                return false;
-            }
+                    if (loginAgainOrSignUp == "a")
+                    {
+                        return 0;
+                    }
+                    else if (loginAgainOrSignUp == "u")
+                    {
+                        PlayerSignup();
+                        return 0;
+                    }
+                    else
+                    {
+                        Console.WriteLine("You have entered an invalid input. Please try again.");
+                        return 0;
+                    }
+                }
+            } while (!loggedIn);
 
         }
 
@@ -105,7 +127,7 @@ namespace GameFactory.Model
                 Console.WriteLine("Your login name must only contain alphanumeric characters.");
                 return false;
             }
-            
+
             return true;
         }
         public static bool ValidatePassword(string password)
@@ -117,6 +139,22 @@ namespace GameFactory.Model
             }
             return true;
         }
+        internal bool SavePlayerVariables()
+        {
+            Console.Clear();
+            if (p_loginName == null)
+            {
+                p_loginName = "Guest";
+            }
+            p_name = Game.InitializePlayerName();
+            p_icon = Game.InitializePlayerIcon();
+            p_colour = Game.InitializePlayerColor();
+
+            PlayerService.SavePlayerVariables(p_loginName, p_name, p_icon, p_colour);
+            Console.Clear();
+            return true;
+        }
+
         #endregion
     }
 

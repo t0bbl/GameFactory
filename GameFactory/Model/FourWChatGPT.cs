@@ -4,6 +4,10 @@
     {
         public FourWChatGPT()
         {
+            p_gameType = "FourWChatGPT";
+            p_rows = 6;
+            p_columns = 7;
+            p_winningLength = 4;
 
         }
         public override void GameMechanic(List<Player> p_players)

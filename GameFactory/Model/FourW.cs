@@ -1,3 +1,5 @@
+using GameFactory.SQL;
+
 namespace GameFactory.Model
 {
     internal class FourW : Match
@@ -5,6 +7,7 @@ namespace GameFactory.Model
 
         public FourW()
         {
+            p_gameType = "FourW";
             p_rows = 6;
             p_columns = 7;
             p_winningLength = 4;
@@ -13,6 +16,7 @@ namespace GameFactory.Model
         public override void GameMechanic(List<Player> p_player)
         {
             base.GameMechanic(p_player);
+            SQLPlayerService playerService = new SQLPlayerService();
 
             int p_chosenColumn;
             if (p_firstTurn)
@@ -25,9 +29,13 @@ namespace GameFactory.Model
             {
                 Console.WriteLine();
                 Console.WriteLine($"{p_player[p_currentPlayerIndex].Name}, input a column number from 1 to {p_columns}");
+                playerService.SavePlayerList(p_player[p_currentPlayerIndex].Ident, p_matchId);
             } while (!TryGetValidInput(out p_chosenColumn, p_columns));
 
             MakeMove(p_chosenColumn, p_currentPlayerIndex, p_player);
+            string p_cell = p_chosenColumn.ToString();
+            SQLMoveHistory.SaveMoveHistory(p_player[p_currentPlayerIndex].Ident, p_cell, p_matchId, p_twistStat);
+
             p_currentPlayerIndex = (p_currentPlayerIndex + 1) % p_player.Count;
 
             PrintBoard(false, true, p_player);

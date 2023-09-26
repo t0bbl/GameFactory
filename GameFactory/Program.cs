@@ -1,5 +1,4 @@
 ﻿using GameFactory.Model;
-using System.Collections.Generic;
 
 namespace GameFactory
 {
@@ -10,11 +9,14 @@ namespace GameFactory
             while (true)
             {
                 Game CurrentGame = new();
+                var playerAuth = new PlayerAuth();
+                var Options = new Options();
                 Match CurrentMatch;
+
                 string GameMode = CurrentGame.InitializeGameMenu();
+
                 if (GameMode == "Options")
                 {
-                    var Options = new Options();
                     if (!Options.StartOptions())
                     {
                         continue;
@@ -22,9 +24,9 @@ namespace GameFactory
                 }
                 if (GameMode == "PlayerOptions")
                 {
-                    var Options = new Options();
-                    if (!Options.PlayerOptions())
+                    if (playerAuth.PlayerSignIn() != 0)
                     {
+                        playerAuth.SavePlayerVariables();
                         continue;
                     }
                 }
@@ -36,7 +38,7 @@ namespace GameFactory
                     CurrentMatch = CurrentGame.CreateMatch();
                     CurrentMatch.StartMatch();
                 } while (CurrentMatch.ReMatch());
-                Game.EndGameStats(CurrentGame.p_player, CurrentGame.p_history);
+                Game.EndGameStats(CurrentMatch.p_player);
             }
         }
 
