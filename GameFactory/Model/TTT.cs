@@ -48,9 +48,7 @@ namespace GameFactory.Model
                 }
             }
             PrintBoard(false, false, p_player);
-            Console.WriteLine($"{p_chosenCell}this is chosencell");
             string p_cell = p_chosenCell.ToString();
-            Console.WriteLine($"{p_cell}this is p_cell");
             SQLMoveHistory.SaveMoveHistory(p_player[p_currentPlayerIndex].Ident, p_cell, p_matchId);
 
         }
