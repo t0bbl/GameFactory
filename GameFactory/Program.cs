@@ -1,5 +1,4 @@
-﻿using GameFactory;
-using GameFactory.Model;
+﻿using GameFactory.Model;
 
 namespace GameFactory
 {

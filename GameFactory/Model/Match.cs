@@ -1,6 +1,5 @@
 using GameFactory.Model;
 using GameFactory.SQL;
-using System.Runtime.CompilerServices;
 using System.Text;
 
 namespace GameFactory
@@ -21,7 +20,7 @@ namespace GameFactory
         internal int p_gameTypeIdent { get; set; }
         internal int p_matchId { get; set; }
         internal bool p_twistStat { get; set; }
-        
+
         private static Random p_random = new();
 
         #endregion

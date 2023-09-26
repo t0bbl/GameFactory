@@ -1,11 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
-using System.Xml.Linq;
-using static Azure.Core.HttpHeader;
-using static SQLPlayerService;
-
-namespace GameFactory.Model
+﻿namespace GameFactory.Model
 {
     internal class Game
     {
@@ -26,7 +19,7 @@ namespace GameFactory.Model
                 {
                     SQLPlayerService sqlPlayerService = new SQLPlayerService();
                     var p_GPTVariables = sqlPlayerService.GetPlayerVariables(2);
-                    p_player.Add(p_GPTVariables); 
+                    p_player.Add(p_GPTVariables);
                 }
             }
             CurrentMatch = CurrentMatch = p_gameType switch
@@ -62,7 +55,8 @@ namespace GameFactory.Model
                     if (p_input == "i")
                     {
                         var p_ident = 0;
-                        do {
+                        do
+                        {
                             p_ident = playerAuth.PlayerSignIn();
                         } while (p_ident == 0);
                         var playerVariables = sqlPlayerService.GetPlayerVariables(p_ident);

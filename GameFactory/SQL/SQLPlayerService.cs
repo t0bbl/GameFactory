@@ -1,10 +1,6 @@
 ﻿using GameFactory;
-using System;
 using System.Data;
 using System.Data.SqlClient;
-using System.Drawing;
-using System.Reflection.Metadata;
-using System.Xml.Linq;
 
 internal class SQLPlayerService
 {
