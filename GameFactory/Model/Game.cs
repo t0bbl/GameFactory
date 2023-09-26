@@ -37,7 +37,6 @@ namespace GameFactory.Model
                 "TwistFourW" => new CustomTTT(true) { p_player = p_player },
                 "CustomTTT" => new CustomTTT(false) { p_player = p_player },
             };
-            p_history.Add(CurrentMatch);
 
             return CurrentMatch;
         }
@@ -163,7 +162,7 @@ namespace GameFactory.Model
         }
         #endregion
 
-        internal static void EndGameStats(List<Player> p_player, List<Match> p_history)
+        internal static void EndGameStats(List<Player> p_player)
         {
             Console.WriteLine("Game over!");
             Console.WriteLine("Final scores:");

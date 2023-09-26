@@ -39,7 +39,7 @@ namespace GameFactory
                     CurrentMatch = CurrentGame.CreateMatch();
                     CurrentMatch.StartMatch();
                 } while (CurrentMatch.ReMatch());
-                Game.EndGameStats(CurrentGame.p_player, CurrentGame.p_history);
+                Game.EndGameStats(CurrentMatch.p_player);
             }
         }
 

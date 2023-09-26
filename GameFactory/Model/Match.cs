@@ -15,14 +15,15 @@ namespace GameFactory
         internal int p_currentPlayerIndex { get; set; }
         internal string p_boardString { get; set; }
         internal bool p_firstTurn { get; set; }
-        internal int p_winner { get; set; }
-        internal int p_loser { get; set; }
+        internal int? p_winner { get; set; }
+        internal int? p_loser { get; set; }
         internal int p_draw { get; set; }
         internal Guid GameId { get; private set; }
         internal Player Winner { get; set; }
         internal Player Loser { get; set; }
         internal bool Draw { get; set; }
         int p_gameTypeIdent { get; set; }
+        internal int p_matchId { get; set; }
 
         private static Random p_random = new();
 
@@ -33,6 +34,7 @@ namespace GameFactory
 
         internal void StartMatch()
         {
+
             p_currentPlayerIndex = 0;
             ResetBoard();
             ResetFirstTurn();
@@ -42,17 +44,20 @@ namespace GameFactory
             {
                 GameMechanic(p_player);
                 p_winner = CheckWinner(p_player);
-            } while (p_winner == -1);
+            } while (p_winner == null);
             UpdateStats(p_player);
-            SQLMatch.SaveMatch(p_winner, p_loser, p_draw, p_gameTypeIdent);
         }
         public virtual void GameMechanic(List<Player> p_player)
         {
+
             var resultTuple = SQLGame.SaveGame(p_rows, p_columns, p_winningLength, p_gameType);
-
             p_gameTypeIdent = resultTuple.Ident;
+            Console.WriteLine($"{p_winner}this is p_winner");
+            Console.WriteLine($"{p_loser}this is p_loser");
 
-            GameId = Guid.NewGuid();
+            p_matchId = SQLMatch.SaveMatch(p_winner, p_loser, p_draw, p_gameTypeIdent, p_matchId);
+
+
         }
 
 
@@ -140,7 +145,7 @@ namespace GameFactory
         }
         #endregion
         #region GameMechanics
-        public int CheckWinner(List<Player> p_player)
+        public int? CheckWinner(List<Player> p_player)
         {
             for (int p_row = 0; p_row < p_rows; p_row++)
             {
@@ -184,7 +189,7 @@ namespace GameFactory
                 return 0;
             }
 
-            return -1;
+            return null;
         }
         public bool ReMatch()
         {

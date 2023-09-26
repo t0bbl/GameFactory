@@ -141,6 +141,28 @@ internal class SQLPlayerService
             }
         }
     }
+    internal bool SavePlayerList(int p_playerId, int p_matchId)
+    {
+        string connString = new SQLDatabaseUtility().GetSQLConnectionString();
+
+        using (SqlConnection conn = new SqlConnection(connString))
+        {
+            using (SqlCommand cmd = new SqlCommand("SavePlayerList", conn))
+            {
+                cmd.CommandType = CommandType.StoredProcedure;
+
+                cmd.Parameters.Add(new SqlParameter("@p_playerId", p_playerId));
+                cmd.Parameters.Add(new SqlParameter("@p_matchId", p_matchId));
+
+
+
+                conn.Open();
+                cmd.ExecuteNonQuery();
+
+                return true;
+            }
+        }
+    }
 
     public (int, int, int) GetPlayerStats(int ident)
     {
