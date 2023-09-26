@@ -64,7 +64,5 @@ internal class SQLStats
         }
         return winperc;
     }
-
-
 }
 
