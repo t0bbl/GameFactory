@@ -118,9 +118,6 @@ namespace GameFactory.Model
             Console.WriteLine("Invalid input for winning length. Using default value of 3.");
             return 3;
         }
-        #endregion
-
-
         public bool TwistColumn(int p_chosenColumn)
         {
             bool p_shouldTwist = p_random.Next(0, 2) == 0;
@@ -144,6 +141,10 @@ namespace GameFactory.Model
             }
             return false;
         }
+
+        #endregion
+
+
 
 
 

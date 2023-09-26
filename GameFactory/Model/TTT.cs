@@ -31,12 +31,12 @@ namespace GameFactory.Model
 
                 if (TryGetValidInput(out p_chosenCell, p_rows * p_columns))
                 {
-                    int row = (p_chosenCell - 1) / p_columns;
-                    int col = (p_chosenCell - 1) % p_columns;
+                    int p_row = (p_chosenCell - 1) / p_columns;
+                    int p_col = (p_chosenCell - 1) % p_columns;
 
-                    if (GetCell(row, col) == '0')
+                    if (GetCell(p_row, p_col) == '0')
                     {
-                        SetCell(row, col, p_player[p_currentPlayerIndex].Icon);
+                        SetCell(p_row, p_col, p_player[p_currentPlayerIndex].Icon);
                         playerService.SavePlayerList(p_player[p_currentPlayerIndex].Ident, p_matchId);
                         p_currentPlayerIndex = (p_currentPlayerIndex + 1) % p_player.Count;
                         p_validInput = true;

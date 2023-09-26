@@ -6,8 +6,6 @@
         internal List<Player> p_player { get; set; } = new();
         internal string p_gameType { get; set; }
         internal string p_gameMode { get; set; }
-
-        internal List<Match> p_history = new();
         internal Match CurrentMatch { get; set; }
         internal int p_guestCount { get; set; } = 0;
 
@@ -189,7 +187,6 @@
                 p_menuItems.Add(value.ToString());
                 Console.WriteLine($"{p_menuItems.Count}. {value}");
             }
-
             do
             {
                 Console.Write("Enter the number of your choice: ");
@@ -213,11 +210,8 @@
                 }
             } while (true);
         }
-
         #endregion
     }
-
-
 }
 
 
