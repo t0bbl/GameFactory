@@ -5,8 +5,9 @@ namespace GameFactory
         SinglePlayer = 1,
         MultiPlayer = 2,
         PlayerOptions = 3,
-        Options = 4,
-        Quit = 5,
+        PlayerStats = 4,
+        Options = 5,
+        Quit = 6,
     }
     public enum OptionsMenu
     {

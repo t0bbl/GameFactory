@@ -1,6 +1,7 @@
 ﻿using GameFactory;
 using System.Data;
 using System.Data.SqlClient;
+using System.Text;
 
 internal class SQLPlayerService
 {
@@ -34,28 +35,30 @@ internal class SQLPlayerService
     internal int LoginPlayer(string p_loginName, string p_password)
     {
         string connString = new SQLDatabaseUtility().GetSQLConnectionString();
+        int p_ident = 0; // Initialize to 0
 
         using (SqlConnection conn = new SqlConnection(connString))
         {
-            using (SqlCommand cmd = new SqlCommand("LoginPlayer", conn))
-            {
-                cmd.CommandType = CommandType.StoredProcedure;
+            conn.Open();
 
+            string sqlQuery = "SELECT Ident FROM Player WHERE LoginName = @p_loginName AND Password = @p_password";
+
+            using (SqlCommand cmd = new SqlCommand(sqlQuery, conn))
+            {
                 cmd.Parameters.Add(new SqlParameter("@p_loginName", p_loginName));
                 cmd.Parameters.Add(new SqlParameter("@p_password", p_password));
 
-                SqlParameter resultParam = new SqlParameter("@p_ident", SqlDbType.Int);
-                resultParam.Direction = ParameterDirection.Output;
-                cmd.Parameters.Add(resultParam);
-
-                conn.Open();
-                cmd.ExecuteNonQuery();
-
-                int result = (int)resultParam.Value;
-                return result;
+                object result = cmd.ExecuteScalar();
+                if (result != null)
+                {
+                    p_ident = Convert.ToInt32(result); // Set output parameter
+                }
             }
         }
+
+        return p_ident;
     }
+
     internal bool SavePlayerVariables(string p_loginName, string p_name, char p_icon, string p_color)
     {
         string connString = new SQLDatabaseUtility().GetSQLConnectionString();
@@ -86,56 +89,44 @@ internal class SQLPlayerService
     internal Player GetPlayerVariables(int p_ident)
     {
         string connString = new SQLDatabaseUtility().GetSQLConnectionString();
+        Player player = null;
 
         using (SqlConnection conn = new SqlConnection(connString))
         {
-            using (SqlCommand cmd = new SqlCommand("GetPlayerVariables", conn))
+            conn.Open();
+
+            string sqlQuery = "SELECT Name, Icon, Color FROM Player WHERE Ident = @p_ident";
+
+            using (SqlCommand cmd = new SqlCommand(sqlQuery, conn))
             {
-                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.Add(new SqlParameter("@p_ident", p_ident));
 
-
-                SqlParameter nameParam = new SqlParameter("@p_name", SqlDbType.NVarChar, 50);
-                SqlParameter iconParam = new SqlParameter("@p_icon", SqlDbType.NVarChar, 1);
-                SqlParameter colorParam = new SqlParameter("@p_color", SqlDbType.NVarChar, 20);
-                SqlParameter identParam = new SqlParameter("@p_ident", SqlDbType.Int);
-
-
-
-                nameParam.Direction = ParameterDirection.Output;
-                iconParam.Direction = ParameterDirection.Output;
-                colorParam.Direction = ParameterDirection.Output;
-
-                cmd.Parameters.Add(nameParam);
-                cmd.Parameters.Add(iconParam);
-                cmd.Parameters.Add(colorParam);
-                cmd.Parameters.Add(new SqlParameter("@p_ident", p_ident));  // Add this line
-
-
-                conn.Open();
-                cmd.ExecuteNonQuery();
-
-                string p_name = nameParam.Value as string;
-                char p_icon = Convert.ToChar(iconParam.Value);
-                string p_color = colorParam.Value as string;
-
-                Console.Write($"{p_name}, {p_icon}, {p_color}");
-
-                if (p_name != null && p_icon != null && p_color != null)
+                using (SqlDataReader reader = cmd.ExecuteReader())
                 {
-                    return new Player
+                    if (reader.Read())
                     {
-                        Name = p_name,
-                        Icon = p_icon,
-                        Colour = p_color,
-                        Ident = p_ident
-                    };
-                }
-                else
-                {
-                    return null;
+                        string p_name = reader["Name"] as string;
+                        char p_icon = Convert.ToChar(reader["Icon"]);
+                        string p_color = reader["Color"] as string;
+
+                        Console.Write($"{p_name}, {p_icon}, {p_color}");
+
+                        if (p_name != null && p_icon != null && p_color != null)
+                        {
+                            player = new Player
+                            {
+                                Name = p_name,
+                                Icon = p_icon,
+                                Colour = p_color,
+                                Ident = p_ident
+                            };
+                        }
+                    }
                 }
             }
         }
+
+        return player;
     }
     internal bool SavePlayerList(int p_playerId, int p_matchId)
     {
@@ -159,72 +150,105 @@ internal class SQLPlayerService
             }
         }
     }
-
-    public (int, int, int) GetPlayerStats(int ident)
+    internal int GetPlayerIdentFromName(string p_name = null, string p_loginName = null)
     {
         string connString = new SQLDatabaseUtility().GetSQLConnectionString();
+        int p_ident = 0;
 
         using (SqlConnection conn = new SqlConnection(connString))
         {
-            using (SqlCommand cmd = new SqlCommand("GetPlayerStats", conn))
+            conn.Open();
+
+            StringBuilder sqlQuery = new StringBuilder("SELECT Ident FROM Player WHERE 1=1");
+            List<SqlParameter> parameters = new List<SqlParameter>();
+
+            if (!string.IsNullOrEmpty(p_name))
             {
-                cmd.CommandType = CommandType.StoredProcedure;
+                sqlQuery.Append(" AND Name = @p_name");
+                parameters.Add(new SqlParameter("@p_name", p_name));
+            }
 
-                // Input parameter
-                cmd.Parameters.Add(new SqlParameter("@p_ident", ident));
+            if (!string.IsNullOrEmpty(p_loginName))
+            {
+                sqlQuery.Append(" AND LoginName = @p_loginName");
+                parameters.Add(new SqlParameter("@p_loginName", p_loginName));
+            }
 
-                // Output parameters
-                SqlParameter winsParam = new SqlParameter("@p_wins", SqlDbType.Int);
-                SqlParameter lossesParam = new SqlParameter("@p_losses", SqlDbType.Int);
-                SqlParameter drawsParam = new SqlParameter("@p_draws", SqlDbType.Int);
+            using (SqlCommand cmd = new SqlCommand(sqlQuery.ToString(), conn))
+            {
+                cmd.Parameters.AddRange(parameters.ToArray());
 
-                winsParam.Direction = ParameterDirection.Output;
-                lossesParam.Direction = ParameterDirection.Output;
-                drawsParam.Direction = ParameterDirection.Output;
-
-                cmd.Parameters.Add(winsParam);
-                cmd.Parameters.Add(lossesParam);
-                cmd.Parameters.Add(drawsParam);
-
-                conn.Open();
-                cmd.ExecuteNonQuery();
-
-                int Wins = (int)winsParam.Value;
-                int Losses = (int)lossesParam.Value;
-                int Draws = (int)drawsParam.Value;
-
-                return (Wins, Losses, Draws);
+                object result = cmd.ExecuteScalar();
+                if (result != null)
+                {
+                    p_ident = Convert.ToInt32(result);
+                }
             }
         }
+
+        return p_ident;
     }
+
+
+    internal (int Wins, int Losses, int Draws) GetPlayerStats(int ident)
+    {
+        string connString = new SQLDatabaseUtility().GetSQLConnectionString();
+        int wins = 0, losses = 0, draws = 0;
+
+        using (SqlConnection conn = new SqlConnection(connString))
+        {
+            conn.Open();
+
+            using (SqlCommand cmd = new SqlCommand("SELECT COUNT(*) FROM Match WHERE Winner = @p_ident", conn))
+            {
+                cmd.Parameters.AddWithValue("@p_ident", ident);
+                wins = (int)cmd.ExecuteScalar();
+            }
+
+            using (SqlCommand cmd = new SqlCommand("SELECT COUNT(*) FROM Match WHERE Loser = @p_ident", conn))
+            {
+                cmd.Parameters.AddWithValue("@p_ident", ident);
+                losses = (int)cmd.ExecuteScalar();
+            }
+
+            using (SqlCommand cmd = new SqlCommand("SELECT COUNT(*) FROM Match WHERE Draw = 1 AND (Winner = @p_ident OR Loser = @p_ident)", conn))
+            {
+                cmd.Parameters.AddWithValue("@p_ident", ident);
+                draws = (int)cmd.ExecuteScalar();
+            }
+        }
+
+        return (Wins: wins, Losses: losses, Draws: draws);
+    }
+
     internal bool CheckLoginName(string p_loginName)
     {
         string connString = new SQLDatabaseUtility().GetSQLConnectionString();
+        bool p_result = false;
 
         using (SqlConnection conn = new SqlConnection(connString))
         {
-            using (SqlCommand cmd = new SqlCommand("CheckLoginName", conn))
-            {
-                cmd.CommandType = CommandType.StoredProcedure;
+            conn.Open();
 
+            string sqlQuery = "SELECT 1 FROM [Player] WHERE LoginName = @p_loginName";
+
+            using (SqlCommand cmd = new SqlCommand(sqlQuery, conn))
+            {
                 cmd.Parameters.Add(new SqlParameter("@p_loginName", p_loginName));
 
-                SqlParameter resultParam = new SqlParameter("@p_result", SqlDbType.Bit);
-                resultParam.Direction = ParameterDirection.Output;
-                cmd.Parameters.Add(resultParam);
-
-                conn.Open();
-                cmd.ExecuteNonQuery();
-
-                bool result = (bool)resultParam.Value;
-                if (!result)
+                object result = cmd.ExecuteScalar();
+                if (result == null)
                 {
-                    Console.WriteLine("This login name is already taken. Please try again.");
+                    p_result = true;
                 }
-                return result;
+                else
+                {
+                    Console.WriteLine("LoginName already exists. Try again.");
+                }
             }
         }
 
+        return p_result;
     }
 }
 

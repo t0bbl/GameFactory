@@ -30,6 +30,13 @@ namespace GameFactory
                         continue;
                     }
                 }
+                if (GameMode == "PlayerStats")
+                {
+                   
+                   PlayerStats.ShowPlayerStats();
+                        continue;
+                   
+                }
 
                 CurrentGame.InitializePlayer();
                 CurrentGame.InitializeGame();

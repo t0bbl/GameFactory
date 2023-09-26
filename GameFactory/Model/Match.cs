@@ -19,7 +19,7 @@ namespace GameFactory
         internal int p_draw { get; set; }
         internal int p_gameTypeIdent { get; set; }
         protected int p_matchId { get; set; }
-
+        protected bool p_twistStat { get; set; }
         private static Random p_random = new();
 
         #endregion
