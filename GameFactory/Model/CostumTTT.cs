@@ -33,7 +33,6 @@ namespace GameFactory.Model
         public override void GameMechanic(List<Player> p_player)
         {
             base.GameMechanic(p_player);
-            SQLPlayerService playerService = new SQLPlayerService();
 
             if (p_firstTurn)
             {
@@ -45,7 +44,7 @@ namespace GameFactory.Model
             {
                 Console.WriteLine();
                 Console.WriteLine($"{p_player[p_currentPlayerIndex].Name}, input a coordinate X/Y");
-                playerService.SavePlayerList(p_player[p_currentPlayerIndex].Ident, p_matchId);
+                SavePlayerList(p_player[p_currentPlayerIndex].Ident, p_matchId);
                 string p_input = Console.ReadLine();
                 string[] p_parts = p_input.Split('/');
 
@@ -67,7 +66,7 @@ namespace GameFactory.Model
                         {
                             p_twistStat = TwistColumn(p_col);
                         }
-                        SQLMoveHistory.SaveMoveHistory(p_player[p_currentPlayerIndex].Ident, p_input, p_matchId, p_twistStat);
+                        SaveMoveHistory(p_player[p_currentPlayerIndex].Ident, p_input, p_matchId, p_twistStat);
 
                     }
                     else
