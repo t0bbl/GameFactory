@@ -40,7 +40,7 @@ namespace GameFactory.Model
         #region initializePlayer
         internal void InitializePlayer()
         {
-            var playerAuth = new PlayerAuth();
+            var Player = new Player();
             Console.Clear();
             int p_numberOfPlayers = DetermineNumberOfPlayers();
 
@@ -56,7 +56,7 @@ namespace GameFactory.Model
                         var p_ident = 0;
                         do
                         {
-                            p_ident = playerAuth.PlayerSignIn();
+                            p_ident = Player.PlayerSignIn();
                         } while (p_ident == 0);
                         var playerVariables = DataProvider.GetPlayerVariables(p_ident);
                         Console.WriteLine($"Welcome back {playerVariables.Name}!");
@@ -65,7 +65,7 @@ namespace GameFactory.Model
                     }
                     else if (p_input == "u")
                     {
-                        playerAuth.PlayerSignup();
+                        Player.PlayerSignup();
                         p_validInput = false;
                     }
                     else if (p_input == "g")

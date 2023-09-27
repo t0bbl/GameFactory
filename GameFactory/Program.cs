@@ -9,8 +9,8 @@ namespace GameFactory
             while (true)
             {
                 Game CurrentGame = new();
-                var playerAuth = new PlayerAuth();
                 Match CurrentMatch;
+                Player Player = new();
 
                 string GameMode = CurrentGame.InitializeGameMenu();
 
@@ -23,9 +23,9 @@ namespace GameFactory
                 }
                 if (GameMode == "PlayerOptions")
                 {
-                    if (playerAuth.PlayerSignIn() != 0)
+                    if (Player.PlayerSignIn() != 0)
                     {
-                        playerAuth.SavePlayerVariables();
+                        Player.SavePlayerVariables();
                         continue;
                     }
                 }
