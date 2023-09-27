@@ -36,6 +36,11 @@ namespace GameFactory
                         continue;
                    
                 }
+                if (GameMode == "Leaderboard")
+                {
+                    DataProvider.DisplayRankedPlayers();
+                    continue;
+                }
 
                 CurrentGame.InitializePlayer();
                 CurrentGame.InitializeGame();

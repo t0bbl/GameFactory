@@ -1,4 +1,4 @@
-﻿using GameFactory.SQL;
+﻿using GameFactory;
 using System.Data;
 using System.Security.Cryptography;
 using System.Text;

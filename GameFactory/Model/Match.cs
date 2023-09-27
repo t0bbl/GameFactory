@@ -1,5 +1,5 @@
 using GameFactory.Model;
-using GameFactory.SQL;
+using GameFactory;
 using System.Data;
 using System.Text;
 using System.Data.SqlClient;
@@ -51,8 +51,6 @@ namespace GameFactory
             p_matchId = SaveMatch(p_winner, p_loser, p_draw, p_gameTypeIdent, p_matchId);
 
         }
-
-
 
         #region BoardSetup
         public void ResetBoard()

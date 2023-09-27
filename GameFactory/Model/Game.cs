@@ -1,4 +1,4 @@
-﻿using GameFactory.SQL;
+﻿using GameFactory;
 
 namespace GameFactory.Model
 {
@@ -18,7 +18,7 @@ namespace GameFactory.Model
             {
                 if (!p_player.Any(x => x.Name == "ChatGPT"))
                 {
-                    var p_GPTVariables = DataProvider.GetPlayerVariables(2);
+                    var p_GPTVariables = DataProvider.GetPlayerVariables(10);
                     p_player.Add(p_GPTVariables);
                 }
             }

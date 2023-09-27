@@ -1,11 +1,12 @@
 ﻿using GameFactory;
 using GameFactory.Model;
+using Newtonsoft.Json.Linq;
 using System.Data;
 using System.Data.SqlClient;
 using System.Text;
 
 
-namespace GameFactory.SQL
+namespace GameFactory
 {
     internal static class DataProvider
     {
@@ -125,9 +126,6 @@ namespace GameFactory.SQL
                             string p_name = reader["Name"] as string;
                             char p_icon = Convert.ToChar(reader["Icon"]);
                             string p_color = reader["Color"] as string;
-
-                            Console.Write($"{p_name}, {p_icon}, {p_color}");
-
                             if (p_name != null && p_icon != null && p_color != null)
                             {
                                 player = new Player
@@ -145,5 +143,115 @@ namespace GameFactory.SQL
 
             return player;
         }
+        internal static void DisplayRankedPlayers()
+        {
+            string connString = new SQLDatabaseUtility().GetSQLConnectionString();
+
+            using (SqlConnection conn = new SqlConnection(connString))
+            {
+                string sqlQuery = "SELECT * FROM RankedPlayers";
+
+                using (SqlCommand cmd = new SqlCommand(sqlQuery, conn))
+                {
+                    conn.Open();
+
+                    using (SqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        if (reader.HasRows)
+                        {
+                            Console.Clear();
+                            Console.WriteLine("{0,-5} | {1,-15} | {2,-5} | {3,-7} | {4,-5} | {5,-12}",
+                                              "Rank", "Player Name", "Wins", "Losses", "Draws", "Win Percentage");
+                            Console.WriteLine(new string('-', 66));
+
+                            while (reader.Read())
+                            {
+                                long rank = reader.GetInt64(reader.GetOrdinal("Rank"));
+                                string playerName = reader.GetString(reader.GetOrdinal("Name"));
+                                int wins = reader.GetInt32(reader.GetOrdinal("Wins"));
+                                int losses = reader.GetInt32(reader.GetOrdinal("Losses"));  // Read losses
+                                int draws = reader.GetInt32(reader.GetOrdinal("Draws"));  // Read draws
+                                float winPercentage = (float)reader.GetDouble(reader.GetOrdinal("WinPercentage"));
+
+                                Console.WriteLine("{0,-5} | {1,-15} | {2,-5} | {3,-7} | {4,-5} | {5,-12:F2}",
+                                          rank, playerName, wins, losses, draws, winPercentage);
+
+                            }
+                        }
+                        else
+                        {
+                            Console.WriteLine("No data found.");
+                        }
+                        Console.WriteLine(new string('-', 66));
+                        Console.WriteLine("Press any Key to return");
+                        Console.ReadKey();
+                        Console.Clear();
+                    }
+                }
+            }
+        }
+        #region NotNeededButWanted
+
+        internal static void DisplayPlayerStats(int p_ident)
+        {
+            string connString = new SQLDatabaseUtility().GetSQLConnectionString();
+
+            using (SqlConnection conn = new SqlConnection(connString))
+            {
+                string sqlQuery = "SELECT * FROM PlayerStats WHERE PlayerIdent = @p_ident";
+
+                using (SqlCommand cmd = new SqlCommand(sqlQuery, conn))
+                {
+                    cmd.Parameters.Add(new SqlParameter("@p_ident", p_ident));
+
+                    conn.Open();
+
+                    using (SqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        if (reader.HasRows)
+                        {
+                            while (reader.Read())
+                            {
+                                int playerIdent = reader.GetInt32(reader.GetOrdinal("PlayerIdent"));
+                                string statType = reader.GetString(reader.GetOrdinal("StatType"));
+                                int statCount = reader.GetInt32(reader.GetOrdinal("StatCount"));
+
+                                Console.WriteLine($"Player ID: {playerIdent}, Stat Type: {statType}, Stat Count: {statCount}");
+                            }
+                        }
+                        else
+                        {
+                            Console.WriteLine("No data found.");
+                        }
+                    }
+                }
+            }
+        }
+        internal static float GetPlayerWinPercentage(int ident)
+        {
+            string connString = new SQLDatabaseUtility().GetSQLConnectionString(); // Replace with your connection string utility
+
+            using (SqlConnection conn = new SqlConnection(connString))
+            {
+                string sqlQuery = "SELECT dbo.GetPlayerWinPercentage(@p_ident)";
+
+                using (SqlCommand cmd = new SqlCommand(sqlQuery, conn))
+                {
+                    cmd.Parameters.Add(new SqlParameter("@p_ident", ident));
+
+                    conn.Open();
+
+                    object result = cmd.ExecuteScalar();
+                    if (result != null && float.TryParse(result.ToString(), out float winPercentage))
+                    {
+                        return winPercentage;
+                    }
+                    return 0.0f;
+                }
+            }
+        }
+
+        #endregion
+
     }
 }

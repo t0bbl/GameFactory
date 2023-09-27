@@ -1,4 +1,4 @@
-﻿using GameFactory.SQL;
+﻿using GameFactory;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -21,6 +21,10 @@ namespace GameFactory.Model
             {
                 Console.WriteLine($"Wins: {stats.Wins}, Losses: {stats.Losses}, Draws: {stats.Draws}, Total Games: {stats.TotalGames}, Win Percentage: {stats.WinPercentage}");
             }
+            //DataProvider.DisplayPlayerStats(p_playerIdent);
+            //float winpercentage = DataProvider.GetPlayerWinPercentage(p_playerIdent);
+            //Console.WriteLine($"Win Percentage: {winpercentage}");
+
             Console.WriteLine("Press any key to continue");
             Console.ReadKey();
             Console.Clear();

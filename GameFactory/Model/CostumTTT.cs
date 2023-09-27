@@ -1,4 +1,4 @@
-﻿using GameFactory.SQL;
+﻿using GameFactory;
 
 namespace GameFactory.Model
 {
