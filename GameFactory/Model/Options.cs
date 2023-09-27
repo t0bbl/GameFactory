@@ -4,7 +4,7 @@ namespace GameFactory.Model
 {
     internal class Options
     {
-        public bool StartOptions()
+        public static bool GameOptions()
         {
             Console.Clear();
             string p_choosing = null;

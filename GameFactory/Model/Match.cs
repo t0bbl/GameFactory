@@ -1,6 +1,8 @@
 using GameFactory.Model;
-using GameFactory.SQL;
+using GameFactory;
+using System.Data;
 using System.Text;
+using System.Data.SqlClient;
 
 namespace GameFactory
 {
@@ -19,13 +21,10 @@ namespace GameFactory
         internal int p_draw { get; set; }
         internal int p_gameTypeIdent { get; set; }
         protected int p_matchId { get; set; }
-
+        protected bool p_twistStat { get; set; }
         private static Random p_random = new();
 
         #endregion
-        internal Match()
-        {
-        }
 
         internal void StartMatch()
         {
@@ -41,19 +40,17 @@ namespace GameFactory
                 p_winner = CheckWinner(p_player);
             } while (p_winner == null);
             UpdateStats(p_player);
-            SQLMatch.SaveMatch(p_winner, p_loser, p_draw, p_gameTypeIdent, p_matchId);
+            SaveMatch(p_winner, p_loser, p_draw, p_gameTypeIdent, p_matchId);
 
         }
         public virtual void GameMechanic(List<Player> p_player)
         {
-            var resultTuple = SQLGame.SaveGame(p_rows, p_columns, p_winningLength, p_gameType);
+            var resultTuple = SaveGame(p_rows, p_columns, p_winningLength, p_gameType);
             p_gameTypeIdent = resultTuple.Ident;
 
-            p_matchId = SQLMatch.SaveMatch(p_winner, p_loser, p_draw, p_gameTypeIdent, p_matchId);
+            p_matchId = SaveMatch(p_winner, p_loser, p_draw, p_gameTypeIdent, p_matchId);
 
         }
-
-
 
         #region BoardSetup
         public void ResetBoard()
@@ -252,6 +249,112 @@ namespace GameFactory
             return p_players;
         }
 
+        #endregion
+        #region SQL
+        internal static int SaveMatch(int? p_winner, int? p_loser, int p_draw, int p_gameType, int p_matchId)
+        {
+            string connString = new SQLDatabaseUtility().GetSQLConnectionString();
+
+            using (SqlConnection conn = new SqlConnection(connString))
+            {
+                using (SqlCommand cmd = new SqlCommand("SaveMatch", conn))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+
+                    cmd.Parameters.Add(new SqlParameter("@p_winner", p_winner));
+                    cmd.Parameters.Add(new SqlParameter("@p_loser", p_loser));
+                    cmd.Parameters.Add(new SqlParameter("@p_draw", p_draw));
+                    cmd.Parameters.Add(new SqlParameter("@p_gameType", p_gameType));
+
+                    SqlParameter resultParam = new SqlParameter("@p_matchId", SqlDbType.Int);
+                    resultParam.Direction = ParameterDirection.InputOutput;
+                    resultParam.Value = p_matchId;
+                    cmd.Parameters.Add(resultParam);
+
+                    conn.Open();
+                    cmd.ExecuteNonQuery();
+
+                    p_matchId = (int)resultParam.Value;
+                    return p_matchId;
+                }
+            }
+        }
+        internal static (bool Result, int Ident) SaveGame(int p_rows, int p_columns, int p_winningLength, string p_gameType)
+        {
+            string connString = new SQLDatabaseUtility().GetSQLConnectionString();
+
+            using (SqlConnection conn = new SqlConnection(connString))
+            {
+                using (SqlCommand cmd = new SqlCommand("SaveGame", conn))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+
+                    cmd.Parameters.Add(new SqlParameter("@p_rows", p_rows));
+                    cmd.Parameters.Add(new SqlParameter("@p_cols", p_columns));
+                    cmd.Parameters.Add(new SqlParameter("@p_winningLength", p_winningLength));
+                    cmd.Parameters.Add(new SqlParameter("@p_gameType", p_gameType));
+
+                    SqlParameter resultParam = new SqlParameter("@p_result", SqlDbType.Bit);
+                    resultParam.Direction = ParameterDirection.Output;
+                    cmd.Parameters.Add(resultParam);
+
+                    SqlParameter identParam = new SqlParameter("@p_ident", SqlDbType.Int);
+                    identParam.Direction = ParameterDirection.Output;
+                    cmd.Parameters.Add(identParam);
+
+                    conn.Open();
+                    cmd.ExecuteNonQuery();
+
+                    bool result = (bool)resultParam.Value;
+
+                    int ident = (int)identParam.Value;
+
+                    return (result, ident);
+                }
+            }
+        }
+        internal static bool SaveMoveHistory(int p_player, string p_input, int p_matchId, bool p_twist)
+        {
+            string connString = new SQLDatabaseUtility().GetSQLConnectionString();
+
+            using (SqlConnection conn = new SqlConnection(connString))
+            {
+                using (SqlCommand cmd = new SqlCommand("SaveMoveHistory", conn))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.Add(new SqlParameter("@p_player", p_player));
+                    cmd.Parameters.Add(new SqlParameter("@p_input", p_input));
+                    cmd.Parameters.Add(new SqlParameter("@p_matchId", p_matchId));
+                    cmd.Parameters.Add(new SqlParameter("@p_twist", p_twist));
+                    conn.Open();
+                    cmd.ExecuteNonQuery();
+
+                    return true;
+                }
+            }
+        }
+        internal bool SavePlayerList(int p_playerId, int p_matchId)
+        {
+            string connString = new SQLDatabaseUtility().GetSQLConnectionString();
+
+            using (SqlConnection conn = new SqlConnection(connString))
+            {
+                using (SqlCommand cmd = new SqlCommand("SavePlayerList", conn))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+
+                    cmd.Parameters.Add(new SqlParameter("@p_playerId", p_playerId));
+                    cmd.Parameters.Add(new SqlParameter("@p_matchId", p_matchId));
+
+
+
+                    conn.Open();
+                    cmd.ExecuteNonQuery();
+
+                    return true;
+                }
+            }
+        }
         #endregion
 
         #region ChatGPT

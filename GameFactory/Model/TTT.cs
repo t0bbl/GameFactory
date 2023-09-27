@@ -1,4 +1,4 @@
-﻿using GameFactory.SQL;
+﻿using GameFactory;
 
 namespace GameFactory.Model
 {
@@ -15,7 +15,6 @@ namespace GameFactory.Model
         public override void GameMechanic(List<Player> p_player)
         {
             base.GameMechanic(p_player);
-            SQLPlayerService playerService = new SQLPlayerService();
 
             int p_chosenCell = 0;
             bool p_validInput = false;
@@ -37,7 +36,7 @@ namespace GameFactory.Model
                     if (GetCell(p_row, p_col) == '0')
                     {
                         SetCell(p_row, p_col, p_player[p_currentPlayerIndex].Icon);
-                        playerService.SavePlayerList(p_player[p_currentPlayerIndex].Ident, p_matchId);
+                        SavePlayerList(p_player[p_currentPlayerIndex].Ident, p_matchId);
                         p_currentPlayerIndex = (p_currentPlayerIndex + 1) % p_player.Count;
                         p_validInput = true;
                     }
@@ -49,7 +48,7 @@ namespace GameFactory.Model
             }
             PrintBoard(false, false, p_player);
             string p_cell = p_chosenCell.ToString();
-            SQLMoveHistory.SaveMoveHistory(p_player[p_currentPlayerIndex].Ident, p_cell, p_matchId, p_twistStat);
+            SaveMoveHistory(p_player[p_currentPlayerIndex].Ident, p_cell, p_matchId, p_twistStat);
 
         }
     }

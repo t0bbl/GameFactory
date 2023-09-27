@@ -1,4 +1,6 @@
-﻿namespace GameFactory.Model
+﻿using GameFactory;
+
+namespace GameFactory.Model
 {
     internal class Game
     {
@@ -16,8 +18,7 @@
             {
                 if (!p_player.Any(x => x.Name == "ChatGPT"))
                 {
-                    SQLPlayerService sqlPlayerService = new SQLPlayerService();
-                    var p_GPTVariables = sqlPlayerService.GetPlayerVariables(2);
+                    var p_GPTVariables = DataProvider.GetPlayerVariables(10);
                     p_player.Add(p_GPTVariables);
                 }
             }
@@ -40,7 +41,6 @@
         internal void InitializePlayer()
         {
             var playerAuth = new PlayerAuth();
-            var sqlPlayerService = new SQLPlayerService();
             Console.Clear();
             int p_numberOfPlayers = DetermineNumberOfPlayers();
 
@@ -58,7 +58,7 @@
                         {
                             p_ident = playerAuth.PlayerSignIn();
                         } while (p_ident == 0);
-                        var playerVariables = sqlPlayerService.GetPlayerVariables(p_ident);
+                        var playerVariables = DataProvider.GetPlayerVariables(p_ident);
                         Console.WriteLine($"Welcome back {playerVariables.Name}!");
                         p_player.Add(playerVariables);
                         p_validInput = true;
@@ -71,7 +71,7 @@
                     else if (p_input == "g")
                     {
                         Console.WriteLine("Playing as a guest.");
-                        var GuestVariables = sqlPlayerService.GetPlayerVariables(p_guestCount + 1);
+                        var GuestVariables = DataProvider.GetPlayerVariables(p_guestCount + 1);
                         p_player.Add(GuestVariables);
                         p_guestCount++;
                         p_validInput = true;
@@ -163,15 +163,15 @@
 
             foreach (var Player in p_player)
             {
-                SQLPlayerService service = new SQLPlayerService();
-                var (Wins, Losses, Draws) = service.GetPlayerStats(Player.Ident);
-
-                Console.WriteLine($"{Player.Name}:  Wins: {Wins}   Losses: {Losses}     Draws: {Draws}\n");
+                List<(int Wins, int Losses, int Draws, int TotalGames, float WinPercentage)> statsList = DataProvider.GetPlayerStats(Player.Ident);
+                foreach (var stats in statsList)
+                {
+                    Console.WriteLine($"{Player.Name}:      Wins: {stats.Wins}, Losses: {stats.Losses}, Draws: {stats.Draws}, Total Games: {stats.TotalGames}, Win Percentage: {stats.WinPercentage}");
+                }
             }
 
             Console.ReadKey();
             Environment.Exit(0);
-
         }
 
 

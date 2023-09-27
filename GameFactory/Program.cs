@@ -10,14 +10,13 @@ namespace GameFactory
             {
                 Game CurrentGame = new();
                 var playerAuth = new PlayerAuth();
-                var Options = new Options();
                 Match CurrentMatch;
 
                 string GameMode = CurrentGame.InitializeGameMenu();
 
                 if (GameMode == "Options")
                 {
-                    if (!Options.StartOptions())
+                    if (!Options.GameOptions())
                     {
                         continue;
                     }
@@ -30,12 +29,24 @@ namespace GameFactory
                         continue;
                     }
                 }
+                if (GameMode == "PlayerStats")
+                {
+                   
+                   PlayerStats.ShowPlayerStats();
+                        continue;
+                   
+                }
+                if (GameMode == "Leaderboard")
+                {
+                    DataProvider.DisplayRankedPlayers();
+                    continue;
+                }
 
                 CurrentGame.InitializePlayer();
                 CurrentGame.InitializeGame();
+                CurrentMatch = CurrentGame.CreateMatch();
                 do
                 {
-                    CurrentMatch = CurrentGame.CreateMatch();
                     CurrentMatch.StartMatch();
                 } while (CurrentMatch.ReMatch());
                 Game.EndGameStats(CurrentMatch.p_player);
