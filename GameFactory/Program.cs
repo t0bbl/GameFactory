@@ -24,12 +24,12 @@ namespace GameFactory
                 if (GameMode == "PlayerOptions")
                 {
                     int p_ident = Player.PlayerSignIn();
-                    Player.GetPlayerVariables(p_ident);
+                    Player.SetPlayerVariables(p_ident);
                     continue;
                 }
                 if (GameMode == "PlayerStats")
                 {
-                    Player.ShowPlayerStats();
+                    DataProvider.ShowPlayerStats();
                     continue;
                 }
                 if (GameMode == "Leaderboard")
