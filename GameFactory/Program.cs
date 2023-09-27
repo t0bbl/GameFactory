@@ -32,7 +32,7 @@ namespace GameFactory
                 if (GameMode == "PlayerStats")
                 {
                    
-                   PlayerStats.ShowPlayerStats();
+                   Player.ShowPlayerStats();
                         continue;
                    
                 }
