@@ -163,14 +163,15 @@ namespace GameFactory.Model
 
             foreach (var Player in p_player)
             {
-                    var (Wins, Losses, Draws) = DataProvider.GetPlayerStats(Player.Ident);
-
-                Console.WriteLine($"{Player.Name}:  Wins: {Wins}   Losses: {Losses}     Draws: {Draws}\n");
+                List<(int Wins, int Losses, int Draws, int TotalGames, float WinPercentage)> statsList = DataProvider.GetPlayerStats(Player.Ident);
+                foreach (var stats in statsList)
+                {
+                    Console.WriteLine($"{Player.Name}:      Wins: {stats.Wins}, Losses: {stats.Losses}, Draws: {stats.Draws}, Total Games: {stats.TotalGames}, Win Percentage: {stats.WinPercentage}");
+                }
             }
 
             Console.ReadKey();
             Environment.Exit(0);
-
         }
 
 

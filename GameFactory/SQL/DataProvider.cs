@@ -1,4 +1,5 @@
 ﻿using GameFactory;
+using GameFactory.Model;
 using System.Data;
 using System.Data.SqlClient;
 using System.Text;
@@ -8,62 +9,39 @@ namespace GameFactory.SQL
 {
     internal static class DataProvider
     {
-        internal static (int Wins, int Losses, int Draws) GetPlayerStats(int ident)
+        internal static List<(int Wins, int Losses, int Draws, int TotalGames, float WinPercentage)> GetPlayerStats(int p_ident)
         {
             string connString = new SQLDatabaseUtility().GetSQLConnectionString();
-            int wins = 0, losses = 0, draws = 0;
+            List<(int Wins, int Losses, int Draws, int TotalGames, float WinPercentage)> statsList = new List<(int Wins, int Losses, int Draws, int TotalGames, float WinPercentage)>();
 
             using (SqlConnection conn = new SqlConnection(connString))
             {
-                conn.Open();
+                string sqlQuery = "SELECT * FROM dbo.GetPlayerStats(@p_ident)";
 
-                using (SqlCommand cmd = new SqlCommand("SELECT COUNT(*) FROM Match WHERE Winner = @p_ident", conn))
+                using (SqlCommand cmd = new SqlCommand(sqlQuery, conn))
                 {
-                    cmd.Parameters.AddWithValue("@p_ident", ident);
-                    wins = (int)cmd.ExecuteScalar();
-                }
+                    cmd.Parameters.Add(new SqlParameter("@p_ident", p_ident));
 
-                using (SqlCommand cmd = new SqlCommand("SELECT COUNT(*) FROM Match WHERE Loser = @p_ident", conn))
-                {
-                    cmd.Parameters.AddWithValue("@p_ident", ident);
-                    losses = (int)cmd.ExecuteScalar();
-                }
+                    conn.Open();
 
-                using (SqlCommand cmd = new SqlCommand("SELECT COUNT(*) FROM Match WHERE Draw = 1 AND (Winner = @p_ident OR Loser = @p_ident)", conn))
-                {
-                    cmd.Parameters.AddWithValue("@p_ident", ident);
-                    draws = (int)cmd.ExecuteScalar();
-                }
-            }
-
-            return (Wins: wins, Losses: losses, Draws: draws);
-        }
-        internal static int GetPlayerWinPercentage(int wins, int losses, int draws)
-        {
-            int winperc = 0;
-            string connString = new SQLDatabaseUtility().GetSQLConnectionString();
-            string sql = "SELECT dbo.playerWinPerc(@wins, @losses, @draws)";
-
-
-            using (SqlConnection conn = new SqlConnection(connString))
-            {
-                conn.Open();
-
-                using (SqlCommand cmd = new SqlCommand(sql, conn))
-                {
-                    cmd.Parameters.Add("@wins", SqlDbType.Int);
-                    cmd.Parameters.Add("@losses", SqlDbType.Int);
-                    cmd.Parameters.Add("@draws", SqlDbType.Int);
-
-                    cmd.Parameters["@wins"].Value = wins;
-                    cmd.Parameters["@losses"].Value = losses;
-                    cmd.Parameters["@draws"].Value = draws;
-
-                    winperc = (int)cmd.ExecuteScalar();
-
+                    using (SqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        if (reader.HasRows)
+                        {
+                            while (reader.Read())
+                            {
+                                var stats = (Wins: reader.GetInt32(reader.GetOrdinal("Wins")),
+                                           Losses: reader.GetInt32(reader.GetOrdinal("Losses")),
+                                           Draws: reader.GetInt32(reader.GetOrdinal("Draws")),
+                                           TotalGames: reader.GetInt32(reader.GetOrdinal("TotalGames")),
+                                           WinPercentage: (float)reader.GetDouble(reader.GetOrdinal("WinPercentage")));
+                                statsList.Add(stats);
+                            }
+                        }
+                    }
                 }
             }
-            return winperc;
+            return statsList;
         }
         internal static int GetPlayerIdentFromName(string p_name = null)
         {
@@ -94,8 +72,6 @@ namespace GameFactory.SQL
                     }
                 }
             }
-            Console.WriteLine(p_ident);
-            Console.ReadKey();
             return p_ident;
         }
         internal static bool CheckLoginName(string p_loginName)
@@ -169,6 +145,5 @@ namespace GameFactory.SQL
 
             return player;
         }
-
     }
 }

@@ -1,4 +1,5 @@
-﻿using System.Security.Cryptography;
+﻿using GameFactory.SQL;
+using System.Security.Cryptography;
 using System.Text;
 using System.Text.RegularExpressions;
 
@@ -24,7 +25,7 @@ namespace GameFactory.Model
                     p_loginName = Console.ReadLine();
                 } while (!ValidateLoginName(p_loginName));
 
-            } while (!PlayerService.CheckLoginName(p_loginName));
+            } while (!DataProvider.CheckLoginName(p_loginName));
 
             do
             {
