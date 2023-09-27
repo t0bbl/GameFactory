@@ -37,6 +37,10 @@ namespace GameFactory
                     DataProvider.DisplayRankedPlayers();
                     continue;
                 }
+                if (GameMode == "Quit")
+                {
+                    Environment.Exit(0);
+                }
 
                 CurrentGame.InitializePlayer();
                 CurrentGame.InitializeGame();
