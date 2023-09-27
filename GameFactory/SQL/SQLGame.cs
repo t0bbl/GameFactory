@@ -5,8 +5,6 @@ namespace GameFactory.SQL
 {
     internal class SQLGame
     {
-        private readonly SqlConnection conn = new SQLDatabaseUtility().GetConnection();
-
         internal static (bool Result, int Ident) SaveGame(int p_rows, int p_columns, int p_winningLength, string p_gameType)
         {
             string connString = new SQLDatabaseUtility().GetSQLConnectionString();
@@ -41,6 +39,5 @@ namespace GameFactory.SQL
                 }
             }
         }
-
     }
 }

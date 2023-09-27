@@ -1,4 +1,6 @@
-﻿namespace GameFactory.Model
+﻿using GameFactory.SQL;
+
+namespace GameFactory.Model
 {
     internal class Game
     {
@@ -16,8 +18,7 @@
             {
                 if (!p_player.Any(x => x.Name == "ChatGPT"))
                 {
-                    SQLPlayerService sqlPlayerService = new SQLPlayerService();
-                    var p_GPTVariables = sqlPlayerService.GetPlayerVariables(2);
+                    var p_GPTVariables = DataProvider.GetPlayerVariables(2);
                     p_player.Add(p_GPTVariables);
                 }
             }
@@ -40,7 +41,6 @@
         internal void InitializePlayer()
         {
             var playerAuth = new PlayerAuth();
-            var sqlPlayerService = new SQLPlayerService();
             Console.Clear();
             int p_numberOfPlayers = DetermineNumberOfPlayers();
 
@@ -58,7 +58,7 @@
                         {
                             p_ident = playerAuth.PlayerSignIn();
                         } while (p_ident == 0);
-                        var playerVariables = sqlPlayerService.GetPlayerVariables(p_ident);
+                        var playerVariables = DataProvider.GetPlayerVariables(p_ident);
                         Console.WriteLine($"Welcome back {playerVariables.Name}!");
                         p_player.Add(playerVariables);
                         p_validInput = true;
@@ -71,7 +71,7 @@
                     else if (p_input == "g")
                     {
                         Console.WriteLine("Playing as a guest.");
-                        var GuestVariables = sqlPlayerService.GetPlayerVariables(p_guestCount + 1);
+                        var GuestVariables = DataProvider.GetPlayerVariables(p_guestCount + 1);
                         p_player.Add(GuestVariables);
                         p_guestCount++;
                         p_validInput = true;
@@ -163,8 +163,7 @@
 
             foreach (var Player in p_player)
             {
-                    SQLStats sQLStats = new SQLStats();
-                    var (Wins, Losses, Draws) = sQLStats.GetPlayerStats(Player.Ident);
+                    var (Wins, Losses, Draws) = DataProvider.GetPlayerStats(Player.Ident);
 
                 Console.WriteLine($"{Player.Name}:  Wins: {Wins}   Losses: {Losses}     Draws: {Draws}\n");
             }
