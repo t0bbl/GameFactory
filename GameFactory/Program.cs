@@ -23,18 +23,14 @@ namespace GameFactory
                 }
                 if (GameMode == "PlayerOptions")
                 {
-                    if (Player.PlayerSignIn() != 0)
-                    {
-                        Player.SavePlayerVariables();
-                        continue;
-                    }
+                    int p_ident = Player.PlayerSignIn();
+                    Player.GetPlayerVariables(p_ident);
+                    continue;
                 }
                 if (GameMode == "PlayerStats")
                 {
-                   
-                   Player.ShowPlayerStats();
-                        continue;
-                   
+                    Player.ShowPlayerStats();
+                    continue;
                 }
                 if (GameMode == "Leaderboard")
                 {

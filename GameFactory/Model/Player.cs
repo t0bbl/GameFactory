@@ -26,9 +26,11 @@ namespace GameFactory
         #endregion
 
 
-        internal bool PlayerSignup()
+        internal int PlayerSignup()
         {
+            int p_ident = 0;
             Console.Clear();
+
             do
             {
                 do
@@ -46,40 +48,37 @@ namespace GameFactory
             } while (!ValidatePassword(p_password));
 
             string p_passwordSave = HashPassword(p_password);
-            if (SignUpPlayer(p_loginName, p_passwordSave))
+
+            p_ident = SQLSignUpPlayer(p_loginName, p_passwordSave, out p_ident);
+
+            if (p_ident > 0)
             {
                 Console.WriteLine("You have successfully signed up! Hit any key to continue");
-
                 Console.ReadLine();
-                SavePlayerVariables();
-
                 Console.Clear();
-                return false;
+                return p_ident;
             }
             else
             {
                 Console.WriteLine("An error occurred while signing you up.");
                 Console.ReadLine();
-                return false;
+                return 0;
             }
-
-
-
         }
-
         internal int PlayerSignIn()
         {
-
-            bool loggedIn = false;
-            Console.Clear();
-            Console.WriteLine("Please enter your login name:");
-            p_loginName = Console.ReadLine();
-            Console.WriteLine("Please enter your password:");
-            p_password = Console.ReadLine();
-            string p_passwordSave = HashPassword(p_password);
-            do
+            int p_ident = 0;
+            while (true)
             {
-                int p_ident = LoginPlayer(p_loginName, p_passwordSave);
+                Console.Clear();
+                Console.WriteLine("Please enter your login name:");
+                string p_loginName = Console.ReadLine();
+                Console.WriteLine("Please enter your password:");
+                string p_password = Console.ReadLine();
+                string p_passwordSave = HashPassword(p_password);
+
+                p_ident = SQLLoginPlayer(p_loginName, p_passwordSave);
+
                 if (p_ident != 0)
                 {
                     Console.WriteLine("You have successfully logged in! Hit any key to continue");
@@ -91,26 +90,26 @@ namespace GameFactory
                 {
                     Console.WriteLine("An error occurred while you logged in.");
                     Console.WriteLine("You want to try (a)gain or sign(U)p?");
-                    string loginAgainOrSignUp = Console.ReadKey().KeyChar.ToString();
+                    string loginAgainOrSignUp = Console.ReadKey().KeyChar.ToString().ToLower();
 
                     if (loginAgainOrSignUp == "a")
                     {
-                        return 0;
+                        continue;
                     }
                     else if (loginAgainOrSignUp == "u")
                     {
-                        PlayerSignup();
-                        return 0;
+                        p_ident = PlayerSignup();
+                        return p_ident;
                     }
                     else
                     {
                         Console.WriteLine("You have entered an invalid input. Please try again.");
-                        return 0;
+                        continue;
                     }
                 }
-            } while (!loggedIn);
-
+            }
         }
+
 
         public static void ShowPlayerStats()
         {
@@ -133,9 +132,10 @@ namespace GameFactory
         }
 
         #region SQL
-        internal bool SignUpPlayer(string p_loginName, string p_password)
+        internal int SQLSignUpPlayer(string p_loginName, string p_password, out int p_ident)
         {
             string connString = new SQLDatabaseUtility().GetSQLConnectionString();
+            p_ident = 0;
 
             using (SqlConnection conn = new SqlConnection(connString))
             {
@@ -147,19 +147,20 @@ namespace GameFactory
                     cmd.Parameters.Add(new SqlParameter("@p_password", p_password));
                     cmd.Parameters.Add(new SqlParameter("@p_isHuman", 1));
 
-                    SqlParameter resultParam = new SqlParameter("@p_result", SqlDbType.Bit);
-                    resultParam.Direction = ParameterDirection.Output;
-                    cmd.Parameters.Add(resultParam);
+                    SqlParameter identParam = new SqlParameter("@p_ident", SqlDbType.Int);
+                    identParam.Direction = ParameterDirection.Output;
+                    cmd.Parameters.Add(identParam);
 
                     conn.Open();
                     cmd.ExecuteNonQuery();
 
-                    bool result = (bool)resultParam.Value;
-                    return result;
+                    p_ident = (int)identParam.Value;
+
+                    return p_ident;
                 }
             }
         }
-        internal int LoginPlayer(string p_loginName, string p_password)
+        internal int SQLLoginPlayer(string p_loginName, string p_password)
         {
             string connString = new SQLDatabaseUtility().GetSQLConnectionString();
             int p_ident = 0; // Initialize to 0
@@ -185,7 +186,7 @@ namespace GameFactory
 
             return p_ident;
         }
-        internal bool SavePlayerVariables(string p_loginName, string p_name, char p_icon, string p_color)
+        internal bool SQLSavePlayerVariables(int p_ident, string p_name, char p_icon, string p_color)
         {
             string connString = new SQLDatabaseUtility().GetSQLConnectionString();
 
@@ -195,7 +196,7 @@ namespace GameFactory
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
 
-                    cmd.Parameters.Add(new SqlParameter("@p_loginName", p_loginName));
+                    cmd.Parameters.Add(new SqlParameter("@p_ident", p_ident));
                     cmd.Parameters.Add(new SqlParameter("@p_name", p_name));
                     cmd.Parameters.Add(new SqlParameter("@p_icon", p_icon));
                     cmd.Parameters.Add(new SqlParameter("@p_color", p_color));
@@ -255,18 +256,14 @@ namespace GameFactory
             }
             return true;
         }
-        internal bool SavePlayerVariables()
+        internal bool GetPlayerVariables(int p_ident)
         {
             Console.Clear();
-            if (p_loginName == null)
-            {
-                p_loginName = "Guest";
-            }
             p_name = Game.InitializePlayerName();
             p_icon = Game.InitializePlayerIcon();
             p_colour = Game.InitializePlayerColor();
 
-            SavePlayerVariables(p_loginName, p_name, p_icon, p_colour);
+            SQLSavePlayerVariables(p_ident, p_name, p_icon, p_colour);
             Console.Clear();
             return true;
         }
