@@ -9,20 +9,22 @@ namespace GameFactory
 {
     internal class Player
     {
-        internal string Name;
-        internal char Icon;
-        internal string Colour;
-        internal bool IsHuman;
-        internal int Ident;
-        internal string LoginName;
-        internal string Password;
+        internal string Name { get; set; }
+        internal char Icon { get; set; }
+        internal string Colour { get; set; }
+        internal bool IsHuman { get; set; }
+        internal int Ident { get; set; }
+        internal string LoginName { get; set; }
+        internal string Password { get; set; }
+
 
         #region variables
-        string p_loginName;
-        string p_password;
-        string p_name;
-        char p_icon;
-        string p_colour;
+        string p_loginName { get; set;}
+        string p_password { get; set; }
+        string p_name { get; set; }
+        char p_icon { get; set; }
+        string p_colour { get; set; }
+
         #endregion
 
 
@@ -109,6 +111,18 @@ namespace GameFactory
                 }
             }
         }
+        internal static void ShowPlayerStats()
+        {
+            Console.Clear();
+            Console.WriteLine("Input a Name or LoginName to check their PlayerStats");
+            string p_input = Console.ReadLine();
+            int p_playerIdent = DataProvider.GetPlayerIdentFromName(p_input);
+            DataProvider.DisplayPlayerStats(p_playerIdent);
+
+            Console.WriteLine("Press any key to continue");
+            Console.ReadKey();
+            Console.Clear();
+        }
 
         #region SQL
         internal int SQLSignUpPlayer(string p_loginName, string p_password, out int p_ident)
@@ -194,18 +208,6 @@ namespace GameFactory
         }
         #endregion
 
-        internal static void ShowPlayerStats()
-        {
-            Console.Clear();
-            Console.WriteLine("Input a Name or LoginName to check their PlayerStats");
-            string p_input = Console.ReadLine();
-            int p_playerIdent = DataProvider.GetPlayerIdentFromName(p_input);
-            DataProvider.DisplayPlayerStats(p_playerIdent);
-
-            Console.WriteLine("Press any key to continue");
-            Console.ReadKey();
-            Console.Clear();
-        }
 
         #region Utility Methods
         public static string HashPassword(string password)
@@ -264,3 +266,4 @@ namespace GameFactory
     }
 
 }
+

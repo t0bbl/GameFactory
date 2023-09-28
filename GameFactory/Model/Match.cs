@@ -28,10 +28,9 @@ namespace GameFactory
 
         internal void StartMatch()
         {
-
+            p_firstTurn = true;
             p_currentPlayerIndex = 0;
             ResetBoard();
-            ResetFirstTurn();
             ShufflePlayers(p_player);
 
             do
@@ -43,10 +42,10 @@ namespace GameFactory
             SaveMatch(p_winner, p_loser, p_draw, p_gameTypeIdent, p_matchId);
             p_matchId = 0;
         }
+
         public virtual void GameMechanic(List<Player> p_player)
         {
-            var resultTuple = SaveGame(p_rows, p_columns, p_winningLength, p_gameType);
-            p_gameTypeIdent = resultTuple.Ident;
+            p_gameTypeIdent = SaveGame(p_rows, p_columns, p_winningLength, p_gameType);
 
             p_matchId = SaveMatch(p_winner, p_loser, p_draw, p_gameTypeIdent, p_matchId);
 
@@ -224,10 +223,6 @@ namespace GameFactory
             Console.WriteLine("Invalid input. Try again.");
             return false;
         }
-        public virtual void ResetFirstTurn()
-        {
-            p_firstTurn = true;
-        }
         #endregion
         #region Stats
         internal List<Player> UpdateStats(List<Player> p_players)
@@ -306,7 +301,7 @@ namespace GameFactory
                 }
             }
         }
-        internal static (bool Result, int Ident) SaveGame(int p_rows, int p_columns, int p_winningLength, string p_gameType)
+        internal static int SaveGame(int p_rows, int p_columns, int p_winningLength, string p_gameType)
         {
             string connString = new SQLDatabaseUtility().GetSQLConnectionString();
 
@@ -321,9 +316,6 @@ namespace GameFactory
                     cmd.Parameters.Add(new SqlParameter("@p_winningLength", p_winningLength));
                     cmd.Parameters.Add(new SqlParameter("@p_gameType", p_gameType));
 
-                    SqlParameter resultParam = new SqlParameter("@p_result", SqlDbType.Bit);
-                    resultParam.Direction = ParameterDirection.Output;
-                    cmd.Parameters.Add(resultParam);
 
                     SqlParameter identParam = new SqlParameter("@p_ident", SqlDbType.Int);
                     identParam.Direction = ParameterDirection.Output;
@@ -332,11 +324,10 @@ namespace GameFactory
                     conn.Open();
                     cmd.ExecuteNonQuery();
 
-                    bool result = (bool)resultParam.Value;
 
                     int ident = (int)identParam.Value;
 
-                    return (result, ident);
+                    return  ident;
                 }
             }
         }
