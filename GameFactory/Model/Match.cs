@@ -41,7 +41,8 @@ namespace GameFactory
             } while (p_winner == null);
             UpdateStats(p_player);
             SaveMatch(p_winner, p_loser, p_draw, p_gameTypeIdent, p_matchId);
-
+            p_matchId = 0;
+            
         }
         public virtual void GameMechanic(List<Player> p_player)
         {
