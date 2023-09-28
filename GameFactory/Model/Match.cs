@@ -42,6 +42,11 @@ namespace GameFactory
             UpdateStats(p_player);
             SaveMatch(p_winner, p_loser, p_draw, p_gameTypeIdent, p_matchId);
 
+            if (p_winner.HasValue && p_loser.HasValue)
+            {
+                    //Player.UpdateEloRating(p_winner.Value, p_loser.Value);
+            }
+
         }
         public virtual void GameMechanic(List<Player> p_player)
         {
@@ -278,6 +283,7 @@ namespace GameFactory
                     return p_matchId;
                 }
             }
+
         }
         internal static (bool Result, int Ident) SaveGame(int p_rows, int p_columns, int p_winningLength, string p_gameType)
         {

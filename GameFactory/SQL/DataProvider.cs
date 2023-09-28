@@ -1,8 +1,4 @@
-﻿using GameFactory;
-using GameFactory.Model;
-using Newtonsoft.Json.Linq;
-using System.Data;
-using System.Data.SqlClient;
+﻿using System.Data.SqlClient;
 using System.Text;
 
 
@@ -169,8 +165,8 @@ namespace GameFactory
                                 long rank = reader.GetInt64(reader.GetOrdinal("Rank"));
                                 string playerName = reader.GetString(reader.GetOrdinal("Name"));
                                 int wins = reader.GetInt32(reader.GetOrdinal("Wins"));
-                                int losses = reader.GetInt32(reader.GetOrdinal("Losses"));  // Read losses
-                                int draws = reader.GetInt32(reader.GetOrdinal("Draws"));  // Read draws
+                                int losses = reader.GetInt32(reader.GetOrdinal("Losses"));
+                                int draws = reader.GetInt32(reader.GetOrdinal("Draws"));
                                 float winPercentage = (float)reader.GetDouble(reader.GetOrdinal("WinPercentage"));
 
                                 Console.WriteLine("{0,-5} | {1,-15} | {2,-5} | {3,-7} | {4,-5} | {5,-12:F2}",
@@ -196,24 +192,121 @@ namespace GameFactory
             Console.WriteLine("Input a Name or LoginName to check their PlayerStats");
             string p_input = Console.ReadLine();
             int p_playerIdent = GetPlayerIdentFromName(p_input);
-            List<(int Wins, int Losses, int Draws, int TotalGames, float WinPercentage)> statsList = GetPlayerStats(p_playerIdent);
-            foreach (var stats in statsList)
-            {
-                Console.WriteLine($"Wins: {stats.Wins}, Losses: {stats.Losses}, Draws: {stats.Draws}, Total Games: {stats.TotalGames}, Win Percentage: {stats.WinPercentage}");
-            }
-            //DataProvider.DisplayPlayerStats(p_playerIdent);
-            //float winpercentage = DataProvider.GetPlayerWinPercentage(p_playerIdent);
-            //Console.WriteLine($"Win Percentage: {winpercentage}");
 
+            List<(int Wins, int Losses, int Draws, int TotalGames, float WinPercentage)> statsList = GetPlayerStats(p_playerIdent);
+            foreach (var item in statsList)
+            {
+
+                Console.WriteLine($"Wins: {item.Wins}, Losses: {item.Losses}, Draws: {item.Draws}, Total Games: {item.TotalGames}, Win Percentage: {item.WinPercentage}");
+
+            }
             Console.WriteLine("Press any key to continue");
             Console.ReadKey();
             Console.Clear();
         }
+        internal static void GetMatchOutcomeForPlayer1(int p_playerIdent1, int p_playerIdent2, out float p_matchOutcome)
+        {
+            string connString = new SQLDatabaseUtility().GetSQLConnectionString();
+            float localMatchOutcome = 0.0f;
+            using (SqlConnection conn = new SqlConnection(connString))
+            {
+                conn.Open();
+                using (SqlCommand cmd = new SqlCommand("SELECT dbo.GetMatchOutcomeForPlayer1(@player1Id, @player2Id)", conn))
+                {
+                    cmd.Parameters.AddWithValue("@player1Id", p_playerIdent1);
+                    cmd.Parameters.AddWithValue("@player2Id", p_playerIdent2);
+
+                    object result = cmd.ExecuteScalar();
+                    Console.WriteLine(result + " result");
+                    localMatchOutcome = (float)Convert.ToDouble(result);
+                }
+            }
+            p_matchOutcome = localMatchOutcome;
+            Console.WriteLine(p_matchOutcome + " p_matchOutcome");
+
+        }
+        internal static void GetPlayerEloFromIdent(int p_playerIdent1, int p_playerIdent2, out int p_eloPlayer1, out int p_eloPlayer2)
+        {
+            string connString = new SQLDatabaseUtility().GetSQLConnectionString();
+            p_eloPlayer1 = 0;
+            p_eloPlayer2 = 0;
+
+            using (SqlConnection conn = new SqlConnection(connString))
+            {
+                conn.Open();
+                using (SqlCommand cmd = new SqlCommand("SELECT Elo FROM Player WHERE Ident = @id", conn))
+                {
+                    cmd.Parameters.AddWithValue("@id", p_playerIdent1);
+                    p_eloPlayer1 = (int)cmd.ExecuteScalar();
+
+                    cmd.Parameters["@id"].Value = p_playerIdent2;
+                    p_eloPlayer2 = (int)cmd.ExecuteScalar();
+                }
+                Console.WriteLine(p_eloPlayer1 + "eloplayer1");
+                Console.WriteLine(p_eloPlayer2 + "eloplayer2");
+            }
+        }
+        internal static void CalculateExpectedScore(int p_eloPlayer1, int p_eloPlayer2, out float p_expectedScorePlayer1, out float p_expectedScorePlayer2)
+        {
+            string connString = new SQLDatabaseUtility().GetSQLConnectionString();
+            using (SqlConnection conn = new SqlConnection(connString))
+            {
+                conn.Open();
+                using (SqlCommand cmd = new SqlCommand("SELECT dbo.CalculateExpectedScore(@RatingPlayerA, @RatingPlayerB)", conn))
+                {
+                    cmd.Parameters.AddWithValue("@RatingPlayerA", p_eloPlayer1);
+                    cmd.Parameters.AddWithValue("@RatingPlayerB", p_eloPlayer2);
+                    p_expectedScorePlayer1 = Convert.ToSingle(cmd.ExecuteScalar());
+
+                    cmd.Parameters["@RatingPlayerA"].Value = p_eloPlayer2;
+                    cmd.Parameters["@RatingPlayerB"].Value = p_eloPlayer1;
+                    p_expectedScorePlayer2 = Convert.ToSingle(cmd.ExecuteScalar());
+                }
+                Console.WriteLine(p_expectedScorePlayer1 + "expectedscoreplayer1");
+                Console.WriteLine(p_expectedScorePlayer2 + "expectedscoreplayer2");
+            }
+
+        }
+        internal static void UpdateRating(int p_eloPlayer1, int p_eloPlayer2, float p_expectedScorePlayer1, float p_expectedScorePlayer2, float p_matchOutcome, out int p_newEloPlayer1, out int p_newEloPlayer2)
+        {
+            string connString = new SQLDatabaseUtility().GetSQLConnectionString();
+            using (SqlConnection conn = new SqlConnection(connString))
+            {
+                conn.Open();
+
+                using (SqlCommand cmd = new SqlCommand("SELECT dbo.UpdateRating(@oldRating, @expectedScore, @actualScore, @k)", conn))
+                {
+                    cmd.Parameters.AddWithValue("@oldRating", p_eloPlayer1);
+                    cmd.Parameters.AddWithValue("@expectedScore", p_expectedScorePlayer1);
+                    cmd.Parameters.AddWithValue("@actualScore", p_matchOutcome);
+                    cmd.Parameters.AddWithValue("@k", 32);  // K-factor
+                    p_newEloPlayer1 = (int)cmd.ExecuteScalar();
+
+                    cmd.Parameters["@oldRating"].Value = p_eloPlayer2;
+                    cmd.Parameters["@expectedScore"].Value = p_expectedScorePlayer2;
+                    cmd.Parameters["@actualScore"].Value = 1 - p_matchOutcome;  // If player1 scored 1, player2 scored 0
+                    p_newEloPlayer2 = (int)cmd.ExecuteScalar();
+                }
+                Console.WriteLine(p_newEloPlayer1 + "neweloplayer1");
+                Console.WriteLine(p_newEloPlayer2 + "neweloplayer2");
+
+            }
+        }
+
+        // private static T ConvertField<T>(object field) => (field == null || field == DBNull.Value) ? default : (T)Convert.ChangeType(field, typeof(T));
 
         #region NotNeededButWanted
 
-        internal static void DisplayPlayerStats(int p_ident)
+        public class IndividualPlayerStat
         {
+            public int PlayerIdent { get; set; }
+            public string StatType { get; set; }
+            public int StatCount { get; set; }
+        }
+        internal static List<IndividualPlayerStat> DisplayPlayerStats(int p_ident)
+        {
+            List<IndividualPlayerStat> statsList = new List<IndividualPlayerStat>();
+
             string connString = new SQLDatabaseUtility().GetSQLConnectionString();
 
             using (SqlConnection conn = new SqlConnection(connString))
@@ -232,11 +325,14 @@ namespace GameFactory
                         {
                             while (reader.Read())
                             {
-                                int playerIdent = reader.GetInt32(reader.GetOrdinal("PlayerIdent"));
-                                string statType = reader.GetString(reader.GetOrdinal("StatType"));
-                                int statCount = reader.GetInt32(reader.GetOrdinal("StatCount"));
+                                IndividualPlayerStat stat = new IndividualPlayerStat
+                                {
+                                    PlayerIdent = reader.GetInt32(reader.GetOrdinal("PlayerIdent")),
+                                    StatType = reader.GetString(reader.GetOrdinal("StatType")),
+                                    StatCount = reader.GetInt32(reader.GetOrdinal("StatCount"))
+                                };
 
-                                Console.WriteLine($"Player ID: {playerIdent}, Stat Type: {statType}, Stat Count: {statCount}");
+                                statsList.Add(stat);
                             }
                         }
                         else
@@ -246,10 +342,13 @@ namespace GameFactory
                     }
                 }
             }
+
+            return statsList;
         }
+
         internal static float GetPlayerWinPercentage(int ident)
         {
-            string connString = new SQLDatabaseUtility().GetSQLConnectionString(); // Replace with your connection string utility
+            string connString = new SQLDatabaseUtility().GetSQLConnectionString();
 
             using (SqlConnection conn = new SqlConnection(connString))
             {

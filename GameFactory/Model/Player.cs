@@ -251,6 +251,48 @@ namespace GameFactory
         }
 
         #endregion
+
+
+        //public static void UpdateEloRating(int p_playerIdent1, int p_playerIdent2)
+        //{
+        //    float matchOutcome;
+        //    int p_eloPlayer1;
+        //    int p_eloPlayer2;
+        //    float p_expectedScorePlayer1;
+        //    float p_expectedScorePlayer2;
+        //    int p_newEloPlayer1;
+        //    int p_newEloPlayer2;
+
+        //    string connString = new SQLDatabaseUtility().GetSQLConnectionString();
+
+
+        //    DataProvider.GetMatchOutcomeForPlayer1(p_playerIdent1, p_playerIdent2, out matchOutcome);
+
+        //    DataProvider.GetPlayerEloFromIdent(p_playerIdent1, p_playerIdent2, out p_eloPlayer1, out p_eloPlayer2);
+
+        //    DataProvider.CalculateExpectedScore(p_eloPlayer1, p_eloPlayer2, out p_expectedScorePlayer1, out p_expectedScorePlayer2);
+
+        //    DataProvider.UpdateRating(p_eloPlayer1, p_eloPlayer2, p_expectedScorePlayer1, p_expectedScorePlayer2, matchOutcome, out p_newEloPlayer1, out p_newEloPlayer2);
+
+        //    using (SqlConnection conn = new SqlConnection(connString))
+        //    {
+        //        conn.Open();
+        //        using (SqlCommand cmd = new SqlCommand("UPDATE Player SET Elo = @elo WHERE Ident = @id", conn))
+        //        {
+        //            cmd.Parameters.AddWithValue("@elo", p_newEloPlayer1);
+        //            cmd.Parameters.AddWithValue("@id", p_playerIdent1);
+        //            cmd.ExecuteNonQuery();
+
+        //            cmd.Parameters["@elo"].Value = p_newEloPlayer2;
+        //            cmd.Parameters["@id"].Value = p_playerIdent2;
+        //            cmd.ExecuteNonQuery();
+        //            Console.WriteLine("Elo rating updated!");
+        //            Console.WriteLine("Player 1: " + p_newEloPlayer1 + p_playerIdent1);
+        //            Console.WriteLine("Player 2: " + p_newEloPlayer2 + p_playerIdent2);
+        //        }
+        //    }
+        //}
+
     }
 
 }
