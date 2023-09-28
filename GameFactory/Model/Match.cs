@@ -42,7 +42,7 @@ namespace GameFactory
             UpdateStats(p_player);
             SaveMatch(p_winner, p_loser, p_draw, p_gameTypeIdent, p_matchId);
             p_matchId = 0;
-            
+
         }
         public virtual void GameMechanic(List<Player> p_player)
         {
@@ -184,12 +184,26 @@ namespace GameFactory
         }
         public bool ReMatch()
         {
+            while (true)
+            {
+                Console.WriteLine("Do you want to rematch? (y/n)");
+                string keyInfo = Console.ReadKey().KeyChar.ToString().ToLower();
+                Console.WriteLine();
 
-            Console.WriteLine("Do you want to rematch? (y/n)");
-            string keyInfo = Console.ReadLine();
+                if (keyInfo == "n")
+                {
+                    return false;
+                }
+                if (keyInfo == "y")
+                {
+                    Console.Clear();
+                    return true;
+                }
 
-            bool rematch = keyInfo == "y";
-            return rematch;
+                Console.WriteLine("Invalid input. Try again.");
+            }
+
+
 
         }
         public void ShufflePlayers(List<Player> p_player)
