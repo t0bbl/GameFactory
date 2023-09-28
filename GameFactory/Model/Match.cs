@@ -1,8 +1,7 @@
 using GameFactory.Model;
-using GameFactory;
 using System.Data;
-using System.Text;
 using System.Data.SqlClient;
+using System.Text;
 
 namespace GameFactory
 {
@@ -22,18 +21,19 @@ namespace GameFactory
         internal int p_gameTypeIdent { get; set; }
         protected int p_matchId { get; set; }
         protected bool p_twistStat { get; set; }
-        private static Random p_random = new();
+
+        Random p_random = new();
 
         #endregion
 
         internal void StartMatch()
         {
+            p_firstTurn = true;
+            if (p_player.All(player => player.Name != "CHATGPT"))
+            { ShufflePlayers(p_player); }
 
             p_currentPlayerIndex = 0;
             ResetBoard();
-            ResetFirstTurn();
-            ShufflePlayers(p_player);
-
             do
             {
                 GameMechanic(p_player);
@@ -41,12 +41,13 @@ namespace GameFactory
             } while (p_winner == null);
             UpdateStats(p_player);
             SaveMatch(p_winner, p_loser, p_draw, p_gameTypeIdent, p_matchId);
-
+            p_matchId = 0;
         }
+
         public virtual void GameMechanic(List<Player> p_player)
         {
-            var resultTuple = SaveGame(p_rows, p_columns, p_winningLength, p_gameType);
-            p_gameTypeIdent = resultTuple.Ident;
+
+            p_gameTypeIdent = SaveGame(p_rows, p_columns, p_winningLength, p_gameType);
 
             p_matchId = SaveMatch(p_winner, p_loser, p_draw, p_gameTypeIdent, p_matchId);
 
@@ -183,24 +184,41 @@ namespace GameFactory
         }
         public bool ReMatch()
         {
+            while (true)
+            {
+                Console.WriteLine("Do you want to rematch? (y/n)");
+                string keyInfo = Console.ReadKey().KeyChar.ToString().ToLower();
+                Console.WriteLine();
 
-            Console.WriteLine("Do you want to rematch? (y/n)");
-            string keyInfo = Console.ReadLine();
+                if (keyInfo == "n")
+                {
+                    return false;
+                }
+                if (keyInfo == "y")
+                {
+                    Console.Clear();
+                    return true;
+                }
 
-            bool rematch = keyInfo == "y";
-            return rematch;
+                Console.WriteLine("Invalid input. Try again.");
+            }
+
+
 
         }
         public void ShufflePlayers(List<Player> p_player)
         {
 
-            if (p_player.All(player => player.IsHuman))
+            int n = p_player.Count;
+            for (int i = 0; i < n; i++)
             {
-                p_currentPlayerIndex = p_random.Next(p_player.Count);
-
+                int r = i + p_random.Next(n - i);
+                Player temp = p_player[r];
+                p_player[r] = p_player[i];
+                p_player[i] = temp;
             }
-
         }
+
         protected bool TryGetValidInput(out int p_chosenValue, int p_maxValue)
         {
             if (int.TryParse(Console.ReadLine(), out p_chosenValue) && p_chosenValue >= 0 && p_chosenValue <= p_maxValue)
@@ -209,10 +227,6 @@ namespace GameFactory
             }
             Console.WriteLine("Invalid input. Try again.");
             return false;
-        }
-        public virtual void ResetFirstTurn()
-        {
-            p_firstTurn = true;
         }
         #endregion
         #region Stats
@@ -248,10 +262,23 @@ namespace GameFactory
             }
             return p_players;
         }
+        internal void EndGameStats(List<Player> p_player)
+        {
+            Console.WriteLine("Game over!");
+            Console.WriteLine("Final scores:");
+
+            foreach (var Player in p_player)
+            {
+                DataProvider.DisplayPlayerStats(Player.Ident, null);
+            }
+            Console.WriteLine("Press any key to continue.");
+            Console.ReadKey();
+            Environment.Exit(0);
+        }
 
         #endregion
         #region SQL
-        internal static int SaveMatch(int? p_winner, int? p_loser, int p_draw, int p_gameType, int p_matchId)
+        internal int SaveMatch(int? p_winner, int? p_loser, int p_draw, int p_gameType, int p_matchId)
         {
             string connString = new SQLDatabaseUtility().GetSQLConnectionString();
 
@@ -279,7 +306,7 @@ namespace GameFactory
                 }
             }
         }
-        internal static (bool Result, int Ident) SaveGame(int p_rows, int p_columns, int p_winningLength, string p_gameType)
+        internal int SaveGame(int p_rows, int p_columns, int p_winningLength, string p_gameType)
         {
             string connString = new SQLDatabaseUtility().GetSQLConnectionString();
 
@@ -294,9 +321,6 @@ namespace GameFactory
                     cmd.Parameters.Add(new SqlParameter("@p_winningLength", p_winningLength));
                     cmd.Parameters.Add(new SqlParameter("@p_gameType", p_gameType));
 
-                    SqlParameter resultParam = new SqlParameter("@p_result", SqlDbType.Bit);
-                    resultParam.Direction = ParameterDirection.Output;
-                    cmd.Parameters.Add(resultParam);
 
                     SqlParameter identParam = new SqlParameter("@p_ident", SqlDbType.Int);
                     identParam.Direction = ParameterDirection.Output;
@@ -305,15 +329,14 @@ namespace GameFactory
                     conn.Open();
                     cmd.ExecuteNonQuery();
 
-                    bool result = (bool)resultParam.Value;
 
                     int ident = (int)identParam.Value;
 
-                    return (result, ident);
+                    return ident;
                 }
             }
         }
-        internal static bool SaveMoveHistory(int p_player, string p_input, int p_matchId, bool p_twist)
+        internal void SaveMoveHistory(int p_player, string p_input, int p_matchId, bool p_twist)
         {
             string connString = new SQLDatabaseUtility().GetSQLConnectionString();
 
@@ -329,11 +352,10 @@ namespace GameFactory
                     conn.Open();
                     cmd.ExecuteNonQuery();
 
-                    return true;
                 }
             }
         }
-        internal bool SavePlayerList(int p_playerId, int p_matchId)
+        internal void SavePlayerList(int p_playerId, int p_matchId)
         {
             string connString = new SQLDatabaseUtility().GetSQLConnectionString();
 
@@ -346,12 +368,9 @@ namespace GameFactory
                     cmd.Parameters.Add(new SqlParameter("@p_playerId", p_playerId));
                     cmd.Parameters.Add(new SqlParameter("@p_matchId", p_matchId));
 
-
-
                     conn.Open();
                     cmd.ExecuteNonQuery();
 
-                    return true;
                 }
             }
         }

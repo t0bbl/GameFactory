@@ -1,8 +1,4 @@
-﻿
-
-using System.Data.SqlClient;
-
-public class SQLDatabaseUtility
+﻿public class SQLDatabaseUtility
 {
     public string GetSQLConnectionString()
     {

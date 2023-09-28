@@ -9,8 +9,8 @@ namespace GameFactory
             while (true)
             {
                 Game CurrentGame = new();
-                var playerAuth = new PlayerAuth();
                 Match CurrentMatch;
+                Player Player = new();
 
                 string GameMode = CurrentGame.InitializeGameMenu();
 
@@ -23,23 +23,23 @@ namespace GameFactory
                 }
                 if (GameMode == "PlayerOptions")
                 {
-                    if (playerAuth.PlayerSignIn() != 0)
-                    {
-                        playerAuth.SavePlayerVariables();
-                        continue;
-                    }
+                    int p_ident = Player.PlayerSignIn();
+                    Player.SetPlayerVariables(p_ident);
+                    continue;
                 }
                 if (GameMode == "PlayerStats")
                 {
-                   
-                   PlayerStats.ShowPlayerStats();
-                        continue;
-                   
+                    Player.ShowPlayerStats();
+                    continue;
                 }
                 if (GameMode == "Leaderboard")
                 {
-                    DataProvider.DisplayRankedPlayers();
+                    DataProvider.DisplayLeaderBoard();
                     continue;
+                }
+                if (GameMode == "Quit")
+                {
+                    Environment.Exit(0);
                 }
 
                 CurrentGame.InitializePlayer();
@@ -49,7 +49,7 @@ namespace GameFactory
                 {
                     CurrentMatch.StartMatch();
                 } while (CurrentMatch.ReMatch());
-                Game.EndGameStats(CurrentMatch.p_player);
+                CurrentMatch.EndGameStats(CurrentMatch.p_player);
             }
         }
 

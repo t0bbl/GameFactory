@@ -1,6 +1,4 @@
-﻿using GameFactory;
-
-namespace GameFactory.Model
+﻿namespace GameFactory.Model
 {
     internal class Game
     {
@@ -26,8 +24,8 @@ namespace GameFactory.Model
             {
                 "TTT" => new TTT() { p_player = p_player },
                 "FourW" => new FourW() { p_player = p_player },
-                "TTTChatGPT" => new TTTChatGPT() { p_player = p_player },
-                "FourWChatGPT" => new FourWChatGPT() { p_player = p_player },
+                "TTTChatGPT" => new TTT() { p_player = p_player, p_chatGPT = true },
+                "FourWChatGPT" => new FourW() { p_player = p_player, p_chatGPT = true },
                 "TwistFourW" => new CustomTTT(true) { p_player = p_player },
                 "CustomTTT" => new CustomTTT(false) { p_player = p_player },
             };
@@ -40,7 +38,7 @@ namespace GameFactory.Model
         #region initializePlayer
         internal void InitializePlayer()
         {
-            var playerAuth = new PlayerAuth();
+            var Player = new Player();
             Console.Clear();
             int p_numberOfPlayers = DetermineNumberOfPlayers();
 
@@ -56,7 +54,7 @@ namespace GameFactory.Model
                         var p_ident = 0;
                         do
                         {
-                            p_ident = playerAuth.PlayerSignIn();
+                            p_ident = Player.PlayerSignIn();
                         } while (p_ident == 0);
                         var playerVariables = DataProvider.GetPlayerVariables(p_ident);
                         Console.WriteLine($"Welcome back {playerVariables.Name}!");
@@ -65,7 +63,7 @@ namespace GameFactory.Model
                     }
                     else if (p_input == "u")
                     {
-                        playerAuth.PlayerSignup();
+                        Player.PlayerSignup();
                         p_validInput = false;
                     }
                     else if (p_input == "g")
@@ -155,25 +153,6 @@ namespace GameFactory.Model
             } while (p_gameType == null);
         }
         #endregion
-
-        internal static void EndGameStats(List<Player> p_player)
-        {
-            Console.WriteLine("Game over!");
-            Console.WriteLine("Final scores:");
-
-            foreach (var Player in p_player)
-            {
-                List<(int Wins, int Losses, int Draws, int TotalGames, float WinPercentage)> statsList = DataProvider.GetPlayerStats(Player.Ident);
-                foreach (var stats in statsList)
-                {
-                    Console.WriteLine($"{Player.Name}:      Wins: {stats.Wins}, Losses: {stats.Losses}, Draws: {stats.Draws}, Total Games: {stats.TotalGames}, Win Percentage: {stats.WinPercentage}");
-                }
-            }
-
-            Console.ReadKey();
-            Environment.Exit(0);
-        }
-
 
         #region Utilities
         internal static string ShowMenu(Type p_enumType)

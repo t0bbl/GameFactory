@@ -1,8 +1,4 @@
-﻿using GameFactory;
-using GameFactory.Model;
-using Newtonsoft.Json.Linq;
-using System.Data;
-using System.Data.SqlClient;
+﻿using System.Data.SqlClient;
 using System.Text;
 
 
@@ -10,44 +6,47 @@ namespace GameFactory
 {
     internal static class DataProvider
     {
-        internal static List<(int Wins, int Losses, int Draws, int TotalGames, float WinPercentage)> GetPlayerStats(int p_ident)
+        internal static void DisplayPlayerStats(int p_ident, bool? p_withName)
         {
             string connString = new SQLDatabaseUtility().GetSQLConnectionString();
-            List<(int Wins, int Losses, int Draws, int TotalGames, float WinPercentage)> statsList = new List<(int Wins, int Losses, int Draws, int TotalGames, float WinPercentage)>();
 
             using (SqlConnection conn = new SqlConnection(connString))
             {
-                string sqlQuery = "SELECT * FROM dbo.GetPlayerStats(@p_ident)";
-
+                conn.Open();
+                string sqlQuery = "SELECT * FROM PlayerStatsView WHERE Ident = @p_ident";
                 using (SqlCommand cmd = new SqlCommand(sqlQuery, conn))
                 {
-                    cmd.Parameters.Add(new SqlParameter("@p_ident", p_ident));
-
-                    conn.Open();
-
+                    cmd.Parameters.AddWithValue("@p_ident", p_ident);
                     using (SqlDataReader reader = cmd.ExecuteReader())
                     {
                         if (reader.HasRows)
                         {
                             while (reader.Read())
                             {
-                                var stats = (Wins: reader.GetInt32(reader.GetOrdinal("Wins")),
-                                           Losses: reader.GetInt32(reader.GetOrdinal("Losses")),
-                                           Draws: reader.GetInt32(reader.GetOrdinal("Draws")),
-                                           TotalGames: reader.GetInt32(reader.GetOrdinal("TotalGames")),
-                                           WinPercentage: (float)reader.GetDouble(reader.GetOrdinal("WinPercentage")));
-                                statsList.Add(stats);
+                                string p_name = reader.GetString(reader.GetOrdinal("PlayerName"));
+                                int p_wins = reader.GetInt32(reader.GetOrdinal("Wins"));
+                                int p_losses = reader.GetInt32(reader.GetOrdinal("Losses"));
+                                int p_draws = reader.GetInt32(reader.GetOrdinal("Draws"));
+                                int p_playedGames = reader.GetInt32(reader.GetOrdinal("PlayedGames"));
+                                double p_winPercentage = reader.GetDouble(reader.GetOrdinal("WinPercentage"));
+                                if (p_withName.HasValue)
+                                {
+                                    Console.WriteLine($"Name: {p_name}, Wins: {p_wins}, Losses: {p_losses}, Draws: {p_draws}, PlayedGames: {p_playedGames}, Win Percentage: {p_winPercentage}");
+                                }
+                                else
+                                {
+                                    Console.WriteLine($"Wins: {p_wins}, Losses: {p_losses}, Draws: {p_draws}, PlayedGames: {p_playedGames}, Win Percentage: {p_winPercentage}");
+                                }
                             }
                         }
                     }
                 }
             }
-            return statsList;
         }
-        internal static int GetPlayerIdentFromName(string p_name = null)
+        internal static List<int> GetPlayerIdentsFromName(string p_name = null)
         {
             string connString = new SQLDatabaseUtility().GetSQLConnectionString();
-            int p_ident = 0;
+            List<int> p_idents = new List<int>();
 
             using (SqlConnection conn = new SqlConnection(connString))
             {
@@ -58,7 +57,7 @@ namespace GameFactory
 
                 if (!string.IsNullOrEmpty(p_name))
                 {
-                    sqlQuery.Append(" AND (Name = @p_name OR LoginName = @p_name)");
+                    sqlQuery.Append(" AND (Name LIKE @p_name OR LoginName LIKE @p_name)");
                     parameters.Add(new SqlParameter("@p_name", p_name));
                 }
 
@@ -66,14 +65,19 @@ namespace GameFactory
                 {
                     cmd.Parameters.AddRange(parameters.ToArray());
 
-                    object result = cmd.ExecuteScalar();
-                    if (result != null)
+                    using (SqlDataReader reader = cmd.ExecuteReader())
                     {
-                        p_ident = Convert.ToInt32(result);
+                        while (reader.Read())
+                        {
+                            if (reader["Ident"] != DBNull.Value)
+                            {
+                                p_idents.Add(Convert.ToInt32(reader["Ident"]));
+                            }
+                        }
                     }
                 }
             }
-            return p_ident;
+            return p_idents;
         }
         internal static bool CheckLoginName(string p_loginName)
         {
@@ -143,13 +147,13 @@ namespace GameFactory
 
             return player;
         }
-        internal static void DisplayRankedPlayers()
+        internal static void DisplayLeaderBoard()
         {
             string connString = new SQLDatabaseUtility().GetSQLConnectionString();
 
             using (SqlConnection conn = new SqlConnection(connString))
             {
-                string sqlQuery = "SELECT * FROM RankedPlayers";
+                string sqlQuery = "SELECT * FROM LeaderBoard";
 
                 using (SqlCommand cmd = new SqlCommand(sqlQuery, conn))
                 {
@@ -190,68 +194,5 @@ namespace GameFactory
                 }
             }
         }
-        #region NotNeededButWanted
-
-        internal static void DisplayPlayerStats(int p_ident)
-        {
-            string connString = new SQLDatabaseUtility().GetSQLConnectionString();
-
-            using (SqlConnection conn = new SqlConnection(connString))
-            {
-                string sqlQuery = "SELECT * FROM PlayerStats WHERE PlayerIdent = @p_ident";
-
-                using (SqlCommand cmd = new SqlCommand(sqlQuery, conn))
-                {
-                    cmd.Parameters.Add(new SqlParameter("@p_ident", p_ident));
-
-                    conn.Open();
-
-                    using (SqlDataReader reader = cmd.ExecuteReader())
-                    {
-                        if (reader.HasRows)
-                        {
-                            while (reader.Read())
-                            {
-                                int playerIdent = reader.GetInt32(reader.GetOrdinal("PlayerIdent"));
-                                string statType = reader.GetString(reader.GetOrdinal("StatType"));
-                                int statCount = reader.GetInt32(reader.GetOrdinal("StatCount"));
-
-                                Console.WriteLine($"Player ID: {playerIdent}, Stat Type: {statType}, Stat Count: {statCount}");
-                            }
-                        }
-                        else
-                        {
-                            Console.WriteLine("No data found.");
-                        }
-                    }
-                }
-            }
-        }
-        internal static float GetPlayerWinPercentage(int ident)
-        {
-            string connString = new SQLDatabaseUtility().GetSQLConnectionString(); // Replace with your connection string utility
-
-            using (SqlConnection conn = new SqlConnection(connString))
-            {
-                string sqlQuery = "SELECT dbo.GetPlayerWinPercentage(@p_ident)";
-
-                using (SqlCommand cmd = new SqlCommand(sqlQuery, conn))
-                {
-                    cmd.Parameters.Add(new SqlParameter("@p_ident", ident));
-
-                    conn.Open();
-
-                    object result = cmd.ExecuteScalar();
-                    if (result != null && float.TryParse(result.ToString(), out float winPercentage))
-                    {
-                        return winPercentage;
-                    }
-                    return 0.0f;
-                }
-            }
-        }
-
-        #endregion
-
     }
 }
