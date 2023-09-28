@@ -22,17 +22,18 @@ namespace GameFactory
         protected int p_matchId { get; set; }
         protected bool p_twistStat { get; set; }
 
-        private static Random p_random = new();
+        Random p_random = new();
 
         #endregion
 
         internal void StartMatch()
         {
             p_firstTurn = true;
+            if (p_player.All(player => player.Name != "CHATGPT"))
+            { ShufflePlayers(p_player); }
+
             p_currentPlayerIndex = 0;
             ResetBoard();
-            ShufflePlayers(p_player);
-
             do
             {
                 GameMechanic(p_player);
@@ -45,6 +46,7 @@ namespace GameFactory
 
         public virtual void GameMechanic(List<Player> p_player)
         {
+
             p_gameTypeIdent = SaveGame(p_rows, p_columns, p_winningLength, p_gameType);
 
             p_matchId = SaveMatch(p_winner, p_loser, p_draw, p_gameTypeIdent, p_matchId);
@@ -207,13 +209,16 @@ namespace GameFactory
         public void ShufflePlayers(List<Player> p_player)
         {
 
-            if (p_player.All(player => player.IsHuman))
+            int n = p_player.Count;
+            for (int i = 0; i < n; i++)
             {
-                p_currentPlayerIndex = p_random.Next(p_player.Count);
-
+                int r = i + p_random.Next(n - i);
+                Player temp = p_player[r];
+                p_player[r] = p_player[i];
+                p_player[i] = temp;
             }
-
         }
+
         protected bool TryGetValidInput(out int p_chosenValue, int p_maxValue)
         {
             if (int.TryParse(Console.ReadLine(), out p_chosenValue) && p_chosenValue >= 0 && p_chosenValue <= p_maxValue)
