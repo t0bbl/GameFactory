@@ -6,7 +6,7 @@ namespace GameFactory
 {
     internal static class DataProvider
     {
-        internal static void DisplayPlayerStats(int p_ident)
+        internal static void DisplayPlayerStats(int p_ident, bool? p_withName)
         {
             string connString = new SQLDatabaseUtility().GetSQLConnectionString();
 
@@ -16,31 +16,37 @@ namespace GameFactory
                 string sqlQuery = "SELECT * FROM PlayerStatsView WHERE Ident = @p_ident";
                 using (SqlCommand cmd = new SqlCommand(sqlQuery, conn))
                 {
-                    cmd.Parameters.AddWithValue("@p_ident", p_ident);  // Assuming p_ident is the variable containing the player identifier
+                    cmd.Parameters.AddWithValue("@p_ident", p_ident);
                     using (SqlDataReader reader = cmd.ExecuteReader())
                     {
                         if (reader.HasRows)
                         {
                             while (reader.Read())
                             {
+                                string p_name = reader.GetString(reader.GetOrdinal("PlayerName"));
                                 int p_wins = reader.GetInt32(reader.GetOrdinal("Wins"));
                                 int p_losses = reader.GetInt32(reader.GetOrdinal("Losses"));
                                 int p_draws = reader.GetInt32(reader.GetOrdinal("Draws"));
                                 int p_playedGames = reader.GetInt32(reader.GetOrdinal("PlayedGames"));
                                 double p_winPercentage = reader.GetDouble(reader.GetOrdinal("WinPercentage"));
-
-                                // Do something with these values
-                                Console.WriteLine($"Wins: {p_wins}, Losses: {p_losses}, Draws: {p_draws}, PlayedGames: {p_playedGames}, Win Percentage: {p_winPercentage}");
+                                if (p_withName.HasValue)
+                                {
+                                    Console.WriteLine($"Name: {p_name}, Wins: {p_wins}, Losses: {p_losses}, Draws: {p_draws}, PlayedGames: {p_playedGames}, Win Percentage: {p_winPercentage}");
+                                }
+                                else
+                                {
+                                    Console.WriteLine($"Wins: {p_wins}, Losses: {p_losses}, Draws: {p_draws}, PlayedGames: {p_playedGames}, Win Percentage: {p_winPercentage}");
+                                }
                             }
                         }
                     }
                 }
             }
         }
-        internal static int GetPlayerIdentFromName(string p_name = null)
+        internal static List<int> GetPlayerIdentsFromName(string p_name = null)
         {
             string connString = new SQLDatabaseUtility().GetSQLConnectionString();
-            int p_ident = 0;
+            List<int> p_idents = new List<int>();
 
             using (SqlConnection conn = new SqlConnection(connString))
             {
@@ -51,7 +57,7 @@ namespace GameFactory
 
                 if (!string.IsNullOrEmpty(p_name))
                 {
-                    sqlQuery.Append(" AND (Name = @p_name OR LoginName = @p_name)");
+                    sqlQuery.Append(" AND (Name LIKE @p_name OR LoginName LIKE @p_name)");
                     parameters.Add(new SqlParameter("@p_name", p_name));
                 }
 
@@ -59,15 +65,21 @@ namespace GameFactory
                 {
                     cmd.Parameters.AddRange(parameters.ToArray());
 
-                    object result = cmd.ExecuteScalar();
-                    if (result != null)
+                    using (SqlDataReader reader = cmd.ExecuteReader())
                     {
-                        p_ident = Convert.ToInt32(result);
+                        while (reader.Read())
+                        {
+                            if (reader["Ident"] != DBNull.Value)
+                            {
+                                p_idents.Add(Convert.ToInt32(reader["Ident"]));
+                            }
+                        }
                     }
                 }
             }
-            return p_ident;
+            return p_idents;
         }
+
         internal static bool CheckLoginName(string p_loginName)
         {
             string connString = new SQLDatabaseUtility().GetSQLConnectionString();

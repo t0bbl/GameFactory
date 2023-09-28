@@ -117,8 +117,12 @@ namespace GameFactory
             Console.Clear();
             Console.WriteLine("Input a Name or LoginName to check their PlayerStats");
             string p_input = Console.ReadLine();
-            int p_playerIdent = DataProvider.GetPlayerIdentFromName(p_input);
-            DataProvider.DisplayPlayerStats(p_playerIdent);
+            List<int> p_playerIdent = DataProvider.GetPlayerIdentsFromName(p_input);
+            foreach (var player in p_playerIdent)
+            {
+                DataProvider.DisplayPlayerStats(player, true);
+            }
+            
 
             Console.WriteLine("Press any key to continue");
             Console.ReadKey();

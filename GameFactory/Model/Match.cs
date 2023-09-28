@@ -264,7 +264,7 @@ namespace GameFactory
 
             foreach (var Player in p_player)
             {
-                DataProvider.DisplayPlayerStats(Player.Ident);
+                DataProvider.DisplayPlayerStats(Player.Ident, null);
             }
             Console.WriteLine("Press any key to continue.");
             Console.ReadKey();
