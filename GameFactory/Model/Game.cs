@@ -24,7 +24,7 @@
             {
                 "TTT" => new TTT() { p_player = p_player },
                 "FourW" => new FourW() { p_player = p_player },
-                "TTTChatGPT" => new TTTChatGPT() { p_player = p_player },
+                "TTTChatGPT" => new TTT() { p_player = p_player, p_chatGPT = true },
                 "FourWChatGPT" => new FourW() { p_player = p_player, p_chatGPT = true },
                 "TwistFourW" => new CustomTTT(true) { p_player = p_player },
                 "CustomTTT" => new CustomTTT(false) { p_player = p_player },
