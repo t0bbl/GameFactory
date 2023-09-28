@@ -14,7 +14,7 @@ namespace GameFactory.Model
             {
                 p_gameType = "FourW";
             }
-            
+
             p_rows = 6;
             p_columns = 7;
             p_winningLength = 4;
@@ -55,6 +55,8 @@ namespace GameFactory.Model
 
             PrintBoard(false, true, p_player);
         }
+
+        #region GameUtilities
         public int FindLowestAvailableRow(int p_column)
         {
             for (int row = p_rows - 1; row >= 0; row--)
@@ -81,7 +83,7 @@ namespace GameFactory.Model
                 return false;
             }
         }
-
+        #endregion
         #region ChatGPT
         protected override string BuildMessage(string p_board, List<Player> p_players)
         {
