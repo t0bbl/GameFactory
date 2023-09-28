@@ -29,12 +29,12 @@ namespace GameFactory
                 }
                 if (GameMode == "PlayerStats")
                 {
-                    DataProvider.ShowPlayerStats();
+                    Player.ShowPlayerStats();
                     continue;
                 }
                 if (GameMode == "Leaderboard")
                 {
-                    DataProvider.DisplayRankedPlayers();
+                    DataProvider.DisplayLeaderBoard();
                     continue;
                 }
                 if (GameMode == "Quit")

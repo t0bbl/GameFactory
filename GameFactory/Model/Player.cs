@@ -110,9 +110,6 @@ namespace GameFactory
             }
         }
 
-
-
-
         #region SQL
         internal int SQLSignUpPlayer(string p_loginName, string p_password, out int p_ident)
         {
@@ -196,6 +193,19 @@ namespace GameFactory
             }
         }
         #endregion
+
+        internal static void ShowPlayerStats()
+        {
+            Console.Clear();
+            Console.WriteLine("Input a Name or LoginName to check their PlayerStats");
+            string p_input = Console.ReadLine();
+            int p_playerIdent = DataProvider.GetPlayerIdentFromName(p_input);
+            DataProvider.DisplayPlayerStats(p_playerIdent);
+
+            Console.WriteLine("Press any key to continue");
+            Console.ReadKey();
+            Console.Clear();
+        }
 
         #region Utility Methods
         public static string HashPassword(string password)

@@ -269,11 +269,7 @@ namespace GameFactory
 
             foreach (var Player in p_player)
             {
-                List<(int Wins, int Losses, int Draws, int TotalGames, float WinPercentage)> statsList = DataProvider.GetPlayerStats(Player.Ident);
-                foreach (var stats in statsList)
-                {
-                    Console.WriteLine($"{Player.Name}:      Wins: {stats.Wins}, Losses: {stats.Losses}, Draws: {stats.Draws}, Total Games: {stats.TotalGames}, Win Percentage: {stats.WinPercentage}");
-                }
+                DataProvider.DisplayPlayerStats(Player.Ident);
             }
             Console.WriteLine("Press any key to continue.");
             Console.ReadKey();
