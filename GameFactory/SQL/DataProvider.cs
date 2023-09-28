@@ -6,7 +6,7 @@ namespace GameFactory
 {
     internal static class DataProvider
     {
-        internal static void DisplayPlayerStats(int p_ident, bool? p_withName)
+        internal static void DisplayPlayerStats(int p_ident, bool? p_displayWithName)
         {
             string connString = new SQLDatabaseUtility().GetSQLConnectionString();
 
@@ -29,7 +29,7 @@ namespace GameFactory
                                 int p_draws = reader.GetInt32(reader.GetOrdinal("Draws"));
                                 int p_playedGames = reader.GetInt32(reader.GetOrdinal("PlayedGames"));
                                 double p_winPercentage = reader.GetDouble(reader.GetOrdinal("WinPercentage"));
-                                if (p_withName.HasValue)
+                                if (p_displayWithName.HasValue)
                                 {
                                     Console.WriteLine($"Name: {p_name}, Wins: {p_wins}, Losses: {p_losses}, Draws: {p_draws}, PlayedGames: {p_playedGames}, Win Percentage: {p_winPercentage}");
                                 }
