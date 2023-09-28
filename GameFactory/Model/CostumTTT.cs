@@ -1,6 +1,4 @@
-﻿using GameFactory;
-
-namespace GameFactory.Model
+﻿namespace GameFactory.Model
 {
     internal class CustomTTT : Match
     {

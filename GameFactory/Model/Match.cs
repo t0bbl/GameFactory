@@ -1,8 +1,7 @@
 using GameFactory.Model;
-using GameFactory;
 using System.Data;
-using System.Text;
 using System.Data.SqlClient;
+using System.Text;
 
 namespace GameFactory
 {
@@ -22,6 +21,7 @@ namespace GameFactory
         internal int p_gameTypeIdent { get; set; }
         protected int p_matchId { get; set; }
         protected bool p_twistStat { get; set; }
+
         private static Random p_random = new();
 
         #endregion

@@ -1,9 +1,9 @@
 using GameFactory.Model;
 using System.Data;
-using System.Text.RegularExpressions;
+using System.Data.SqlClient;
 using System.Security.Cryptography;
 using System.Text;
-using System.Data.SqlClient;
+using System.Text.RegularExpressions;
 
 namespace GameFactory
 {

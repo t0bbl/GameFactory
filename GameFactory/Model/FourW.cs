@@ -1,5 +1,3 @@
-using GameFactory;
-
 namespace GameFactory.Model
 {
     internal class FourW : Match
