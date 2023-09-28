@@ -49,7 +49,7 @@ namespace GameFactory
                 {
                     CurrentMatch.StartMatch();
                 } while (CurrentMatch.ReMatch());
-                Game.EndGameStats(CurrentMatch.p_player);
+                CurrentMatch.EndGameStats(CurrentMatch.p_player);
             }
         }
 

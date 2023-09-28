@@ -42,7 +42,6 @@ namespace GameFactory
             UpdateStats(p_player);
             SaveMatch(p_winner, p_loser, p_draw, p_gameTypeIdent, p_matchId);
             p_matchId = 0;
-
         }
         public virtual void GameMechanic(List<Player> p_player)
         {
@@ -262,6 +261,23 @@ namespace GameFactory
                 }
             }
             return p_players;
+        }
+        internal void EndGameStats(List<Player> p_player)
+        {
+            Console.WriteLine("Game over!");
+            Console.WriteLine("Final scores:");
+
+            foreach (var Player in p_player)
+            {
+                List<(int Wins, int Losses, int Draws, int TotalGames, float WinPercentage)> statsList = DataProvider.GetPlayerStats(Player.Ident);
+                foreach (var stats in statsList)
+                {
+                    Console.WriteLine($"{Player.Name}:      Wins: {stats.Wins}, Losses: {stats.Losses}, Draws: {stats.Draws}, Total Games: {stats.TotalGames}, Win Percentage: {stats.WinPercentage}");
+                }
+            }
+            Console.WriteLine("Press any key to continue.");
+            Console.ReadKey();
+            Environment.Exit(0);
         }
 
         #endregion

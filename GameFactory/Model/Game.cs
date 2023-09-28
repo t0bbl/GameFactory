@@ -154,25 +154,6 @@
         }
         #endregion
 
-        internal static void EndGameStats(List<Player> p_player)
-        {
-            Console.WriteLine("Game over!");
-            Console.WriteLine("Final scores:");
-
-            foreach (var Player in p_player)
-            {
-                List<(int Wins, int Losses, int Draws, int TotalGames, float WinPercentage)> statsList = DataProvider.GetPlayerStats(Player.Ident);
-                foreach (var stats in statsList)
-                {
-                    Console.WriteLine($"{Player.Name}:      Wins: {stats.Wins}, Losses: {stats.Losses}, Draws: {stats.Draws}, Total Games: {stats.TotalGames}, Win Percentage: {stats.WinPercentage}");
-                }
-            }
-
-            Console.ReadKey();
-            Environment.Exit(0);
-        }
-
-
         #region Utilities
         internal static string ShowMenu(Type p_enumType)
         {
