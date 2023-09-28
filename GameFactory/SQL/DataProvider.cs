@@ -79,7 +79,6 @@ namespace GameFactory
             }
             return p_idents;
         }
-
         internal static bool CheckLoginName(string p_loginName)
         {
             string connString = new SQLDatabaseUtility().GetSQLConnectionString();

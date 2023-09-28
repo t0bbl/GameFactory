@@ -273,7 +273,7 @@ namespace GameFactory
 
         #endregion
         #region SQL
-        internal  int SaveMatch(int? p_winner, int? p_loser, int p_draw, int p_gameType, int p_matchId)
+        internal int SaveMatch(int? p_winner, int? p_loser, int p_draw, int p_gameType, int p_matchId)
         {
             string connString = new SQLDatabaseUtility().GetSQLConnectionString();
 
@@ -301,7 +301,7 @@ namespace GameFactory
                 }
             }
         }
-        internal  int SaveGame(int p_rows, int p_columns, int p_winningLength, string p_gameType)
+        internal int SaveGame(int p_rows, int p_columns, int p_winningLength, string p_gameType)
         {
             string connString = new SQLDatabaseUtility().GetSQLConnectionString();
 
@@ -327,11 +327,11 @@ namespace GameFactory
 
                     int ident = (int)identParam.Value;
 
-                    return  ident;
+                    return ident;
                 }
             }
         }
-        internal  void SaveMoveHistory(int p_player, string p_input, int p_matchId, bool p_twist)
+        internal void SaveMoveHistory(int p_player, string p_input, int p_matchId, bool p_twist)
         {
             string connString = new SQLDatabaseUtility().GetSQLConnectionString();
 

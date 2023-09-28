@@ -19,7 +19,7 @@ namespace GameFactory
 
 
         #region variables
-        string p_loginName { get; set;}
+        string p_loginName { get; set; }
         string p_password { get; set; }
         string p_name { get; set; }
         char p_icon { get; set; }
@@ -122,7 +122,7 @@ namespace GameFactory
             {
                 DataProvider.DisplayPlayerStats(player, true);
             }
-            
+
 
             Console.WriteLine("Press any key to continue");
             Console.ReadKey();
