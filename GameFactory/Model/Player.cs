@@ -51,11 +51,12 @@ namespace GameFactory
 
             string p_passwordSave = HashPassword(p_password);
 
-            p_ident = SQLSignUpPlayer(p_loginName, p_passwordSave, out p_ident);
+            p_ident = SQLSignUpPlayer(p_loginName, p_passwordSave);
 
             if (p_ident > 0)
             {
                 Console.WriteLine("You have successfully signed up! Hit any key to continue");
+                SetPlayerVariables(p_ident);
                 Console.ReadLine();
                 Console.Clear();
                 return p_ident;
@@ -125,10 +126,9 @@ namespace GameFactory
         }
 
         #region SQL
-        internal int SQLSignUpPlayer(string p_loginName, string p_password, out int p_ident)
+        internal int SQLSignUpPlayer(string p_loginName, string p_password)
         {
             string connString = new SQLDatabaseUtility().GetSQLConnectionString();
-            p_ident = 0;
 
             using (SqlConnection conn = new SqlConnection(connString))
             {
@@ -147,7 +147,7 @@ namespace GameFactory
                     conn.Open();
                     cmd.ExecuteNonQuery();
 
-                    p_ident = (int)identParam.Value;
+                    int p_ident = (int)identParam.Value;
 
                     return p_ident;
                 }
