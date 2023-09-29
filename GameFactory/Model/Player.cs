@@ -41,12 +41,12 @@ namespace GameFactory
                     p_loginName = Console.ReadLine();
                 } while (!ValidateLoginName(p_loginName));
 
-            } while (!DataProvider.CheckLoginName(p_loginName));
+            } while (!DataProvider.CheckLoginNameAvailability(p_loginName));
 
             do
             {
                 Console.WriteLine("Please enter your password:");
-                p_password = Console.ReadLine();
+                p_password = ReadPassword();
             } while (!ValidatePassword(p_password));
 
             string p_passwordSave = HashPassword(p_password);
@@ -57,7 +57,6 @@ namespace GameFactory
             {
                 Console.WriteLine("You have successfully signed up! Hit any key to continue");
                 SetPlayerVariables(p_ident);
-                Console.ReadLine();
                 Console.Clear();
                 return p_ident;
             }
@@ -71,13 +70,16 @@ namespace GameFactory
         internal int PlayerSignIn()
         {
             int p_ident = 0;
+            string p_loginName;
             while (true)
             {
                 Console.Clear();
-                Console.WriteLine("Please enter your login name:");
-                string p_loginName = Console.ReadLine();
+                do {
+                    Console.WriteLine("Please enter your login name:");
+                    p_loginName = Console.ReadLine();
+                } while (!DataProvider.ValidateLoginName(p_loginName));
                 Console.WriteLine("Please enter your password:");
-                string p_password = Console.ReadLine();
+                string p_password = ReadPassword();
                 string p_passwordSave = HashPassword(p_password);
 
                 p_ident = SQLLoginPlayer(p_loginName, p_passwordSave);
@@ -211,8 +213,6 @@ namespace GameFactory
             }
         }
         #endregion
-
-
         #region Utility Methods
         public static string HashPassword(string password)
         {
@@ -264,6 +264,32 @@ namespace GameFactory
             SQLSavePlayerVariables(p_ident, p_name, p_icon, p_colour);
             Console.Clear();
             return true;
+        }
+        static string ReadPassword()
+        {
+            StringBuilder password = new StringBuilder();
+            while (true)
+            {
+                ConsoleKeyInfo key = Console.ReadKey(intercept: true);
+                if (key.Key == ConsoleKey.Enter)
+                {
+                    Console.WriteLine();
+                    return password.ToString();
+                }
+                else if (key.Key == ConsoleKey.Backspace)
+                {
+                    if (password.Length > 0)
+                    {
+                        password.Remove(password.Length - 1, 1);
+                        Console.Write("\b \b");  // Backspace to erase the last asterisk
+                    }
+                }
+                else
+                {
+                    password.Append(key.KeyChar);
+                    Console.Write("*");
+                }
+            }
         }
 
         #endregion

@@ -1,4 +1,7 @@
-﻿using System.Data.SqlClient;
+﻿using Microsoft.IdentityModel.Protocols;
+using System.Data;
+using System.Data.SqlClient;
+using System.Numerics;
 using System.Text;
 
 
@@ -79,7 +82,7 @@ namespace GameFactory
             }
             return p_idents;
         }
-        internal static bool CheckLoginName(string p_loginName)
+        internal static bool CheckLoginNameAvailability(string p_loginName)
         {
             string connString = new SQLDatabaseUtility().GetSQLConnectionString();
             bool p_result = false;
@@ -108,6 +111,37 @@ namespace GameFactory
 
             return p_result;
         }
+        internal static bool ValidateLoginName(string p_loginName)
+        {
+            string connString = new SQLDatabaseUtility().GetSQLConnectionString();
+            bool p_result = false;
+
+            using (SqlConnection conn = new SqlConnection(connString))
+            {
+                conn.Open();
+
+                string sqlQuery = "SELECT 1 FROM [Player] WHERE LoginName = @p_loginName";
+
+                using (SqlCommand cmd = new SqlCommand(sqlQuery, conn))
+                {
+                    cmd.Parameters.Add(new SqlParameter("@p_loginName", p_loginName));
+
+                    object result = cmd.ExecuteScalar();
+                    if (result == null)
+                    {
+                        Console.WriteLine("LoginName doesn't exists. Try again.");
+                    }
+                    else
+                    {
+                        p_result = true;
+                    }
+                }
+            }
+
+            return p_result;
+        }
+
+
         internal static Player GetPlayerVariables(int p_ident)
         {
             string connString = new SQLDatabaseUtility().GetSQLConnectionString();
