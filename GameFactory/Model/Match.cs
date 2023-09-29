@@ -28,14 +28,12 @@ namespace GameFactory
         Random p_random = new();
 
         #endregion
-
         protected Match(int p_rows, int p_columns, int p_winningLength)
         {
             this.p_rows = p_rows;
             this.p_columns = p_columns;
             this.p_winningLength = p_winningLength;
             p_board = new char[p_rows, p_columns];
-
         }
         internal void StartMatch()
         {
@@ -54,7 +52,6 @@ namespace GameFactory
             SaveMatch(p_winner, p_loser, p_draw, p_gameTypeIdent, p_matchId);
             p_matchId = 0;
         }
-
         public virtual void GameMechanic(List<Player> p_player)
         {
 

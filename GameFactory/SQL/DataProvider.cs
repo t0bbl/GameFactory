@@ -138,7 +138,6 @@ namespace GameFactory
             return p_result;
         }
 
-
         internal static Player GetPlayerVariables(int p_ident)
         {
             string connString = new SQLDatabaseUtility().GetSQLConnectionString();

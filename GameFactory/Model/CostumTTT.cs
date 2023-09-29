@@ -2,10 +2,12 @@
 {
     internal class CustomTTT : Match
     {
-        public bool p_twist;
-        public bool p_twistStat;
-        private Random p_random = new Random();
+        #region Variables
+        public bool p_twist { get; set; }
+        public bool p_twistStat { get; set; }
 
+        private Random p_random = new Random();
+        #endregion
 
         public CustomTTT(bool p_twist)
             : base(

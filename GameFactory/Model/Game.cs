@@ -10,8 +10,6 @@
         internal int p_guestCount { get; set; } = 0;
 
         #endregion
-
-
         internal Match CreateMatch()
         {
             if (p_gameMode == "SinglePlayer")
@@ -34,8 +32,6 @@
 
             return CurrentMatch;
         }
-
-
 
         #region initializePlayer
         internal void InitializePlayer()

@@ -2,7 +2,9 @@
 {
     internal class TTT : Match
     {
-        internal bool p_chatGPT;
+        #region Variables
+        internal bool p_chatGPT { get; set; }
+        #endregion
 
         public TTT() : base(3, 3, 3)
         {
@@ -16,7 +18,6 @@
                 {
                     ChatGPTMove(BoardToString(p_board, p_player), p_player);
                 }
-
             }
             base.GameMechanic(p_player);
 

@@ -2,8 +2,9 @@ namespace GameFactory.Model
 {
     internal class FourW : Match
     {
-        internal bool p_chatGPT;
-
+        #region Variables
+        internal bool p_chatGPT { get; set; }
+        #endregion
         public FourW() : base(6, 7, 4)
         {
             p_gameType = p_chatGPT ? "FourWChatGPT" : "FourW";
