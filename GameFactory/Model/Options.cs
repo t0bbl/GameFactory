@@ -1,6 +1,4 @@
-﻿
-
-namespace GameFactory.Model
+﻿namespace GameFactory.Model
 {
     internal class Options
     {

@@ -2,22 +2,13 @@
 {
     internal class TTT : Match
     {
-        internal bool p_chatGPT;
+        #region Variables
+        internal bool p_chatGPT { get; set; }
+        #endregion
 
-        public TTT()
+        public TTT() : base(3, 3, 3)
         {
-            if (p_chatGPT)
-            {
-                p_gameType = "TTTChatGPT";
-            }
-            else
-            {
-                p_gameType = "TTT";
-            }
-            p_rows = 3;
-            p_columns = 3;
-            p_winningLength = 3;
-            p_board = new char[p_rows, p_columns];
+            p_gameType = p_chatGPT ? "TTTChatGPT" : "TTT";
         }
         public override void GameMechanic(List<Player> p_player)
         {
@@ -27,7 +18,6 @@
                 {
                     ChatGPTMove(BoardToString(p_board, p_player), p_player);
                 }
-
             }
             base.GameMechanic(p_player);
 

@@ -14,32 +14,35 @@ namespace GameFactory
 
                 string GameMode = CurrentGame.InitializeGameMenu();
 
-                if (GameMode == "Options")
+                switch (GameMode)
                 {
-                    if (!Options.GameOptions())
-                    {
+                    case "Options":
+                        if (!Options.GameOptions())
+                        {
+                            continue;
+                        }
+                        break;
+
+                    case "PlayerOptions":
+                        int p_ident = Player.PlayerSignIn();
+                        Player.SetPlayerVariables(p_ident);
                         continue;
-                    }
-                }
-                if (GameMode == "PlayerOptions")
-                {
-                    int p_ident = Player.PlayerSignIn();
-                    Player.SetPlayerVariables(p_ident);
-                    continue;
-                }
-                if (GameMode == "PlayerStats")
-                {
-                    Player.ShowPlayerStats();
-                    continue;
-                }
-                if (GameMode == "Leaderboard")
-                {
-                    DataProvider.DisplayLeaderBoard();
-                    continue;
-                }
-                if (GameMode == "Quit")
-                {
-                    Environment.Exit(0);
+
+                    case "PlayerStats":
+                        Player.ShowPlayerStats();
+                        continue;
+
+                    case "Leaderboard":
+                        DataProvider.DisplayLeaderBoard();
+                        continue;
+
+                    case "Quit":
+                        Environment.Exit(0);
+                        break;
+
+                    default:
+                        Console.WriteLine("Invalid option. Please try again.");
+                        break;
                 }
 
                 CurrentGame.InitializePlayer();

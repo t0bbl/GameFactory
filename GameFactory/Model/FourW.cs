@@ -2,23 +2,12 @@ namespace GameFactory.Model
 {
     internal class FourW : Match
     {
-        internal bool p_chatGPT;
-
-        public FourW()
+        #region Variables
+        internal bool p_chatGPT { get; set; }
+        #endregion
+        public FourW() : base(6, 7, 4)
         {
-            if (p_chatGPT)
-            {
-                p_gameType = "FourWChatGPT";
-            }
-            else
-            {
-                p_gameType = "FourW";
-            }
-
-            p_rows = 6;
-            p_columns = 7;
-            p_winningLength = 4;
-            p_board = new char[p_rows, p_columns];
+            p_gameType = p_chatGPT ? "FourWChatGPT" : "FourW";
         }
         public override void GameMechanic(List<Player> p_player)
         {

@@ -2,31 +2,23 @@
 {
     internal class CustomTTT : Match
     {
-        public bool p_twist;
-        public bool p_twistStat;
-        private Random p_random = new Random();
+        #region Variables
+        public bool p_twist { get; set; }
+        public bool p_twistStat { get; set; }
 
+        private Random p_random = new Random();
+        #endregion
 
         public CustomTTT(bool p_twist)
+            : base(
+                  p_twist ? 8 : AskForRows(),
+                  p_twist ? 5 : AskForColumns(),
+                  p_twist ? 4 : AskForWinningLength()
+              )
         {
+            p_gameType = p_twist ? "Twist" : "CustomTTT";
             this.p_twist = p_twist;
-            if (p_twist)
-            {
-                p_gameType = "twist";
-                p_rows = 8;
-                p_columns = 5;
-                p_winningLength = 4;
-            }
-            else
-            {
-                p_gameType = "customTTT";
-                p_rows = AskForRows();
-                p_columns = AskForColumns();
-                p_winningLength = AskForWinningLength();
-            }
-            p_board = new char[p_rows, p_columns];
             ResetBoard();
-
         }
         public override void GameMechanic(List<Player> p_player)
         {

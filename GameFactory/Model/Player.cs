@@ -74,7 +74,8 @@ namespace GameFactory
             while (true)
             {
                 Console.Clear();
-                do {
+                do
+                {
                     Console.WriteLine("Please enter your login name:");
                     p_loginName = Console.ReadLine();
                 } while (!DataProvider.ValidateLoginName(p_loginName));

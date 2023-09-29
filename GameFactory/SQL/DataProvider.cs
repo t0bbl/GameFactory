@@ -1,7 +1,4 @@
-﻿using Microsoft.IdentityModel.Protocols;
-using System.Data;
-using System.Data.SqlClient;
-using System.Numerics;
+﻿using System.Data.SqlClient;
 using System.Text;
 
 
@@ -140,7 +137,6 @@ namespace GameFactory
 
             return p_result;
         }
-
 
         internal static Player GetPlayerVariables(int p_ident)
         {
