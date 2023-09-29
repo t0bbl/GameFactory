@@ -6,14 +6,7 @@ namespace GameFactory.Model
 
         public FourW() : base(6, 7, 4)
         {
-            if (p_chatGPT)
-            {
-                p_gameType = "FourWChatGPT";
-            }
-            else
-            {
-                p_gameType = "FourW";
-            }
+            p_gameType = p_chatGPT ? "FourWChatGPT" : "FourW";
         }
         public override void GameMechanic(List<Player> p_player)
         {

@@ -6,14 +6,7 @@
 
         public TTT() : base(3, 3, 3)
         {
-            if (p_chatGPT)
-            {
-                p_gameType = "TTTChatGPT";
-            }
-            else
-            {
-                p_gameType = "TTT";
-            }
+            p_gameType = p_chatGPT ? "TTTChatGPT" : "TTT";
         }
         public override void GameMechanic(List<Player> p_player)
         {
