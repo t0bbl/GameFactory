@@ -1,7 +1,4 @@
-﻿using Microsoft.IdentityModel.Protocols;
-using System.Data;
-using System.Data.SqlClient;
-using System.Numerics;
+﻿using System.Data.SqlClient;
 using System.Text;
 
 
