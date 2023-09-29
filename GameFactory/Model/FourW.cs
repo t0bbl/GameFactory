@@ -4,7 +4,7 @@ namespace GameFactory.Model
     {
         internal bool p_chatGPT;
 
-        public FourW()
+        public FourW() : base(6, 7, 4)
         {
             if (p_chatGPT)
             {
@@ -14,11 +14,6 @@ namespace GameFactory.Model
             {
                 p_gameType = "FourW";
             }
-
-            p_rows = 6;
-            p_columns = 7;
-            p_winningLength = 4;
-            p_board = new char[p_rows, p_columns];
         }
         public override void GameMechanic(List<Player> p_player)
         {

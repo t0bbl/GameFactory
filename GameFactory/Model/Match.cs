@@ -8,7 +8,7 @@ namespace GameFactory
     internal class Match : Game
     {
         #region Variables
-        internal char[,] p_board;
+        internal char[,] p_board { get; set; }
         internal int p_rows { get; set; }
         internal int p_columns { get; set; }
         internal int p_winningLength { get; set; }
@@ -19,13 +19,24 @@ namespace GameFactory
         internal int? p_loser { get; set; }
         internal int p_draw { get; set; }
         internal int p_gameTypeIdent { get; set; }
-        protected int p_matchId { get; set; }
-        protected bool p_twistStat { get; set; }
+        internal int p_matchId { get; set; }
+        internal bool p_twistStat { get; set; }
+
+
+
 
         Random p_random = new();
 
         #endregion
 
+        protected Match(int p_rows, int p_columns, int p_winningLength)
+        {
+            this.p_rows = p_rows;
+            this.p_columns = p_columns;
+            this.p_winningLength = p_winningLength;
+            p_board = new char[p_rows, p_columns];
+
+        }
         internal void StartMatch()
         {
             p_firstTurn = true;

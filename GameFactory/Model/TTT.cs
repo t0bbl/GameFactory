@@ -4,7 +4,7 @@
     {
         internal bool p_chatGPT;
 
-        public TTT()
+        public TTT() : base(3, 3, 3)
         {
             if (p_chatGPT)
             {
@@ -14,10 +14,6 @@
             {
                 p_gameType = "TTT";
             }
-            p_rows = 3;
-            p_columns = 3;
-            p_winningLength = 3;
-            p_board = new char[p_rows, p_columns];
         }
         public override void GameMechanic(List<Player> p_player)
         {
