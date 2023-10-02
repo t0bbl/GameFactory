@@ -1,4 +1,4 @@
-﻿using GameFactory.Model;
+﻿using ClassLibrary;
 
 namespace GameFactory
 {

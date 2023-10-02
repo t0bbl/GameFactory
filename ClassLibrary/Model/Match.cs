@@ -1,11 +1,10 @@
-using GameFactory.Model;
 using System.Data;
 using System.Data.SqlClient;
 using System.Text;
 
-namespace GameFactory
+namespace ClassLibrary
 {
-    internal class Match : Game
+    public class Match : Game
     {
         #region Variables
         internal char[,] p_board { get; set; }
@@ -28,14 +27,14 @@ namespace GameFactory
         Random p_random = new();
 
         #endregion
-        protected Match(int p_rows, int p_columns, int p_winningLength)
+        public Match(int p_rows, int p_columns, int p_winningLength)
         {
             this.p_rows = p_rows;
             this.p_columns = p_columns;
             this.p_winningLength = p_winningLength;
             p_board = new char[p_rows, p_columns];
         }
-        internal void StartMatch()
+        public void StartMatch()
         {
             p_firstTurn = true;
             if (p_player.All(player => player.Name != "CHATGPT"))
@@ -270,7 +269,7 @@ namespace GameFactory
             }
             return p_players;
         }
-        internal void EndGameStats(List<Player> p_player)
+        public void EndGameStats(List<Player> p_player)
         {
             Console.WriteLine("Game over!");
             Console.WriteLine("Final scores:");
@@ -286,7 +285,7 @@ namespace GameFactory
 
         #endregion
         #region SQL
-        internal int SaveMatch(int? p_winner, int? p_loser, int p_draw, int p_gameType, int p_matchId)
+        public int SaveMatch(int? p_winner, int? p_loser, int p_draw, int p_gameType, int p_matchId)
         {
             string connString = new SQLDatabaseUtility().GetSQLConnectionString();
 
@@ -314,7 +313,7 @@ namespace GameFactory
                 }
             }
         }
-        internal int SaveGame(int p_rows, int p_columns, int p_winningLength, string p_gameType)
+        public int SaveGame(int p_rows, int p_columns, int p_winningLength, string p_gameType)
         {
             string connString = new SQLDatabaseUtility().GetSQLConnectionString();
 
@@ -344,7 +343,7 @@ namespace GameFactory
                 }
             }
         }
-        internal void SaveMoveHistory(int p_player, string p_input, int p_matchId, bool p_twist)
+        public void SaveMoveHistory(int p_player, string p_input, int p_matchId, bool p_twist)
         {
             string connString = new SQLDatabaseUtility().GetSQLConnectionString();
 
@@ -363,7 +362,7 @@ namespace GameFactory
                 }
             }
         }
-        internal void SavePlayerToMatch(int p_playerId, int p_matchId)
+        public void SavePlayerToMatch(int p_playerId, int p_matchId)
         {
             string connString = new SQLDatabaseUtility().GetSQLConnectionString();
 
@@ -385,16 +384,16 @@ namespace GameFactory
         #endregion
 
         #region ChatGPT
-        protected string SendMessageToChatGPT(string apiKey, string p_message)
+        public string SendMessageToChatGPT(string apiKey, string p_message)
         {
             var chatGPTClient = new ChatGPTClient(apiKey);
             return chatGPTClient.SendMessage(p_message);
         }
-        protected virtual string BuildMessage(string p_board, List<Player> p_players)
+        public virtual string BuildMessage(string p_board, List<Player> p_players)
         {
             return "error";
         }
-        protected string GetApiKey()
+        public string GetApiKey()
         {
             return Environment.GetEnvironmentVariable("CHATGPT_API_KEY", EnvironmentVariableTarget.Machine);
         }

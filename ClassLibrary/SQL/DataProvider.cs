@@ -4,11 +4,11 @@ using System.Text;
 
 
 
-namespace GameFactory
+namespace ClassLibrary
 {
-    internal static class DataProvider
+    public static class DataProvider
     {
-        internal static void DisplayPlayerStats(int p_ident, bool? p_displayWithName)
+        public static void DisplayPlayerStats(int p_ident, bool? p_displayWithName)
         {
             string connString = new SQLDatabaseUtility().GetSQLConnectionString();
 
@@ -18,7 +18,7 @@ namespace GameFactory
                 string sqlQuery = "SELECT * FROM PlayerStatsView WHERE Ident = @p_ident";
                 using (SqlCommand cmd = new SqlCommand(sqlQuery, conn))
                 {
-                    cmd.Parameters.Add(new SqlParameter("@p_ident", SqlDbType.Int, p_ident));
+                    cmd.Parameters.Add(new SqlParameter("@p_ident", p_ident));
                     using (SqlDataReader reader = cmd.ExecuteReader())
                     {
                         if (reader.HasRows)
@@ -45,7 +45,7 @@ namespace GameFactory
                 }
             }
         }
-        internal static List<int> GetPlayerIdentsFromName(string p_name = null)
+        public static List<int> GetPlayerIdentsFromName(string p_name = null)
         {
             string connString = new SQLDatabaseUtility().GetSQLConnectionString();
             List<int> p_idents = new List<int>();
@@ -81,7 +81,7 @@ namespace GameFactory
             }
             return p_idents;
         }
-        internal static bool CheckLoginNameAvailability(string p_loginName)
+        public static bool CheckLoginNameAvailability(string p_loginName)
         {
             string connString = new SQLDatabaseUtility().GetSQLConnectionString();
             bool p_result = false;
@@ -110,7 +110,7 @@ namespace GameFactory
 
             return p_result;
         }
-        internal static bool ValidateLoginName(string p_loginName)
+        public static bool ValidateLoginName(string p_loginName)
         {
             string connString = new SQLDatabaseUtility().GetSQLConnectionString();
             bool p_result = false;
@@ -140,7 +140,7 @@ namespace GameFactory
             return p_result;
         }
 
-        internal static Player GetPlayerVariables(int p_ident)
+        public static Player GetPlayerVariables(int p_ident)
         {
             string connString = new SQLDatabaseUtility().GetSQLConnectionString();
             Player player = null;
@@ -179,7 +179,7 @@ namespace GameFactory
 
             return player;
         }
-        internal static void DisplayLeaderBoard()
+        public static void DisplayLeaderBoard()
         {
             string connString = new SQLDatabaseUtility().GetSQLConnectionString();
 

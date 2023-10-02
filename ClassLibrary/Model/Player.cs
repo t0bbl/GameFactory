@@ -1,21 +1,20 @@
-using GameFactory.Model;
 using System.Data;
 using System.Data.SqlClient;
 using System.Security.Cryptography;
 using System.Text;
 using System.Text.RegularExpressions;
 
-namespace GameFactory
+namespace ClassLibrary
 {
-    internal class Player
+    public class Player
     {
-        internal string Name { get; set; }
-        internal char Icon { get; set; }
-        internal string Colour { get; set; }
-        internal bool IsHuman { get; set; }
-        internal int Ident { get; set; }
-        internal string LoginName { get; set; }
-        internal string Password { get; set; }
+        public string Name { get; set; }
+        public char Icon { get; set; }
+        public string Colour { get; set; }
+        public bool IsHuman { get; set; }
+        public int Ident { get; set; }
+        public string LoginName { get; set; }
+        public string Password { get; set; }
 
 
         #region variables
@@ -28,7 +27,7 @@ namespace GameFactory
         #endregion
 
 
-        internal int PlayerSignup()
+        public int PlayerSignup()
         {
             int p_ident = 0;
             Console.Clear();
@@ -67,7 +66,7 @@ namespace GameFactory
                 return 0;
             }
         }
-        internal int PlayerSignIn()
+        public int PlayerSignIn()
         {
             int p_ident = 0;
             string p_loginName;
@@ -115,7 +114,7 @@ namespace GameFactory
                 }
             }
         }
-        internal static void ShowPlayerStats()
+        public static void ShowPlayerStats()
         {
             Console.Clear();
             Console.WriteLine("Input a Name or LoginName to check their PlayerStats");
@@ -133,7 +132,7 @@ namespace GameFactory
         }
 
         #region SQL
-        internal int SQLSignUpPlayer(string p_loginName, string p_password)
+        public int SQLSignUpPlayer(string p_loginName, string p_password)
         {
             string connString = new SQLDatabaseUtility().GetSQLConnectionString();
 
@@ -160,7 +159,7 @@ namespace GameFactory
                 }
             }
         }
-        internal int SQLLoginPlayer(string p_loginName, string p_password)
+        public int SQLLoginPlayer(string p_loginName, string p_password)
         {
             string connString = new SQLDatabaseUtility().GetSQLConnectionString();
             int p_ident = 0; // Initialize to 0
@@ -186,7 +185,7 @@ namespace GameFactory
 
             return p_ident;
         }
-        internal bool SQLSavePlayerVariables(int p_ident, string p_name, char p_icon, string p_color)
+        public bool SQLSavePlayerVariables(int p_ident, string p_name, char p_icon, string p_color)
         {
             string connString = new SQLDatabaseUtility().GetSQLConnectionString();
 
@@ -255,7 +254,7 @@ namespace GameFactory
             }
             return true;
         }
-        internal bool SetPlayerVariables(int p_ident)
+        public bool SetPlayerVariables(int p_ident)
         {
             Console.Clear();
             p_name = Game.InitializePlayerName();
@@ -266,7 +265,7 @@ namespace GameFactory
             Console.Clear();
             return true;
         }
-        static string ReadPassword()
+        public string ReadPassword()
         {
             StringBuilder password = new StringBuilder();
             while (true)

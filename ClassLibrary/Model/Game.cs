@@ -1,16 +1,17 @@
-﻿namespace GameFactory.Model
+﻿
+namespace ClassLibrary
 {
-    internal class Game
+    public class Game
     {
         #region Variables
-        internal List<Player> p_player { get; set; } = new();
+        public List<Player> p_player { get; set; } = new();
         internal string p_gameType { get; set; }
         internal string p_gameMode { get; set; }
         internal Match CurrentMatch { get; set; }
         internal int p_guestCount { get; set; } = 0;
 
         #endregion
-        internal Match CreateMatch()
+        public Match CreateMatch()
         {
             if (p_gameMode == "SinglePlayer")
             {
@@ -34,7 +35,7 @@
         }
 
         #region initializePlayer
-        internal void InitializePlayer()
+        public void InitializePlayer()
         {
             var Player = new Player();
             Console.Clear();
@@ -81,7 +82,7 @@
                 Console.Clear();
             }
         }
-        internal int DetermineNumberOfPlayers()
+        public int DetermineNumberOfPlayers()
         {
             if (p_gameMode == "SinglePlayer") return 1;
 
@@ -97,7 +98,7 @@
                 Console.WriteLine("Invalid input. Please enter a valid number.");
             } while (true);
         }
-        internal static string InitializePlayerName()
+        public static string InitializePlayerName()
         {
             string Name;
             do
@@ -111,7 +112,7 @@
             } while (string.IsNullOrEmpty(Name));
             return Name;
         }
-        internal static char InitializePlayerIcon()
+        public static char InitializePlayerIcon()
         {
             char Icon;
             do
@@ -126,7 +127,7 @@
             } while (Icon == '\r' || Icon == ' ');
             return Icon;
         }
-        internal static string InitializePlayerColor()
+        public static string InitializePlayerColor()
         {
             Console.WriteLine($"\n Choose a Color you want to use InGame: \n");
             string Colour = ShowMenu(typeof(ValidColours));
@@ -135,14 +136,14 @@
         #endregion
 
         #region initializeGame
-        internal string InitializeGameMenu()
+        public string InitializeGameMenu()
         {
             do
             {
                 return p_gameMode = ShowMenu(typeof(StartMenuOptions));
             } while (p_gameMode == null);
         }
-        internal string InitializeGame()
+        public string InitializeGame()
         {
             Console.Clear();
             do

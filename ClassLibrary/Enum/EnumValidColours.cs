@@ -1,4 +1,5 @@
-﻿namespace GameFactory
+﻿
+namespace ClassLibrary
 {
     public enum ValidColours
     {

@@ -1,4 +1,4 @@
-namespace GameFactory.Model
+namespace ClassLibrary
 {
     internal class FourW : Match
     {
@@ -33,7 +33,7 @@ namespace GameFactory.Model
             {
                 Console.WriteLine();
                 Console.WriteLine($"{p_player[p_currentPlayerIndex].Name}, input a column number from 1 to {p_columns}");
-                SavePlayerList(p_player[p_currentPlayerIndex].Ident, p_matchId);
+                SavePlayerToMatch(p_player[p_currentPlayerIndex].Ident, p_matchId);
             } while (!TryGetValidInput(out p_chosenColumn, p_columns));
 
             MakeMove(p_chosenColumn, p_currentPlayerIndex, p_player);
@@ -74,7 +74,7 @@ namespace GameFactory.Model
         }
         #endregion
         #region ChatGPT
-        protected override string BuildMessage(string p_board, List<Player> p_players)
+        public override string BuildMessage(string p_board, List<Player> p_players)
         {
             return $"Objective: Win the Connect 4 game by connecting four of your '{p_players[1].Icon}' vertically, horizontally, or diagonally.\n" +
                    $"The board is 7 columns by 6 rows.\n" +

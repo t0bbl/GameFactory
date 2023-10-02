@@ -1,4 +1,4 @@
-﻿namespace GameFactory.Model
+﻿namespace ClassLibrary
 {
     internal class CustomTTT : Match
     {
@@ -34,7 +34,7 @@
             {
                 Console.WriteLine();
                 Console.WriteLine($"{p_player[p_currentPlayerIndex].Name}, input a coordinate X/Y");
-                SavePlayerList(p_player[p_currentPlayerIndex].Ident, p_matchId);
+                SavePlayerToMatch(p_player[p_currentPlayerIndex].Ident, p_matchId);
                 string p_input = Console.ReadLine();
                 string[] p_parts = p_input.Split('/');
 
