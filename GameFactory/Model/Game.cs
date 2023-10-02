@@ -20,7 +20,7 @@
                     p_player.Add(p_GPTVariables);
                 }
             }
-            CurrentMatch = CurrentMatch = p_gameType switch
+            CurrentMatch = p_gameType switch
             {
                 "TTT" => new TTT() { p_player = p_player },
                 "FourW" => new FourW() { p_player = p_player },

@@ -1,5 +1,7 @@
-﻿using System.Data.SqlClient;
+﻿using System.Data;
+using System.Data.SqlClient;
 using System.Text;
+
 
 
 namespace GameFactory
@@ -16,7 +18,7 @@ namespace GameFactory
                 string sqlQuery = "SELECT * FROM PlayerStatsView WHERE Ident = @p_ident";
                 using (SqlCommand cmd = new SqlCommand(sqlQuery, conn))
                 {
-                    cmd.Parameters.AddWithValue("@p_ident", p_ident);
+                    cmd.Parameters.Add(new SqlParameter("@p_ident", SqlDbType.Int, p_ident));
                     using (SqlDataReader reader = cmd.ExecuteReader())
                     {
                         if (reader.HasRows)
@@ -31,7 +33,7 @@ namespace GameFactory
                                 double p_winPercentage = reader.GetDouble(reader.GetOrdinal("WinPercentage"));
                                 if (p_displayWithName.HasValue)
                                 {
-                                    Console.WriteLine($"Name: {p_name}, Wins: {p_wins}, Losses: {p_losses}, Draws: {p_draws}, PlayedGames: {p_playedGames}, Win Percentage: {p_winPercentage}");
+                                    Console.WriteLine($"{p_name}: Wins: {p_wins}, Losses: {p_losses}, Draws: {p_draws}, PlayedGames: {p_playedGames}, Win Percentage: {p_winPercentage}");
                                 }
                                 else
                                 {

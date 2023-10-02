@@ -277,7 +277,7 @@ namespace GameFactory
 
             foreach (var Player in p_player)
             {
-                DataProvider.DisplayPlayerStats(Player.Ident, null);
+                DataProvider.DisplayPlayerStats(Player.Ident, true);
             }
             Console.WriteLine("Press any key to continue.");
             Console.ReadKey();
@@ -363,13 +363,13 @@ namespace GameFactory
                 }
             }
         }
-        internal void SavePlayerList(int p_playerId, int p_matchId)
+        internal void SavePlayerToMatch(int p_playerId, int p_matchId)
         {
             string connString = new SQLDatabaseUtility().GetSQLConnectionString();
 
             using (SqlConnection conn = new SqlConnection(connString))
             {
-                using (SqlCommand cmd = new SqlCommand("SavePlayerList", conn))
+                using (SqlCommand cmd = new SqlCommand("SavePlayerToMatch", conn))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
 

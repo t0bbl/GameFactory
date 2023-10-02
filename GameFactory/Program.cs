@@ -55,6 +55,5 @@ namespace GameFactory
                 CurrentMatch.EndGameStats(CurrentMatch.p_player);
             }
         }
-
     }
 }
