@@ -1,17 +1,17 @@
 ﻿
 namespace ClassLibrary
 {
-    public class Game
+    internal class Game
     {
         #region Variables
-        public List<Player> p_player { get; set; } = new();
+        internal List<Player> p_player { get; set; } = new();
         internal string p_gameType { get; set; }
         internal string p_gameMode { get; set; }
         internal Match CurrentMatch { get; set; }
         internal int p_guestCount { get; set; } = 0;
 
         #endregion
-        public Match CreateMatch()
+        internal Match CreateMatch()
         {
             if (p_gameMode == "SinglePlayer")
             {
@@ -35,7 +35,7 @@ namespace ClassLibrary
         }
 
         #region initializePlayer
-        public void InitializePlayer()
+        internal void InitializePlayer()
         {
             var Player = new Player();
             Console.Clear();
@@ -82,7 +82,7 @@ namespace ClassLibrary
                 Console.Clear();
             }
         }
-        public int DetermineNumberOfPlayers()
+        internal int DetermineNumberOfPlayers()
         {
             if (p_gameMode == "SinglePlayer") return 1;
 
@@ -98,7 +98,7 @@ namespace ClassLibrary
                 Console.WriteLine("Invalid input. Please enter a valid number.");
             } while (true);
         }
-        public static string InitializePlayerName()
+        internal static string InitializePlayerName()
         {
             string Name;
             do
@@ -112,7 +112,7 @@ namespace ClassLibrary
             } while (string.IsNullOrEmpty(Name));
             return Name;
         }
-        public static char InitializePlayerIcon()
+        internal static char InitializePlayerIcon()
         {
             char Icon;
             do
@@ -127,7 +127,7 @@ namespace ClassLibrary
             } while (Icon == '\r' || Icon == ' ');
             return Icon;
         }
-        public static string InitializePlayerColor()
+        internal static string InitializePlayerColor()
         {
             Console.WriteLine($"\n Choose a Color you want to use InGame: \n");
             string Colour = ShowMenu(typeof(ValidColours));
@@ -136,14 +136,14 @@ namespace ClassLibrary
         #endregion
 
         #region initializeGame
-        public string InitializeGameMenu()
+        internal string InitializeGameMenu()
         {
             do
             {
                 return p_gameMode = ShowMenu(typeof(StartMenuOptions));
             } while (p_gameMode == null);
         }
-        public string InitializeGame()
+        internal string InitializeGame()
         {
             Console.Clear();
             do

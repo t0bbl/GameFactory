@@ -6,15 +6,15 @@ using System.Text.RegularExpressions;
 
 namespace ClassLibrary
 {
-    public class Player
+    internal class Player
     {
-        public string Name { get; set; }
-        public char Icon { get; set; }
-        public string Colour { get; set; }
-        public bool IsHuman { get; set; }
-        public int Ident { get; set; }
-        public string LoginName { get; set; }
-        public string Password { get; set; }
+        internal string Name { get; set; }
+        internal char Icon { get; set; }
+        internal string Colour { get; set; }
+        internal bool IsHuman { get; set; }
+        internal int Ident { get; set; }
+        internal string LoginName { get; set; }
+        internal string Password { get; set; }
 
 
         #region variables
@@ -27,7 +27,7 @@ namespace ClassLibrary
         #endregion
 
 
-        public int PlayerSignup()
+        internal int PlayerSignup()
         {
             int p_ident = 0;
             Console.Clear();
@@ -66,7 +66,7 @@ namespace ClassLibrary
                 return 0;
             }
         }
-        public int PlayerSignIn()
+        internal int PlayerSignIn()
         {
             int p_ident = 0;
             string p_loginName;
@@ -114,7 +114,7 @@ namespace ClassLibrary
                 }
             }
         }
-        public static void ShowPlayerStats()
+        internal static void ShowPlayerStats()
         {
             Console.Clear();
             Console.WriteLine("Input a Name or LoginName to check their PlayerStats");
@@ -132,7 +132,7 @@ namespace ClassLibrary
         }
 
         #region SQL
-        public int SQLSignUpPlayer(string p_loginName, string p_password)
+        internal int SQLSignUpPlayer(string p_loginName, string p_password)
         {
             string connString = new SQLDatabaseUtility().GetSQLConnectionString();
 
@@ -159,7 +159,7 @@ namespace ClassLibrary
                 }
             }
         }
-        public int SQLLoginPlayer(string p_loginName, string p_password)
+        internal int SQLLoginPlayer(string p_loginName, string p_password)
         {
             string connString = new SQLDatabaseUtility().GetSQLConnectionString();
             int p_ident = 0; // Initialize to 0
@@ -185,7 +185,7 @@ namespace ClassLibrary
 
             return p_ident;
         }
-        public bool SQLSavePlayerVariables(int p_ident, string p_name, char p_icon, string p_color)
+        internal bool SQLSavePlayerVariables(int p_ident, string p_name, char p_icon, string p_color)
         {
             string connString = new SQLDatabaseUtility().GetSQLConnectionString();
 
@@ -214,7 +214,7 @@ namespace ClassLibrary
         }
         #endregion
         #region Utility Methods
-        public static string HashPassword(string password)
+        internal static string HashPassword(string password)
         {
             using (SHA256 sha256Hash = SHA256.Create())
             {
@@ -228,7 +228,7 @@ namespace ClassLibrary
                 return builder.ToString();
             }
         }
-        public bool ValidateLoginName(string loginName)
+        internal bool ValidateLoginName(string loginName)
         {
             if (loginName.Length < 3 || loginName.Length > 16)
             {
@@ -245,7 +245,7 @@ namespace ClassLibrary
 
             return true;
         }
-        public static bool ValidatePassword(string password)
+        internal static bool ValidatePassword(string password)
         {
             if (password.Length < 8 || password.Length > 16)
             {
@@ -254,7 +254,7 @@ namespace ClassLibrary
             }
             return true;
         }
-        public bool SetPlayerVariables(int p_ident)
+        internal bool SetPlayerVariables(int p_ident)
         {
             Console.Clear();
             p_name = Game.InitializePlayerName();
@@ -265,7 +265,7 @@ namespace ClassLibrary
             Console.Clear();
             return true;
         }
-        public string ReadPassword()
+        static string ReadPassword()
         {
             StringBuilder password = new StringBuilder();
             while (true)

@@ -6,9 +6,9 @@ using System.Text;
 
 namespace ClassLibrary
 {
-    public static class DataProvider
+    internal static class DataProvider
     {
-        public static void DisplayPlayerStats(int p_ident, bool? p_displayWithName)
+        internal static void DisplayPlayerStats(int p_ident, bool? p_displayWithName)
         {
             string connString = new SQLDatabaseUtility().GetSQLConnectionString();
 
@@ -45,7 +45,7 @@ namespace ClassLibrary
                 }
             }
         }
-        public static List<int> GetPlayerIdentsFromName(string p_name = null)
+        internal static List<int> GetPlayerIdentsFromName(string p_name = null)
         {
             string connString = new SQLDatabaseUtility().GetSQLConnectionString();
             List<int> p_idents = new List<int>();
@@ -81,7 +81,7 @@ namespace ClassLibrary
             }
             return p_idents;
         }
-        public static bool CheckLoginNameAvailability(string p_loginName)
+        internal static bool CheckLoginNameAvailability(string p_loginName)
         {
             string connString = new SQLDatabaseUtility().GetSQLConnectionString();
             bool p_result = false;
@@ -110,7 +110,7 @@ namespace ClassLibrary
 
             return p_result;
         }
-        public static bool ValidateLoginName(string p_loginName)
+        internal static bool ValidateLoginName(string p_loginName)
         {
             string connString = new SQLDatabaseUtility().GetSQLConnectionString();
             bool p_result = false;
@@ -140,7 +140,7 @@ namespace ClassLibrary
             return p_result;
         }
 
-        public static Player GetPlayerVariables(int p_ident)
+        internal static Player GetPlayerVariables(int p_ident)
         {
             string connString = new SQLDatabaseUtility().GetSQLConnectionString();
             Player player = null;
@@ -179,7 +179,7 @@ namespace ClassLibrary
 
             return player;
         }
-        public static void DisplayLeaderBoard()
+        internal static void DisplayLeaderBoard()
         {
             string connString = new SQLDatabaseUtility().GetSQLConnectionString();
 

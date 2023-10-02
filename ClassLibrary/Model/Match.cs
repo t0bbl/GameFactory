@@ -4,7 +4,7 @@ using System.Text;
 
 namespace ClassLibrary
 {
-    public class Match : Game
+    internal class Match : Game
     {
         #region Variables
         internal char[,] p_board { get; set; }
@@ -27,14 +27,14 @@ namespace ClassLibrary
         Random p_random = new();
 
         #endregion
-        public Match(int p_rows, int p_columns, int p_winningLength)
+        internal Match(int p_rows, int p_columns, int p_winningLength)
         {
             this.p_rows = p_rows;
             this.p_columns = p_columns;
             this.p_winningLength = p_winningLength;
             p_board = new char[p_rows, p_columns];
         }
-        public void StartMatch()
+        internal void StartMatch()
         {
             p_firstTurn = true;
             if (p_player.All(player => player.Name != "CHATGPT"))
@@ -269,7 +269,7 @@ namespace ClassLibrary
             }
             return p_players;
         }
-        public void EndGameStats(List<Player> p_player)
+        internal void EndGameStats(List<Player> p_player)
         {
             Console.WriteLine("Game over!");
             Console.WriteLine("Final scores:");
@@ -285,7 +285,7 @@ namespace ClassLibrary
 
         #endregion
         #region SQL
-        public int SaveMatch(int? p_winner, int? p_loser, int p_draw, int p_gameType, int p_matchId)
+        internal int SaveMatch(int? p_winner, int? p_loser, int p_draw, int p_gameType, int p_matchId)
         {
             string connString = new SQLDatabaseUtility().GetSQLConnectionString();
 
@@ -313,7 +313,7 @@ namespace ClassLibrary
                 }
             }
         }
-        public int SaveGame(int p_rows, int p_columns, int p_winningLength, string p_gameType)
+        internal int SaveGame(int p_rows, int p_columns, int p_winningLength, string p_gameType)
         {
             string connString = new SQLDatabaseUtility().GetSQLConnectionString();
 
@@ -343,7 +343,7 @@ namespace ClassLibrary
                 }
             }
         }
-        public void SaveMoveHistory(int p_player, string p_input, int p_matchId, bool p_twist)
+        internal void SaveMoveHistory(int p_player, string p_input, int p_matchId, bool p_twist)
         {
             string connString = new SQLDatabaseUtility().GetSQLConnectionString();
 
@@ -362,7 +362,7 @@ namespace ClassLibrary
                 }
             }
         }
-        public void SavePlayerToMatch(int p_playerId, int p_matchId)
+        internal void SavePlayerToMatch(int p_playerId, int p_matchId)
         {
             string connString = new SQLDatabaseUtility().GetSQLConnectionString();
 
@@ -384,20 +384,20 @@ namespace ClassLibrary
         #endregion
 
         #region ChatGPT
-        public string SendMessageToChatGPT(string apiKey, string p_message)
+        protected string SendMessageToChatGPT(string apiKey, string p_message)
         {
             var chatGPTClient = new ChatGPTClient(apiKey);
             return chatGPTClient.SendMessage(p_message);
         }
-        public virtual string BuildMessage(string p_board, List<Player> p_players)
+        protected virtual string BuildMessage(string p_board, List<Player> p_players)
         {
             return "error";
         }
-        public string GetApiKey()
+        protected string GetApiKey()
         {
             return Environment.GetEnvironmentVariable("CHATGPT_API_KEY", EnvironmentVariableTarget.Machine);
         }
-        public string BoardToString(char[,] p_board, List<Player> p_players)
+        protected string BoardToString(char[,] p_board, List<Player> p_players)
         {
             StringBuilder sb = new StringBuilder();
             for (int row = 0; row < p_rows; row++)

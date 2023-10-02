@@ -1,6 +1,6 @@
 ﻿namespace ClassLibrary
 {
-    public class Options
+    internal class Options
     {
         public static bool GameOptions()
         {
