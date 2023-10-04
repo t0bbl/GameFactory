@@ -65,5 +65,10 @@ namespace GameFactoryWPF
             Stats statsWindow = new Stats();
             statsWindow.ShowDialog();
         }
+        private void ToTTT(object sender, RoutedEventArgs e)
+        {
+            TTT tttWindow = new TTT();
+            tttWindow.ShowDialog();
+        }
     }
 }

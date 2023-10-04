@@ -44,7 +44,7 @@
                     <MenuItem Header="File">
                         <MenuItem      Header="_LeaderBoard" Click="ToLeaderboard" />
                         <MenuItem        Header="_Stats" Click="ToStats" />
-                        <MenuItem        Header="_Item 3" />
+                        <MenuItem        Header="_TTT" Click="ToTTT" />
                     </MenuItem>
                 </Menu>
             </materialDesign:Card>
