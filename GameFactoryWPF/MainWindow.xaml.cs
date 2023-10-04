@@ -54,5 +54,10 @@ namespace GameFactoryWPF
             Button button = (Button)sender;
             MessageBox.Show("The button labeled '" + button.Content + "' has been clicked.");
         }
+
+        private void ToLeaderboard(object sender, RoutedEventArgs e)
+        {
+            MessageBox.Show("The button labeled 'leaderboard' has been clicked.");
+        }
     }
 }

@@ -21,7 +21,9 @@
         </ResourceDictionary>
     </Window.Resources>
     <Grid>
-        <Grid x:Name="WelcomeSection">
+
+
+        <Grid Grid.Row="1" x:Name="WelcomeSection">
             <Grid.RowDefinitions>
                 <RowDefinition Height="131" />
                 <RowDefinition Height="211*" />
@@ -32,16 +34,26 @@
         </Grid>
         <Grid x:Name="LoginSection" Visibility="Collapsed">
             <Grid.RowDefinitions>
+                <RowDefinition Height="30" />
                 <RowDefinition Height="131" />
                 <RowDefinition Height="211*" />
                 <RowDefinition Height="242*" />
             </Grid.RowDefinitions>
-            <TextBlock Margin="100,40,100,0" Style="{StaticResource MaterialDesignHeadline6TextBlock}" Foreground="{DynamicResource SecondaryHueMidBrush}"   TextAlignment="Center" Height="100" VerticalAlignment="Center" >Login to<LineBreak /> GameFactory <LineBreak /> to start the fun!!!</TextBlock>
-            <TextBox  Margin="100,30,100,0" Grid.Row="1" Name="Username" Style="{StaticResource MaterialDesignFloatingHintTextBox}"   materialDesign:HintAssist.Hint="UserName" HorizontalContentAlignment="Left" VerticalContentAlignment="Center" Height="50" VerticalAlignment="Top"/>
-            <PasswordBox Margin="100,100,100,0" Grid.Row="1" Name="Password" Style="{StaticResource MaterialDesignFloatingHintRevealPasswordBox}"   Height="50" materialDesign:HintAssist.Hint="************" materialDesign:PasswordBoxAssist.IsPasswordRevealed="False" VerticalAlignment="Top" KeyDown="Login_KeyDown" />
-            <Button Grid.Row="2" Margin="100,10,100,0" Name="Login" Style="{StaticResource MaterialDesignFlatAccentBgButton}" Click="Login_Click"  Height="32" VerticalAlignment="Top">Login</Button>
-            <Button Grid.Row="2" Margin="100,60,100,0" Name="Register" Style="{StaticResource MaterialDesignFlatAccentBgButton}" Click="Register_Click"  Height="32" VerticalAlignment="Top">SignUp</Button>
-            <Button Grid.Row="2" Margin="100,110,100,0" Name="Guest" Style="{StaticResource MaterialDesignFlatAccentBgButton}" Click="Login_Click" Height="32" Foreground="Gray" VerticalAlignment="Top">Guest</Button>
+            <materialDesign:Card Grid.Row="0">
+                <Menu materialDesign:MenuAssist.TopLevelMenuItemHeight="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type materialDesign:Card}}, Path=ActualHeight}">
+                    <MenuItem Header="File">
+                        <MenuItem      Header="_LeaderBoard" Click="ToLeaderboard" />
+                        <MenuItem        Header="_Item 2" />
+                        <MenuItem        Header="_Item 3" />
+                    </MenuItem>
+                </Menu>
+            </materialDesign:Card>
+            <TextBlock Margin="100,40,100,0" Grid.Row="1" Style="{StaticResource MaterialDesignHeadline6TextBlock}" Foreground="{DynamicResource SecondaryHueMidBrush}"   TextAlignment="Center" Height="100" VerticalAlignment="Center" >Login to<LineBreak /> GameFactory <LineBreak /> to start the fun!!!</TextBlock>
+            <TextBox  Margin="100,30,100,0" Grid.Row="2" Name="Username" Style="{StaticResource MaterialDesignFloatingHintTextBox}"   materialDesign:HintAssist.Hint="UserName" HorizontalContentAlignment="Left" VerticalContentAlignment="Center" Height="50" VerticalAlignment="Top"/>
+            <PasswordBox Margin="100,100,100,0" Grid.Row="2" Name="Password" Style="{StaticResource MaterialDesignFloatingHintRevealPasswordBox}"   Height="50" materialDesign:HintAssist.Hint="************" materialDesign:PasswordBoxAssist.IsPasswordRevealed="False" VerticalAlignment="Top" KeyDown="Login_KeyDown" />
+            <Button Grid.Row="3" Margin="100,10,100,0" Name="Login" Style="{StaticResource MaterialDesignFlatAccentBgButton}" Click="Login_Click"  Height="32" VerticalAlignment="Top">Login</Button>
+            <Button Grid.Row="3" Margin="100,60,100,0" Name="Register" Style="{StaticResource MaterialDesignFlatAccentBgButton}" Click="Register_Click"  Height="32" VerticalAlignment="Top">SignUp</Button>
+            <Button Grid.Row="3" Margin="100,110,100,0" Name="Guest" Style="{StaticResource MaterialDesignFlatAccentBgButton}" Click="Login_Click" Height="32" Foreground="Gray" VerticalAlignment="Top">Guest</Button>
         </Grid>
     </Grid>
 </Window>
