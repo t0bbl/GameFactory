@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:GameFactoryWPF"
         mc:Ignorable="d"
-                xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         TextElement.Foreground="{DynamicResource MaterialDesignBody}"
         Background="{DynamicResource MaterialDesignPaper}"
         Title="GameFactory" Height="600" Width="400"
@@ -43,7 +43,7 @@
                 <Menu materialDesign:MenuAssist.TopLevelMenuItemHeight="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type materialDesign:Card}}, Path=ActualHeight}">
                     <MenuItem Header="File">
                         <MenuItem      Header="_LeaderBoard" Click="ToLeaderboard" />
-                        <MenuItem        Header="_Item 2" />
+                        <MenuItem        Header="_Stats" Click="ToStats" />
                         <MenuItem        Header="_Item 3" />
                     </MenuItem>
                 </Menu>

@@ -5,8 +5,25 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:GameFactoryWPF"
         mc:Ignorable="d"
-        Title="LeaderBoard" Height="450" Width="800">
+        Title="LeaderBoard" Height="450" Width="800"
+        Style="{StaticResource MaterialDesignWindow}"
+        BorderThickness="0"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+        Background="{DynamicResource MaterialDesignPaper}"
+        >
     <Grid>
-        
+        <ListView ItemsSource="{Binding LeaderBoard}">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn DisplayMemberBinding="{Binding Place}" Header="#"  Width="Auto"/>
+                    <GridViewColumn DisplayMemberBinding="{Binding Name}" Header="Name"  Width="Auto"/>
+                    <GridViewColumn DisplayMemberBinding="{Binding Wins}" Header="Wins"  Width="Auto"/>
+                    <GridViewColumn DisplayMemberBinding="{Binding Losses}" Header="Losses"  Width="Auto"/>
+                    <GridViewColumn DisplayMemberBinding="{Binding Draws}" Header="Draws"  Width="Auto"/>
+                    <GridViewColumn DisplayMemberBinding="{Binding WinPercentage}" Header="Winpercentage"  Width="Auto"/>
+                </GridView>
+            </ListView.View>
+        </ListView>
     </Grid>
 </Window>

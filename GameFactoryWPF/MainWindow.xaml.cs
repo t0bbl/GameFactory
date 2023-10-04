@@ -57,7 +57,13 @@ namespace GameFactoryWPF
 
         private void ToLeaderboard(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show("The button labeled 'leaderboard' has been clicked.");
+            LeaderBoard leaderBoardWindow = new LeaderBoard(); 
+            leaderBoardWindow.ShowDialog();
+        }
+        private void ToStats(object sender, RoutedEventArgs e)
+        {
+            Stats statsWindow = new Stats();
+            statsWindow.ShowDialog();
         }
     }
 }
