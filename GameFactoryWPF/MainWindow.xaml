@@ -21,8 +21,6 @@
         </ResourceDictionary>
     </Window.Resources>
     <Grid>
-
-
         <Grid Grid.Row="1" x:Name="WelcomeSection">
             <Grid.RowDefinitions>
                 <RowDefinition Height="131" />
