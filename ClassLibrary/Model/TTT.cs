@@ -56,7 +56,7 @@
             SaveMoveHistory(p_player[p_currentPlayerIndex].Ident, p_cell, p_matchId, p_twistStat);
         }
         #region ChatGPT
-        protected override string BuildMessage(string p_board, List<Player> p_players)
+        public override string BuildMessage(string p_board, List<Player> p_players)
         {
             return $"Objective: Win the Tic-Tac-Toe game.\n" +
                    $"Current board:\n{p_board}\n" +

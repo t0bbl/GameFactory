@@ -389,7 +389,7 @@ namespace ClassLibrary
             var chatGPTClient = new ChatGPTClient(apiKey);
             return chatGPTClient.SendMessage(p_message);
         }
-        protected virtual string BuildMessage(string p_board, List<Player> p_players)
+        public virtual string BuildMessage(string p_board, List<Player> p_players)
         {
             return "error";
         }

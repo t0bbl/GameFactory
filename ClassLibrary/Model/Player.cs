@@ -6,7 +6,7 @@ using System.Text.RegularExpressions;
 
 namespace ClassLibrary
 {
-    internal class Player
+    public class Player
     {
         internal string Name { get; set; }
         internal char Icon { get; set; }
@@ -66,7 +66,7 @@ namespace ClassLibrary
                 return 0;
             }
         }
-        internal int PlayerSignIn()
+        public int PlayerSignIn()
         {
             int p_ident = 0;
             string p_loginName;
