@@ -3,41 +3,59 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:GameFactoryWPF"
         mc:Ignorable="d"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         TextElement.Foreground="{DynamicResource MaterialDesignBody}"
         Background="{DynamicResource MaterialDesignPaper}"
-        Title="GameFactory" Height="600" Width="400"
+        Title="GameFactory" Height="900" Width="1600"
         Style="{StaticResource MaterialDesignWindow}"
         BorderThickness="0">
-
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Primary/MaterialDesignColor.Grey.xaml" />
-                <ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Accent/MaterialDesignColor.Cyan.xaml" />
+                <ResourceDictionary Source="Resources.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Window.Resources>
+
     <Grid>
-        <Grid Grid.Row="1" x:Name="WelcomeSection">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="131" />
-                <RowDefinition Height="211*" />
-                <RowDefinition Height="242*" />
-            </Grid.RowDefinitions>
-            <TextBlock Margin="100,40,100,0" Style="{StaticResource MaterialDesignHeadline6TextBlock}" Foreground="{DynamicResource SecondaryHueMidBrush}"   TextAlignment="Center" Height="100" VerticalAlignment="Center" >Welcome to<LineBreak /> the GameFactory!</TextBlock>
-            <TextBlock Grid.Row="2" Style="{StaticResource MaterialDesignHeadline6TextBlock}" Foreground="{DynamicResource SecondaryHueMidBrush}"   TextAlignment="Center" Height="100" VerticalAlignment="Center" >Press Enter to continue!</TextBlock>
-        </Grid>
-        <Grid x:Name="LoginSection" Visibility="Collapsed">
+        <Ellipse Fill="{DynamicResource SecondaryHueMidBrush}" Width="1200" Height="1200" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="-500,0,0,-500" />
+        <Ellipse Fill="{DynamicResource MaterialDesignPaper}" Width="1100" Height="1100" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="-450,0,0,-450" />
+        <Canvas HorizontalAlignment="Right" VerticalAlignment="Top" Width="1200" Height="1200" Margin="0,-400,-400,0">
+            <Canvas.RenderTransform>
+                <RotateTransform CenterX="600" CenterY="600" Angle="20" />
+            </Canvas.RenderTransform>
+            <Line X1="600" Y1="0" X2="600" Y2="1200" Stroke="Red" StrokeThickness="52"/>
+            <Line X1="0" Y1="600" X2="1200" Y2="600" Stroke="Red" StrokeThickness="52"/>
+        </Canvas>
+        <Grid x:Name="WelcomeSection">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="100*" />
+                <ColumnDefinition Width="100*" />
+                <ColumnDefinition Width="100*" />
+            </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
                 <RowDefinition Height="30" />
-                <RowDefinition Height="131" />
-                <RowDefinition Height="211*" />
-                <RowDefinition Height="242*" />
+                <RowDefinition Height="100*" />
+                <RowDefinition Height="100*" />
+                <RowDefinition Height="100*" />
             </Grid.RowDefinitions>
-            <materialDesign:Card Grid.Row="0">
+            <TextBlock Grid.Row="1" Grid.Column="1" Margin="100,40,100,0" Style="{StaticResource MaterialDesignHeadline6TextBlock}" Foreground="{DynamicResource SecondaryHueMidBrush}"   TextAlignment="Center" Height="100" VerticalAlignment="Center" >Welcome to<LineBreak /> the GameFactory!</TextBlock>
+            <TextBlock Grid.Row="2" Grid.Column="1" Style="{StaticResource MaterialDesignHeadline6TextBlock}" Foreground="{DynamicResource SecondaryHueMidBrush}"   TextAlignment="Center" Height="100" VerticalAlignment="Center" >Press Enter to continue!</TextBlock>
+        </Grid>
+        <Grid x:Name="LoginSection" Visibility="Collapsed">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="100*" />
+                <ColumnDefinition Width="100*" />
+                <ColumnDefinition Width="100*" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="30" />
+                <RowDefinition Height="100*" />
+                <RowDefinition Height="100*" />
+                <RowDefinition Height="100*" />
+            </Grid.RowDefinitions>
+            <materialDesign:Card Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" >
                 <Menu materialDesign:MenuAssist.TopLevelMenuItemHeight="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type materialDesign:Card}}, Path=ActualHeight}">
                     <MenuItem Header="File">
                         <MenuItem      Header="_LeaderBoard" Click="ToLeaderboard" />
@@ -46,12 +64,13 @@
                     </MenuItem>
                 </Menu>
             </materialDesign:Card>
-            <TextBlock Margin="100,40,100,0" Grid.Row="1" Style="{StaticResource MaterialDesignHeadline6TextBlock}" Foreground="{DynamicResource SecondaryHueMidBrush}"   TextAlignment="Center" Height="100" VerticalAlignment="Center" >Login to<LineBreak /> GameFactory <LineBreak /> to start the fun!!!</TextBlock>
-            <TextBox  Margin="100,30,100,0" Grid.Row="2" Name="Username" Style="{StaticResource MaterialDesignFloatingHintTextBox}"   materialDesign:HintAssist.Hint="UserName" HorizontalContentAlignment="Left" VerticalContentAlignment="Center" Height="50" VerticalAlignment="Top"/>
-            <PasswordBox Margin="100,100,100,0" Grid.Row="2" Name="Password" Style="{StaticResource MaterialDesignFloatingHintRevealPasswordBox}"   Height="50" materialDesign:HintAssist.Hint="************" materialDesign:PasswordBoxAssist.IsPasswordRevealed="False" VerticalAlignment="Top" KeyDown="Login_KeyDown" />
-            <Button Grid.Row="3" Margin="100,10,100,0" Name="Login" Style="{StaticResource MaterialDesignFlatAccentBgButton}" Click="Login_Click"  Height="32" VerticalAlignment="Top">Login</Button>
-            <Button Grid.Row="3" Margin="100,60,100,0" Name="Register" Style="{StaticResource MaterialDesignFlatAccentBgButton}" Click="Register_Click"  Height="32" VerticalAlignment="Top">SignUp</Button>
-            <Button Grid.Row="3" Margin="100,110,100,0" Name="Guest" Style="{StaticResource MaterialDesignFlatAccentBgButton}" Click="Login_Click" Height="32" Foreground="Gray" VerticalAlignment="Top">Guest</Button>
+            <TextBlock Margin="100,40,100,0" Grid.Row="1" Grid.Column="0" Style="{StaticResource MaterialDesignHeadline6TextBlock}" Foreground="{DynamicResource SecondaryHueMidBrush}"   TextAlignment="Center" Height="100" VerticalAlignment="Center" >Login to<LineBreak /> GameFactory <LineBreak /> to start the fun!!!</TextBlock>
+            <TextBox  Margin="100,30,100,0" Grid.Row="2" Grid.Column="0" Name="Username" Style="{StaticResource MaterialDesignFloatingHintTextBox}"   materialDesign:HintAssist.Hint="UserName" HorizontalContentAlignment="Left" VerticalContentAlignment="Center" Height="50" VerticalAlignment="Top"/>
+            <PasswordBox Margin="100,100,100,0" Grid.Row="2" Grid.Column="0" Name="Password" Style="{StaticResource MaterialDesignFloatingHintRevealPasswordBox}"   Height="50" materialDesign:HintAssist.Hint="************" materialDesign:PasswordBoxAssist.IsPasswordRevealed="False" VerticalAlignment="Top" KeyDown="Login_KeyDown" />
+            <Button Grid.Row="3" Grid.Column="0" Margin="100,10,100,0" Name="Login" Style="{StaticResource MaterialDesignFlatAccentBgButton}" Click="Login_Click"  Height="32" VerticalAlignment="Top">Login</Button>
+            <Button Grid.Row="3" Grid.Column="0" Margin="100,60,100,0" Name="Register" Style="{StaticResource MaterialDesignFlatAccentBgButton}" Click="Register_Click"  Height="32" VerticalAlignment="Top">SignUp</Button>
+            <Button Grid.Row="3" Grid.Column="0" Margin="100,110,100,0" Name="Guest" Style="{StaticResource MaterialDesignFlatAccentBgButton}" Click="Login_Click" Height="32" Foreground="Gray" VerticalAlignment="Top">Guest</Button>
         </Grid>
+
     </Grid>
 </Window>

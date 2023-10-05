@@ -31,8 +31,8 @@ namespace GameFactoryWPF
         {
             if (e.Key == Key.Enter)
             {
-                WelcomeSection.Visibility = Visibility.Collapsed; 
-                LoginSection.Visibility = Visibility.Visible; 
+                WelcomeSection.Visibility = Visibility.Collapsed;
+                LoginSection.Visibility = Visibility.Visible;
             }
         }
         private void Login_Click(object sender, RoutedEventArgs e)
@@ -57,7 +57,7 @@ namespace GameFactoryWPF
 
         private void ToLeaderboard(object sender, RoutedEventArgs e)
         {
-            LeaderBoard leaderBoardWindow = new LeaderBoard(); 
+            LeaderBoard leaderBoardWindow = new LeaderBoard();
             leaderBoardWindow.ShowDialog();
         }
         private void ToStats(object sender, RoutedEventArgs e)
@@ -70,5 +70,6 @@ namespace GameFactoryWPF
             TTT tttWindow = new TTT();
             tttWindow.ShowDialog();
         }
+
     }
 }
