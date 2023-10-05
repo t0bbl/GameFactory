@@ -24,17 +24,15 @@ namespace GameFactoryWPF
         public MainWindow()
         {
             InitializeComponent();
-            this.KeyDown += new KeyEventHandler(MainWindow_KeyDown);
+            this.MouseDown += MainWindow_MouseDown;
         }
 
-        private void MainWindow_KeyDown(object sender, KeyEventArgs e)
+        private void MainWindow_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            if (e.Key == Key.Enter)
-            {
-                WelcomeSection.Visibility = Visibility.Collapsed;
-                LoginSection.Visibility = Visibility.Visible;
-            }
+            WelcomeSection.Visibility = Visibility.Collapsed;
+            LoginSection.Visibility = Visibility.Visible;
         }
+
         private void Login_Click(object sender, RoutedEventArgs e)
         {
             Button button = (Button)sender;

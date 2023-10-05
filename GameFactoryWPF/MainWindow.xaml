@@ -9,7 +9,9 @@
         Background="{DynamicResource MaterialDesignPaper}"
         Title="GameFactory" Height="900" Width="1600"
         Style="{StaticResource MaterialDesignWindow}"
-        BorderThickness="0">
+        BorderThickness="0"
+        MouseDown="MainWindow_MouseDown">
+    
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -19,16 +21,21 @@
     </Window.Resources>
 
     <Grid>
-        <Ellipse Fill="{DynamicResource SecondaryHueMidBrush}" Width="1200" Height="1200" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="-500,0,0,-500" />
+        
+        
+        <Ellipse Fill="{DynamicResource SecondaryHueDarkBrush}" Width="1200" Height="1200" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="-500,0,0,-500" />
         <Ellipse Fill="{DynamicResource MaterialDesignPaper}" Width="1100" Height="1100" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="-450,0,0,-450" />
         <Canvas HorizontalAlignment="Right" VerticalAlignment="Top" Width="1200" Height="1200" Margin="0,-400,-400,0">
             <Canvas.RenderTransform>
                 <RotateTransform CenterX="600" CenterY="600" Angle="20" />
             </Canvas.RenderTransform>
-            <Line X1="600" Y1="0" X2="600" Y2="1200" Stroke="Red" StrokeThickness="52"/>
-            <Line X1="0" Y1="600" X2="1200" Y2="600" Stroke="Red" StrokeThickness="52"/>
+            <Line X1="600" Y1="0" X2="600" Y2="1200" Stroke="DarkRed" StrokeThickness="52"/>
+            <Line X1="0" Y1="600" X2="1200" Y2="600" Stroke="DarkRed" StrokeThickness="52"/>
         </Canvas>
+        
+        
         <Grid x:Name="WelcomeSection">
+            
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="100*" />
                 <ColumnDefinition Width="100*" />
@@ -40,8 +47,9 @@
                 <RowDefinition Height="100*" />
                 <RowDefinition Height="100*" />
             </Grid.RowDefinitions>
+            
             <TextBlock Grid.Row="1" Grid.Column="1" Margin="100,40,100,0" Style="{StaticResource MaterialDesignHeadline6TextBlock}" Foreground="{DynamicResource SecondaryHueMidBrush}"   TextAlignment="Center" Height="100" VerticalAlignment="Center" >Welcome to<LineBreak /> the GameFactory!</TextBlock>
-            <TextBlock Grid.Row="2" Grid.Column="1" Style="{StaticResource MaterialDesignHeadline6TextBlock}" Foreground="{DynamicResource SecondaryHueMidBrush}"   TextAlignment="Center" Height="100" VerticalAlignment="Center" >Press Enter to continue!</TextBlock>
+            <TextBlock Grid.Row="2" Grid.Column="1" Style="{StaticResource MaterialDesignHeadline6TextBlock}" Foreground="{DynamicResource SecondaryHueMidBrush}"   TextAlignment="Center" Height="100" VerticalAlignment="Center" >Click anywhere to continue!</TextBlock>
         </Grid>
         <Grid x:Name="LoginSection" Visibility="Collapsed">
             <Grid.ColumnDefinitions>
