@@ -30,6 +30,7 @@ namespace GameFactoryWPF
         private void MainWindow_MouseDown(object sender, MouseButtonEventArgs e)
         {
             WelcomeSection.Visibility = Visibility.Collapsed;
+
             LoginSection.Visibility = Visibility.Visible;
         }
 
@@ -69,5 +70,9 @@ namespace GameFactoryWPF
             tttWindow.ShowDialog();
         }
 
+
     }
+
+
+
 }
