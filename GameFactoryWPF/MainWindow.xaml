@@ -145,29 +145,26 @@
                 GameFactory<LineBreak />
                 to start the fun!!!</TextBlock>
 
-            <!--<Grid
+            <Grid
                 x:Name="InputBoxes"
                 Grid.Row="2"
                 Grid.Column="0">
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="50" />
-                    <RowDefinition Height="50" />
+                    <RowDefinition Height="70" />
+                    <RowDefinition Height="70" />
                 </Grid.RowDefinitions>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="200" />
-                </Grid.ColumnDefinitions>
+
                 <TextBox
                     Name="Username"
                     Grid.Row="0"
+                    Width="250"
                     Height="50"
-                    
-                    Width="200"
                     materialDesign:HintAssist.Hint="UserName"
-                    Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                    />
+                    Style="{StaticResource MaterialDesignFloatingHintTextBox}" />
                 <PasswordBox
                     Name="Password"
                     Grid.Row="1"
+                    Width="250"
                     Height="50"
                     Margin="10,10"
                     materialDesign:HintAssist.Hint="************"
@@ -175,40 +172,46 @@
                     KeyDown="Login_KeyDown"
                     Style="{StaticResource MaterialDesignFloatingHintRevealPasswordBox}" />
 
-            </Grid>-->
+            </Grid>
 
-
-            <Button
-                Name="Login"
+            <Grid
+                x:Name="Buttons"
                 Grid.Row="3"
-                Grid.Column="0"
-                Margin="60,10,60,0"
-                Click="Login_Click"
-                Style="{StaticResource MaterialDesignFlatAccentBgButton}">
-                Login
-            </Button>
-            <Button
-                Name="Register"
-                Grid.Row="3"
-                Grid.Column="0"
-                Height="32"
-                Margin="60,10,60,0"
-                Command="{x:Static materialDesign:Flipper.FlipCommand}"
-                Style="{StaticResource MaterialDesignFlatAccentBgButton}">
-                SignUp
-            </Button>
-            <Button
-                Name="Guest"
-                Grid.Row="3"
-                Grid.Column="0"
-                Height="32"
-                Margin="100,110,100,0"
-                VerticalAlignment="Top"
-                Click="Login_Click"
-                Foreground="Gray"
-                Style="{StaticResource MaterialDesignFlatAccentBgButton}">
-                Guest
-            </Button>
+                Grid.Column="0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="40" />
+                    <RowDefinition Height="40" />
+                    <RowDefinition Height="40" />
+                </Grid.RowDefinitions>
+                <Button
+                    Name="Login"
+                    Grid.Row="0"
+                    Margin="60,10,60,0"
+                    Click="Login_Click"
+                    Style="{StaticResource MaterialDesignFlatAccentBgButton}">
+                    Login
+                </Button>
+                <Button
+                    Name="Register"
+                    Grid.Row="1"
+                    Height="32"
+                    Margin="60,10,60,0"
+                    Command="{x:Static materialDesign:Flipper.FlipCommand}"
+                    Style="{StaticResource MaterialDesignFlatAccentBgButton}">
+                    SignUp
+                </Button>
+                <Button
+                    Name="Guest"
+                    Grid.Row="2"
+                    Height="32"
+                    Margin="60,10,60,0"
+                    VerticalAlignment="Top"
+                    Click="Login_Click"
+                    Foreground="Gray"
+                    Style="{StaticResource MaterialDesignFlatAccentBgButton}">
+                    Guest
+                </Button>
+            </Grid>
         </Grid>
 
     </Grid>
