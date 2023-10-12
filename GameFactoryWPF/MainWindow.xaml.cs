@@ -21,6 +21,7 @@ namespace GameFactoryWPF
     /// </summary>
     public partial class MainWindow : Window
     {
+
         public MainWindow()
         {
             InitializeComponent();
@@ -33,6 +34,7 @@ namespace GameFactoryWPF
 
             LoginSection.Visibility = Visibility.Visible;
         }
+
 
         private void Login_Click(object sender, RoutedEventArgs e)
         {

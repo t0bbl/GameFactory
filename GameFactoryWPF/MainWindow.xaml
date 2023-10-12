@@ -135,8 +135,9 @@
 
             <TextBlock
                 Grid.Row="1"
-                Grid.Column="0"
+                Grid.Column="1"
                 Height="100"
+                Margin="0,70,0,0"
                 VerticalAlignment="Center"
                 Foreground="{DynamicResource SecondaryHueMidBrush}"
                 Style="{StaticResource MaterialDesignHeadline6TextBlock}"
@@ -148,7 +149,8 @@
             <Grid
                 x:Name="InputBoxes"
                 Grid.Row="2"
-                Grid.Column="0">
+                Grid.Column="1"
+                Margin="0,70,0,0">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="70" />
                     <RowDefinition Height="70" />
@@ -158,14 +160,14 @@
                     Name="Username"
                     Grid.Row="0"
                     Width="250"
-                    Height="50"
+                    Height="40"
                     materialDesign:HintAssist.Hint="UserName"
                     Style="{StaticResource MaterialDesignFloatingHintTextBox}" />
                 <PasswordBox
                     Name="Password"
                     Grid.Row="1"
                     Width="250"
-                    Height="50"
+                    Height="40"
                     Margin="10,10"
                     materialDesign:HintAssist.Hint="************"
                     materialDesign:PasswordBoxAssist.IsPasswordRevealed="False"
@@ -177,7 +179,9 @@
             <Grid
                 x:Name="Buttons"
                 Grid.Row="3"
-                Grid.Column="0">
+                Grid.Column="1"
+                Width="375"
+                Margin="0,30,0,0">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="40" />
                     <RowDefinition Height="40" />
@@ -196,7 +200,6 @@
                     Grid.Row="1"
                     Height="32"
                     Margin="60,10,60,0"
-                    Command="{x:Static materialDesign:Flipper.FlipCommand}"
                     Style="{StaticResource MaterialDesignFlatAccentBgButton}">
                     SignUp
                 </Button>
@@ -207,7 +210,7 @@
                     Margin="60,10,60,0"
                     VerticalAlignment="Top"
                     Click="Login_Click"
-                    Foreground="Gray"
+                    Command="{x:Static materialDesign:Flipper.FlipCommand}"
                     Style="{StaticResource MaterialDesignFlatAccentBgButton}">
                     Guest
                 </Button>
