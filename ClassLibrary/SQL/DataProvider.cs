@@ -6,7 +6,7 @@ using System.Text;
 
 namespace ClassLibrary
 {
-    internal static class DataProvider
+    public static class DataProvider
     {
         internal static void DisplayPlayerStats(int p_ident, bool? p_displayWithName)
         {
@@ -179,7 +179,7 @@ namespace ClassLibrary
 
             return player;
         }
-        internal static void DisplayLeaderBoard()
+        public static void DisplayLeaderBoard()
         {
             string connString = new SQLDatabaseUtility().GetSQLConnectionString();
 

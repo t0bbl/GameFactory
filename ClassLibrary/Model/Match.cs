@@ -4,7 +4,7 @@ using System.Text;
 
 namespace ClassLibrary
 {
-    internal class Match : Game
+    public class Match : Game
     {
         #region Variables
         internal char[,] p_board { get; set; }
@@ -34,7 +34,7 @@ namespace ClassLibrary
             this.p_winningLength = p_winningLength;
             p_board = new char[p_rows, p_columns];
         }
-        internal void StartMatch()
+        public void StartMatch()
         {
             p_firstTurn = true;
             if (p_player.All(player => player.Name != "CHATGPT"))
@@ -269,7 +269,7 @@ namespace ClassLibrary
             }
             return p_players;
         }
-        internal void EndGameStats(List<Player> p_player)
+        public void EndGameStats(List<Player> p_player)
         {
             Console.WriteLine("Game over!");
             Console.WriteLine("Final scores:");

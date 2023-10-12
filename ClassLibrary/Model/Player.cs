@@ -114,7 +114,7 @@ namespace ClassLibrary
                 }
             }
         }
-        internal static void ShowPlayerStats()
+        public static void ShowPlayerStats()
         {
             Console.Clear();
             Console.WriteLine("Input a Name or LoginName to check their PlayerStats");
@@ -254,7 +254,7 @@ namespace ClassLibrary
             }
             return true;
         }
-        internal bool SetPlayerVariables(int p_ident)
+        public bool SetPlayerVariables(int p_ident)
         {
             Console.Clear();
             p_name = Game.InitializePlayerName();
