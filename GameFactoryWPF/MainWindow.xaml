@@ -12,6 +12,7 @@
     BorderThickness="0"
     MouseDown="MainWindow_MouseDown"
     Style="{StaticResource MaterialDesignWindow}"
+    Template="{StaticResource CommonBackgroundTemplate}"
     TextElement.Foreground="{DynamicResource MaterialDesignBody}"
     mc:Ignorable="d">
 
@@ -24,47 +25,6 @@
     </Window.Resources>
 
     <Grid>
-
-        <Grid Name="Background">
-            <Ellipse
-                Width="1200"
-                Height="1200"
-                Margin="-500,0,0,-500"
-                HorizontalAlignment="Left"
-                VerticalAlignment="Bottom"
-                Fill="{DynamicResource SecondaryHueDarkBrush}" />
-            <Ellipse
-                Width="1100"
-                Height="1100"
-                Margin="-450,0,0,-450"
-                HorizontalAlignment="Left"
-                VerticalAlignment="Bottom"
-                Fill="{DynamicResource MaterialDesignPaper}" />
-            <Canvas
-                Width="1200"
-                Height="1200"
-                Margin="0,-400,-400,0"
-                HorizontalAlignment="Right"
-                VerticalAlignment="Top">
-                <Canvas.RenderTransform>
-                    <RotateTransform Angle="20" CenterX="600" CenterY="600" />
-                </Canvas.RenderTransform>
-                <Line
-                    Stroke="DarkRed"
-                    StrokeThickness="52"
-                    X1="600"
-                    X2="600"
-                    Y1="0"
-                    Y2="1200" />
-                <Line
-                    Stroke="DarkRed"
-                    StrokeThickness="52"
-                    X1="0"
-                    X2="1200"
-                    Y1="600"
-                    Y2="600" />
-            </Canvas>
-        </Grid>
 
         <Grid x:Name="WelcomeSection">
 
