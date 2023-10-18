@@ -17,7 +17,7 @@ namespace GameFactoryWPF
     /// <summary>
     /// Interaction logic for LeaderBoard.xaml
     /// </summary>
-    public partial class LeaderBoard : Window
+    public partial class LeaderBoard
     {
         public LeaderBoard()
         {
