@@ -4,9 +4,9 @@ using System.Text;
 
 
 
-namespace GameFactory
+namespace ClassLibrary
 {
-    internal static class DataProvider
+    public static class DataProvider
     {
         internal static void DisplayPlayerStats(int p_ident, bool? p_displayWithName)
         {
@@ -18,7 +18,7 @@ namespace GameFactory
                 string sqlQuery = "SELECT * FROM PlayerStatsView WHERE Ident = @p_ident";
                 using (SqlCommand cmd = new SqlCommand(sqlQuery, conn))
                 {
-                    cmd.Parameters.Add(new SqlParameter("@p_ident", SqlDbType.Int, p_ident));
+                    cmd.Parameters.Add(new SqlParameter("@p_ident", p_ident));
                     using (SqlDataReader reader = cmd.ExecuteReader())
                     {
                         if (reader.HasRows)
@@ -179,7 +179,7 @@ namespace GameFactory
 
             return player;
         }
-        internal static void DisplayLeaderBoard()
+        public static void DisplayLeaderBoard()
         {
             string connString = new SQLDatabaseUtility().GetSQLConnectionString();
 

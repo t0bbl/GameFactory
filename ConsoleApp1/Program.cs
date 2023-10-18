@@ -1,4 +1,5 @@
-﻿using ClassLibrary;
+﻿using System.Text.RegularExpressions;
+using ClassLibrary;
 
 namespace GameFactory
 {
@@ -9,7 +10,7 @@ namespace GameFactory
             while (true)
             {
                 Game CurrentGame = new();
-                Match CurrentMatch;
+                ClassLibrary.Match CurrentMatch;
                 Player Player = new();
 
                 string GameMode = CurrentGame.InitializeGameMenu();

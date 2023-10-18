@@ -1,11 +1,10 @@
-using GameFactory.Model;
 using System.Data;
 using System.Data.SqlClient;
 using System.Text;
 
-namespace GameFactory
+namespace ClassLibrary
 {
-    internal class Match : Game
+    public class Match : Game
     {
         #region Variables
         internal char[,] p_board { get; set; }
@@ -28,14 +27,14 @@ namespace GameFactory
         Random p_random = new();
 
         #endregion
-        protected Match(int p_rows, int p_columns, int p_winningLength)
+        internal Match(int p_rows, int p_columns, int p_winningLength)
         {
             this.p_rows = p_rows;
             this.p_columns = p_columns;
             this.p_winningLength = p_winningLength;
             p_board = new char[p_rows, p_columns];
         }
-        internal void StartMatch()
+        public void StartMatch()
         {
             p_firstTurn = true;
             if (p_player.All(player => player.Name != "CHATGPT"))
@@ -270,7 +269,7 @@ namespace GameFactory
             }
             return p_players;
         }
-        internal void EndGameStats(List<Player> p_player)
+        public void EndGameStats(List<Player> p_player)
         {
             Console.WriteLine("Game over!");
             Console.WriteLine("Final scores:");
@@ -390,7 +389,7 @@ namespace GameFactory
             var chatGPTClient = new ChatGPTClient(apiKey);
             return chatGPTClient.SendMessage(p_message);
         }
-        protected virtual string BuildMessage(string p_board, List<Player> p_players)
+        public virtual string BuildMessage(string p_board, List<Player> p_players)
         {
             return "error";
         }
@@ -398,7 +397,7 @@ namespace GameFactory
         {
             return Environment.GetEnvironmentVariable("CHATGPT_API_KEY", EnvironmentVariableTarget.Machine);
         }
-        public string BoardToString(char[,] p_board, List<Player> p_players)
+        protected string BoardToString(char[,] p_board, List<Player> p_players)
         {
             StringBuilder sb = new StringBuilder();
             for (int row = 0; row < p_rows; row++)

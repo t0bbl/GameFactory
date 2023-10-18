@@ -1,13 +1,12 @@
-using GameFactory.Model;
 using System.Data;
 using System.Data.SqlClient;
 using System.Security.Cryptography;
 using System.Text;
 using System.Text.RegularExpressions;
 
-namespace GameFactory
+namespace ClassLibrary
 {
-    internal class Player
+    public class Player
     {
         internal string Name { get; set; }
         internal char Icon { get; set; }
@@ -67,7 +66,7 @@ namespace GameFactory
                 return 0;
             }
         }
-        internal int PlayerSignIn()
+        public int PlayerSignIn()
         {
             int p_ident = 0;
             string p_loginName;
@@ -115,7 +114,7 @@ namespace GameFactory
                 }
             }
         }
-        internal static void ShowPlayerStats()
+        public static void ShowPlayerStats()
         {
             Console.Clear();
             Console.WriteLine("Input a Name or LoginName to check their PlayerStats");
@@ -215,7 +214,7 @@ namespace GameFactory
         }
         #endregion
         #region Utility Methods
-        public static string HashPassword(string password)
+        internal static string HashPassword(string password)
         {
             using (SHA256 sha256Hash = SHA256.Create())
             {
@@ -229,7 +228,7 @@ namespace GameFactory
                 return builder.ToString();
             }
         }
-        public bool ValidateLoginName(string loginName)
+        internal bool ValidateLoginName(string loginName)
         {
             if (loginName.Length < 3 || loginName.Length > 16)
             {
@@ -246,7 +245,7 @@ namespace GameFactory
 
             return true;
         }
-        public static bool ValidatePassword(string password)
+        internal static bool ValidatePassword(string password)
         {
             if (password.Length < 8 || password.Length > 16)
             {
@@ -255,7 +254,7 @@ namespace GameFactory
             }
             return true;
         }
-        internal bool SetPlayerVariables(int p_ident)
+        public bool SetPlayerVariables(int p_ident)
         {
             Console.Clear();
             p_name = Game.InitializePlayerName();
