@@ -4,11 +4,11 @@ namespace ClassLibrary
     public class Game
     {
         #region Variables
-        public List<Player> p_player { get; set; } = new();
-        internal string p_gameType { get; set; }
-        internal string p_gameMode { get; set; }
+        public List<Player> p_Player { get; set; } = new();
+        internal string p_GameType { get; set; }
+        internal string p_GameMode { get; set; }
         internal Match CurrentMatch { get; set; }
-        internal int p_guestCount { get; set; } = 0;
+        internal int p_GuestCount { get; set; } = 0;
 
         #endregion
         public Match CreateMatch()
