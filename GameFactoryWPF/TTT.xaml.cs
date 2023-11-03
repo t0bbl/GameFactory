@@ -17,7 +17,7 @@ namespace GameFactoryWPF
     /// <summary>
     /// Interaction logic for TTT.xaml
     /// </summary>
-    public partial class TTT : Window
+    public partial class TTT : UserControl
     {
         public TTT()
         {

@@ -1,27 +1,32 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace GameFactoryWPF
 {
     /// <summary>
-    /// Interaction logic for LeaderBoard.xaml
+    /// Interaction logic for Leaderboard.xaml
     /// </summary>
-    public partial class LeaderBoard
+    public partial class Leaderboard : UserControl
     {
-        public LeaderBoard()
+        public Leaderboard()
         {
             InitializeComponent();
+            LoadTestData();
+        }
+
+        private void LoadTestData()
+        {
+            var testPlayers = new List<PlayerRecord>
+        {
+            new PlayerRecord { Place = 1, Name = "Alice", Wins = 50, Losses = 5, Draws = 2, WinPercentage = 89.5 },
+            new PlayerRecord { Place = 2, Name = "Bob", Wins = 45, Losses = 7, Draws = 3, WinPercentage = 83.3 },
+        };
+
+            this.DataContext = new { Leaderboard = testPlayers };
         }
     }
 }

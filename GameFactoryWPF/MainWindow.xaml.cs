@@ -13,25 +13,33 @@ namespace GameFactoryWPF
         public MainWindow()
         {
             InitializeComponent();
-            MainContent.Content = new Login();
         }
 
 
+        private void ToMainScreen(object sender, RoutedEventArgs e)
+        {
+            MainContent.Content = new Login();
+
+        }
 
         private void ToLeaderboard(object sender, RoutedEventArgs e)
         {
-            LeaderBoard LeaderBoardWindow = new LeaderBoard();
-            MainContent.Content = LeaderBoardWindow;
+            MainContent.Content = new Leaderboard();
+
         }
         private void ToStats(object sender, RoutedEventArgs e)
         {
-            Stats statsWindow = new Stats();
-            statsWindow.ShowDialog();
+            MainContent.Content = new Stats();
+
+            //Stats statsWindow = new Stats();
+            //statsWindow.ShowDialog();
         }
         private void ToTTT(object sender, RoutedEventArgs e)
         {
-            TTT tttWindow = new TTT();
-            tttWindow.ShowDialog();
+            MainContent.Content = new TTT();
+
+            //TTT tttWindow = new TTT();
+            //tttWindow.ShowDialog();
         }
 
 

@@ -6,7 +6,7 @@
     xmlns:local="clr-namespace:GameFactoryWPF"
     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    Background="{DynamicResource MaterialDesignPaper}"
+    Background="Transparent"
     BorderThickness="0"
     TextElement.Foreground="{DynamicResource MaterialDesignBody}"
     mc:Ignorable="d">
@@ -68,7 +68,7 @@
 
 
             <TextBlock
-                Grid.Row="1"
+                Grid.Row="0"
                 Grid.Column="1"
                 Height="100"
                 Margin="0,70,0,0"
@@ -82,7 +82,7 @@
 
             <Grid
                 x:Name="InputBoxes"
-                Grid.Row="2"
+                Grid.Row="1"
                 Grid.Column="1"
                 Margin="0,70,0,0">
                 <Grid.RowDefinitions>
