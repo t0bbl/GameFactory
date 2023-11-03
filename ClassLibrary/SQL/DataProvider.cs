@@ -10,9 +10,13 @@ namespace ClassLibrary
     {
 
         /// <summary>
-        /// Retrieves and displays the statistics of a player from the PlayerStatsView database based on the provided player identifier. The stats include wins, losses, draws, total played games, and win percentage. Optionally, the player's name can be displayed along with the stats based on the given parameter.
+        /// Displays the player's statistics based on the provided identifier, p_Ident.
+        /// Fetches data including Name, Wins, Losses, Draws, PlayedGames, and WinPercentage
+        /// from the PlayerStatsView in the database. If p_DisplayWithName is true, the output includes the player's name.
         /// </summary>
-        internal static void DisplayPlayerStats(int p_ident, bool? p_displayWithName)
+        /// <param name="p_Ident">The unique identifier of the player.</param>
+        /// <param name="p_DisplayWithName">A flag to determine if the player's name should be included in the display.</param>
+        internal static void DisplayPlayerStats(int p_Ident, bool? p_DisplayWithName)
         {
             string connString = new SQLDatabaseUtility().GetSQLConnectionString();
 
@@ -22,26 +26,27 @@ namespace ClassLibrary
                 string sqlQuery = "SELECT * FROM PlayerStatsView WHERE Ident = @p_ident";
                 using (SqlCommand cmd = new SqlCommand(sqlQuery, conn))
                 {
-                    cmd.Parameters.Add(new SqlParameter("@p_ident", p_ident));
+                    cmd.Parameters.AddWithValue("@p_ident", p_Ident);
+
                     using (SqlDataReader reader = cmd.ExecuteReader())
                     {
                         if (reader.HasRows)
                         {
                             while (reader.Read())
                             {
-                                string p_name = reader.GetString(reader.GetOrdinal("PlayerName"));
-                                int p_wins = reader.GetInt32(reader.GetOrdinal("Wins"));
-                                int p_losses = reader.GetInt32(reader.GetOrdinal("Losses"));
-                                int p_draws = reader.GetInt32(reader.GetOrdinal("Draws"));
-                                int p_playedGames = reader.GetInt32(reader.GetOrdinal("PlayedGames"));
-                                double p_winPercentage = reader.GetDouble(reader.GetOrdinal("WinPercentage"));
-                                if (p_displayWithName.HasValue)
+                                string Name = reader.GetString(reader.GetOrdinal("PlayerName"));
+                                int Wins = reader.GetInt32(reader.GetOrdinal("Wins"));
+                                int Losses = reader.GetInt32(reader.GetOrdinal("Losses"));
+                                int Draws = reader.GetInt32(reader.GetOrdinal("Draws"));
+                                int PlayedGames = reader.GetInt32(reader.GetOrdinal("PlayedGames"));
+                                double WinPercentage = reader.GetDouble(reader.GetOrdinal("WinPercentage"));
+                                if (p_DisplayWithName.HasValue)
                                 {
-                                    Console.WriteLine($"{p_name}: Wins: {p_wins}, Losses: {p_losses}, Draws: {p_draws}, PlayedGames: {p_playedGames}, Win Percentage: {p_winPercentage}");
+                                    Console.WriteLine($"{Name}: Wins: {Wins}, Losses: {Losses}, Draws: {Draws}, PlayedGames: {PlayedGames}, Win Percentage: {WinPercentage}");
                                 }
                                 else
                                 {
-                                    Console.WriteLine($"Wins: {p_wins}, Losses: {p_losses}, Draws: {p_draws}, PlayedGames: {p_playedGames}, Win Percentage: {p_winPercentage}");
+                                    Console.WriteLine($"Wins: {Wins}, Losses: {Losses}, Draws: {Draws}, PlayedGames: {PlayedGames}, Win Percentage: {WinPercentage}");
                                 }
                             }
                         }
@@ -52,7 +57,7 @@ namespace ClassLibrary
         /// <summary>
         /// Retrieves a list of player identifiers from the Player database based on an optional name parameter. The function searches both the "Name" and "LoginName" fields for a match using the provided name. If no name is given, all player identifiers are returned.
         /// </summary>
-        internal static List<int> GetPlayerIdentsFromName(string p_name = null)
+        internal static List<int> GetPlayerIdentsFromName(string p_Name = null)
         {
             string connString = new SQLDatabaseUtility().GetSQLConnectionString();
             List<int> p_idents = new List<int>();
@@ -64,10 +69,10 @@ namespace ClassLibrary
                 StringBuilder sqlQuery = new StringBuilder("SELECT Ident FROM Player WHERE 1=1");
                 List<SqlParameter> parameters = new List<SqlParameter>();
 
-                if (!string.IsNullOrEmpty(p_name))
+                if (!string.IsNullOrEmpty(p_Name))
                 {
                     sqlQuery.Append(" AND (Name LIKE @p_name OR LoginName LIKE @p_name)");
-                    parameters.Add(new SqlParameter("@p_name", p_name));
+                    parameters.Add(new SqlParameter("@p_name", p_Name));
                 }
 
                 using (SqlCommand cmd = new SqlCommand(sqlQuery.ToString(), conn))
@@ -91,7 +96,7 @@ namespace ClassLibrary
         /// <summary>
         /// Checks the availability of a given login name in the Player database. Returns true if the login name is available (not taken), and false otherwise. If the login name is already taken, a message is displayed to the user.
         /// </summary>
-        internal static bool CheckLoginNameAvailability(string p_loginName)
+        internal static bool CheckLoginNameAvailability(string p_LoginName)
         {
             string connString = new SQLDatabaseUtility().GetSQLConnectionString();
             bool p_result = false;
@@ -104,7 +109,7 @@ namespace ClassLibrary
 
                 using (SqlCommand cmd = new SqlCommand(sqlQuery, conn))
                 {
-                    cmd.Parameters.Add(new SqlParameter("@p_loginName", p_loginName));
+                    cmd.Parameters.Add(new SqlParameter("@p_loginName", p_LoginName));
 
                     object result = cmd.ExecuteScalar();
                     if (result == null)
