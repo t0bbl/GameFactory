@@ -2,26 +2,30 @@
 {
     public class Options
     {
+        /// <summary>
+        /// Provides a menu for the user to select various game options including toggling night mode or exiting the menu.
+        /// </summary>
+        /// <returns>False when the user exits the options menu.</returns>
         public static bool GameOptions()
         {
             Console.Clear();
-            string p_choosing = null;
-            bool p_exitMenu = false;
+            string p_Choosing = null;
+            bool p_ExitMenu = false;
             do
             {
-                if (p_choosing == null)
+                if (p_Choosing == null)
                 {
-                    p_choosing = Game.ShowMenu(typeof(OptionsMenu));
+                    p_Choosing = Game.ShowMenu(typeof(OptionsMenu));
                 }
                 else
                 {
-                    switch (p_choosing)
+                    switch (p_Choosing)
                     {
                         case "NightMode":
                             Console.BackgroundColor = (Console.BackgroundColor == ConsoleColor.Black) ? ConsoleColor.White : ConsoleColor.Black;
                             Console.ForegroundColor = (Console.ForegroundColor == ConsoleColor.Black) ? ConsoleColor.White : ConsoleColor.Black;
                             Console.Clear();
-                            p_choosing = null;
+                            p_Choosing = null;
                             break;
                         case "Back":
                             Console.Clear();
@@ -30,7 +34,7 @@
                             throw new Exception("Invalid Input.");
                     }
                 }
-            } while (!p_exitMenu);
+            } while (!p_ExitMenu);
             return false;
         }
     }

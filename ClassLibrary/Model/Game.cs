@@ -4,46 +4,53 @@ namespace ClassLibrary
     public class Game
     {
         #region Variables
-        public List<Player> p_player { get; set; } = new();
-        internal string p_gameType { get; set; }
-        internal string p_gameMode { get; set; }
+        public List<Player> p_Player { get; set; } = new();
+        internal string p_GameType { get; set; }
+        internal string p_GameMode { get; set; }
         internal Match CurrentMatch { get; set; }
-        internal int p_guestCount { get; set; } = 0;
+        internal int GuestCount { get; set; } = 0;
 
         #endregion
+        /// <summary>
+        /// Creates a new match based on the selected game mode and game type, adding a virtual player named ChatGPT for single-player modes when necessary.
+        /// </summary>
+        /// <returns>The created match, with players and any specific configurations set.</returns>
         public Match CreateMatch()
         {
-            if (p_gameMode == "SinglePlayer")
+            if (p_GameMode == "SinglePlayer")
             {
-                if (!p_player.Any(x => x.Name == "ChatGPT"))
+                if (!p_Player.Any(x => x.Name == "ChatGPT"))
                 {
                     var p_GPTVariables = DataProvider.GetPlayerVariables(10);
-                    p_player.Add(p_GPTVariables);
+                    p_Player.Add(p_GPTVariables);
                 }
             }
-            CurrentMatch = p_gameType switch
+            CurrentMatch = p_GameType switch
             {
-                "TTT" => new TTT() { p_player = p_player },
-                "FourW" => new FourW() { p_player = p_player },
-                "TTTChatGPT" => new TTT() { p_player = p_player, p_chatGPT = true },
-                "FourWChatGPT" => new FourW() { p_player = p_player, p_chatGPT = true },
-                "TwistFourW" => new CustomTTT(true) { p_player = p_player },
-                "CustomTTT" => new CustomTTT(false) { p_player = p_player },
+                "TTT" => new TTT() { p_Player = p_Player },
+                "FourW" => new FourW() { p_Player = p_Player },
+                "TTTChatGPT" => new TTT() { p_Player = p_Player, ChatGPT = true },
+                "FourWChatGPT" => new FourW() { p_Player = p_Player, ChatGPT = true },
+                "TwistFourW" => new CustomTTT(true) { p_Player = p_Player },
+                "CustomTTT" => new CustomTTT(false) { p_Player = p_Player },
             };
 
             return CurrentMatch;
         }
 
         #region initializePlayer
+        /// <summary>
+        /// Initializes players for a game session by either logging in existing players, signing up new players, or adding guest players.
+        /// </summary>
         public void InitializePlayer()
         {
             var Player = new Player();
             Console.Clear();
-            int p_numberOfPlayers = DetermineNumberOfPlayers();
+            int NumberOfPlayers = DetermineNumberOfPlayers();
 
-            for (int p_gamer = 0; p_gamer < p_numberOfPlayers; p_gamer++)
+            for (int Gamer = 0; Gamer < NumberOfPlayers; Gamer++)
             {
-                bool p_validInput = false;
+                bool ValidInput = false;
                 do
                 {
                     Console.WriteLine($"Do you want to Log(i)n, Sign(U)p or play as a (G)uest?");
@@ -57,47 +64,55 @@ namespace ClassLibrary
                         } while (p_ident == 0);
                         var playerVariables = DataProvider.GetPlayerVariables(p_ident);
                         Console.WriteLine($"Welcome back {playerVariables.Name}!");
-                        p_player.Add(playerVariables);
-                        p_validInput = true;
+                        p_Player.Add(playerVariables);
+                        ValidInput = true;
                     }
                     else if (p_input == "u")
                     {
                         Player.PlayerSignup();
-                        p_validInput = false;
+                        ValidInput = false;
                     }
                     else if (p_input == "g")
                     {
                         Console.WriteLine("Playing as a guest.");
-                        var GuestVariables = DataProvider.GetPlayerVariables(p_guestCount + 1);
-                        p_player.Add(GuestVariables);
-                        p_guestCount++;
-                        p_validInput = true;
+                        var GuestVariables = DataProvider.GetPlayerVariables(GuestCount + 1);
+                        p_Player.Add(GuestVariables);
+                        GuestCount++;
+                        ValidInput = true;
                     }
                     else
                     {
                         Console.WriteLine("Invalid input. Please enter a valid input.");
                     }
-                } while (!p_validInput);
+                } while (!ValidInput);
 
                 Console.Clear();
             }
         }
+        /// <summary>
+        /// Determines the number of players for the game based on the game mode or user input.
+        /// </summary>
+        /// <returns>The number of players that will participate in the game.</returns>
         internal int DetermineNumberOfPlayers()
         {
-            if (p_gameMode == "SinglePlayer") return 1;
+            if (p_GameMode == "SinglePlayer") return 1;
 
-            int p_numberOfPlayers;
+            int NumberOfPlayers;
             do
             {
                 Console.WriteLine("Enter the number of players: ");
-                string p_input = Console.ReadLine();
-                if (int.TryParse(p_input, out p_numberOfPlayers) && p_numberOfPlayers > 0)
+                string Input = Console.ReadLine();
+                if (int.TryParse(Input, out NumberOfPlayers) && NumberOfPlayers > 0)
                 {
-                    return p_numberOfPlayers;
+                    return NumberOfPlayers;
                 }
                 Console.WriteLine("Invalid input. Please enter a valid number.");
             } while (true);
         }
+        /// <summary>
+        /// Prompts the user to enter a name for in-game use, ensuring the name is not empty.
+        /// </summary>
+        /// <returns>The name entered by the user.</returns>
         internal static string InitializePlayerName()
         {
             string Name;
@@ -112,6 +127,10 @@ namespace ClassLibrary
             } while (string.IsNullOrEmpty(Name));
             return Name;
         }
+        /// <summary>
+        /// Prompts the user to enter a character to be used as their icon in-game, ensuring the icon is not empty or whitespace.
+        /// </summary>
+        /// <returns>The icon character entered by the user.</returns>
         internal static char InitializePlayerIcon()
         {
             char Icon;
@@ -127,6 +146,10 @@ namespace ClassLibrary
             } while (Icon == '\r' || Icon == ' ');
             return Icon;
         }
+        /// <summary>
+        /// Prompts the user to choose a color from a predefined list of valid colors to be used in-game.
+        /// </summary>
+        /// <returns>The color chosen by the user.</returns>
         internal static string InitializePlayerColor()
         {
             Console.WriteLine($"\n Choose a Color you want to use InGame: \n");
@@ -136,34 +159,47 @@ namespace ClassLibrary
         #endregion
 
         #region initializeGame
+        /// <summary>
+        /// Displays the game menu to the user and returns the selected game mode.
+        /// </summary>
+        /// <returns>The game mode selected by the user.</returns>
         public string InitializeGameMenu()
         {
             do
             {
-                return p_gameMode = ShowMenu(typeof(StartMenuOptions));
-            } while (p_gameMode == null);
+                return p_GameMode = ShowMenu(typeof(StartMenuOptions));
+            } while (p_GameMode == null);
         }
+        /// <summary>
+        /// Displays the game selection menu based on the game mode (SinglePlayer/MultiPlayer) and returns the selected game type.
+        /// </summary>
+        /// <returns>The game type selected by the user.</returns>
         public string InitializeGame()
         {
             Console.Clear();
             do
             {
-                return p_gameType = ShowMenu(p_gameMode == "SinglePlayer" ? typeof(SinglePlayerGames) : typeof(MultiPlayerGames));
-            } while (p_gameType == null);
+                return p_GameType = ShowMenu(p_GameMode == "SinglePlayer" ? typeof(SinglePlayerGames) : typeof(MultiPlayerGames));
+            } while (p_GameType == null);
         }
         #endregion
 
         #region Utilities
-        internal static string ShowMenu(Type p_enumType)
+        /// <summary>
+        /// Displays a menu with options enumerated in the specified type, and returns the user's choice.
+        /// </summary>
+        /// <param name="p_EnumType">The type of the enum which values are to be displayed as menu options.</param>
+        /// <returns>The string representation of the selected enum value.</returns>
+        internal static string ShowMenu(Type p_EnumType)
         {
-            var p_enumValues = Enum.GetValues(p_enumType);
-            var p_menuItems = new List<string>();
+            var EnumValues = Enum.GetValues(p_EnumType);
+            var MenuItems = new List<string>();
 
             Console.WriteLine("");
-            foreach (var value in p_enumValues)
+            foreach (var value in EnumValues)
             {
-                p_menuItems.Add(value.ToString());
-                Console.WriteLine($"{p_menuItems.Count}. {value}");
+                MenuItems.Add(value.ToString());
+                Console.WriteLine($"{MenuItems.Count}. {value}");
             }
             do
             {
@@ -173,9 +209,9 @@ namespace ClassLibrary
 
                 if (int.TryParse(p_input, out int p_choice))
                 {
-                    if (p_choice >= 1 && p_choice <= p_menuItems.Count)
+                    if (p_choice >= 1 && p_choice <= MenuItems.Count)
                     {
-                        return p_menuItems[p_choice - 1];
+                        return MenuItems[p_choice - 1];
                     }
                     else
                     {

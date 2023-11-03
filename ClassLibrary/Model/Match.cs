@@ -7,89 +7,123 @@ namespace ClassLibrary
     public class Match : Game
     {
         #region Variables
-        internal char[,] p_board { get; set; }
-        internal int p_rows { get; set; }
-        internal int p_columns { get; set; }
-        internal int p_winningLength { get; set; }
-        internal int p_currentPlayerIndex { get; set; }
-        internal string p_boardString { get; set; }
-        internal bool p_firstTurn { get; set; }
-        internal int? p_winner { get; set; }
-        internal int? p_loser { get; set; }
-        internal int p_draw { get; set; }
-        internal int p_gameTypeIdent { get; set; }
-        internal int p_matchId { get; set; }
-        internal bool p_twistStat { get; set; }
+        internal char[,] p_Board { get; set; }
+        internal int p_Rows { get; set; }
+        internal int p_Columns { get; set; }
+        internal int p_WinningLength { get; set; }
+        internal int p_CurrentPlayerIndex { get; set; }
+        internal string p_BoardString { get; set; }
+        internal bool p_FirstTurn { get; set; }
+        internal int? p_Winner { get; set; }
+        internal int? p_Loser { get; set; }
+        internal int p_Draw { get; set; }
+        internal int p_GameTypeIdent { get; set; }
+        internal int p_MatchId { get; set; }
+        internal bool p_TwistStat { get; set; }
 
 
 
 
-        Random p_random = new();
+        Random p_Random = new();
 
         #endregion
-        internal Match(int p_rows, int p_columns, int p_winningLength)
+        /// <summary>
+        /// Constructs a new match with specified dimensions and winning condition.
+        /// </summary>
+        /// <param name="p_Rows">The number of rows on the game board.</param>
+        /// <param name="p_Columns">The number of columns on the game board.</param>
+        /// <param name="p_WinningLength">The length of consecutive symbols required to win the game.</param>
+        internal Match(int p_Rows, int p_Columns, int p_WinningLength)
         {
-            this.p_rows = p_rows;
-            this.p_columns = p_columns;
-            this.p_winningLength = p_winningLength;
-            p_board = new char[p_rows, p_columns];
+            this.p_Rows = p_Rows;
+            this.p_Columns = p_Columns;
+            this.p_WinningLength = p_WinningLength;
+            p_Board = new char[p_Rows, p_Columns];
         }
+        /// <summary>
+        /// Initiates a game match, handles player turns, checks for a winner, updates stats, and saves match results.
+        /// </summary>
         public void StartMatch()
         {
-            p_firstTurn = true;
-            if (p_player.All(player => player.Name != "CHATGPT"))
-            { ShufflePlayers(p_player); }
+            p_FirstTurn = true;
+            if (p_Player.All(player => player.Name != "CHATGPT"))
+            { ShufflePlayers(p_Player); }
 
-            p_currentPlayerIndex = 0;
+            p_CurrentPlayerIndex = 0;
             ResetBoard();
             do
             {
-                GameMechanic(p_player);
-                p_winner = CheckWinner(p_player);
-            } while (p_winner == null);
-            UpdateStats(p_player);
-            SaveMatch(p_winner, p_loser, p_draw, p_gameTypeIdent, p_matchId);
-            p_matchId = 0;
+                GameMechanic(p_Player);
+                p_Winner = CheckWinner(p_Player);
+            } while (p_Winner == null);
+            UpdateStats(p_Player);
+            SaveMatch(p_Winner, p_Loser, p_Draw, p_GameTypeIdent, p_MatchId);
+            p_MatchId = 0;
         }
-        public virtual void GameMechanic(List<Player> p_player)
+        /// <summary>
+        /// Executes the core game mechanics, including saving game and match details.
+        /// </summary>
+        /// <param name="p_Player">The list of players participating in the game.</param>
+        public virtual void GameMechanic(List<Player> p_Player)
         {
 
-            p_gameTypeIdent = SaveGame(p_rows, p_columns, p_winningLength, p_gameType);
+            p_GameTypeIdent = SaveGame(p_Rows, p_Columns, p_WinningLength, p_GameType);
 
-            p_matchId = SaveMatch(p_winner, p_loser, p_draw, p_gameTypeIdent, p_matchId);
+            p_MatchId = SaveMatch(p_Winner, p_Loser, p_Draw, p_GameTypeIdent, p_MatchId);
 
         }
 
         #region BoardSetup
+        /// <summary>
+        /// Resets the game board by setting all cell values to '0'.
+        /// </summary>
         public void ResetBoard()
         {
-            for (int p_row = 0; p_row < p_rows; p_row++)
+            for (int Row = 0; Row < p_Rows; Row++)
             {
-                for (int p_col = 0; p_col < p_columns; p_col++)
+                for (int Col = 0; Col < p_Columns; Col++)
                 {
-                    SetCell(p_row, p_col, '0');
+                    SetCell(Row, Col, '0');
                 }
             }
         }
-        public char GetCell(int p_row, int p_col)
+        /// <summary>
+        /// Retrieves the value of a cell on the game board at the specified coordinates.
+        /// </summary>
+        /// <param name="p_Row">The row index of the cell.</param>
+        /// <param name="p_Col">The column index of the cell.</param>
+        /// <returns>The value of the cell at the specified coordinates.</returns>
+        public char GetCell(int p_Row, int p_Col)
         {
-            return p_board[p_row, p_col];
+            return p_Board[p_Row, p_Col];
         }
-        public void SetCell(int p_row, int p_col, char p_icon)
+        /// <summary>
+        /// Sets the value of a cell on the game board at the specified coordinates, provided they are within bounds.
+        /// </summary>
+        /// <param name="p_Row">The row index of the cell.</param>
+        /// <param name="p_Col">The column index of the cell.</param>
+        /// <param name="p_Icon">The value to be set at the specified cell.</param>
+        public void SetCell(int p_Row, int p_Col, char p_Icon)
         {
-            if (p_row >= 0 && p_row < p_rows && p_col >= 0 && p_col < p_columns)
+            if (p_Row >= 0 && p_Row < p_Rows && p_Col >= 0 && p_Col < p_Columns)
             {
-                p_board[p_row, p_col] = p_icon;
+                p_Board[p_Row, p_Col] = p_Icon;
             }
         }
-        public void PrintBoard(bool p_showRow, bool p_showCol, List<Player> p_player)
+        /// <summary>
+        /// Prints the game board to the console, with options to display row and column numbers, and colorizes player icons.
+        /// </summary>
+        /// <param name="p_ShowRow">Indicates whether to display row numbers.</param>
+        /// <param name="p_ShowCol">Indicates whether to display column numbers.</param>
+        /// <param name="p_Player">The list of players participating in the game for icon colorization.</param>
+        public void PrintBoard(bool p_ShowRow, bool p_ShowCol, List<Player> p_Player)
         {
-            for (int p_row = 0; p_row < p_rows; p_row++)
+            for (int Row = 0; Row < p_Rows; Row++)
             {
-                if (p_showRow)
+                if (p_ShowRow)
                 {
                     Console.BackgroundColor = ConsoleColor.DarkGray;
-                    Console.Write($"{p_row + 1} ");
+                    Console.Write($"{Row + 1} ");
                     Console.BackgroundColor = ConsoleColor.Black;
                 }
                 else
@@ -97,32 +131,32 @@ namespace ClassLibrary
                     Console.Write("  ");
                 }
 
-                for (int p_col = 0; p_col < p_columns; p_col++)
+                for (int Col = 0; Col < p_Columns; Col++)
                 {
-                    char p_cellValue = GetCell(p_row, p_col);
+                    char CellValue = GetCell(Row, Col);
 
-                    if (p_cellValue == '0')
+                    if (CellValue == '0')
                     {
                         Console.Write(" . ");
                     }
                     else
                     {
-                        Player p_currentPlayer = p_player.FirstOrDefault(p => p.Icon == p_cellValue);
+                        Player CurrentPlayer = p_Player.FirstOrDefault(p => p.Icon == CellValue);
 
-                        if (p_currentPlayer != null)
+                        if (CurrentPlayer != null)
                         {
                             ConsoleColor p_originalForegroundColor = Console.ForegroundColor;
 
-                            if (Enum.TryParse(p_currentPlayer.Colour, out ConsoleColor p_parsedColor))
+                            if (Enum.TryParse(CurrentPlayer.Colour, out ConsoleColor ParsedColor))
                             {
-                                Console.ForegroundColor = p_parsedColor;
+                                Console.ForegroundColor = ParsedColor;
                             }
                             else
                             {
                                 Console.ForegroundColor = ConsoleColor.White;
                             }
 
-                            Console.Write($" {p_cellValue} ");
+                            Console.Write($" {CellValue} ");
                             Console.ForegroundColor = p_originalForegroundColor;
                         }
                     }
@@ -130,65 +164,73 @@ namespace ClassLibrary
                 Console.WriteLine();
             }
 
-            if (p_showCol)
+            if (p_ShowCol)
             {
                 Console.Write("  ");
-                for (int p_col = 0; p_col < p_columns; p_col++)
+                for (int Col = 0; Col < p_Columns; Col++)
                 {
                     Console.BackgroundColor = ConsoleColor.DarkGray;
-                    Console.Write($" {p_col + 1} ");
+                    Console.Write($" {Col + 1} ");
                     Console.BackgroundColor = ConsoleColor.Black;
                 }
             }
         }
         #endregion
         #region GameMechanics
-        public int? CheckWinner(List<Player> p_player)
+        /// <summary>
+        /// Checks the game board for a winner or a draw based on the game rules.
+        /// </summary>
+        /// <param name="p_Player">The list of players participating in the game.</param>
+        /// <returns>The identifier of the winning player, 0 for a draw, or null if the game is ongoing.</returns>
+        public int? CheckWinner(List<Player> p_Player)
         {
-            for (int p_row = 0; p_row < p_rows; p_row++)
+            for (int Row = 0; Row < p_Rows; Row++)
             {
-                for (int p_col = 0; p_col < p_columns; p_col++)
+                for (int Col = 0; Col < p_Columns; Col++)
                 {
-                    char p_cellValue = GetCell(p_row, p_col);
-                    if (p_cellValue == '0') continue;
+                    char CellValue = GetCell(Row, Col);
+                    if (CellValue == '0') continue;
 
-                    int[][] p_directions = new int[][] { new int[] { 0, 1 }, new int[] { 1, 0 }, new int[] { 1, 1 }, new int[] { 1, -1 } };
-                    foreach (var p_dir in p_directions)
+                    int[][] directions = new int[][] { new int[] { 0, 1 }, new int[] { 1, 0 }, new int[] { 1, 1 }, new int[] { 1, -1 } };
+                    foreach (var Dir in directions)
                     {
-                        int p_count = 1;
-                        for (int p_playerRow = 1; p_playerRow < p_winningLength; p_playerRow++)
+                        int Count = 1;
+                        for (int PlayerRow = 1; PlayerRow < p_WinningLength; PlayerRow++)
                         {
-                            int p_newRow = p_row + p_dir[0] * p_playerRow;
-                            int p_newCol = p_col + p_dir[1] * p_playerRow;
-                            if (p_newRow < 0 || p_newRow >= p_rows || p_newCol < 0 || p_newCol >= p_columns) break;
+                            int newRow = Row + Dir[0] * PlayerRow;
+                            int newCol = Col + Dir[1] * PlayerRow;
+                            if (newRow < 0 || newRow >= p_Rows || newCol < 0 || newCol >= p_Columns) break;
 
-                            if (GetCell(p_newRow, p_newCol) == p_cellValue)
+                            if (GetCell(newRow, newCol) == CellValue)
                             {
-                                p_count++;
+                                Count++;
                             }
                             else break;
                         }
 
-                        if (p_count >= p_winningLength)
+                        if (Count >= p_WinningLength)
                         {
-                            Player p_winner = p_player.FirstOrDefault(p => p.Icon == p_cellValue);
+                            Player p_winner = p_Player.FirstOrDefault(p => p.Icon == CellValue);
                             return p_winner.Ident;
                         }
                     }
                 }
             }
 
-            // Check for draw
-            bool p_isDraw = !Enumerable.Range(0, p_rows).Any(p_row => Enumerable.Range(0, p_columns).Any(p_col => GetCell(p_row, p_col) == '0'));
+            bool IsDraw = !Enumerable.Range(0, p_Rows).Any(p_Row => Enumerable.Range(0, p_Columns).Any(p_Col => GetCell(p_Row, p_Col) == '0'));
 
-            if (p_isDraw)
+            if (IsDraw)
             {
-                p_draw = 1;
+                p_Draw = 1;
                 return 0;
             }
 
             return null;
         }
+        /// <summary>
+        /// Prompts the user for a rematch and returns their decision.
+        /// </summary>
+        /// <returns>True if the user wants a rematch, false otherwise.</returns>
         public bool ReMatch()
         {
             while (true)
@@ -209,26 +251,32 @@ namespace ClassLibrary
 
                 Console.WriteLine("Invalid input. Try again.");
             }
-
-
-
         }
-        public void ShufflePlayers(List<Player> p_player)
+        /// <summary>
+        /// Shuffles the order of players in the provided list using the Fisher-Yates algorithm.
+        /// </summary>
+        /// <param name="p_Player">The list of players to be shuffled.</param>
+        public void ShufflePlayers(List<Player> p_Player)
         {
 
-            int n = p_player.Count;
+            int n = p_Player.Count;
             for (int i = 0; i < n; i++)
             {
-                int r = i + p_random.Next(n - i);
-                Player temp = p_player[r];
-                p_player[r] = p_player[i];
-                p_player[i] = temp;
+                int r = i + p_Random.Next(n - i);
+                Player temp = p_Player[r];
+                p_Player[r] = p_Player[i];
+                p_Player[i] = temp;
             }
         }
-
-        protected bool TryGetValidInput(out int p_chosenValue, int p_maxValue)
+        /// <summary>
+        /// Tries to get a valid integer input from the user within a specified range.
+        /// </summary>
+        /// <param name="p_ChosenValue">The parsed integer value from the user input.</param>
+        /// <param name="p_MaxValue">The maximum valid value for the user input.</param>
+        /// <returns>True if a valid integer input is received, false otherwise.</returns>
+        protected bool TryGetValidInput(out int p_ChosenValue, int p_MaxValue)
         {
-            if (int.TryParse(Console.ReadLine(), out p_chosenValue) && p_chosenValue >= 0 && p_chosenValue <= p_maxValue)
+            if (int.TryParse(Console.ReadLine(), out p_ChosenValue) && p_ChosenValue >= 0 && p_ChosenValue <= p_MaxValue)
             {
                 return true;
             }
@@ -237,25 +285,30 @@ namespace ClassLibrary
         }
         #endregion
         #region Stats
-        internal List<Player> UpdateStats(List<Player> p_players)
+        /// <summary>
+        /// Updates the match statistics, identifies the winner or detects a draw, and displays the result.
+        /// </summary>
+        /// <param name="p_Players">The list of players participating in the game.</param>
+        /// <returns>The list of players with updated match statistics.</returns>
+        internal List<Player> UpdateStats(List<Player> p_Players)
         {
-            if (p_winner != null)
+            if (p_Winner != null)
             {
-                if (p_draw == 0)
+                if (p_Draw == 0)
                 {
-                    foreach (var p_player in p_players)
+                    foreach (var Player in p_Players)
                     {
-                        if (p_player.Ident == p_winner)
+                        if (Player.Ident == p_Winner)
                         {
                             Console.WriteLine();
-                            Console.WriteLine($"{p_player.Name} won the game!");
-                            p_winner = p_player.Ident;
+                            Console.WriteLine($"{Player.Name} won the game!");
+                            p_Winner = Player.Ident;
                         }
 
                         else
                         {
                             Console.WriteLine();
-                            p_loser = p_player.Ident;
+                            p_Loser = Player.Ident;
                         }
                     }
                 }
@@ -263,18 +316,22 @@ namespace ClassLibrary
                 {
                     Console.WriteLine();
                     Console.WriteLine("It's a draw!");
-                    p_winner = p_players[0].Ident;
-                    p_loser = p_players[1].Ident;
+                    p_Winner = p_Players[0].Ident;
+                    p_Loser = p_Players[1].Ident;
                 }
             }
-            return p_players;
+            return p_Players;
         }
-        public void EndGameStats(List<Player> p_player)
+        /// <summary>
+        /// Displays the final scores and statistics of the players at the end of the game, and terminates the application.
+        /// </summary>
+        /// <param name="p_Player">The list of players participating in the game.</param>
+        public void EndGameStats(List<Player> p_Player)
         {
             Console.WriteLine("Game over!");
             Console.WriteLine("Final scores:");
 
-            foreach (var Player in p_player)
+            foreach (var Player in p_Player)
             {
                 DataProvider.DisplayPlayerStats(Player.Ident, true);
             }
@@ -285,7 +342,16 @@ namespace ClassLibrary
 
         #endregion
         #region SQL
-        internal int SaveMatch(int? p_winner, int? p_loser, int p_draw, int p_gameType, int p_matchId)
+        /// <summary>
+        /// Saves the match result to the database using a stored procedure.
+        /// </summary>
+        /// <param name="p_Winner">The identifier of the winning player.</param>
+        /// <param name="p_Loser">The identifier of the losing player.</param>
+        /// <param name="p_Draw">Indicates whether the match was a draw.</param>
+        /// <param name="p_GameType">The identifier of the game type.</param>
+        /// <param name="p_MatchId">The identifier of the match, used for updating an existing record.</param>
+        /// <returns>The identifier of the saved match record.</returns>
+        internal int SaveMatch(int? p_Winner, int? p_Loser, int p_Draw, int p_GameType, int p_MatchId)
         {
             string connString = new SQLDatabaseUtility().GetSQLConnectionString();
 
@@ -295,25 +361,33 @@ namespace ClassLibrary
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
 
-                    cmd.Parameters.Add(new SqlParameter("@p_winner", p_winner));
-                    cmd.Parameters.Add(new SqlParameter("@p_loser", p_loser));
-                    cmd.Parameters.Add(new SqlParameter("@p_draw", p_draw));
-                    cmd.Parameters.Add(new SqlParameter("@p_gameType", p_gameType));
+                    cmd.Parameters.AddWithValue("@p_Winner", p_Winner.HasValue ? (object)p_Winner.Value : DBNull.Value);
+                    cmd.Parameters.AddWithValue("@p_Loser", p_Loser.HasValue ? (object)p_Loser.Value : DBNull.Value);
+                    cmd.Parameters.AddWithValue("@p_Draw", p_Draw);
+                    cmd.Parameters.AddWithValue("@p_GameType", p_GameType);
 
                     SqlParameter resultParam = new SqlParameter("@p_matchId", SqlDbType.Int);
                     resultParam.Direction = ParameterDirection.InputOutput;
-                    resultParam.Value = p_matchId;
+                    resultParam.Value = p_MatchId;
                     cmd.Parameters.Add(resultParam);
 
                     conn.Open();
                     cmd.ExecuteNonQuery();
 
-                    p_matchId = (int)resultParam.Value;
-                    return p_matchId;
+                    p_MatchId = (int)resultParam.Value;
+                    return p_MatchId;
                 }
             }
         }
-        internal int SaveGame(int p_rows, int p_columns, int p_winningLength, string p_gameType)
+        /// <summary>
+        /// Saves the game configuration to the database using a stored procedure.
+        /// </summary>
+        /// <param name="p_Rows">The number of rows on the game board.</param>
+        /// <param name="p_Columns">The number of columns on the game board.</param>
+        /// <param name="p_WinningLength">The length of consecutive symbols required to win the game.</param>
+        /// <param name="p_GameType">The type of game being played.</param>
+        /// <returns>The identifier of the saved game configuration record.</returns>
+        internal int SaveGame(int p_Rows, int p_Columns, int p_WinningLength, string p_GameType)
         {
             string connString = new SQLDatabaseUtility().GetSQLConnectionString();
 
@@ -323,13 +397,12 @@ namespace ClassLibrary
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
 
-                    cmd.Parameters.Add(new SqlParameter("@p_rows", p_rows));
-                    cmd.Parameters.Add(new SqlParameter("@p_cols", p_columns));
-                    cmd.Parameters.Add(new SqlParameter("@p_winningLength", p_winningLength));
-                    cmd.Parameters.Add(new SqlParameter("@p_gameType", p_gameType));
+                    cmd.Parameters.AddWithValue("@p_Rows", p_Rows);
+                    cmd.Parameters.AddWithValue("@p_Cols", p_Columns);
+                    cmd.Parameters.AddWithValue("@p_WinningLength", p_WinningLength);
+                    cmd.Parameters.AddWithValue("@p_GameType", p_GameType);
 
-
-                    SqlParameter identParam = new SqlParameter("@p_ident", SqlDbType.Int);
+                    SqlParameter identParam = new SqlParameter("@p_Ident", SqlDbType.Int);
                     identParam.Direction = ParameterDirection.Output;
                     cmd.Parameters.Add(identParam);
 
@@ -343,7 +416,14 @@ namespace ClassLibrary
                 }
             }
         }
-        internal void SaveMoveHistory(int p_player, string p_input, int p_matchId, bool p_twist)
+        /// <summary>
+        /// Saves the move history to the database using a stored procedure.
+        /// </summary>
+        /// <param name="p_Player">The identifier of the player making the move.</param>
+        /// <param name="p_Input">The input representing the move.</param>
+        /// <param name="p_MatchId">The identifier of the match in which the move is made.</param>
+        /// <param name="p_Twist">Indicates whether a special condition or rule was applied to the move.</param>
+        internal void SaveMoveHistory(int p_Player, string p_Input, int p_MatchId, bool p_Twist)
         {
             string connString = new SQLDatabaseUtility().GetSQLConnectionString();
 
@@ -352,17 +432,24 @@ namespace ClassLibrary
                 using (SqlCommand cmd = new SqlCommand("SaveMoveHistory", conn))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.Add(new SqlParameter("@p_player", p_player));
-                    cmd.Parameters.Add(new SqlParameter("@p_input", p_input));
-                    cmd.Parameters.Add(new SqlParameter("@p_matchId", p_matchId));
-                    cmd.Parameters.Add(new SqlParameter("@p_twist", p_twist));
+
+                    cmd.Parameters.AddWithValue("@p_Player", p_Player);
+                    cmd.Parameters.AddWithValue("@p_Input", p_Input);
+                    cmd.Parameters.AddWithValue("@p_MatchId", p_MatchId);
+                    cmd.Parameters.AddWithValue("@p_Twist", p_Twist);
+
                     conn.Open();
                     cmd.ExecuteNonQuery();
 
                 }
             }
         }
-        internal void SavePlayerToMatch(int p_playerId, int p_matchId)
+        /// <summary>
+        /// Associates a player with a match in the database using a stored procedure.
+        /// </summary>
+        /// <param name="p_PlayerId">The identifier of the player.</param>
+        /// <param name="p_MatchId">The identifier of the match.</param>
+        internal void SavePlayerToMatch(int p_PlayerId, int p_MatchId)
         {
             string connString = new SQLDatabaseUtility().GetSQLConnectionString();
 
@@ -372,50 +459,72 @@ namespace ClassLibrary
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
 
-                    cmd.Parameters.Add(new SqlParameter("@p_playerId", p_playerId));
-                    cmd.Parameters.Add(new SqlParameter("@p_matchId", p_matchId));
+                    cmd.Parameters.AddWithValue("@p_PlayerId", p_PlayerId);
+                    cmd.Parameters.AddWithValue("@p_MatchId", p_MatchId);
 
                     conn.Open();
                     cmd.ExecuteNonQuery();
-
                 }
             }
         }
+
         #endregion
 
         #region ChatGPT
-        protected string SendMessageToChatGPT(string apiKey, string p_message)
+        /// <summary>
+        /// Sends a message to ChatGPT service using the provided API key and retrieves the response.
+        /// </summary>
+        /// <param name="p_ApiKey">The API key for authentication with the ChatGPT service.</param>
+        /// <param name="p_Message">The message to be sent to ChatGPT.</param>
+        /// <returns>The response from the ChatGPT service.</returns>
+        protected string SendMessageToChatGPT(string p_ApiKey, string p_Message)
         {
-            var chatGPTClient = new ChatGPTClient(apiKey);
-            return chatGPTClient.SendMessage(p_message);
+            var chatGPTClient = new ChatGPTClient(p_ApiKey);
+            return chatGPTClient.SendMessage(p_Message);
         }
-        public virtual string BuildMessage(string p_board, List<Player> p_players)
+        /// <summary>
+        /// Constructs a message based on the game board and player information. To be implemented by derived classes.
+        /// </summary>
+        /// <param name="p_Board">The representation of the game board.</param>
+        /// <param name="p_Players">The list of players participating in the game.</param>
+        /// <returns>The constructed message or "error" if not implemented.</returns>
+        public virtual string BuildMessage(string p_Board, List<Player> p_Players)
         {
             return "error";
         }
+        /// <summary>
+        /// Retrieves the ChatGPT API key from the machine-level environment variables.
+        /// </summary>
+        /// <returns>The ChatGPT API key.</returns>
         protected string GetApiKey()
         {
             return Environment.GetEnvironmentVariable("CHATGPT_API_KEY", EnvironmentVariableTarget.Machine);
         }
-        protected string BoardToString(char[,] p_board, List<Player> p_players)
+        /// <summary>
+        /// Converts the game board array to a string representation, using the player icons for occupied cells.
+        /// </summary>
+        /// <param name="p_Board">The game board array.</param>
+        /// <param name="p_Players">The list of players participating in the game.</param>
+        /// <returns>The string representation of the game board.</returns>
+        protected string BoardToString(char[,] p_Board, List<Player> p_Players)
         {
             StringBuilder sb = new StringBuilder();
-            for (int row = 0; row < p_rows; row++)
+            for (int row = 0; row < p_Rows; row++)
             {
-                for (int col = 0; col < p_columns; col++)
+                for (int col = 0; col < p_Columns; col++)
                 {
-                    char cellValue = p_board[row, col];
+                    char cellValue = p_Board[row, col];
                     if (cellValue == '0')
                     {
                         sb.Append(" . ");
                     }
-                    else if (cellValue == p_players[0].Icon)
+                    else if (cellValue == p_Players[0].Icon)
                     {
-                        sb.Append($" {p_players[0].Icon} ");
+                        sb.Append($" {p_Players[0].Icon} ");
                     }
-                    else if (cellValue == p_players[1].Icon)
+                    else if (cellValue == p_Players[1].Icon)
                     {
-                        sb.Append($" {p_players[1].Icon} ");
+                        sb.Append($" {p_Players[1].Icon} ");
                     }
                     else
                     {
@@ -425,10 +534,14 @@ namespace ClassLibrary
                 sb.AppendLine();
             }
 
-            return p_boardString = sb.ToString();
+            return p_BoardString = sb.ToString();
         }
-
-        public virtual void ChatGPTMove(string p_board, List<Player> p_players)
+        /// <summary>
+        /// Defines the method to process a move using ChatGPT based on the game board and player information. To be implemented by derived classes.
+        /// </summary>
+        /// <param name="p_Board">The representation of the game board.</param>
+        /// <param name="p_Players">The list of players participating in the game.</param>
+        public virtual void ChatGPTMove(string p_Board, List<Player> p_Players)
         {
         }
         #endregion

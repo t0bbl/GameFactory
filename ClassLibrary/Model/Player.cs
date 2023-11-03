@@ -3,6 +3,7 @@ using System.Data.SqlClient;
 using System.Security.Cryptography;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Xml.Linq;
 
 namespace ClassLibrary
 {
@@ -18,18 +19,21 @@ namespace ClassLibrary
 
 
         #region variables
-        string p_loginName { get; set; }
-        string p_password { get; set; }
-        string p_name { get; set; }
-        char p_icon { get; set; }
-        string p_colour { get; set; }
+        string p_LoginName { get; set; }
+        string p_Password { get; set; }
+        string p_Name { get; set; }
+        char p_Icon { get; set; }
+        string p_Colour { get; set; }
 
         #endregion
 
-
+        /// <summary>
+        /// Guides the user through the sign-up process, validates their inputs, and saves their credentials and initial variables to the database.
+        /// </summary>
+        /// <returns>The identifier of the newly created player record, or 0 if the sign-up process fails.</returns>
         internal int PlayerSignup()
         {
-            int p_ident = 0;
+            int p_Ident = 0;
             Console.Clear();
 
             do
@@ -37,27 +41,27 @@ namespace ClassLibrary
                 do
                 {
                     Console.WriteLine("Please enter the name you want to signup with:");
-                    p_loginName = Console.ReadLine();
-                } while (!ValidateLoginName(p_loginName));
+                    p_LoginName = Console.ReadLine();
+                } while (!ValidateLoginName(p_LoginName));
 
-            } while (!DataProvider.CheckLoginNameAvailability(p_loginName));
+            } while (!DataProvider.CheckLoginNameAvailability(p_LoginName));
 
             do
             {
                 Console.WriteLine("Please enter your password:");
-                p_password = ReadPassword();
-            } while (!ValidatePassword(p_password));
+                p_Password = ReadPassword();
+            } while (!ValidatePassword(p_Password));
 
-            string p_passwordSave = HashPassword(p_password);
+            string p_passwordSave = HashPassword(p_Password);
 
-            p_ident = SQLSignUpPlayer(p_loginName, p_passwordSave);
+            p_Ident = SQLSignUpPlayer(p_LoginName, p_passwordSave);
 
-            if (p_ident > 0)
+            if (p_Ident > 0)
             {
                 Console.WriteLine("You have successfully signed up! Hit any key to continue");
-                SetPlayerVariables(p_ident);
+                SetPlayerVariables(p_Ident);
                 Console.Clear();
-                return p_ident;
+                return p_Ident;
             }
             else
             {
@@ -66,30 +70,34 @@ namespace ClassLibrary
                 return 0;
             }
         }
+        /// <summary>
+        /// Guides the user through the sign-in process, validates their inputs, and if necessary, redirects them to the sign-up process.
+        /// </summary>
+        /// <returns>The identifier of the authenticated player record, or 0 if the sign-in process fails.</returns>
         public int PlayerSignIn()
         {
-            int p_ident = 0;
-            string p_loginName;
+            int p_Ident = 0;
+            string p_LoginName;
             while (true)
             {
                 Console.Clear();
                 do
                 {
                     Console.WriteLine("Please enter your login name:");
-                    p_loginName = Console.ReadLine();
-                } while (!DataProvider.ValidateLoginName(p_loginName));
+                    p_LoginName = Console.ReadLine();
+                } while (!DataProvider.ValidateLoginName(p_LoginName));
                 Console.WriteLine("Please enter your password:");
-                string p_password = ReadPassword();
-                string p_passwordSave = HashPassword(p_password);
+                string p_Password = ReadPassword();
+                string p_PasswordSave = HashPassword(p_Password);
 
-                p_ident = SQLLoginPlayer(p_loginName, p_passwordSave);
+                p_Ident = SQLLoginPlayer(p_LoginName, p_PasswordSave);
 
-                if (p_ident != 0)
+                if (p_Ident != 0)
                 {
                     Console.WriteLine("You have successfully logged in! Hit any key to continue");
                     Console.ReadLine();
                     Console.Clear();
-                    return p_ident;
+                    return p_Ident;
                 }
                 else
                 {
@@ -103,8 +111,8 @@ namespace ClassLibrary
                     }
                     else if (loginAgainOrSignUp == "u")
                     {
-                        p_ident = PlayerSignup();
-                        return p_ident;
+                        p_Ident = PlayerSignup();
+                        return p_Ident;
                     }
                     else
                     {
@@ -114,13 +122,16 @@ namespace ClassLibrary
                 }
             }
         }
+        /// <summary>
+        /// Prompts the user for a name or login name, retrieves and displays the corresponding player statistics.
+        /// </summary>
         public static void ShowPlayerStats()
         {
             Console.Clear();
             Console.WriteLine("Input a Name or LoginName to check their PlayerStats");
-            string p_input = Console.ReadLine();
-            List<int> p_playerIdent = DataProvider.GetPlayerIdentsFromName(p_input);
-            foreach (var player in p_playerIdent)
+            string p_Input = Console.ReadLine();
+            List<int> p_PlayerIdent = DataProvider.GetPlayerIdentsFromName(p_Input);
+            foreach (var player in p_PlayerIdent)
             {
                 DataProvider.DisplayPlayerStats(player, true);
             }
@@ -132,7 +143,13 @@ namespace ClassLibrary
         }
 
         #region SQL
-        internal int SQLSignUpPlayer(string p_loginName, string p_password)
+        /// <summary>
+        /// Signs up a new player by inserting their credentials into the database.
+        /// </summary>
+        /// <param name="p_LoginName">The login name of the player.</param>
+        /// <param name="p_Password">The password of the player.</param>
+        /// <returns>The identifier of the newly created player record.</returns>
+        internal int SQLSignUpPlayer(string p_LoginName, string p_Password)
         {
             string connString = new SQLDatabaseUtility().GetSQLConnectionString();
 
@@ -142,50 +159,64 @@ namespace ClassLibrary
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
 
-                    cmd.Parameters.Add(new SqlParameter("@p_loginName", p_loginName));
-                    cmd.Parameters.Add(new SqlParameter("@p_password", p_password));
-                    cmd.Parameters.Add(new SqlParameter("@p_isHuman", 1));
-
-                    SqlParameter identParam = new SqlParameter("@p_ident", SqlDbType.Int);
+                    cmd.Parameters.AddWithValue("@p_LoginName", p_LoginName);
+                    cmd.Parameters.AddWithValue("@p_Password", p_Password);
+                    cmd.Parameters.AddWithValue("@p_IsHuman", 1);
+                        
+                    SqlParameter identParam = new SqlParameter("@p_Ident", SqlDbType.Int);
                     identParam.Direction = ParameterDirection.Output;
                     cmd.Parameters.Add(identParam);
 
                     conn.Open();
                     cmd.ExecuteNonQuery();
 
-                    int p_ident = (int)identParam.Value;
+                    int p_Ident = (int)identParam.Value;
 
-                    return p_ident;
+                    return p_Ident;
                 }
             }
         }
-        internal int SQLLoginPlayer(string p_loginName, string p_password)
+        /// <summary>
+        /// Logs in a player by verifying their credentials against the database.
+        /// </summary>
+        /// <param name="p_LoginName">The login name of the player.</param>
+        /// <param name="p_Password">The password of the player.</param>
+        /// <returns>The identifier of the player if the login is successful, 0 otherwise.</returns>
+        internal int SQLLoginPlayer(string p_LoginName, string p_Password)
         {
             string connString = new SQLDatabaseUtility().GetSQLConnectionString();
-            int p_ident = 0; // Initialize to 0
+            int p_ident = 0; 
 
             using (SqlConnection conn = new SqlConnection(connString))
             {
                 conn.Open();
 
-                string sqlQuery = "SELECT Ident FROM Player WHERE LoginName = @p_loginName AND Password = @p_password";
+                string sqlQuery = "SELECT Ident FROM Player WHERE LoginName = @p_LoginName AND Password = @p_Password";
 
                 using (SqlCommand cmd = new SqlCommand(sqlQuery, conn))
                 {
-                    cmd.Parameters.Add(new SqlParameter("@p_loginName", p_loginName));
-                    cmd.Parameters.Add(new SqlParameter("@p_password", p_password));
+                    cmd.Parameters.AddWithValue("@p_LoginName", p_LoginName);
+                    cmd.Parameters.AddWithValue("@p_Password", p_Password);
 
                     object result = cmd.ExecuteScalar();
                     if (result != null)
                     {
-                        p_ident = Convert.ToInt32(result); // Set output parameter
+                        p_ident = Convert.ToInt32(result);
                     }
                 }
             }
 
             return p_ident;
         }
-        internal bool SQLSavePlayerVariables(int p_ident, string p_name, char p_icon, string p_color)
+        /// <summary>
+        /// Saves the player variables to the database using a stored procedure.
+        /// </summary>
+        /// <param name="p_Ident">The identifier of the player.</param>
+        /// <param name="p_Name">The name of the player.</param>
+        /// <param name="p_Icon">The icon of the player represented as a character.</param>
+        /// <param name="p_Color">The color preference of the player represented as a string.</param>
+        /// <returns>True if the operation succeeded, false otherwise.</returns>
+        internal bool SQLSavePlayerVariables(int p_Ident, string p_Name, char p_Icon, string p_Color)
         {
             string connString = new SQLDatabaseUtility().GetSQLConnectionString();
 
@@ -195,12 +226,12 @@ namespace ClassLibrary
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
 
-                    cmd.Parameters.Add(new SqlParameter("@p_ident", p_ident));
-                    cmd.Parameters.Add(new SqlParameter("@p_name", p_name));
-                    cmd.Parameters.Add(new SqlParameter("@p_icon", p_icon));
-                    cmd.Parameters.Add(new SqlParameter("@p_color", p_color));
+                    cmd.Parameters.AddWithValue("@p_Ident", p_Ident);
+                    cmd.Parameters.AddWithValue("@p_Name", p_Name);
+                    cmd.Parameters.AddWithValue("@p_Icon", p_Icon);
+                    cmd.Parameters.AddWithValue("@p_Color", p_Color);
 
-                    SqlParameter resultParam = new SqlParameter("@p_result", SqlDbType.Bit);
+                    SqlParameter resultParam = new SqlParameter("@p_Result", SqlDbType.Bit);
                     resultParam.Direction = ParameterDirection.Output;
                     cmd.Parameters.Add(resultParam);
 
@@ -214,11 +245,16 @@ namespace ClassLibrary
         }
         #endregion
         #region Utility Methods
-        internal static string HashPassword(string password)
+        /// <summary>
+        /// Hashes a password using the SHA-256 algorithm.
+        /// </summary>
+        /// <param name="p_Password">The password to be hashed.</param>
+        /// <returns>The hashed password as a hexadecimal string.</returns>
+        internal static string HashPassword(string p_Password)
         {
             using (SHA256 sha256Hash = SHA256.Create())
             {
-                byte[] bytes = sha256Hash.ComputeHash(Encoding.UTF8.GetBytes(password));
+                byte[] bytes = sha256Hash.ComputeHash(Encoding.UTF8.GetBytes(p_Password));
 
                 StringBuilder builder = new StringBuilder();
                 for (int i = 0; i < bytes.Length; i++)
@@ -228,16 +264,21 @@ namespace ClassLibrary
                 return builder.ToString();
             }
         }
-        internal bool ValidateLoginName(string loginName)
+        /// <summary>
+        /// Validates a login name based on length and character constraints.
+        /// </summary>
+        /// <param name="p_LoginName">The login name to be validated.</param>
+        /// <returns>True if the login name is valid, false otherwise.</returns>
+        internal bool ValidateLoginName(string p_LoginName)
         {
-            if (loginName.Length < 3 || loginName.Length > 16)
+            if (p_LoginName.Length < 3 || p_LoginName.Length > 16)
             {
                 Console.WriteLine("Your login name must be between 3 and 16 characters long.");
                 return false;
             }
 
             Regex alphanumericRegex = new Regex("^[a-zA-Z0-9]+$");
-            if (!alphanumericRegex.IsMatch(loginName))
+            if (!alphanumericRegex.IsMatch(p_LoginName))
             {
                 Console.WriteLine("Your login name must only contain alphanumeric characters.");
                 return false;
@@ -245,26 +286,40 @@ namespace ClassLibrary
 
             return true;
         }
-        internal static bool ValidatePassword(string password)
+        /// <summary>
+        /// Validates a password based on length constraints.
+        /// </summary>
+        /// <param name="p_Password">The password to be validated.</param>
+        /// <returns>True if the password is valid, false otherwise.</returns>
+        internal static bool ValidatePassword(string p_Password)
         {
-            if (password.Length < 8 || password.Length > 16)
+            if (p_Password.Length < 8 || p_Password.Length > 16)
             {
                 Console.WriteLine("Your password must be between 8 and 16 characters long.");
                 return false;
             }
             return true;
         }
-        public bool SetPlayerVariables(int p_ident)
+        /// <summary>
+        /// Initializes and sets the player variables by prompting the user and saves them to the database.
+        /// </summary>
+        /// <param name="p_Ident">The identifier of the player.</param>
+        /// <returns>True upon successful execution.</returns>
+        public bool SetPlayerVariables(int p_Ident)
         {
             Console.Clear();
-            p_name = Game.InitializePlayerName();
-            p_icon = Game.InitializePlayerIcon();
-            p_colour = Game.InitializePlayerColor();
+            p_Name = Game.InitializePlayerName();
+            p_Icon = Game.InitializePlayerIcon();
+            p_Colour = Game.InitializePlayerColor();
 
-            SQLSavePlayerVariables(p_ident, p_name, p_icon, p_colour);
+            SQLSavePlayerVariables(p_Ident, p_Name, p_Icon, p_Colour);
             Console.Clear();
             return true;
         }
+        /// <summary>
+        /// Reads a password from the console input, masking each character with an asterisk for privacy.
+        /// </summary>
+        /// <returns>The password as a string.</returns>
         static string ReadPassword()
         {
             StringBuilder password = new StringBuilder();
@@ -281,7 +336,7 @@ namespace ClassLibrary
                     if (password.Length > 0)
                     {
                         password.Remove(password.Length - 1, 1);
-                        Console.Write("\b \b");  // Backspace to erase the last asterisk
+                        Console.Write("\b \b"); 
                     }
                 }
                 else
