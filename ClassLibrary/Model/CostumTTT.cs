@@ -3,60 +3,60 @@
     internal class CustomTTT : Match
     {
         #region Variables
-        public bool p_twist { get; set; }
-        public bool p_twistStat { get; set; }
+        public bool p_Twist { get; set; }
+        public bool p_TwistStat { get; set; }
 
         private Random p_random = new Random();
         #endregion
 
-        public CustomTTT(bool p_twist)
+        public CustomTTT(bool p_Twist)
             : base(
-                  p_twist ? 8 : AskForRows(),
-                  p_twist ? 5 : AskForColumns(),
-                  p_twist ? 4 : AskForWinningLength()
+                  p_Twist ? 8 : AskForRows(),
+                  p_Twist ? 5 : AskForColumns(),
+                  p_Twist ? 4 : AskForWinningLength()
               )
         {
-            p_gameType = p_twist ? "Twist" : "CustomTTT";
-            this.p_twist = p_twist;
+            p_GameType = p_Twist ? "Twist" : "CustomTTT";
+            this.p_Twist = p_Twist;
             ResetBoard();
         }
-        public override void GameMechanic(List<Player> p_player)
+        public override void GameMechanic(List<Player> p_Player)
         {
-            base.GameMechanic(p_player);
+            base.GameMechanic(p_Player);
 
-            if (p_firstTurn)
+            if (p_FirstTurn)
             {
-                PrintBoard(true, true, p_player);
-                p_firstTurn = false;
+                PrintBoard(true, true, p_Player);
+                p_FirstTurn = false;
             }
             bool p_validInput = false;
             while (!p_validInput)
             {
                 Console.WriteLine();
-                Console.WriteLine($"{p_player[p_currentPlayerIndex].Name}, input a coordinate X/Y");
-                SavePlayerToMatch(p_player[p_currentPlayerIndex].Ident, p_matchId);
+                Console.WriteLine($"{p_Player[p_CurrentPlayerIndex].Name}, input a coordinate X/Y");
+                SavePlayerToMatch(p_Player[p_CurrentPlayerIndex].Ident, p_MatchId);
                 string p_input = Console.ReadLine();
                 string[] p_parts = p_input.Split('/');
 
                 if (p_parts.Length == 2
-                    && int.TryParse(p_parts[0], out int p_row)
-                    && int.TryParse(p_parts[1], out int p_col)
-                    && p_row >= 1 && p_row <= p_rows
-                    && p_col >= 1 && p_col <= p_columns)
+                    && int.TryParse(p_parts[0], out int p_Row)
+                    && int.TryParse(p_parts[1], out int p_Col)
+                    && p_Row >= 1 && p_Row <= p_Rows
+                    && p_Col >= 1 && p_Col <= p_Columns)
                 {
-                    p_row--;
-                    p_col--;
+                    p_Row--;
+                    p_Col--;
 
-                    if (GetCell(p_row, p_col) == '0')
+                    if (GetCell(p_Row, p_Col) == '0')
                     {
-                        SetCell(p_row, p_col, p_player[p_currentPlayerIndex].Icon);
-                        p_currentPlayerIndex = (p_currentPlayerIndex + 1) % p_player.Count;
+                        SetCell(p_Row, p_Col, p_Player[p_CurrentPlayerIndex].Icon);
+                        p_CurrentPlayerIndex = (p_CurrentPlayerIndex + 1) % p_Player.Count;
                         p_validInput = true;
-                        if (p_twist)
+                        if (p_Twist)
                         {
-                            p_twistStat = TwistColumn(p_col);
+                            p_TwistStat = TwistColumn(p_Col);
                         }
-                        SaveMoveHistory(p_player[p_currentPlayerIndex].Ident, p_input, p_matchId, p_twistStat);
+                        SaveMoveHistory(p_Player[p_CurrentPlayerIndex].Ident, p_input, p_MatchId, p_TwistStat);
 
                     }
                     else
@@ -70,7 +70,7 @@
                 }
             }
 
-            PrintBoard(true, true, p_player);
+            PrintBoard(true, true, p_Player);
         }
 
         #region CustomSetup
@@ -109,22 +109,22 @@
         }
         public bool TwistColumn(int p_chosenColumn)
         {
-            bool p_shouldTwist = p_random.Next(0, 2) == 0;
-            if (p_shouldTwist)
+            bool ShouldTwist = p_random.Next(0, 2) == 0;
+            if (ShouldTwist)
             {
                 Console.WriteLine("Twist!");
 
-                List<char> p_tempColumn = new List<char>();
-                for (int p_rowIndex = 0; p_rowIndex < p_rows; p_rowIndex++)
+                List<char> TempColumn = new List<char>();
+                for (int RowIndex = 0; RowIndex < p_Rows; RowIndex++)
                 {
-                    p_tempColumn.Add(GetCell(p_rowIndex, p_chosenColumn));
+                    TempColumn.Add(GetCell(RowIndex, p_chosenColumn));
                 }
 
-                p_tempColumn.Reverse();
+                TempColumn.Reverse();
 
-                for (int p_rowIndex = 0; p_rowIndex < p_rows; p_rowIndex++)
+                for (int RowIndex = 0; RowIndex < p_Rows; RowIndex++)
                 {
-                    SetCell(p_rowIndex, p_chosenColumn, p_tempColumn[p_rowIndex]);
+                    SetCell(RowIndex, p_chosenColumn, TempColumn[RowIndex]);
                 }
                 return true;
             }
