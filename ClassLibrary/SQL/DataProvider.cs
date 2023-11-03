@@ -8,6 +8,10 @@ namespace ClassLibrary
 {
     public static class DataProvider
     {
+
+        /// <summary>
+        /// Retrieves and displays the statistics of a player from the PlayerStatsView database based on the provided player identifier. The stats include wins, losses, draws, total played games, and win percentage. Optionally, the player's name can be displayed along with the stats based on the given parameter.
+        /// </summary>
         internal static void DisplayPlayerStats(int p_ident, bool? p_displayWithName)
         {
             string connString = new SQLDatabaseUtility().GetSQLConnectionString();
@@ -45,6 +49,9 @@ namespace ClassLibrary
                 }
             }
         }
+        /// <summary>
+        /// Retrieves a list of player identifiers from the Player database based on an optional name parameter. The function searches both the "Name" and "LoginName" fields for a match using the provided name. If no name is given, all player identifiers are returned.
+        /// </summary>
         internal static List<int> GetPlayerIdentsFromName(string p_name = null)
         {
             string connString = new SQLDatabaseUtility().GetSQLConnectionString();
@@ -81,6 +88,9 @@ namespace ClassLibrary
             }
             return p_idents;
         }
+        /// <summary>
+        /// Checks the availability of a given login name in the Player database. Returns true if the login name is available (not taken), and false otherwise. If the login name is already taken, a message is displayed to the user.
+        /// </summary>
         internal static bool CheckLoginNameAvailability(string p_loginName)
         {
             string connString = new SQLDatabaseUtility().GetSQLConnectionString();
@@ -110,6 +120,9 @@ namespace ClassLibrary
 
             return p_result;
         }
+        /// <summary>
+        /// Validates whether a given login name exists in the Player database. Returns true if the login name is found, and false otherwise. If the login name doesn't exist, a message is displayed to the user.
+        /// </summary>
         internal static bool ValidateLoginName(string p_loginName)
         {
             string connString = new SQLDatabaseUtility().GetSQLConnectionString();
@@ -139,7 +152,9 @@ namespace ClassLibrary
 
             return p_result;
         }
-
+        /// <summary>
+        /// Retrieves the details of a player from the Player database based on the provided identifier. The details include the player's name, icon, and color. Returns a Player object populated with these details, or null if no matching record is found.
+        /// </summary>
         internal static Player GetPlayerVariables(int p_ident)
         {
             string connString = new SQLDatabaseUtility().GetSQLConnectionString();
@@ -179,6 +194,9 @@ namespace ClassLibrary
 
             return player;
         }
+        /// <summary>
+        /// Displays the leaderboard from the LeaderBoard database table, listing players by their rank. The displayed details include rank, player name, number of wins, losses, draws, and win percentage. The leaderboard is presented in a tabulated format and prompts the user to press any key to return once displayed.
+        /// </summary>
         public static void DisplayLeaderBoard()
         {
             string connString = new SQLDatabaseUtility().GetSQLConnectionString();
