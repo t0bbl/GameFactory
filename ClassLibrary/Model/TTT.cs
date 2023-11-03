@@ -3,7 +3,7 @@
     internal class TTT : Match
     {
         #region Variables
-        internal bool p_ChatGPT { get; set; }
+        internal bool ChatGPT { get; set; }
         #endregion
 
         /// <summary>
@@ -12,7 +12,7 @@
         /// </summary>
         public TTT() : base(3, 3, 3)
         {
-            p_GameType = p_ChatGPT ? "TTTChatGPT" : "TTT";
+            p_GameType = ChatGPT ? "TTTChatGPT" : "TTT";
         }
         /// <summary>
         /// Overrides the base GameMechanic method to implement the game logic for Tic Tac Toe (TTT). 
@@ -24,7 +24,7 @@
         /// </summary>
         public override void GameMechanic(List<Player> p_player)
         {
-            if (p_ChatGPT)
+            if (ChatGPT)
             {
                 if (p_CurrentPlayerIndex == 1)
                 {

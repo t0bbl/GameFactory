@@ -3,67 +3,86 @@ namespace ClassLibrary
     internal class FourW : Match
     {
         #region Variables
-        internal bool p_chatGPT { get; set; }
+        internal bool ChatGPT { get; set; }
         #endregion
+        /// <summary>
+        /// Initializes a new instance of the FourW class with specified board dimensions and winning length.
+        /// </summary>
         public FourW() : base(6, 7, 4)
         {
-            p_gameType = p_chatGPT ? "FourWChatGPT" : "FourW";
+            p_GameType = ChatGPT ? "FourWChatGPT" : "FourW";
         }
-        public override void GameMechanic(List<Player> p_player)
+        /// <summary>
+        /// Handles the game mechanics for FourW.
+        /// </summary>
+        /// <param name="p_Player">The list of players.</param>
+        public override void GameMechanic(List<Player> p_Player)
         {
-            if (p_chatGPT)
+            if (ChatGPT)
             {
-                if (p_currentPlayerIndex == 1)
+                if (p_CurrentPlayerIndex == 1)
                 {
-                    ChatGPTMove(BoardToString(p_board, p_player), p_player);
+                    ChatGPTMove(BoardToString(p_Board, p_Player), p_Player);
                 }
 
             }
 
-            base.GameMechanic(p_player);
+            base.GameMechanic(p_Player);
 
             int p_chosenColumn;
-            if (p_firstTurn)
+            if (p_FirstTurn)
             {
-                PrintBoard(false, true, p_player);
+                PrintBoard(false, true, p_Player);
                 Console.WriteLine();
-                p_firstTurn = false;
+                p_FirstTurn = false;
             }
             do
             {
                 Console.WriteLine();
-                Console.WriteLine($"{p_player[p_currentPlayerIndex].Name}, input a column number from 1 to {p_columns}");
-                SavePlayerToMatch(p_player[p_currentPlayerIndex].Ident, p_matchId);
-            } while (!TryGetValidInput(out p_chosenColumn, p_columns));
+                Console.WriteLine($"{p_Player[p_CurrentPlayerIndex].Name}, input a column number from 1 to {p_Columns}");
+                SavePlayerToMatch(p_Player[p_CurrentPlayerIndex].Ident, p_MatchId);
+            } while (!TryGetValidInput(out p_chosenColumn, p_Columns));
 
-            MakeMove(p_chosenColumn, p_currentPlayerIndex, p_player);
+            MakeMove(p_chosenColumn, p_CurrentPlayerIndex, p_Player);
             string p_cell = p_chosenColumn.ToString();
-            SaveMoveHistory(p_player[p_currentPlayerIndex].Ident, p_cell, p_matchId, p_twistStat);
+            SaveMoveHistory(p_Player[p_CurrentPlayerIndex].Ident, p_cell, p_MatchId, p_TwistStat);
 
-            p_currentPlayerIndex = (p_currentPlayerIndex + 1) % p_player.Count;
+            p_CurrentPlayerIndex = (p_CurrentPlayerIndex + 1) % p_Player.Count;
 
-            PrintBoard(false, true, p_player);
+            PrintBoard(false, true, p_Player);
         }
 
         #region GameUtilities
-        public int FindLowestAvailableRow(int p_column)
+        /// <summary>
+        /// Finds the lowest available row in a specified column.
+        /// </summary>
+        /// <param name="p_Column">The column to check.</param>
+        /// <returns>The row index of the lowest available row, or -1 if the column is full.</returns>
+        public int FindLowestAvailableRow(int p_Column)
         {
-            for (int row = p_rows - 1; row >= 0; row--)
+            for (int Row = p_Rows - 1; Row >= 0; Row--)
             {
-                if (GetCell(row, p_column) == '0')
+                if (GetCell(Row, p_Column) == '0')
                 {
-                    return row;
+                    return Row;
                 }
             }
             return -1;
         }
-        public bool MakeMove(int p_chosenColumn, int p_currentPlayerIndex, List<Player> p_players)
+        /// <summary>
+        /// Makes a move for the current player in the specified column.
+        /// </summary>
+        /// <param name="p_ChosenColumn">The column in which the move is made (1-based index).</param>
+        /// <param name="p_CurrentPlayerIndex">The index of the current player in the player list.</param>
+        /// <param name="p_Players">The list of players.</param>
+        /// <returns>True if the move is successfully made, false if the column is full.</returns>
+        public bool MakeMove(int p_ChosenColumn, int p_CurrentPlayerIndex, List<Player> p_Players)
         {
-            int p_row = FindLowestAvailableRow(p_chosenColumn - 1);
+            int p_row = FindLowestAvailableRow(p_ChosenColumn - 1);
 
             if (p_row != -1)
             {
-                SetCell(p_row, p_chosenColumn - 1, p_players[p_currentPlayerIndex].Icon);
+                SetCell(p_row, p_ChosenColumn - 1, p_Players[p_CurrentPlayerIndex].Icon);
                 return true;
             }
             else
@@ -74,17 +93,28 @@ namespace ClassLibrary
         }
         #endregion
         #region ChatGPT
-        public override string BuildMessage(string p_board, List<Player> p_players)
+        /// <summary>
+        /// Builds a message for the Connect 4 game.
+        /// </summary>
+        /// <param name="p_Board">The current game board as a string.</param>
+        /// <param name="p_Players">The list of players.</param>
+        /// <returns>The game instructions and current board as a formatted string.</returns>
+        public override string BuildMessage(string p_Board, List<Player> p_Players)
         {
-            return $"Objective: Win the Connect 4 game by connecting four of your '{p_players[1].Icon}' vertically, horizontally, or diagonally.\n" +
+            return $"Objective: Win the Connect 4 game by connecting four of your '{p_Players[1].Icon}' vertically, horizontally, or diagonally.\n" +
                    $"The board is 7 columns by 6 rows.\n" +
-                   $"Current board:\n{p_board}\n" +
+                   $"Current board:\n{p_Board}\n" +
                    $"Your turn:\n" +
-                   $"- You are '{p_players[1].Icon}'.\n" +
-                   $"- Drop your '{p_players[1].Icon}' into any of the columns. You cannot choose a column that is already full.\n" +
+                   $"- You are '{p_Players[1].Icon}'.\n" +
+                   $"- Drop your '{p_Players[1].Icon}' into any of the columns. You cannot choose a column that is already full.\n" +
                    $"Choose a column (1-7) and return just this one number!:";
         }
-        public override void ChatGPTMove(string p_board, List<Player> p_players)
+        /// <summary>
+        /// Executes ChatGPT's move in the Connect 4 game.
+        /// </summary>
+        /// <param name="p_Board">The current game board as a string.</param>
+        /// <param name="p_Players">The list of players.</param>
+        public override void ChatGPTMove(string p_Board, List<Player> p_Players)
         {
             ConsoleColor p_originalForegroundColour = Console.ForegroundColor;
             Console.ForegroundColor = ConsoleColor.Green;
@@ -96,15 +126,15 @@ namespace ClassLibrary
                 Console.WriteLine();
                 Console.WriteLine("ChatGPT is thinking...");
 
-                string p_message = BuildMessage(p_board, p_players);
+                string p_message = BuildMessage(p_Board, p_Players);
                 string p_response = SendMessageToChatGPT(apiKey, p_message);
-                chosenColumn = ValidateColumnChoice(p_response.Trim(), p_players);
-                MakeMove(chosenColumn, 1, p_players);
+                chosenColumn = ValidateColumnChoice(p_response.Trim(), p_Players);
+                MakeMove(chosenColumn, 1, p_Players);
 
 
-                p_currentPlayerIndex = (p_currentPlayerIndex + 1) % p_players.Count;
+                p_CurrentPlayerIndex = (p_CurrentPlayerIndex + 1) % p_Players.Count;
 
-                PrintBoard(false, true, p_players);
+                PrintBoard(false, true, p_Players);
 
             }
             else
@@ -114,11 +144,17 @@ namespace ClassLibrary
             }
             Console.ForegroundColor = p_originalForegroundColour;
         }
-        public int ValidateColumnChoice(string p_response, List<Player> p_players)
+        /// <summary>
+        /// Validates the column choice obtained from ChatGPT's response.
+        /// </summary>
+        /// <param name="p_Response">The column choice as a string.</param>
+        /// <param name="p_Players">The list of players.</param>
+        /// <returns>The validated column choice (1 to p_Columns) or -1 if invalid.</returns>
+        public int ValidateColumnChoice(string p_Response, List<Player> p_Players)
         {
-            if (int.TryParse(p_response, out int chosenColumn))
+            if (int.TryParse(p_Response, out int chosenColumn))
             {
-                if (chosenColumn >= 1 && chosenColumn <= p_columns)
+                if (chosenColumn >= 1 && chosenColumn <= p_Columns)
                 {
                     return chosenColumn;
                 }
