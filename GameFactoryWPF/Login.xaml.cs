@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ClassLibrary;
+using System;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -13,7 +14,7 @@ namespace GameFactoryWPF
         public int Welcomed { get; set; } = 0;
         private string Username { get; set; }
         private string Password { get; set; }
-        public ClassLibrary.Player Gamer { get; set; }
+        public ClassLibrary.Player Player { get; set; }
         private int p_Ident { get; set; }
 
 
@@ -38,22 +39,25 @@ namespace GameFactoryWPF
         }
         private void Login_Click(object sender, RoutedEventArgs e)
         {
+            Player Player = new Player();
+
             Username = UsernameTextBox.Text;
             Password = PasswordTextBox.Password;
             string PasswordSave = ClassLibrary.Player.HashPassword(Password);
 
 
-            p_Ident = Gamer.SQLLoginPlayer(Username, PasswordSave);
+            p_Ident = Player.SQLLoginPlayer(Username, PasswordSave);
 
             if (p_Ident != 0)
             {
                 MessageBox.Show("Logged in as " + Username + " !");
+                Player = ClassLibrary.DataProvider.GetPlayerVariables(p_Ident);
+
             }
             else
             {
                 MessageBox.Show("Wrong UserName or Password, Please try again or Signup!"); 
             };
-            Gamer = ClassLibrary.DataProvider.GetPlayerVariables(p_Ident);
         }
         private void Login_KeyDown(object sender, KeyEventArgs e)
         {

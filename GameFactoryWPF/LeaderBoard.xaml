@@ -13,12 +13,22 @@
 
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="2*" />
+            <RowDefinition Height="*" />
         </Grid.RowDefinitions>
-        <ListView ItemsSource="{Binding Leaderboard}">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="540px" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <ListView
+            Grid.Row="1"
+            Grid.Column="1"
+            ItemsSource="{Binding Leaderboard}">
             <ListView.View>
                 <GridView>
-                    <GridViewColumn Header="#">
+                    <GridViewColumn Width="Auto" Header="#">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
                                 <TextBlock Margin="20,0,20,0" Text="{Binding Rank}" />
