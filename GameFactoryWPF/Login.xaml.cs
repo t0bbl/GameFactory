@@ -38,11 +38,10 @@ namespace GameFactoryWPF
         }
         private void Login_Click(object sender, RoutedEventArgs e)
         {
-            string Username = UsernameTextBox.Text;
-            string Password = PasswordTextBox.Password;
+            Username = UsernameTextBox.Text;
+            Password = PasswordTextBox.Password;
             string PasswordSave = ClassLibrary.Player.HashPassword(Password);
 
-            ClassLibrary.Player Gamer = new ClassLibrary.Player();
 
             p_Ident = Gamer.SQLLoginPlayer(Username, PasswordSave);
 
@@ -52,11 +51,9 @@ namespace GameFactoryWPF
             }
             else
             {
-                MessageBox.Show("Login Failed! Please try again."); 
+                MessageBox.Show("Wrong UserName or Password, Please try again or Signup!"); 
             };
-
-            
-
+            Gamer = ClassLibrary.DataProvider.GetPlayerVariables(p_Ident);
         }
         private void Login_KeyDown(object sender, KeyEventArgs e)
         {
@@ -66,10 +63,9 @@ namespace GameFactoryWPF
             }
         }
 
-        private void Register_Click(object sender, RoutedEventArgs e)
+        private void SignUp_Click(object sender, RoutedEventArgs e)
         {
-            Button button = (Button)sender;
-            MessageBox.Show("The button labeled '" + button.Content + "' has been clicked.");
+
         }
 
 

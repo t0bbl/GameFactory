@@ -1,5 +1,6 @@
 ﻿using System.Data;
 using System.Data.SqlClient;
+using System.Reflection.Metadata.Ecma335;
 using System.Text;
 
 
@@ -160,7 +161,7 @@ namespace ClassLibrary
         /// <summary>
         /// Retrieves the details of a player from the Player database based on the provided identifier. The details include the player's name, icon, and color. Returns a Player object populated with these details, or null if no matching record is found.
         /// </summary>
-        internal static Player GetPlayerVariables(int p_ident)
+        public static Player GetPlayerVariables(int p_ident)
         {
             string connString = new SQLDatabaseUtility().GetSQLConnectionString();
             Player player = null;
@@ -202,8 +203,9 @@ namespace ClassLibrary
         /// <summary>
         /// Displays the leaderboard from the LeaderBoard database table, listing players by their rank. The displayed details include rank, player name, number of wins, losses, draws, and win percentage. The leaderboard is presented in a tabulated format and prompts the user to press any key to return once displayed.
         /// </summary>
-        public static void DisplayLeaderBoard()
+        public static List<Player> DisplayLeaderBoard()
         {
+            List<Player> Leaderboard = new List<Player>();
             string connString = new SQLDatabaseUtility().GetSQLConnectionString();
 
             using (SqlConnection conn = new SqlConnection(connString))
@@ -218,36 +220,26 @@ namespace ClassLibrary
                     {
                         if (reader.HasRows)
                         {
-                            Console.Clear();
-                            Console.WriteLine("{0,-5} | {1,-15} | {2,-5} | {3,-7} | {4,-5} | {5,-12}",
-                                              "Rank", "Player Name", "Wins", "Losses", "Draws", "Win Percentage");
-                            Console.WriteLine(new string('-', 66));
-
                             while (reader.Read())
                             {
-                                long rank = reader.GetInt64(reader.GetOrdinal("Rank"));
-                                string playerName = reader.GetString(reader.GetOrdinal("Name"));
-                                int wins = reader.GetInt32(reader.GetOrdinal("Wins"));
-                                int losses = reader.GetInt32(reader.GetOrdinal("Losses"));  // Read losses
-                                int draws = reader.GetInt32(reader.GetOrdinal("Draws"));  // Read draws
-                                float winPercentage = (float)reader.GetDouble(reader.GetOrdinal("WinPercentage"));
-
-                                Console.WriteLine("{0,-5} | {1,-15} | {2,-5} | {3,-7} | {4,-5} | {5,-12:F2}",
-                                          rank, playerName, wins, losses, draws, winPercentage);
-
-                            }
+                                Player player = new Player
+                                {
+                                Rank = reader.GetInt32(reader.GetOrdinal("Rank")),
+                                Name = reader.GetString(reader.GetOrdinal("Name")),
+                                Wins = reader.GetInt32(reader.GetOrdinal("Wins")),
+                                Losses = reader.GetInt32(reader.GetOrdinal("Losses")),
+                                Draws = reader.GetInt32(reader.GetOrdinal("Draws")),
+                                WinPercentage = (float)reader.GetDouble(reader.GetOrdinal("WinPercentage"))
+                                };
+                            Leaderboard.Add(player);
+                             }
                         }
-                        else
-                        {
-                            Console.WriteLine("No data found.");
-                        }
-                        Console.WriteLine(new string('-', 66));
-                        Console.WriteLine("Press any Key to return");
-                        Console.ReadKey();
-                        Console.Clear();
+                        
                     }
                 }
-            }
+            return Leaderboard;
+        }
+            
         }
     }
 }

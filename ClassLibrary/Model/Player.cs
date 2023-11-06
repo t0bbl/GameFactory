@@ -9,13 +9,19 @@ namespace ClassLibrary
 {
     public class Player
     {
-        internal string Name { get; set; }
+        public string Name { get; set; }
         internal char Icon { get; set; }
         internal string Colour { get; set; }
         internal bool IsHuman { get; set; }
         internal int Ident { get; set; }
         internal string LoginName { get; set; }
         internal string Password { get; set; }
+        public int Rank { get; set; }
+        public int Wins { get; set; }
+        public int Losses { get; set; }
+        public int Draws { get; set; }
+        public double WinPercentage { get; set; }
+
 
 
         #region variables

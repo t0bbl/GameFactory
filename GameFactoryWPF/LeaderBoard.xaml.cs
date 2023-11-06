@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ClassLibrary;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
@@ -15,18 +16,30 @@ namespace GameFactoryWPF
         public Leaderboard()
         {
             InitializeComponent();
-            LoadTestData();
+            //LoadTestData();
+            LoadLeaderBoard();
         }
 
-        private void LoadTestData()
+        private void LoadLeaderBoard()
         {
-            var testPlayers = new List<PlayerRecord>
-        {
-            new PlayerRecord { Place = 1, Name = "Alice", Wins = 50, Losses = 5, Draws = 2, WinPercentage = 89.5 },
-            new PlayerRecord { Place = 2, Name = "Bob", Wins = 45, Losses = 7, Draws = 3, WinPercentage = 83.3 },
-        };
+            var LeaderboardData = ClassLibrary.DataProvider.DisplayLeaderBoard();
 
-            this.DataContext = new { Leaderboard = testPlayers };
+            var players = new List<Player>();
+            foreach (var player in LeaderboardData)
+            {
+                players.Add(new Player
+                {
+                    Rank = player.Rank,
+                    Name = player.Name,
+                    Wins = player.Wins,
+                    Losses = player.Losses,
+                    Draws = player.Draws,
+                    WinPercentage = player.WinPercentage
+                });
+            }
+
+            this.DataContext = new { Leaderboard = players };
         }
+     
     }
 }

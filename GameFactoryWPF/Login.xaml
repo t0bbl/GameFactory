@@ -130,10 +130,11 @@
                     Login
                 </Button>
                 <Button
-                    Name="Register"
+                    Name="SignUpButton"
                     Grid.Row="1"
                     Height="32"
                     Margin="60,10,60,0"
+                    Click="SignUp_Click"
                     Style="{StaticResource MaterialDesignFlatAccentBgButton}">
                     SignUp
                 </Button>

@@ -19,11 +19,8 @@ namespace GameFactoryWPF
     /// Interaction logic for Stats.xaml
     /// </summary>
     public partial class Stats : UserControl
-    {
-        Point startPoint;
+    {   
         
-        
-
         public Stats()
         {
             InitializeComponent();
