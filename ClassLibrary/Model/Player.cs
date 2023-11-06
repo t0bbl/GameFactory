@@ -182,7 +182,7 @@ namespace ClassLibrary
         /// <param name="p_LoginName">The login name of the player.</param>
         /// <param name="p_Password">The password of the player.</param>
         /// <returns>The identifier of the player if the login is successful, 0 otherwise.</returns>
-        internal int SQLLoginPlayer(string p_LoginName, string p_Password)
+        public int SQLLoginPlayer(string p_LoginName, string p_Password)
         {
             string connString = new SQLDatabaseUtility().GetSQLConnectionString();
             int p_ident = 0; 
@@ -250,7 +250,7 @@ namespace ClassLibrary
         /// </summary>
         /// <param name="p_Password">The password to be hashed.</param>
         /// <returns>The hashed password as a hexadecimal string.</returns>
-        internal static string HashPassword(string p_Password)
+        public static string HashPassword(string p_Password)
         {
             using (SHA256 sha256Hash = SHA256.Create())
             {

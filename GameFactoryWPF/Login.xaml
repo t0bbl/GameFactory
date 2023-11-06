@@ -91,14 +91,14 @@
                 </Grid.RowDefinitions>
 
                 <TextBox
-                    Name="Username"
+                    x:Name="UsernameTextBox"
                     Grid.Row="0"
                     Width="250"
                     Height="40"
                     materialDesign:HintAssist.Hint="UserName"
                     Style="{StaticResource MaterialDesignFloatingHintTextBox}" />
                 <PasswordBox
-                    Name="Password"
+                    x:Name="PasswordTextBox"
                     Grid.Row="1"
                     Width="250"
                     Height="40"

@@ -11,6 +11,13 @@ namespace GameFactoryWPF
     public partial class Login : UserControl
     {
         public int Welcomed { get; set; } = 0;
+        private string Username { get; set; }
+        private string Password { get; set; }
+        public ClassLibrary.Player Gamer { get; set; }
+        private int p_Ident { get; set; }
+
+
+
 
 
         public Login()
@@ -31,15 +38,31 @@ namespace GameFactoryWPF
         }
         private void Login_Click(object sender, RoutedEventArgs e)
         {
-            Button button = (Button)sender;
-            MessageBox.Show("The button labeled '" + button.Content + "' has been clicked.");
+            string Username = UsernameTextBox.Text;
+            string Password = PasswordTextBox.Password;
+            string PasswordSave = ClassLibrary.Player.HashPassword(Password);
+
+            ClassLibrary.Player Gamer = new ClassLibrary.Player();
+
+            p_Ident = Gamer.SQLLoginPlayer(Username, PasswordSave);
+
+            if (p_Ident != 0)
+            {
+                MessageBox.Show("Logged in as " + Username + " !");
+            }
+            else
+            {
+                MessageBox.Show("Login Failed! Please try again."); 
+            };
+
+            
 
         }
         private void Login_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Enter)
             {
-                MessageBox.Show("The Login Event was triggerd with a Enter in Login/password.");
+                Login_Click(sender, e);
             }
         }
 
