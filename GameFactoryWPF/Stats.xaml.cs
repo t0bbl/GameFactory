@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Xaml.Behaviors;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -19,9 +20,15 @@ namespace GameFactoryWPF
     /// </summary>
     public partial class Stats : UserControl
     {
+        Point startPoint;
+        
+        
+
         public Stats()
         {
             InitializeComponent();
         }
+
+
     }
 }

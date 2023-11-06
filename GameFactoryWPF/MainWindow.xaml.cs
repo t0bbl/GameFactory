@@ -1,4 +1,5 @@
 ﻿
+using Microsoft.Xaml.Behaviors;
 using System.Windows;
 
 
@@ -47,6 +48,8 @@ namespace GameFactoryWPF
             //TTT tttWindow = new TTT();
             //tttWindow.ShowDialog();
         }
+
+
 
 
     }
