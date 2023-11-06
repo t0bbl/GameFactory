@@ -30,7 +30,7 @@
         </Grid.RowDefinitions>
         <materialDesign:Card Grid.Row="0" Grid.ColumnSpan="3">
             <Menu materialDesign:MenuAssist.TopLevelMenuItemHeight="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type materialDesign:Card}}, Path=ActualHeight}">
-                <MenuItem Header="File">
+                <MenuItem Header="Menu">
                     <MenuItem Click="ToLeaderboard" Header="Leaderboard" />
                     <MenuItem Click="ToStats" Header="_Stats" />
                     <MenuItem Click="ToTTT" Header="_TTT" />
