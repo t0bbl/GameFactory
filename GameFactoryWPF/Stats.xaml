@@ -9,6 +9,7 @@
     Background="Transparent"
     BorderThickness="0"
     TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+    Visibility="Collapsed"
     mc:Ignorable="d">
     <Grid>
         <materialDesign:Card

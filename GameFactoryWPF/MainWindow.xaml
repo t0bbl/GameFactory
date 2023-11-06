@@ -42,6 +42,10 @@
         <ContentControl x:Name="MainContent" Grid.Row="1">
             <local:Login />
         </ContentControl>
+        <StackPanel
+            x:Name="StatsPanel"
+            Grid.Row="2"
+            Grid.Column="0" />
 
 
     </Grid>

@@ -10,6 +10,9 @@ namespace GameFactoryWPF
     /// </summary>
     public partial class Login : UserControl
     {
+        public int Welcomed { get; set; } = 0;
+
+
         public Login()
         {
             InitializeComponent();
@@ -18,8 +21,13 @@ namespace GameFactoryWPF
 
         private void MainWindow_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            WelcomeSection.Visibility = Visibility.Collapsed;
-            LoginSection.Visibility = Visibility.Visible;
+            if (Welcomed == 0)
+            {
+                WelcomeSection.Visibility = Visibility.Collapsed;
+                LoginSection.Visibility = Visibility.Visible;
+                Welcomed = 1;
+            }
+            
         }
         private void Login_Click(object sender, RoutedEventArgs e)
         {
