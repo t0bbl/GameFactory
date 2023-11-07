@@ -19,7 +19,6 @@
         <Storyboard x:Key="WelcomeFlipOut">
             <DoubleAnimationUsingKeyFrames Storyboard.TargetName="WelcomeSection" Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[0].(ScaleTransform.ScaleX)">
                 <EasingDoubleKeyFrame KeyTime="00:00:00.5" Value="0" />
-                <!--<EasingDoubleKeyFrame KeyTime="00:00:01" Value="1" />-->
             </DoubleAnimationUsingKeyFrames>
         </Storyboard>
         <Storyboard x:Key="LoginFlipIn">
@@ -27,9 +26,23 @@
                 <EasingDoubleKeyFrame KeyTime="00:00:00" Value="0" />
                 <EasingDoubleKeyFrame KeyTime="00:00:00.5" Value="1" />
             </DoubleAnimationUsingKeyFrames>
-
         </Storyboard>
-
+        <Storyboard x:Key="LoginFlipOut">
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetName="LoginSection" Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[0].(ScaleTransform.ScaleX)">
+                <EasingDoubleKeyFrame KeyTime="00:00:00.5" Value="0" />
+            </DoubleAnimationUsingKeyFrames>
+        </Storyboard>
+        <Storyboard x:Key="SignupFlipIn">
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetName="SignupSection" Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[0].(ScaleTransform.ScaleX)">
+                <EasingDoubleKeyFrame KeyTime="00:00:00" Value="0" />
+                <EasingDoubleKeyFrame KeyTime="00:00:00.5" Value="1" />
+            </DoubleAnimationUsingKeyFrames>
+        </Storyboard>
+        <Storyboard x:Key="SignupFlipOut">
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetName="SignupSection" Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[0].(ScaleTransform.ScaleX)">
+                <EasingDoubleKeyFrame KeyTime="00:00:00.5" Value="0" />
+            </DoubleAnimationUsingKeyFrames>
+        </Storyboard>
     </UserControl.Resources>
 
 
@@ -181,6 +194,118 @@
                     Style="{StaticResource MaterialDesignFlatAccentBgButton}">
                     Guest
                 </Button>
+            </Grid>
+
+        </Grid>
+
+        <Grid
+            x:Name="SignupSection"
+            RenderTransformOrigin="0.5,0.5"
+            Visibility="Collapsed">
+
+
+            <Grid.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform ScaleX="0" />
+                </TransformGroup>
+            </Grid.RenderTransform>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="100*" />
+                <ColumnDefinition Width="100*" />
+                <ColumnDefinition Width="100*" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="100*" />
+                <RowDefinition Height="100*" />
+                <RowDefinition Height="100*" />
+            </Grid.RowDefinitions>
+
+            <TextBlock
+                Grid.Row="0"
+                Grid.Column="1"
+                Height="100"
+                Margin="0,70,0,0"
+                VerticalAlignment="Center"
+                Foreground="{DynamicResource SecondaryHueMidBrush}"
+                Style="{StaticResource MaterialDesignHeadline6TextBlock}"
+                TextAlignment="Center">
+                Login to<LineBreak />
+                GameFactory<LineBreak />
+                to start the fun!!!</TextBlock>
+
+            <Grid
+                x:Name="InputBoxesSignup"
+                Grid.Row="1"
+                Grid.Column="1"
+                Margin="0,70,0,0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="70" />
+                    <RowDefinition Height="70" />
+                    <RowDefinition Height="70" />
+                </Grid.RowDefinitions>
+
+                <TextBox
+                    x:Name="UsernameTextBoxSignup"
+                    Grid.Row="0"
+                    Width="250"
+                    Height="40"
+                    materialDesign:HintAssist.Hint="UserName"
+                    KeyDown="Signup_KeyDown"
+                    Style="{StaticResource MaterialDesignFloatingHintTextBox}" />
+                <PasswordBox
+                    x:Name="PasswordTextBoxSignup1"
+                    Grid.Row="1"
+                    Width="250"
+                    Height="40"
+                    Margin="10,10"
+                    materialDesign:HintAssist.Hint="************"
+                    materialDesign:PasswordBoxAssist.IsPasswordRevealed="False"
+                    KeyDown="Signup_KeyDown"
+                    Style="{StaticResource MaterialDesignFloatingHintRevealPasswordBox}" />
+                <PasswordBox
+                    x:Name="PasswordTextBoxSignup2"
+                    Grid.Row="2"
+                    Width="250"
+                    Height="40"
+                    Margin="10,10"
+                    materialDesign:HintAssist.Hint="************"
+                    materialDesign:PasswordBoxAssist.IsPasswordRevealed="False"
+                    KeyDown="Signup_KeyDown"
+                    Style="{StaticResource MaterialDesignFloatingHintRevealPasswordBox}" />
+
+            </Grid>
+
+            <Grid
+                x:Name="ButtonsSignup"
+                Grid.Row="3"
+                Grid.Column="1"
+                Width="375"
+                Margin="0,30,0,0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="40" />
+                    <RowDefinition Height="40" />
+                    <RowDefinition Height="72" />
+                </Grid.RowDefinitions>
+
+                <Button
+                    Name="SignUpButtonSignup"
+                    Grid.Row="0"
+                    Height="32"
+                    Margin="60,10,60,0"
+                    Click="SignUpFunction_Click"
+                    Style="{StaticResource MaterialDesignFlatAccentBgButton}">
+                    SignUp
+                </Button>
+
+                <Button
+                    Name="BackSignup"
+                    Grid.Row="2"
+                    Margin="60,10,60,0"
+                    Click="Back_Click"
+                    Style="{StaticResource MaterialDesignFlatAccentBgButton}">
+                    Back
+                </Button>
+
             </Grid>
 
         </Grid>

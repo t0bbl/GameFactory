@@ -155,7 +155,7 @@ namespace ClassLibrary
         /// <param name="p_LoginName">The login name of the player.</param>
         /// <param name="p_Password">The password of the player.</param>
         /// <returns>The identifier of the newly created player record.</returns>
-        internal int SQLSignUpPlayer(string p_LoginName, string p_Password)
+        public int SQLSignUpPlayer(string p_LoginName, string p_Password)
         {
             string connString = new SQLDatabaseUtility().GetSQLConnectionString();
 
@@ -275,7 +275,7 @@ namespace ClassLibrary
         /// </summary>
         /// <param name="p_LoginName">The login name to be validated.</param>
         /// <returns>True if the login name is valid, false otherwise.</returns>
-        internal bool ValidateLoginName(string p_LoginName)
+        public static bool ValidateLoginName(string p_LoginName)
         {
             if (p_LoginName.Length < 3 || p_LoginName.Length > 16)
             {
@@ -297,7 +297,7 @@ namespace ClassLibrary
         /// </summary>
         /// <param name="p_Password">The password to be validated.</param>
         /// <returns>True if the password is valid, false otherwise.</returns>
-        internal static bool ValidatePassword(string p_Password)
+        public static bool ValidatePassword(string p_Password)
         {
             if (p_Password.Length < 8 || p_Password.Length > 16)
             {
