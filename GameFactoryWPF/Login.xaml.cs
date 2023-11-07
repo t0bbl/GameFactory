@@ -22,8 +22,10 @@ namespace GameFactoryWPF
         private string Password2 { get; set; }
         private int Ident { get; set; } = 0;
         private Player Player { get; set; }
-        private string MessageText { get; set; }
 
+        /// <summary>
+        /// Initializes the login window, sets up event handlers, and applies initial UI transformations.
+        /// </summary>
         public Login()
         {
             InitializeComponent();
@@ -40,7 +42,10 @@ namespace GameFactoryWPF
             };
         }
 
-        private void MainWindow_MouseDown(object sender, MouseButtonEventArgs e)
+        /// <summary>
+        /// Handles mouse down events on the window. Triggers a storyboard animation when clicked for the first time.
+        /// </summary>
+        private void MainWindow_MouseDown(object Sender, MouseButtonEventArgs e)
         {
             if (Welcomed == 0)
             {
@@ -55,6 +60,9 @@ namespace GameFactoryWPF
             }
         }
 
+        /// <summary>
+        /// Handles the login process, validates user credentials, and manages the user session.
+        /// </summary>
         private void Login_Click(object sender, RoutedEventArgs e)
         {
             Username = UsernameTextBox.Text;
@@ -91,6 +99,9 @@ namespace GameFactoryWPF
                 TextBox("Wrong UserName or Password, Please try again or Signup!");
             };
         }
+        /// <summary>
+        /// Initiates the login process when the Enter key is pressed.
+        /// </summary>
         private void Login_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Enter)
@@ -99,6 +110,9 @@ namespace GameFactoryWPF
             }
         }
 
+        /// <summary>
+        /// Triggers the sign-up animation and process when the sign-up button is clicked.
+        /// </summary>
         private void SignUp_Click(object sender, RoutedEventArgs e)
         {
             Storyboard LoginFlipOut = this.Resources["LoginFlipOut"] as Storyboard;
@@ -108,6 +122,9 @@ namespace GameFactoryWPF
                 LoginFlipOut.Begin();
             }
         }
+        /// <summary>
+        /// Initiates the sign-up process when the Enter key is pressed within the sign-up section.
+        /// </summary>
         private void Signup_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Enter)
@@ -116,11 +133,17 @@ namespace GameFactoryWPF
             }
         }
 
+        /// <summary>
+        /// Allows a user to continue as a guest.
+        /// </summary>
         private void Guest_Click(object sender, RoutedEventArgs e)
         {
             TextBox("Logged in as Guest!");
         }
 
+        /// <summary>
+        /// Handles the back button click to revert to the previous UI state.
+        /// </summary>
         private void Back_Click(object sender, RoutedEventArgs e)
         {
             Storyboard SignupFlipOut = this.Resources["SignupFlipOut"] as Storyboard;
@@ -130,6 +153,9 @@ namespace GameFactoryWPF
                 SignupFlipOut.Begin();
             }
         }
+        /// <summary>
+        /// Handles the sign-up functionality, including user creation and validation.
+        /// </summary>
         private void SignUpFunction_Click(object sender, RoutedEventArgs e)
         {
             Username = UsernameTextBoxSignup.Text;
@@ -162,7 +188,9 @@ namespace GameFactoryWPF
             }
         }
 
-
+        /// <summary>
+        /// Completes the login flip-out animation and updates UI visibility accordingly.
+        /// </summary>
         private void LoginFlipOut_Completed(object sender, EventArgs e)
         {
             LoginSection.Visibility = Visibility.Collapsed;
@@ -176,6 +204,9 @@ namespace GameFactoryWPF
 
             }
         }
+        /// <summary>
+        /// Completes the welcome flip-out animation and updates UI visibility accordingly.
+        /// </summary>
         private void WelcomeFlipOut_Completed(object sender, EventArgs e)
         {
             WelcomeSection.Visibility = Visibility.Collapsed;
@@ -189,6 +220,9 @@ namespace GameFactoryWPF
 
             }
         }
+        /// <summary>
+        /// Completes the sign-up flip-out animation and updates UI visibility accordingly.
+        /// </summary>
         private void SignupFlipOut_Completed(object sender, EventArgs e)
         {
             SignupSection.Visibility = Visibility.Collapsed;
@@ -203,6 +237,10 @@ namespace GameFactoryWPF
             }
         }
 
+        /// <summary>
+        /// Displays a custom message box with the provided text.
+        /// </summary>
+        /// <param name="p_Text">The message text to be displayed in the message box.</param>
         private void TextBox(string p_Text)
         {
             CustomMessageBox customMessageBox = new CustomMessageBox(p_Text);

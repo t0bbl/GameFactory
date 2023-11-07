@@ -239,9 +239,9 @@
                 Foreground="{DynamicResource SecondaryHueMidBrush}"
                 Style="{StaticResource MaterialDesignHeadline6TextBlock}"
                 TextAlignment="Center">
-                Login to<LineBreak />
-                GameFactory<LineBreak />
-                to start the fun!!!</TextBlock>
+                SignUp<LineBreak />
+                and<LineBreak />
+                start the fun!!!</TextBlock>
 
             <Grid
                 x:Name="InputBoxesSignup"
