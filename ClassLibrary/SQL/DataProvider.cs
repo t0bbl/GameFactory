@@ -129,7 +129,7 @@ namespace ClassLibrary
         /// <summary>
         /// Validates whether a given login name exists in the Player database. Returns true if the login name is found, and false otherwise. If the login name doesn't exist, a message is displayed to the user.
         /// </summary>
-        internal static bool ValidateLoginName(string p_loginName)
+        internal static bool ValidateLoginName(string p_LoginName)
         {
             string connString = new SQLDatabaseUtility().GetSQLConnectionString();
             bool p_result = false;
@@ -142,7 +142,7 @@ namespace ClassLibrary
 
                 using (SqlCommand cmd = new SqlCommand(sqlQuery, conn))
                 {
-                    cmd.Parameters.Add(new SqlParameter("@p_loginName", p_loginName));
+                    cmd.Parameters.Add(new SqlParameter("@p_loginName", p_LoginName));
 
                     object result = cmd.ExecuteScalar();
                     if (result == null)
@@ -159,9 +159,41 @@ namespace ClassLibrary
             return p_result;
         }
         /// <summary>
+        /// Validates whether a given login name exists in the Player database. Returns true if the login name is found, and false otherwise.
+        /// </summary>
+        public static bool ValidateLoginNameForSignup(string p_Loginname)
+        {
+            string connString = new SQLDatabaseUtility().GetSQLConnectionString();
+            bool p_result = false;
+
+            using (SqlConnection conn = new SqlConnection(connString))
+            {
+                conn.Open();
+
+                string sqlQuery = "SELECT 1 FROM [Player] WHERE LoginName = @p_loginName";
+
+                using (SqlCommand cmd = new SqlCommand(sqlQuery, conn))
+                {
+                    cmd.Parameters.Add(new SqlParameter("@p_loginName", p_Loginname));
+
+                    object result = cmd.ExecuteScalar();
+                    if (result == null)
+                    {
+                        p_result = true;
+                    }
+                    else
+                    {
+                       p_result = false;
+                    }
+                }
+            }
+
+            return p_result;
+        }
+        /// <summary>
         /// Retrieves the details of a player from the Player database based on the provided identifier. The details include the player's name, icon, and color. Returns a Player object populated with these details, or null if no matching record is found.
         /// </summary>
-        public static Player GetPlayerVariables(int p_ident)
+        public static Player GetPlayerVariables(int p_Ident)
         {
             string connString = new SQLDatabaseUtility().GetSQLConnectionString();
             Player player = null;
@@ -174,7 +206,7 @@ namespace ClassLibrary
 
                 using (SqlCommand cmd = new SqlCommand(sqlQuery, conn))
                 {
-                    cmd.Parameters.Add(new SqlParameter("@p_ident", p_ident));
+                    cmd.Parameters.Add(new SqlParameter("@p_ident", p_Ident));
 
                     using (SqlDataReader reader = cmd.ExecuteReader())
                     {
@@ -190,7 +222,7 @@ namespace ClassLibrary
                                     Name = p_name,
                                     Icon = p_icon,
                                     Colour = p_color,
-                                    Ident = p_ident
+                                    Ident = p_Ident
                                 };
                             }
                         }

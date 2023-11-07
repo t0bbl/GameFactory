@@ -72,7 +72,8 @@ namespace GameFactoryWPF
             if (p_Ident != 0)
             {
                 MessageBox.Show("Logged in as " + Username + " !");
-                Player = ClassLibrary.DataProvider.GetPlayerVariables(p_Ident);
+
+                //Player = ClassLibrary.DataProvider.GetPlayerVariables(p_Ident);
 
             }
             else
@@ -125,6 +126,11 @@ namespace GameFactoryWPF
                 MessageBox.Show("Username is not valid, please try again!");
                 return;
             }
+            if (!ClassLibrary.DataProvider.ValidateLoginNameForSignup(Username))
+            {
+                MessageBox.Show("Username is already taken, please try again!");
+                return;
+            }
             Password1 = PasswordTextBoxSignup1.Password;
             Password2 = PasswordTextBoxSignup2.Password;
             if (Password1 == Password2 && ClassLibrary.Player.ValidatePassword(Password1))
@@ -133,8 +139,8 @@ namespace GameFactoryWPF
                 p_Ident = Player.SQLSignUpPlayer(Username, PasswordSave);
                 if (p_Ident != 0)
                 {
-                    MessageBox.Show("Signed up as " + Username + " !");
-                    Player = ClassLibrary.DataProvider.GetPlayerVariables(p_Ident);
+                    MessageBox.Show("Signed up as " + Username + " ! Continue to LogIn");
+                    Back_Click(sender, e);
                 }
             }
             else
