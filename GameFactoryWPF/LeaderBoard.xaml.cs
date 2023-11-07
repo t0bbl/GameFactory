@@ -12,7 +12,6 @@ namespace GameFactoryWPF
         public Leaderboard()
         {
             InitializeComponent();
-            //LoadTestData();
             LoadLeaderBoard();
         }
 
@@ -33,9 +32,7 @@ namespace GameFactoryWPF
                     WinPercentage = player.WinPercentage
                 });
             }
-
             this.DataContext = new { Leaderboard = PlayerBoard };
         }
-
     }
 }

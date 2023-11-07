@@ -10,7 +10,6 @@ namespace GameFactoryWPF
             MessageText.Text = message;
             this.WindowStyle = WindowStyle.None;
             this.ResizeMode = ResizeMode.NoResize;
-
         }
 
         private void OkButton_Click(object sender, RoutedEventArgs e)

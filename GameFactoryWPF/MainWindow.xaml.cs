@@ -19,18 +19,14 @@ namespace GameFactoryWPF
             MainContent.Content = LoginScreen;
             StatsPanel.Children.Add(StatsScreen);
         }
-
-
+        #region UI Event Handlers
         private void ToMainScreen(object sender, RoutedEventArgs e)
         {
             MainContent.Content = LoginScreen;
-
         }
-
         private void ToLeaderboard(object sender, RoutedEventArgs e)
         {
             MainContent.Content = LeaderBoardScreen;
-
         }
         private void ToStats(object sender, RoutedEventArgs e)
         {
@@ -42,14 +38,8 @@ namespace GameFactoryWPF
         private void ToTTT(object sender, RoutedEventArgs e)
         {
             MainContent.Content = TTTScreen;
-
-            //TTT tttWindow = new TTT();
-            //tttWindow.ShowDialog();
         }
-
-
-
-
+        #endregion
     }
 
 

@@ -7,12 +7,9 @@ namespace GameFactoryWPF
     /// </summary>
     public partial class Stats : UserControl
     {
-
         public Stats()
         {
             InitializeComponent();
         }
-
-
     }
 }
