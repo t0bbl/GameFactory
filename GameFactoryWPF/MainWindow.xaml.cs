@@ -1,6 +1,4 @@
-﻿
-using Microsoft.Xaml.Behaviors;
-using System.Windows;
+﻿using System.Windows;
 
 
 namespace GameFactoryWPF
@@ -22,7 +20,7 @@ namespace GameFactoryWPF
             StatsPanel.Children.Add(StatsScreen);
         }
 
-        
+
         private void ToMainScreen(object sender, RoutedEventArgs e)
         {
             MainContent.Content = LoginScreen;

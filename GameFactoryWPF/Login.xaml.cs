@@ -20,12 +20,9 @@ namespace GameFactoryWPF
         private string Password { get; set; }
         private string Password1 { get; set; }
         private string Password2 { get; set; }
-        public ClassLibrary.Player Player { get; set; }
-        private int p_Ident { get; set; }
-
-
-
-
+        private int Ident { get; set; } = 0;
+        private Player Player { get; set; }
+        private string MessageText { get; set; }
 
         public Login()
         {
@@ -37,9 +34,9 @@ namespace GameFactoryWPF
             LoginSection.RenderTransform = new TransformGroup()
             {
                 Children = new TransformCollection()
-        {
-            new ScaleTransform() { ScaleX = -1 }
-        }
+                {
+                new ScaleTransform() { ScaleX = -1 }
+                }
             };
         }
 
@@ -60,25 +57,38 @@ namespace GameFactoryWPF
 
         private void Login_Click(object sender, RoutedEventArgs e)
         {
-            Player Player = new Player();
-
             Username = UsernameTextBox.Text;
             Password = PasswordTextBox.Password;
-            string PasswordSave = ClassLibrary.Player.HashPassword(Password);
-
-
-            p_Ident = Player.SQLLoginPlayer(Username, PasswordSave);
-
-            if (p_Ident != 0)
+            if (!ClassLibrary.Player.ValidateLoginName(Username))
             {
-                MessageBox.Show("Logged in as " + Username + " !");
+                TextBox("Username must be between 3 and 16 characters long.");
+
+                return;
+            }
+
+            if (Username == null || Password == null)
+            {
+                TextBox("Username or Password is not valid, please try again!");
+                return;
+            }
+            string PasswordSave = Player.HashPassword(Password);
+
+            try { Ident = ClassLibrary.Player.SQLLoginPlayer(Username, PasswordSave); }
+            catch (Exception ex)
+            {
+                TextBox(ex.Message);
+            }
+
+            if (Ident != 0)
+            {
+                TextBox("Logged in as " + Username + " !");
 
                 //Player = ClassLibrary.DataProvider.GetPlayerVariables(p_Ident);
 
             }
             else
             {
-                MessageBox.Show("Wrong UserName or Password, Please try again or Signup!");
+                TextBox("Wrong UserName or Password, Please try again or Signup!");
             };
         }
         private void Login_KeyDown(object sender, KeyEventArgs e)
@@ -106,6 +116,11 @@ namespace GameFactoryWPF
             }
         }
 
+        private void Guest_Click(object sender, RoutedEventArgs e)
+        {
+            TextBox("Logged in as Guest!");
+        }
+
         private void Back_Click(object sender, RoutedEventArgs e)
         {
             Storyboard SignupFlipOut = this.Resources["SignupFlipOut"] as Storyboard;
@@ -117,9 +132,6 @@ namespace GameFactoryWPF
         }
         private void SignUpFunction_Click(object sender, RoutedEventArgs e)
         {
-            Player Player = new Player();
-
-            
             Username = UsernameTextBoxSignup.Text;
             if (!ClassLibrary.Player.ValidateLoginName(Username))
             {
@@ -133,11 +145,11 @@ namespace GameFactoryWPF
             }
             Password1 = PasswordTextBoxSignup1.Password;
             Password2 = PasswordTextBoxSignup2.Password;
-            if (Password1 == Password2 && ClassLibrary.Player.ValidatePassword(Password1))
+            if (Password1 == Password2 && Player.ValidatePassword(Password1))
             {
-                string PasswordSave = ClassLibrary.Player.HashPassword(Password1);
-                p_Ident = Player.SQLSignUpPlayer(Username, PasswordSave);
-                if (p_Ident != 0)
+                string PasswordSave = Player.HashPassword(Password1);
+                Ident = Player.SQLSignUpPlayer(Username, PasswordSave);
+                if (Ident != 0)
                 {
                     MessageBox.Show("Signed up as " + Username + " ! Continue to LogIn");
                     Back_Click(sender, e);
@@ -149,6 +161,7 @@ namespace GameFactoryWPF
                 return;
             }
         }
+
 
         private void LoginFlipOut_Completed(object sender, EventArgs e)
         {
@@ -176,7 +189,6 @@ namespace GameFactoryWPF
 
             }
         }
-
         private void SignupFlipOut_Completed(object sender, EventArgs e)
         {
             SignupSection.Visibility = Visibility.Collapsed;
@@ -189,6 +201,14 @@ namespace GameFactoryWPF
                 loginFlipIn.Begin();
 
             }
+        }
+
+        private void TextBox(string p_Text)
+        {
+            CustomMessageBox customMessageBox = new CustomMessageBox(p_Text);
+            customMessageBox.Owner = Application.Current.MainWindow;
+            customMessageBox.WindowStartupLocation = WindowStartupLocation.CenterOwner;
+            customMessageBox.ShowDialog();
         }
 
     }

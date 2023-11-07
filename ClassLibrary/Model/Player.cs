@@ -188,7 +188,7 @@ namespace ClassLibrary
         /// <param name="p_LoginName">The login name of the player.</param>
         /// <param name="p_Password">The password of the player.</param>
         /// <returns>The identifier of the player if the login is successful, 0 otherwise.</returns>
-        public int SQLLoginPlayer(string p_LoginName, string p_Password)
+        public static int SQLLoginPlayer(string p_LoginName, string p_Password)
         {
             string connString = new SQLDatabaseUtility().GetSQLConnectionString();
             int p_ident = 0; 

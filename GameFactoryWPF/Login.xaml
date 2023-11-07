@@ -18,29 +18,29 @@
     <UserControl.Resources>
         <Storyboard x:Key="WelcomeFlipOut">
             <DoubleAnimationUsingKeyFrames Storyboard.TargetName="WelcomeSection" Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[0].(ScaleTransform.ScaleX)">
-                <EasingDoubleKeyFrame KeyTime="00:00:00.5" Value="0" />
+                <EasingDoubleKeyFrame KeyTime="00:00:00.25" Value="0" />
             </DoubleAnimationUsingKeyFrames>
         </Storyboard>
         <Storyboard x:Key="LoginFlipIn">
             <DoubleAnimationUsingKeyFrames Storyboard.TargetName="LoginSection" Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[0].(ScaleTransform.ScaleX)">
                 <EasingDoubleKeyFrame KeyTime="00:00:00" Value="0" />
-                <EasingDoubleKeyFrame KeyTime="00:00:00.5" Value="1" />
+                <EasingDoubleKeyFrame KeyTime="00:00:00.25" Value="1" />
             </DoubleAnimationUsingKeyFrames>
         </Storyboard>
         <Storyboard x:Key="LoginFlipOut">
             <DoubleAnimationUsingKeyFrames Storyboard.TargetName="LoginSection" Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[0].(ScaleTransform.ScaleX)">
-                <EasingDoubleKeyFrame KeyTime="00:00:00.5" Value="0" />
+                <EasingDoubleKeyFrame KeyTime="00:00:00.25" Value="0" />
             </DoubleAnimationUsingKeyFrames>
         </Storyboard>
         <Storyboard x:Key="SignupFlipIn">
             <DoubleAnimationUsingKeyFrames Storyboard.TargetName="SignupSection" Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[0].(ScaleTransform.ScaleX)">
                 <EasingDoubleKeyFrame KeyTime="00:00:00" Value="0" />
-                <EasingDoubleKeyFrame KeyTime="00:00:00.5" Value="1" />
+                <EasingDoubleKeyFrame KeyTime="00:00:00.25" Value="1" />
             </DoubleAnimationUsingKeyFrames>
         </Storyboard>
         <Storyboard x:Key="SignupFlipOut">
             <DoubleAnimationUsingKeyFrames Storyboard.TargetName="SignupSection" Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[0].(ScaleTransform.ScaleX)">
-                <EasingDoubleKeyFrame KeyTime="00:00:00.5" Value="0" />
+                <EasingDoubleKeyFrame KeyTime="00:00:00.25" Value="0" />
             </DoubleAnimationUsingKeyFrames>
         </Storyboard>
     </UserControl.Resources>
@@ -97,7 +97,6 @@
             RenderTransformOrigin="0.5,0.5"
             Visibility="Collapsed">
 
-
             <Grid.RenderTransform>
                 <TransformGroup>
                     <ScaleTransform ScaleX="0" />
@@ -135,6 +134,7 @@
                 <Grid.RowDefinitions>
                     <RowDefinition Height="70" />
                     <RowDefinition Height="70" />
+                    <RowDefinition Height="70" />
                 </Grid.RowDefinitions>
 
                 <TextBox
@@ -154,7 +154,17 @@
                     materialDesign:PasswordBoxAssist.IsPasswordRevealed="False"
                     KeyDown="Login_KeyDown"
                     Style="{StaticResource MaterialDesignFloatingHintRevealPasswordBox}" />
-
+                <PasswordBox
+                    x:Name="Placeholder"
+                    Grid.Row="2"
+                    Width="250"
+                    Height="40"
+                    Margin="10,10"
+                    materialDesign:HintAssist.Hint="************"
+                    materialDesign:PasswordBoxAssist.IsPasswordRevealed="False"
+                    KeyDown="Signup_KeyDown"
+                    Style="{StaticResource MaterialDesignFloatingHintRevealPasswordBox}"
+                    Visibility="Hidden" />
             </Grid>
 
             <Grid
@@ -190,7 +200,7 @@
                     Grid.Row="2"
                     Height="32"
                     Margin="60,32,60,0"
-                    Click="Login_Click"
+                    Click="Guest_Click"
                     Style="{StaticResource MaterialDesignFlatAccentBgButton}">
                     Guest
                 </Button>
@@ -298,9 +308,20 @@
                 </Button>
 
                 <Button
+                    Name="Placeholder1"
+                    Grid.Row="1"
+                    Height="32"
+                    Margin="60,10,60,0"
+                    Click="SignUpFunction_Click"
+                    Style="{StaticResource MaterialDesignFlatAccentBgButton}"
+                    Visibility="Hidden">
+                    SignUp
+                </Button>
+
+                <Button
                     Name="BackSignup"
                     Grid.Row="2"
-                    Margin="60,10,60,0"
+                    Margin="60,32,60,0"
                     Click="Back_Click"
                     Style="{StaticResource MaterialDesignFlatAccentBgButton}">
                     Back
