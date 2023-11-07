@@ -42,24 +42,7 @@ namespace GameFactoryWPF
             };
         }
 
-        /// <summary>
-        /// Handles mouse down events on the window. Triggers a storyboard animation when clicked for the first time.
-        /// </summary>
-        private void MainWindow_MouseDown(object Sender, MouseButtonEventArgs e)
-        {
-            if (Welcomed == 0)
-            {
-                Storyboard welcomeFlipOut = this.Resources["WelcomeFlipOut"] as Storyboard;
-                if (welcomeFlipOut != null)
-                {
-                    welcomeFlipOut.Completed += WelcomeFlipOut_Completed;
-                    welcomeFlipOut.Begin();
-                }
-
-                Welcomed = 1;
-            }
-        }
-
+        #region UI Event Handlers
         /// <summary>
         /// Handles the login process, validates user credentials, and manages the user session.
         /// </summary>
@@ -100,17 +83,6 @@ namespace GameFactoryWPF
             };
         }
         /// <summary>
-        /// Initiates the login process when the Enter key is pressed.
-        /// </summary>
-        private void Login_KeyDown(object sender, KeyEventArgs e)
-        {
-            if (e.Key == Key.Enter)
-            {
-                Login_Click(sender, e);
-            }
-        }
-
-        /// <summary>
         /// Triggers the sign-up animation and process when the sign-up button is clicked.
         /// </summary>
         private void SignUp_Click(object sender, RoutedEventArgs e)
@@ -123,24 +95,12 @@ namespace GameFactoryWPF
             }
         }
         /// <summary>
-        /// Initiates the sign-up process when the Enter key is pressed within the sign-up section.
-        /// </summary>
-        private void Signup_KeyDown(object sender, KeyEventArgs e)
-        {
-            if (e.Key == Key.Enter)
-            {
-                SignUpFunction_Click(sender, e);
-            }
-        }
-
-        /// <summary>
         /// Allows a user to continue as a guest.
         /// </summary>
         private void Guest_Click(object sender, RoutedEventArgs e)
         {
             TextBox("Logged in as Guest!");
         }
-
         /// <summary>
         /// Handles the back button click to revert to the previous UI state.
         /// </summary>
@@ -187,7 +147,26 @@ namespace GameFactoryWPF
                 return;
             }
         }
+        #endregion
 
+        #region Event Handlers
+        /// <summary>
+        /// Handles mouse down events on the window. Triggers a storyboard animation when clicked for the first time.
+        /// </summary>
+        private void MainWindow_MouseDown(object Sender, MouseButtonEventArgs e)
+        {
+            if (Welcomed == 0)
+            {
+                Storyboard welcomeFlipOut = this.Resources["WelcomeFlipOut"] as Storyboard;
+                if (welcomeFlipOut != null)
+                {
+                    welcomeFlipOut.Completed += WelcomeFlipOut_Completed;
+                    welcomeFlipOut.Begin();
+                }
+
+                Welcomed = 1;
+            }
+        }
         /// <summary>
         /// Completes the login flip-out animation and updates UI visibility accordingly.
         /// </summary>
@@ -236,7 +215,29 @@ namespace GameFactoryWPF
 
             }
         }
+        #endregion
 
+        #region Helper Functions
+        /// <summary>
+        /// Initiates the login process when the Enter key is pressed.
+        /// </summary>
+        private void Login_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+            {
+                Login_Click(sender, e);
+            }
+        }
+        /// <summary>
+        /// Initiates the sign-up process when the Enter key is pressed within the sign-up section.
+        /// </summary>
+        private void Signup_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+            {
+                SignUpFunction_Click(sender, e);
+            }
+        }
         /// <summary>
         /// Displays a custom message box with the provided text.
         /// </summary>
@@ -248,6 +249,7 @@ namespace GameFactoryWPF
             customMessageBox.WindowStartupLocation = WindowStartupLocation.CenterOwner;
             customMessageBox.ShowDialog();
         }
+        #endregion
 
     }
 }
