@@ -3,9 +3,13 @@
         <ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Primary/MaterialDesignColor.Grey.xaml" />
         <ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Accent/MaterialDesignColor.Cyan.xaml" />
     </ResourceDictionary.MergedDictionaries>
+
     <ControlTemplate x:Key="CommonBackgroundTemplate" TargetType="Window">
         <Grid>
             <Grid Name="Background" Background="{DynamicResource MaterialDesignPaper}">
+                <Grid.Effect>
+                    <BlurEffect Radius="15" />
+                </Grid.Effect>
                 <Ellipse
                     Width="1200"
                     Height="1200"

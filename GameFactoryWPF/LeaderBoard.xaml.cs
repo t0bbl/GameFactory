@@ -24,10 +24,10 @@ namespace GameFactoryWPF
         {
             var LeaderboardData = ClassLibrary.DataProvider.DisplayLeaderBoard();
 
-            var players = new List<Player>();
+            var PlayerBoard = new List<Player>();
             foreach (var player in LeaderboardData)
             {
-                players.Add(new Player
+                PlayerBoard.Add(new Player
                 {
                     Rank = player.Rank,
                     Name = player.Name,
@@ -38,7 +38,7 @@ namespace GameFactoryWPF
                 });
             }
 
-            this.DataContext = new { Leaderboard = players };
+            this.DataContext = new { Leaderboard = PlayerBoard };
         }
      
     }

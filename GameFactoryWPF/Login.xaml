@@ -2,7 +2,11 @@
     x:Class="GameFactoryWPF.Login"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:animation="using:System.Windows.Media.Animation"
+    xmlns:behaviors="using:Microsoft.Toolkit.Uwp.UI.Animations.Behaviors"
+    xmlns:converters="using:MaterialDesignThemes.Wpf.Converters"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:interactivity="using:Microsoft.Xaml.Interactivity"
     xmlns:local="clr-namespace:GameFactoryWPF"
     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -11,8 +15,31 @@
     TextElement.Foreground="{DynamicResource MaterialDesignBody}"
     mc:Ignorable="d">
 
+    <UserControl.Resources>
+        <Storyboard x:Key="WelcomeFlipOut">
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetName="WelcomeSection" Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[0].(ScaleTransform.ScaleX)">
+                <EasingDoubleKeyFrame KeyTime="00:00:00.5" Value="0" />
+                <!--<EasingDoubleKeyFrame KeyTime="00:00:01" Value="1" />-->
+            </DoubleAnimationUsingKeyFrames>
+        </Storyboard>
+        <Storyboard x:Key="LoginFlipIn">
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetName="LoginSection" Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[0].(ScaleTransform.ScaleX)">
+                <EasingDoubleKeyFrame KeyTime="00:00:00" Value="0" />
+                <EasingDoubleKeyFrame KeyTime="00:00:00.5" Value="1" />
+            </DoubleAnimationUsingKeyFrames>
+
+        </Storyboard>
+
+    </UserControl.Resources>
+
+
     <Grid>
-        <Grid x:Name="WelcomeSection">
+        <Grid x:Name="WelcomeSection" RenderTransformOrigin="0.5,0.5">
+            <Grid.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform ScaleX="1" />
+                </TransformGroup>
+            </Grid.RenderTransform>
 
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="100*" />
@@ -52,7 +79,17 @@
 
         </Grid>
 
-        <Grid x:Name="LoginSection" Visibility="Collapsed">
+        <Grid
+            x:Name="LoginSection"
+            RenderTransformOrigin="0.5,0.5"
+            Visibility="Collapsed">
+
+
+            <Grid.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform ScaleX="0" />
+                </TransformGroup>
+            </Grid.RenderTransform>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="100*" />
                 <ColumnDefinition Width="100*" />
@@ -63,9 +100,6 @@
                 <RowDefinition Height="100*" />
                 <RowDefinition Height="100*" />
             </Grid.RowDefinitions>
-
-
-
 
             <TextBlock
                 Grid.Row="0"
@@ -148,6 +182,8 @@
                     Guest
                 </Button>
             </Grid>
+
         </Grid>
+
     </Grid>
 </UserControl>

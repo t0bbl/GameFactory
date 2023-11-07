@@ -3,6 +3,10 @@ using System;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Media.Animation;
+
+
 
 namespace GameFactoryWPF
 {
@@ -25,18 +29,32 @@ namespace GameFactoryWPF
         {
             InitializeComponent();
             this.MouseDown += MainWindow_MouseDown;
+
+            LoginSection.Visibility = Visibility.Hidden;
+            LoginSection.RenderTransform = new TransformGroup()
+            {
+                Children = new TransformCollection()
+        {
+            new ScaleTransform() { ScaleX = -1 }
+        }
+            };
         }
 
         private void MainWindow_MouseDown(object sender, MouseButtonEventArgs e)
         {
             if (Welcomed == 0)
             {
-                WelcomeSection.Visibility = Visibility.Collapsed;
-                LoginSection.Visibility = Visibility.Visible;
+                Storyboard welcomeFlipOut = this.Resources["WelcomeFlipOut"] as Storyboard;
+                if (welcomeFlipOut != null)
+                {
+                    welcomeFlipOut.Completed += WelcomeFlipOut_Completed;
+                    welcomeFlipOut.Begin();
+                }
+
                 Welcomed = 1;
             }
-            
         }
+
         private void Login_Click(object sender, RoutedEventArgs e)
         {
             Player Player = new Player();
@@ -69,8 +87,27 @@ namespace GameFactoryWPF
 
         private void SignUp_Click(object sender, RoutedEventArgs e)
         {
+            Storyboard flipAnimation = this.Resources["FlipAnimation"] as Storyboard;
+            if (flipAnimation != null)
+            {
+                flipAnimation.Begin();
+            }
+        }
+        private void WelcomeFlipOut_Completed(object sender, EventArgs e)
+        {
+            WelcomeSection.Visibility = Visibility.Collapsed;
+
+            LoginSection.Visibility = Visibility.Visible;
+
+            Storyboard loginFlipIn = this.Resources["LoginFlipIn"] as Storyboard;
+            if (loginFlipIn != null)
+            {
+                loginFlipIn.Begin();
+
+            }
 
         }
+
 
 
     }
