@@ -6,164 +6,164 @@
     xmlns:local="clr-namespace:GameFactoryWPF"
     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    Background="Transparent"
     BorderThickness="0"
     TextElement.Foreground="{DynamicResource MaterialDesignBody}"
     Visibility="Collapsed"
     mc:Ignorable="d">
-    <Grid>
-        <materialDesign:Card
-            Width="200"
-            Height="400"
-            Margin="30"
-            HorizontalAlignment="Left">
-            <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="60" />
-                    <RowDefinition Height="*" />
-                    <RowDefinition Height="Auto" />
-                </Grid.RowDefinitions>
-                <TextBlock
-                    Grid.Row="0"
-                    HorizontalAlignment="Center"
-                    VerticalAlignment="Center"
-                    FontSize="18px"
-                    FontWeight="Bold"
-                    Text="{Binding Name}" />
 
-                <Grid Grid.Row="1">
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto" />
-                            <ColumnDefinition Width="*" />
-                        </Grid.ColumnDefinitions>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
-                        </Grid.RowDefinitions>
+    <materialDesign:Card
+        Width="200"
+        Height="400"
+        Margin="30"
+        HorizontalAlignment="Left">
 
-                        <TextBlock
-                            Grid.Row="0"
-                            Grid.Column="0"
-                            Margin="10"
-                            VerticalAlignment="Center"
-                            Text="Wins:" />
-                        <TextBlock
-                            Grid.Row="0"
-                            Grid.Column="1"
-                            Margin="10"
-                            VerticalAlignment="Center"
-                            Text="{Binding Wins}"
-                            TextAlignment="Right" />
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="60" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <TextBlock
+                Grid.Row="0"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                FontSize="18px"
+                FontWeight="Bold"
+                Text="{Binding Name}" />
 
-                        <TextBlock
-                            Grid.Row="1"
-                            Grid.Column="0"
-                            Margin="10"
-                            VerticalAlignment="Center"
-                            Text="Losses:" />
-                        <TextBlock
-                            Grid.Row="1"
-                            Grid.Column="1"
-                            Margin="10"
-                            VerticalAlignment="Center"
-                            Text="{Binding Losses}"
-                            TextAlignment="Right" />
+            <Grid Grid.Row="1">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
 
-                        <TextBlock
-                            Grid.Row="2"
-                            Grid.Column="0"
-                            Margin="10"
-                            VerticalAlignment="Center"
-                            Text="Draws:" />
-                        <TextBlock
-                            Grid.Row="2"
-                            Grid.Column="1"
-                            Margin="10"
-                            VerticalAlignment="Center"
-                            Text="{Binding Draws}"
-                            TextAlignment="Right" />
+                    <TextBlock
+                        Grid.Row="0"
+                        Grid.Column="0"
+                        Margin="10"
+                        VerticalAlignment="Center"
+                        Text="Wins:" />
+                    <TextBlock
+                        Grid.Row="0"
+                        Grid.Column="1"
+                        Margin="10"
+                        VerticalAlignment="Center"
+                        Text="{Binding Wins}"
+                        TextAlignment="Right" />
 
-                        <TextBlock
-                            Grid.Row="3"
-                            Grid.Column="0"
-                            Margin="10"
-                            VerticalAlignment="Center"
-                            FontWeight="Bold"
-                            Text="Win Percentage:" />
-                        <TextBlock
-                            Grid.Row="3"
-                            Grid.Column="1"
-                            Margin="10"
-                            VerticalAlignment="Center"
-                            FontWeight="Bold"
-                            Text="{Binding WinPercentage}"
-                            TextAlignment="Right" />
+                    <TextBlock
+                        Grid.Row="1"
+                        Grid.Column="0"
+                        Margin="10"
+                        VerticalAlignment="Center"
+                        Text="Losses:" />
+                    <TextBlock
+                        Grid.Row="1"
+                        Grid.Column="1"
+                        Margin="10"
+                        VerticalAlignment="Center"
+                        Text="{Binding Losses}"
+                        TextAlignment="Right" />
 
+                    <TextBlock
+                        Grid.Row="2"
+                        Grid.Column="0"
+                        Margin="10"
+                        VerticalAlignment="Center"
+                        Text="Draws:" />
+                    <TextBlock
+                        Grid.Row="2"
+                        Grid.Column="1"
+                        Margin="10"
+                        VerticalAlignment="Center"
+                        Text="{Binding Draws}"
+                        TextAlignment="Right" />
 
-                        <TextBlock
-                            Grid.Row="4"
-                            Grid.Column="0"
-                            Margin="10"
-                            Visibility="Hidden" />
-                        <TextBlock
-                            Grid.Row="4"
-                            Grid.Column="1"
-                            Margin="10"
-                            Visibility="Hidden" />
+                    <TextBlock
+                        Grid.Row="3"
+                        Grid.Column="0"
+                        Margin="10"
+                        VerticalAlignment="Center"
+                        FontWeight="Bold"
+                        Text="Win Percentage:" />
+                    <TextBlock
+                        Grid.Row="3"
+                        Grid.Column="1"
+                        Margin="10"
+                        VerticalAlignment="Center"
+                        FontWeight="Bold"
+                        Text="{Binding WinPercentage}"
+                        TextAlignment="Right" />
 
 
-                        <TextBlock
-                            Grid.Row="5"
-                            Grid.Column="0"
-                            Margin="10"
-                            VerticalAlignment="Center"
-                            FontWeight="Bold"
-                            Text="Icon:" />
-                        <TextBlock
-                            Grid.Row="5"
-                            Grid.Column="1"
-                            Margin="10"
-                            VerticalAlignment="Center"
-                            FontWeight="Bold"
-                            Text="{Binding Icon}"
-                            TextAlignment="Right" />
+                    <TextBlock
+                        Grid.Row="4"
+                        Grid.Column="0"
+                        Margin="10"
+                        Visibility="Hidden" />
+                    <TextBlock
+                        Grid.Row="4"
+                        Grid.Column="1"
+                        Margin="10"
+                        Visibility="Hidden" />
 
-                        <TextBlock
-                            Grid.Row="6"
-                            Grid.Column="0"
-                            Margin="10"
-                            VerticalAlignment="Center"
-                            FontWeight="Bold"
-                            Text="Color:" />
-                        <TextBlock
-                            Grid.Row="6"
-                            Grid.Column="1"
-                            Margin="10"
-                            VerticalAlignment="Center"
-                            FontWeight="Bold"
-                            Text="{Binding Color}"
-                            TextAlignment="Right" />
 
-                    </Grid>
+                    <TextBlock
+                        Grid.Row="5"
+                        Grid.Column="0"
+                        Margin="10"
+                        VerticalAlignment="Center"
+                        FontWeight="Bold"
+                        Text="Icon:" />
+                    <TextBlock
+                        Grid.Row="5"
+                        Grid.Column="1"
+                        Margin="10"
+                        VerticalAlignment="Center"
+                        FontWeight="Bold"
+                        Text="{Binding Icon}"
+                        TextAlignment="Right" />
+
+                    <TextBlock
+                        Grid.Row="6"
+                        Grid.Column="0"
+                        Margin="10"
+                        VerticalAlignment="Center"
+                        FontWeight="Bold"
+                        Text="Color:" />
+                    <TextBlock
+                        Grid.Row="6"
+                        Grid.Column="1"
+                        Margin="10"
+                        VerticalAlignment="Center"
+                        FontWeight="Bold"
+                        Text="{Binding Color}"
+                        TextAlignment="Right" />
 
                 </Grid>
-                <StackPanel
-                    Grid.Row="2"
-                    Margin="8,10"
-                    HorizontalAlignment="Right">
 
-                    <Button x:Name="CloseButton" Style="{StaticResource MaterialDesignFloatingActionMiniSecondaryButton}">
-                        <materialDesign:PackIcon Kind="Close" />
-                    </Button>
-                </StackPanel>
             </Grid>
-        </materialDesign:Card>
-    </Grid>
+            <StackPanel
+                Grid.Row="2"
+                Margin="8,10"
+                HorizontalAlignment="Right">
+
+                <Button x:Name="CloseButton" Style="{StaticResource MaterialDesignFloatingActionMiniSecondaryButton}">
+                    <materialDesign:PackIcon Kind="Close" />
+                </Button>
+            </StackPanel>
+        </Grid>
+    </materialDesign:Card>
+
 </UserControl>
