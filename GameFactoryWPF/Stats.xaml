@@ -105,6 +105,8 @@
                             FontWeight="Bold"
                             Text="{Binding WinPercentage}"
                             TextAlignment="Right" />
+
+
                         <TextBlock
                             Grid.Row="4"
                             Grid.Column="0"
@@ -115,6 +117,8 @@
                             Grid.Column="1"
                             Margin="10"
                             Visibility="Hidden" />
+
+
                         <TextBlock
                             Grid.Row="5"
                             Grid.Column="0"
@@ -130,6 +134,7 @@
                             FontWeight="Bold"
                             Text="{Binding Icon}"
                             TextAlignment="Right" />
+
                         <TextBlock
                             Grid.Row="6"
                             Grid.Column="0"
@@ -151,9 +156,8 @@
                 </Grid>
                 <StackPanel
                     Grid.Row="2"
-                    Margin="8"
-                    HorizontalAlignment="Right"
-                    Orientation="Horizontal">
+                    Margin="8,10"
+                    HorizontalAlignment="Right">
 
                     <Button x:Name="CloseButton" Style="{StaticResource MaterialDesignFloatingActionMiniSecondaryButton}">
                         <materialDesign:PackIcon Kind="Close" />
