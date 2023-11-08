@@ -232,7 +232,7 @@ namespace ClassLibrary
                                 {
                                     Name = p_name,
                                     Icon = p_icon,
-                                    Colour = p_color,
+                                    Color = p_color,
                                     Ident = p_Ident
                                 };
                             }
@@ -249,7 +249,7 @@ namespace ClassLibrary
 
             Player Player = DisplayPlayerStats(p_Ident, true);
             Player.Icon = Variables.Icon;
-            Player.Colour = Variables.Colour;
+            Player.Color = Variables.Color;
             Player.Name = Variables.Name;
             Player.Ident = p_Ident;
             return Player;

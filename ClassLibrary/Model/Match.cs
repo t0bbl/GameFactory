@@ -155,7 +155,7 @@ namespace ClassLibrary
                         {
                             ConsoleColor p_originalForegroundColor = Console.ForegroundColor;
 
-                            if (Enum.TryParse(CurrentPlayer.Colour, out ConsoleColor ParsedColor))
+                            if (Enum.TryParse(CurrentPlayer.Color, out ConsoleColor ParsedColor))
                             {
                                 Console.ForegroundColor = ParsedColor;
                             }

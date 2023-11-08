@@ -28,13 +28,14 @@
             <RowDefinition Height="30" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
-        <materialDesign:Card Grid.Row="0" Grid.ColumnSpan="3">
+        <materialDesign:Card Grid.Row="0">
             <Menu materialDesign:MenuAssist.TopLevelMenuItemHeight="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type materialDesign:Card}}, Path=ActualHeight}">
                 <MenuItem Header="Menu">
                     <MenuItem Click="ToLeaderboard" Header="Leaderboard" />
                     <MenuItem Click="ToStats" Header="_Stats" />
                     <MenuItem Click="ToTTT" Header="_TTT" />
-                    <MenuItem Click="ToMainScreen" Header="_Login" />
+                    <MenuItem Click="ToMainScreen" Header="_MainMenu" />
+                    <MenuItem Click="ToHistory" Header="_History" />
                 </MenuItem>
             </Menu>
         </materialDesign:Card>
@@ -46,6 +47,11 @@
             x:Name="StatsPanel"
             Grid.Row="2"
             Grid.Column="0" />
+        <StackPanel
+            x:Name="StatsPanelOpponent"
+            Grid.Row="2"
+            Grid.Column="5" />
+
 
 
     </Grid>

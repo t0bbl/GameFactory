@@ -79,7 +79,7 @@ namespace GameFactoryWPF
             {
                 Player = DataProvider.GetStatsAndVariables(Ident);
 
-
+                TextBox("this is the color" + Player.Color);
                 OnPlayerLoggedIn(Player);
 
             }

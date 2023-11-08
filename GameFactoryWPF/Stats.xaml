@@ -14,7 +14,7 @@
     <Grid>
         <materialDesign:Card
             Width="200"
-            Height="300"
+            Height="400"
             Margin="30"
             HorizontalAlignment="Left">
             <Grid>
@@ -27,6 +27,7 @@
                     Grid.Row="0"
                     HorizontalAlignment="Center"
                     VerticalAlignment="Center"
+                    FontSize="18px"
                     FontWeight="Bold"
                     Text="{Binding Name}" />
 
@@ -37,6 +38,10 @@
                             <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
                         <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
@@ -100,6 +105,47 @@
                             FontWeight="Bold"
                             Text="{Binding WinPercentage}"
                             TextAlignment="Right" />
+                        <TextBlock
+                            Grid.Row="4"
+                            Grid.Column="0"
+                            Margin="10"
+                            Visibility="Hidden" />
+                        <TextBlock
+                            Grid.Row="4"
+                            Grid.Column="1"
+                            Margin="10"
+                            Visibility="Hidden" />
+                        <TextBlock
+                            Grid.Row="5"
+                            Grid.Column="0"
+                            Margin="10"
+                            VerticalAlignment="Center"
+                            FontWeight="Bold"
+                            Text="Icon:" />
+                        <TextBlock
+                            Grid.Row="5"
+                            Grid.Column="1"
+                            Margin="10"
+                            VerticalAlignment="Center"
+                            FontWeight="Bold"
+                            Text="{Binding Icon}"
+                            TextAlignment="Right" />
+                        <TextBlock
+                            Grid.Row="6"
+                            Grid.Column="0"
+                            Margin="10"
+                            VerticalAlignment="Center"
+                            FontWeight="Bold"
+                            Text="Color:" />
+                        <TextBlock
+                            Grid.Row="6"
+                            Grid.Column="1"
+                            Margin="10"
+                            VerticalAlignment="Center"
+                            FontWeight="Bold"
+                            Text="{Binding Color}"
+                            TextAlignment="Right" />
+
                     </Grid>
 
                 </Grid>

@@ -31,14 +31,16 @@
             <ColumnDefinition Width="*" />
             <ColumnDefinition Width="*" />
             <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="40" />
             <RowDefinition Height="*" />
             <RowDefinition Height="*" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
         <TextBlock
+            Grid.Row="4"
             HorizontalAlignment="Center"
             VerticalAlignment="Center"
             Foreground="{DynamicResource SecondaryHueDarkBrush}"
@@ -55,7 +57,8 @@
             </Button>
         </TextBlock>
         <TextBlock
-            Grid.Column="1"
+            Grid.Row="4"
+            Grid.Column="5"
             HorizontalAlignment="Center"
             VerticalAlignment="Center"
             Foreground="{DynamicResource SecondaryHueLightBrush}"
@@ -73,8 +76,30 @@
         </TextBlock>
 
         <Button
-            Grid.Row="1"
-            Grid.Column="0"
+            Grid.Row="0"
+            Grid.Column="1"
+            IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
+            Style="{StaticResource MaterialDesignFloatingActionSecondaryDarkButton}"
+            ToolTip="MaterialDesignFloatingActionSecondaryDarkButton">
+            <materialDesign:PackIcon
+                Width="30"
+                Height="30"
+                Kind="CircleOffOutline" />
+        </Button>
+        <Button
+            Grid.Row="0"
+            Grid.Column="2"
+            IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
+            Style="{StaticResource MaterialDesignFloatingActionSecondaryDarkButton}"
+            ToolTip="MaterialDesignFloatingActionSecondaryDarkButton">
+            <materialDesign:PackIcon
+                Width="30"
+                Height="30"
+                Kind="CircleOffOutline" />
+        </Button>
+        <Button
+            Grid.Row="0"
+            Grid.Column="3"
             IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
             Style="{StaticResource MaterialDesignFloatingActionSecondaryDarkButton}"
             ToolTip="MaterialDesignFloatingActionSecondaryDarkButton">
@@ -86,28 +111,6 @@
         <Button
             Grid.Row="1"
             Grid.Column="1"
-            IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
-            Style="{StaticResource MaterialDesignFloatingActionSecondaryDarkButton}"
-            ToolTip="MaterialDesignFloatingActionSecondaryDarkButton">
-            <materialDesign:PackIcon
-                Width="30"
-                Height="30"
-                Kind="CircleOffOutline" />
-        </Button>
-        <Button
-            Grid.Row="1"
-            Grid.Column="2"
-            IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
-            Style="{StaticResource MaterialDesignFloatingActionSecondaryDarkButton}"
-            ToolTip="MaterialDesignFloatingActionSecondaryDarkButton">
-            <materialDesign:PackIcon
-                Width="30"
-                Height="30"
-                Kind="CircleOffOutline" />
-        </Button>
-        <Button
-            Grid.Row="2"
-            Grid.Column="0"
             IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
             Style="{StaticResource PlayerAButton}"
             ToolTip="MaterialDesignFloatingActionSecondaryLightButton">
@@ -117,8 +120,8 @@
                 Kind="AlphaABox" />
         </Button>
         <Button
-            Grid.Row="2"
-            Grid.Column="1"
+            Grid.Row="1"
+            Grid.Column="2"
             IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
             Style="{StaticResource MaterialDesignFloatingActionSecondaryDarkButton}"
             ToolTip="MaterialDesignFloatingActionSecondaryDarkButton">
@@ -128,8 +131,8 @@
                 Kind="CircleOffOutline" />
         </Button>
         <Button
-            Grid.Row="2"
-            Grid.Column="2"
+            Grid.Row="1"
+            Grid.Column="3"
             IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
             Style="{StaticResource PlayerBButton}"
             ToolTip="MaterialDesignFloatingActionSecondaryLightButton">
@@ -139,18 +142,7 @@
                 Kind="AlphaBBox" />
         </Button>
         <Button
-            Grid.Row="3"
-            Grid.Column="0"
-            IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
-            Style="{StaticResource MaterialDesignFloatingActionSecondaryDarkButton}"
-            ToolTip="MaterialDesignFloatingActionSecondaryDarkButton">
-            <materialDesign:PackIcon
-                Width="30"
-                Height="30"
-                Kind="CircleOffOutline" />
-        </Button>
-        <Button
-            Grid.Row="3"
+            Grid.Row="2"
             Grid.Column="1"
             IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
             Style="{StaticResource MaterialDesignFloatingActionSecondaryDarkButton}"
@@ -161,7 +153,7 @@
                 Kind="CircleOffOutline" />
         </Button>
         <Button
-            Grid.Row="3"
+            Grid.Row="2"
             Grid.Column="2"
             IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
             Style="{StaticResource MaterialDesignFloatingActionSecondaryDarkButton}"
@@ -171,28 +163,41 @@
                 Height="30"
                 Kind="CircleOffOutline" />
         </Button>
+        <Button
+            Grid.Row="2"
+            Grid.Column="3"
+            IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
+            Style="{StaticResource MaterialDesignFloatingActionSecondaryDarkButton}"
+            ToolTip="MaterialDesignFloatingActionSecondaryDarkButton">
+            <materialDesign:PackIcon
+                Width="30"
+                Height="30"
+                Kind="CircleOffOutline" />
+        </Button>
         <Rectangle
-            Grid.Row="1"
-            Grid.RowSpan="3"
-            Grid.Column="0"
-            Width="1"
-            HorizontalAlignment="Right"
-            Fill="Black" />
-        <Rectangle
-            Grid.Row="1"
+            Grid.Row="0"
             Grid.RowSpan="3"
             Grid.Column="1"
             Width="1"
             HorizontalAlignment="Right"
             Fill="Black" />
         <Rectangle
+            Grid.Row="0"
+            Grid.RowSpan="3"
+            Grid.Column="2"
+            Width="1"
+            HorizontalAlignment="Right"
+            Fill="Black" />
+        <Rectangle
             Grid.Row="1"
+            Grid.Column="1"
             Grid.ColumnSpan="3"
             Height="1"
             VerticalAlignment="Bottom"
             Fill="Black" />
         <Rectangle
-            Grid.Row="2"
+            Grid.Row="0"
+            Grid.Column="1"
             Grid.ColumnSpan="3"
             Height="1"
             VerticalAlignment="Bottom"

@@ -11,7 +11,7 @@ namespace ClassLibrary
     {
         public string Name { get; set; }
         public char Icon { get; set; }
-        internal string Colour { get; set; }
+        public string Color { get; set; }
         internal bool IsHuman { get; set; }
         public int Ident { get; set; }
         internal string LoginName { get; set; }
@@ -30,7 +30,7 @@ namespace ClassLibrary
         string p_Password { get; set; }
         string p_Name { get; set; }
         char p_Icon { get; set; }
-        string p_Colour { get; set; }
+        string p_Color { get; set; }
 
         #endregion
 
@@ -317,9 +317,9 @@ namespace ClassLibrary
             Console.Clear();
             p_Name = Game.InitializePlayerName();
             p_Icon = Game.InitializePlayerIcon();
-            p_Colour = Game.InitializePlayerColor();
+            p_Color = Game.InitializePlayerColor();
 
-            SQLSavePlayerVariables(p_Ident, p_Name, p_Icon, p_Colour);
+            SQLSavePlayerVariables(p_Ident, p_Name, p_Icon, p_Color);
             Console.Clear();
             return true;
         }

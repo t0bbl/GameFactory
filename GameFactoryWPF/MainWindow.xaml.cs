@@ -48,12 +48,18 @@ namespace GameFactoryWPF
         {
             MainContent.Content = TTTScreen;
         }
+        private void ToHistory(object sender, RoutedEventArgs e)
+        {
+            if (HistoryScreen == null)
+            {
+                Login.TextBox("Please log in to view history.");
+                return;
+            }
+            MainContent.Content = HistoryScreen;
+        }
         #endregion
         private void LoginScreen_PlayerLoggedIn(Player p_Player)
         {
-            Login.TextBox("Logged in as " + p_Player.Ident + " !");
-
-
             if (StatsScreen == null)
             {
                 StatsScreen = new Stats(p_Player);
