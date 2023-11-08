@@ -14,8 +14,8 @@
     <Grid>
         <materialDesign:Card
             Width="200"
-            Height="400"
-            Margin="10"
+            Height="300"
+            Margin="30"
             HorizontalAlignment="Left">
             <Grid>
                 <Grid.RowDefinitions>
@@ -28,30 +28,88 @@
                     HorizontalAlignment="Center"
                     VerticalAlignment="Center"
                     FontWeight="Bold"
-                    Text="Name" />
+                    Text="{Binding Name}" />
 
                 <Grid Grid.Row="1">
-                    <StackPanel>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
 
                         <TextBlock
-                            FontWeight="Bold"
-                            Text="# in the World"
+                            Grid.Row="0"
+                            Grid.Column="0"
+                            Margin="10"
+                            VerticalAlignment="Center"
+                            Text="Wins:" />
+                        <TextBlock
+                            Grid.Row="0"
+                            Grid.Column="1"
+                            Margin="10"
+                            VerticalAlignment="Center"
+                            Text="{Binding Wins}"
                             TextAlignment="Right" />
-                        <TextBlock Text="Wins" />
-                        <TextBlock Text="Losses" />
-                        <TextBlock Text="Draws" />
-                        <TextBlock FontWeight="Bold" Text="WinPercentage" />
-                    </StackPanel>
+
+                        <TextBlock
+                            Grid.Row="1"
+                            Grid.Column="0"
+                            Margin="10"
+                            VerticalAlignment="Center"
+                            Text="Losses:" />
+                        <TextBlock
+                            Grid.Row="1"
+                            Grid.Column="1"
+                            Margin="10"
+                            VerticalAlignment="Center"
+                            Text="{Binding Losses}"
+                            TextAlignment="Right" />
+
+                        <TextBlock
+                            Grid.Row="2"
+                            Grid.Column="0"
+                            Margin="10"
+                            VerticalAlignment="Center"
+                            Text="Draws:" />
+                        <TextBlock
+                            Grid.Row="2"
+                            Grid.Column="1"
+                            Margin="10"
+                            VerticalAlignment="Center"
+                            Text="{Binding Draws}"
+                            TextAlignment="Right" />
+
+                        <TextBlock
+                            Grid.Row="3"
+                            Grid.Column="0"
+                            Margin="10"
+                            VerticalAlignment="Center"
+                            FontWeight="Bold"
+                            Text="Win Percentage:" />
+                        <TextBlock
+                            Grid.Row="3"
+                            Grid.Column="1"
+                            Margin="10"
+                            VerticalAlignment="Center"
+                            FontWeight="Bold"
+                            Text="{Binding WinPercentage}"
+                            TextAlignment="Right" />
+                    </Grid>
+
                 </Grid>
                 <StackPanel
                     Grid.Row="2"
                     Margin="8"
                     HorizontalAlignment="Right"
                     Orientation="Horizontal">
-                    <Button Margin="4" Style="{StaticResource MaterialDesignFloatingActionMiniSecondaryButton}">
-                        <materialDesign:PackIcon Kind="YoutubeGaming" />
-                    </Button>
-                    <Button Style="{StaticResource MaterialDesignFloatingActionMiniSecondaryButton}">
+
+                    <Button x:Name="CloseButton" Style="{StaticResource MaterialDesignFloatingActionMiniSecondaryButton}">
                         <materialDesign:PackIcon Kind="Close" />
                     </Button>
                 </StackPanel>

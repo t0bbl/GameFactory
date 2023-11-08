@@ -13,7 +13,7 @@ namespace ClassLibrary
         public char Icon { get; set; }
         internal string Colour { get; set; }
         internal bool IsHuman { get; set; }
-        internal int Ident { get; set; }
+        public int Ident { get; set; }
         internal string LoginName { get; set; }
         internal string Password { get; set; }
         public int Rank { get; set; }

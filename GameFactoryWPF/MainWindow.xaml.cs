@@ -1,4 +1,6 @@
-﻿using System.Windows;
+﻿using ClassLibrary;
+using System.Collections.Generic;
+using System.Windows;
 
 
 namespace GameFactoryWPF
@@ -10,14 +12,16 @@ namespace GameFactoryWPF
     {
         Login LoginScreen = new Login();
         Leaderboard LeaderBoardScreen = new Leaderboard();
-        Stats StatsScreen = new Stats();
         TTT TTTScreen = new TTT();
+        Stats StatsScreen;
+        History HistoryScreen;
 
         public MainWindow()
         {
             InitializeComponent();
             MainContent.Content = LoginScreen;
-            StatsPanel.Children.Add(StatsScreen);
+            LoginScreen.PlayerLoggedIn += LoginScreen_PlayerLoggedIn;
+
         }
         #region UI Event Handlers
         private void ToMainScreen(object sender, RoutedEventArgs e)
@@ -30,16 +34,39 @@ namespace GameFactoryWPF
         }
         private void ToStats(object sender, RoutedEventArgs e)
         {
-            if (StatsPanel.Children.Contains(StatsScreen))
+            if (StatsScreen == null)
             {
-                StatsScreen.Visibility = StatsScreen.Visibility == Visibility.Visible ? Visibility.Collapsed : Visibility.Visible;
+                Login.TextBox("Please log in to view stats.");
+                return;
             }
+
+            StatsScreen.Visibility = StatsScreen.Visibility == Visibility.Visible
+                ? Visibility.Collapsed
+                : Visibility.Visible;
         }
         private void ToTTT(object sender, RoutedEventArgs e)
         {
             MainContent.Content = TTTScreen;
         }
         #endregion
+        private void LoginScreen_PlayerLoggedIn(Player p_Player)
+        {
+            Login.TextBox("Logged in as " + p_Player.Ident + " !");
+
+
+            if (StatsScreen == null)
+            {
+                StatsScreen = new Stats(p_Player);
+                StatsPanel.Children.Add(StatsScreen);
+            }
+            if (HistoryScreen == null)
+            {
+                HistoryScreen = new History(p_Player);
+                HistoryScreen.LoadHistory(p_Player);
+            }
+            StatsScreen.Visibility = StatsScreen.Visibility == Visibility.Visible ? Visibility.Collapsed : Visibility.Visible;
+            MainContent.Content = HistoryScreen;
+        }
     }
 
 

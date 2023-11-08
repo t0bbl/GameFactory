@@ -24,7 +24,7 @@ namespace ClassLibrary
             using (SqlConnection conn = new SqlConnection(connString))
             {
                 conn.Open();
-                string sqlQuery = "SELECT * FROM PlayerStatsView WHERE Ident = @p_ident";
+                string sqlQuery = "SELECT * FROM PlayerStats_V WHERE Ident = @p_ident";
                 using (SqlCommand cmd = new SqlCommand(sqlQuery, conn))
                 {
                     cmd.Parameters.AddWithValue("@p_ident", p_Ident);
@@ -35,12 +35,12 @@ namespace ClassLibrary
                         {
                             while (reader.Read())
                             {
-                                 string Name = reader.GetString(reader.GetOrdinal("PlayerName"));
-                                 int Wins = reader.GetInt32(reader.GetOrdinal("Wins"));
-                                 int Losses = reader.GetInt32(reader.GetOrdinal("Losses"));
-                                 int Draws = reader.GetInt32(reader.GetOrdinal("Draws"));
-                                 int PlayedGames = reader.GetInt32(reader.GetOrdinal("PlayedGames"));
-                                 double WinPercentage = reader.GetDouble(reader.GetOrdinal("WinPercentage"));
+                                string Name = reader.GetString(reader.GetOrdinal("PlayerName"));
+                                int Wins = reader.GetInt32(reader.GetOrdinal("Wins"));
+                                int Losses = reader.GetInt32(reader.GetOrdinal("Losses"));
+                                int Draws = reader.GetInt32(reader.GetOrdinal("Draws"));
+                                int PlayedGames = reader.GetInt32(reader.GetOrdinal("PlayedGames"));
+                                double WinPercentage = reader.GetDouble(reader.GetOrdinal("WinPercentage"));
 
                                 Player = new Player
                                 {
@@ -194,7 +194,7 @@ namespace ClassLibrary
                     }
                     else
                     {
-                       p_result = false;
+                        p_result = false;
                     }
                 }
             }
@@ -251,7 +251,7 @@ namespace ClassLibrary
             Player.Icon = Variables.Icon;
             Player.Colour = Variables.Colour;
             Player.Name = Variables.Name;
-
+            Player.Ident = p_Ident;
             return Player;
         }
         /// <summary>
@@ -264,7 +264,7 @@ namespace ClassLibrary
 
             using (SqlConnection conn = new SqlConnection(connString))
             {
-                string sqlQuery = "SELECT * FROM LeaderBoard";
+                string sqlQuery = "SELECT * FROM LeaderBoard_V";
 
                 using (SqlCommand cmd = new SqlCommand(sqlQuery, conn))
                 {
@@ -278,22 +278,78 @@ namespace ClassLibrary
                             {
                                 Player player = new Player
                                 {
-                                Rank = reader.GetInt32(reader.GetOrdinal("Rank")),
-                                Name = reader.GetString(reader.GetOrdinal("Name")),
-                                Wins = reader.GetInt32(reader.GetOrdinal("Wins")),
-                                Losses = reader.GetInt32(reader.GetOrdinal("Losses")),
-                                Draws = reader.GetInt32(reader.GetOrdinal("Draws")),
-                                WinPercentage = (float)reader.GetDouble(reader.GetOrdinal("WinPercentage"))
+                                    Rank = reader.GetInt32(reader.GetOrdinal("Rank")),
+                                    Name = reader.GetString(reader.GetOrdinal("Name")),
+                                    Wins = reader.GetInt32(reader.GetOrdinal("Wins")),
+                                    Losses = reader.GetInt32(reader.GetOrdinal("Losses")),
+                                    Draws = reader.GetInt32(reader.GetOrdinal("Draws")),
+                                    WinPercentage = (float)reader.GetDouble(reader.GetOrdinal("WinPercentage"))
                                 };
-                            Leaderboard.Add(player);
-                             }
+                                Leaderboard.Add(player);
+                            }
                         }
-                        
+
                     }
                 }
-            return Leaderboard;
+                return Leaderboard;
+            }
+
         }
-            
+
+        public static List<Match> DisplayHistory(int p_Ident)
+        {
+            List<Match> History = new List<Match>();
+            string connString = new SQLDatabaseUtility().GetSQLConnectionString();
+
+            using (SqlConnection conn = new SqlConnection(connString))
+            {
+                string sqlQuery = "SELECT * FROM History_V WHERE Winner = @p_ident OR Loser = @p_ident";
+
+                using (SqlCommand cmd = new SqlCommand(sqlQuery, conn))
+                {
+                    conn.Open();
+                    cmd.Parameters.AddWithValue("@p_ident", p_Ident);
+
+                    using (SqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        if (reader.HasRows)
+                        {
+                            while (reader.Read())
+                            {
+                                int MatchId = reader.GetInt32(reader.GetOrdinal("MatchIdent"));
+                                int GameTypeIdent = reader.GetInt32(reader.GetOrdinal("GameTypeIdent"));
+                                int Winner = reader.GetInt32(reader.GetOrdinal("Winner"));
+                                int Loser = reader.GetInt32(reader.GetOrdinal("Loser"));
+                                int Draw = reader.GetInt32(reader.GetOrdinal("Draw"));
+                                int Rows = reader.GetInt32(reader.GetOrdinal("Rows"));
+                                int Columns = reader.GetInt32(reader.GetOrdinal("Cols"));
+                                int WinningLength = reader.GetInt32(reader.GetOrdinal("WinningLength"));
+                                string GameType = reader.GetString(reader.GetOrdinal("GameType"));
+                                string WinnerName = reader.GetString(reader.GetOrdinal("WinnerName"));
+                                string LoserName = reader.GetString(reader.GetOrdinal("LoserName"));
+
+                                Match match = new Match()
+                                {
+                                    p_GameTypeIdent = GameTypeIdent,
+                                    p_Winner = Winner,
+                                    p_Loser = Loser,
+                                    p_Draw = Draw,
+                                    p_MatchId = MatchId,
+                                    p_Rows = Rows,
+                                    p_Columns = Columns,
+                                    p_WinningLength = WinningLength,
+                                    p_GameType = GameType,
+                                    p_WinnerName = reader.GetString(reader.GetOrdinal("WinnerName")),
+                                    p_LoserName = reader.GetString(reader.GetOrdinal("LoserName")),
+                                };
+                                History.Add(match);
+                            }
+                        }
+
+                    }
+                }
+                return History;
+            }
         }
     }
 }

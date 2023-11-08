@@ -8,19 +8,23 @@ namespace ClassLibrary
     {
         #region Variables
         internal char[,] p_Board { get; set; }
-        internal int p_Rows { get; set; }
-        internal int p_Columns { get; set; }
-        internal int p_WinningLength { get; set; }
+        public int p_Rows { get; set; }
+        public int p_Columns { get; set; }
+        public int p_WinningLength { get; set; }
         internal int p_CurrentPlayerIndex { get; set; }
         internal string p_BoardString { get; set; }
         internal bool p_FirstTurn { get; set; }
-        internal int? p_Winner { get; set; }
-        internal int? p_Loser { get; set; }
-        internal int p_Draw { get; set; }
-        internal int p_GameTypeIdent { get; set; }
-        internal int p_MatchId { get; set; }
-        internal bool p_TwistStat { get; set; }
-
+        public int? p_Winner { get; set; }
+        public int? p_Loser { get; set; }
+        public int p_Draw { get; set; }
+        public int p_GameTypeIdent { get; set; }
+        public int p_MatchId { get; set; }
+        public bool p_TwistStat { get; set; }
+        public string p_GameType { get; set; }
+        public string p_WinnerName { get; set; }
+        public string p_LoserName { get; set; }
+        public string p_Result { get; set; }
+        public string p_Opponent { get; set; }
 
 
 
@@ -39,6 +43,10 @@ namespace ClassLibrary
             this.p_Columns = p_Columns;
             this.p_WinningLength = p_WinningLength;
             p_Board = new char[p_Rows, p_Columns];
+        }
+        public Match()
+        {
+
         }
         /// <summary>
         /// Initiates a game match, handles player turns, checks for a winner, updates stats, and saves match results.

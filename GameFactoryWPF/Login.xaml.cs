@@ -24,6 +24,10 @@ namespace GameFactoryWPF
         private int Ident { get; set; } = 0;
         private Player Player { get; set; }
 
+        public delegate void PlayerLoggedInHandler(Player player);
+        
+        public event PlayerLoggedInHandler PlayerLoggedIn;
+
         /// <summary>
         /// Initializes the login window, sets up event handlers, and applies initial UI transformations.
         /// </summary>
@@ -73,9 +77,10 @@ namespace GameFactoryWPF
 
             if (Ident != 0)
             {
-                TextBox("Logged in as " + Username + " !");
-
                 Player = DataProvider.GetStatsAndVariables(Ident);
+
+
+                OnPlayerLoggedIn(Player);
 
             }
             else
@@ -243,12 +248,18 @@ namespace GameFactoryWPF
         /// Displays a custom message box with the provided text.
         /// </summary>
         /// <param name="p_Text">The message text to be displayed in the message box.</param>
-        private void TextBox(string p_Text)
+        public static void TextBox(string p_Text)
         {
             CustomMessageBox customMessageBox = new CustomMessageBox(p_Text);
             customMessageBox.Owner = Application.Current.MainWindow;
             customMessageBox.WindowStartupLocation = WindowStartupLocation.CenterOwner;
             customMessageBox.ShowDialog();
+        }
+
+
+        private void OnPlayerLoggedIn(Player player)
+        {
+            PlayerLoggedIn?.Invoke(player);
         }
         #endregion
 
