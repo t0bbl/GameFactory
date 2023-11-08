@@ -10,7 +10,7 @@ namespace ClassLibrary
     public class Player
     {
         public string Name { get; set; }
-        internal char Icon { get; set; }
+        public char Icon { get; set; }
         internal string Colour { get; set; }
         internal bool IsHuman { get; set; }
         internal int Ident { get; set; }
@@ -20,6 +20,7 @@ namespace ClassLibrary
         public int Wins { get; set; }
         public int Losses { get; set; }
         public int Draws { get; set; }
+        public int PlayedGames { get; set; }
         public double WinPercentage { get; set; }
 
 

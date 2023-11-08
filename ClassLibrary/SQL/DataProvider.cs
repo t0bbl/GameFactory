@@ -17,10 +17,10 @@ namespace ClassLibrary
         /// </summary>
         /// <param name="p_Ident">The unique identifier of the player.</param>
         /// <param name="p_DisplayWithName">A flag to determine if the player's name should be included in the display.</param>
-        internal static void DisplayPlayerStats(int p_Ident, bool? p_DisplayWithName)
+        public static Player DisplayPlayerStats(int p_Ident, bool? p_DisplayWithName)
         {
             string connString = new SQLDatabaseUtility().GetSQLConnectionString();
-
+            Player Player = null;
             using (SqlConnection conn = new SqlConnection(connString))
             {
                 conn.Open();
@@ -35,25 +35,36 @@ namespace ClassLibrary
                         {
                             while (reader.Read())
                             {
-                                string Name = reader.GetString(reader.GetOrdinal("PlayerName"));
-                                int Wins = reader.GetInt32(reader.GetOrdinal("Wins"));
-                                int Losses = reader.GetInt32(reader.GetOrdinal("Losses"));
-                                int Draws = reader.GetInt32(reader.GetOrdinal("Draws"));
-                                int PlayedGames = reader.GetInt32(reader.GetOrdinal("PlayedGames"));
-                                double WinPercentage = reader.GetDouble(reader.GetOrdinal("WinPercentage"));
-                                if (p_DisplayWithName.HasValue)
+                                 string Name = reader.GetString(reader.GetOrdinal("PlayerName"));
+                                 int Wins = reader.GetInt32(reader.GetOrdinal("Wins"));
+                                 int Losses = reader.GetInt32(reader.GetOrdinal("Losses"));
+                                 int Draws = reader.GetInt32(reader.GetOrdinal("Draws"));
+                                 int PlayedGames = reader.GetInt32(reader.GetOrdinal("PlayedGames"));
+                                 double WinPercentage = reader.GetDouble(reader.GetOrdinal("WinPercentage"));
+
+                                Player = new Player
                                 {
-                                    Console.WriteLine($"{Name}: Wins: {Wins}, Losses: {Losses}, Draws: {Draws}, PlayedGames: {PlayedGames}, Win Percentage: {WinPercentage}");
-                                }
-                                else
-                                {
-                                    Console.WriteLine($"Wins: {Wins}, Losses: {Losses}, Draws: {Draws}, PlayedGames: {PlayedGames}, Win Percentage: {WinPercentage}");
-                                }
+                                    Name = Name,
+                                    Wins = Wins,
+                                    Losses = Losses,
+                                    Draws = Draws,
+                                    PlayedGames = PlayedGames,
+                                    WinPercentage = WinPercentage
+                                };
+                                //if (p_DisplayWithName.HasValue)
+                                //{
+                                //    Console.WriteLine($"{Name}: Wins: {Wins}, Losses: {Losses}, Draws: {Draws}, PlayedGames: {PlayedGames}, Win Percentage: {WinPercentage}");
+                                //}
+                                //else
+                                //{
+                                //    Console.WriteLine($"Wins: {Wins}, Losses: {Losses}, Draws: {Draws}, PlayedGames: {PlayedGames}, Win Percentage: {WinPercentage}");
+                                //}
                             }
                         }
                     }
                 }
             }
+            return Player;
         }
         /// <summary>
         /// Retrieves a list of player identifiers from the Player database based on an optional name parameter. The function searches both the "Name" and "LoginName" fields for a match using the provided name. If no name is given, all player identifiers are returned.
@@ -231,6 +242,17 @@ namespace ClassLibrary
             }
 
             return player;
+        }
+        public static Player GetStatsAndVariables(int p_Ident)
+        {
+            Player Variables = GetPlayerVariables(p_Ident);
+
+            Player Player = DisplayPlayerStats(p_Ident, true);
+            Player.Icon = Variables.Icon;
+            Player.Colour = Variables.Colour;
+            Player.Name = Variables.Name;
+
+            return Player;
         }
         /// <summary>
         /// Displays the leaderboard from the LeaderBoard database table, listing players by their rank. The displayed details include rank, player name, number of wins, losses, draws, and win percentage. The leaderboard is presented in a tabulated format and prompts the user to press any key to return once displayed.

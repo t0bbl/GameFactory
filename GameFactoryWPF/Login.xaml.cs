@@ -1,5 +1,6 @@
 ﻿using ClassLibrary;
 using System;
+using System.Numerics;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -50,7 +51,7 @@ namespace GameFactoryWPF
         {
             Username = UsernameTextBox.Text;
             Password = PasswordTextBox.Password;
-            if (!ClassLibrary.Player.ValidateLoginName(Username))
+            if (!Player.ValidateLoginName(Username))
             {
                 TextBox("Username must be between 3 and 16 characters long.");
 
@@ -64,7 +65,7 @@ namespace GameFactoryWPF
             }
             string PasswordSave = Player.HashPassword(Password);
 
-            try { Ident = ClassLibrary.Player.SQLLoginPlayer(Username, PasswordSave); }
+            try { Ident = Player.SQLLoginPlayer(Username, PasswordSave); }
             catch (Exception ex)
             {
                 TextBox(ex.Message);
@@ -74,7 +75,7 @@ namespace GameFactoryWPF
             {
                 TextBox("Logged in as " + Username + " !");
 
-                //Player = ClassLibrary.DataProvider.GetPlayerVariables(p_Ident);
+                Player = DataProvider.GetStatsAndVariables(Ident);
 
             }
             else
@@ -119,12 +120,12 @@ namespace GameFactoryWPF
         private void SignUpFunction_Click(object sender, RoutedEventArgs e)
         {
             Username = UsernameTextBoxSignup.Text;
-            if (!ClassLibrary.Player.ValidateLoginName(Username))
+            if (!Player.ValidateLoginName(Username))
             {
                 MessageBox.Show("Username is not valid, please try again!");
                 return;
             }
-            if (!ClassLibrary.DataProvider.ValidateLoginNameForSignup(Username))
+            if (!DataProvider.ValidateLoginNameForSignup(Username))
             {
                 MessageBox.Show("Username is already taken, please try again!");
                 return;
