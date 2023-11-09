@@ -28,7 +28,7 @@
             ItemsSource="{Binding}">
             <ListView.View>
                 <GridView>
-                    <GridViewColumn Width="Auto" Header="Result">
+                    <GridViewColumn Header="Result">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
                                 <TextBlock Text="{Binding p_Result}">
@@ -36,11 +36,10 @@
                                         <Style TargetType="TextBlock">
                                             <Style.Triggers>
                                                 <DataTrigger Binding="{Binding p_Result}" Value="Win">
-                                                    <Setter Property="Foreground" Value="LawnGreen" />
-                                                    <Setter Property="FontWeight" Value="Bold" />
+                                                    <Setter Property="Foreground" Value="Green" />
                                                 </DataTrigger>
                                                 <DataTrigger Binding="{Binding p_Result}" Value="Loss">
-                                                    <Setter Property="Foreground" Value="DarkRed" />
+                                                    <Setter Property="Foreground" Value="Red" />
                                                 </DataTrigger>
                                                 <DataTrigger Binding="{Binding p_Result}" Value="Draw">
                                                     <Setter Property="Foreground" Value="Gray" />
@@ -53,7 +52,7 @@
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>
 
-                    <GridViewColumn Width="Auto" Header="Opponent">
+                    <GridViewColumn Header="Opponent">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
                                 <TextBlock Text="{Binding p_Opponent}" />
@@ -61,10 +60,10 @@
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>
 
-                    <GridViewColumn Width="Auto" Header="GameType">
+                    <GridViewColumn Header="GameType">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
-                                <TextBlock Margin="20,0" Text="{Binding p_GameType}" />
+                                <TextBlock Margin="20,0,20,0" Text="{Binding p_GameType}" />
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>

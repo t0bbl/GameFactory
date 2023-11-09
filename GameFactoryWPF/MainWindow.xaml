@@ -31,12 +31,8 @@
 
         <materialDesign:Card Grid.Row="0">
             <Menu materialDesign:MenuAssist.TopLevelMenuItemHeight="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type materialDesign:Card}}, Path=ActualHeight}">
-                <MenuItem
-                    HorizontalAlignment="Left"
-                    HorizontalContentAlignment="left"
-                    FlowDirection="RightToLeft"
-                    Header="Menu">
-                    <MenuItem Click="ToLeaderboard" Header="_Leaderboard" />
+                <MenuItem Header="Menu">
+                    <MenuItem Click="ToLeaderboard" Header="Leaderboard" />
                     <MenuItem Click="ToStats" Header="_Stats" />
                     <MenuItem Click="ToTTT" Header="_TTT" />
                     <MenuItem Click="ToMainScreen" Header="_MainMenu" />
