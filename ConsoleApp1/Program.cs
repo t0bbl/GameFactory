@@ -1,5 +1,4 @@
-﻿using System.Text.RegularExpressions;
-using ClassLibrary;
+﻿using ClassLibrary;
 
 namespace GameFactory
 {

@@ -35,7 +35,7 @@ namespace GameFactoryWPF
             if (control != null)
             {
                 Player newPlayer = e.NewValue as Player;
-                control.DataContext = newPlayer; 
+                control.DataContext = newPlayer;
             }
         }
         private void CloseButton_Click(object sender, RoutedEventArgs e)

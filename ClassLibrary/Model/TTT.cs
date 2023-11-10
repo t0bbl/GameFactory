@@ -144,7 +144,7 @@
                     else if (Cells[Col] == p_Players[1].Icon.ToString())
                     {
                         SetCell(Row, Col, p_Players[1].Icon);
-                    }   
+                    }
                 }
             }
         }

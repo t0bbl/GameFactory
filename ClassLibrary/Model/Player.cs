@@ -3,7 +3,6 @@ using System.Data.SqlClient;
 using System.Security.Cryptography;
 using System.Text;
 using System.Text.RegularExpressions;
-using System.Xml.Linq;
 
 namespace ClassLibrary
 {
@@ -169,7 +168,7 @@ namespace ClassLibrary
                     cmd.Parameters.AddWithValue("@p_LoginName", p_LoginName);
                     cmd.Parameters.AddWithValue("@p_Password", p_Password);
                     cmd.Parameters.AddWithValue("@p_IsHuman", 1);
-                        
+
                     SqlParameter identParam = new SqlParameter("@p_Ident", SqlDbType.Int);
                     identParam.Direction = ParameterDirection.Output;
                     cmd.Parameters.Add(identParam);
@@ -192,7 +191,7 @@ namespace ClassLibrary
         public static int SQLLoginPlayer(string p_LoginName, string p_Password)
         {
             string connString = new SQLDatabaseUtility().GetSQLConnectionString();
-            int p_ident = 0; 
+            int p_ident = 0;
 
             using (SqlConnection conn = new SqlConnection(connString))
             {
@@ -343,7 +342,7 @@ namespace ClassLibrary
                     if (password.Length > 0)
                     {
                         password.Remove(password.Length - 1, 1);
-                        Console.Write("\b \b"); 
+                        Console.Write("\b \b");
                     }
                 }
                 else

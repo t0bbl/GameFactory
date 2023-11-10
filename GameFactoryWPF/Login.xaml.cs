@@ -1,6 +1,5 @@
 ﻿using ClassLibrary;
 using System;
-using System.Numerics;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -25,7 +24,7 @@ namespace GameFactoryWPF
         private Player Player { get; set; }
 
         public delegate void PlayerLoggedInHandler(Player player);
-        
+
         public event PlayerLoggedInHandler PlayerLoggedIn;
 
         /// <summary>
