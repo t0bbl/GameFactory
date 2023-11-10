@@ -1,6 +1,6 @@
 ﻿using ClassLibrary;
 using System.Windows;
-
+using System.Windows.Controls;
 
 namespace GameFactoryWPF
 {
@@ -9,11 +9,13 @@ namespace GameFactoryWPF
     /// </summary>
     public partial class MainWindow : Window
     {
+
         Login LoginScreen = new Login();
         Leaderboard LeaderBoardScreen = new Leaderboard();
         TTT TTTScreen = new TTT();
         Stats StatsScreen;
         History HistoryScreen;
+        
 
         public MainWindow()
         {

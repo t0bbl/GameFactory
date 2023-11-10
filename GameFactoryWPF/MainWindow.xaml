@@ -45,6 +45,10 @@
             <local:Login />
         </ContentControl>
         <StackPanel x:Name="StatsPanel" Grid.Row="1" />
+        <StackPanel
+            x:Name="HistoryPanel"
+            Grid.Row="1"
+            Grid.Column="2" />
 
     </Grid>
 

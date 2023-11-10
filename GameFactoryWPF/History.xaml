@@ -24,14 +24,26 @@
             Grid.Row="1"
             Grid.Column="1"
             Width="Auto"
-            Margin="0,30"
-            ItemsSource="{Binding}">
+            Margin="0,20"
+            ItemsSource="{Binding}"
+            SelectionChanged="ListView_SelectionChanged">
             <ListView.View>
                 <GridView>
+                    <GridViewColumn Header="MatchID">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock
+                                    Margin="20,0,20,0"
+                                    Foreground="Gray"
+                                    Text="{Binding p_MatchId}" />
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+
                     <GridViewColumn Header="Result">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
-                                <TextBlock Text="{Binding p_Result}">
+                                <TextBlock Margin="20,0,20,0" Text="{Binding p_Result}">
                                     <TextBlock.Style>
                                         <Style TargetType="TextBlock">
                                             <Style.Triggers>
@@ -55,7 +67,7 @@
                     <GridViewColumn Header="Opponent">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
-                                <TextBlock Text="{Binding p_Opponent}" />
+                                <TextBlock Margin="20,0,20,0" Text="{Binding p_Opponent}" />
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>

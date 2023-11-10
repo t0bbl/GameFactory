@@ -1,4 +1,5 @@
-﻿using System.Data.SqlClient;
+﻿using CoreGameFactory.Model;
+using System.Data.SqlClient;
 using System.Text;
 
 
@@ -293,6 +294,47 @@ namespace ClassLibrary
             }
 
         }
+
+        public static List<Move> DisplayMoveHistory(int p_Ident)
+        {
+            List<Move> MoveHistory = new List<Move>();
+            string connString = new SQLDatabaseUtility().GetSQLConnectionString();
+
+            using (SqlConnection conn = new SqlConnection(connString))
+            {
+                string sqlQuery = "SELECT * FROM MoveHistory WHERE Match = @p_ident";
+
+                using (SqlCommand cmd = new SqlCommand(sqlQuery, conn))
+                {
+                    conn.Open();
+                    cmd.Parameters.AddWithValue("@p_ident", p_Ident);
+
+                    using (SqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        if (reader.HasRows)
+                        {
+                            while (reader.Read())
+                            {
+                                int MatchId = reader.GetInt32(reader.GetOrdinal("Match"));
+                                int Player = reader.GetInt32(reader.GetOrdinal("Player"));
+                                string Input = reader.GetString(reader.GetOrdinal("Input"));
+                                bool Twist = reader.GetBoolean(reader.GetOrdinal("Twist"));
+                                MoveHistory.Add(new Move
+                                {
+                                    Match = MatchId,
+                                    Player = Player,
+                                    Input = Input,
+                                    Twist = Twist
+                                });
+
+                            }
+                        }
+                    }
+                }
+                return MoveHistory;
+            }
+        }
+
 
         public static List<Match> DisplayHistory(int p_Ident)
         {

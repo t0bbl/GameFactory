@@ -1,5 +1,9 @@
 ﻿using ClassLibrary;
+using CoreGameFactory.Model;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Linq;
+using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -11,14 +15,9 @@ namespace GameFactoryWPF
     /// </summary>
     public partial class History : UserControl
     {
-        public Player Player
-        {
-            get { return (Player)GetValue(PlayerProperty); }
-            set { SetValue(PlayerProperty, value); }
-        }
+        MatchDetail MoveHistoryScreen;
 
-        public static readonly DependencyProperty PlayerProperty =
-               DependencyProperty.Register("Player", typeof(Player), typeof(History), new PropertyMetadata(null, OnPlayerPropertyChanged));
+
 
         public History(Player p_Player)
         {
@@ -58,6 +57,47 @@ namespace GameFactoryWPF
             this.DataContext = PlayerHistory;
             CommandManager.InvalidateRequerySuggested();
         }
+
+        public void ListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            var listView = sender as ListView;
+            if (listView != null && listView.SelectedItem != null)
+            {
+                var match = listView.SelectedItem as ClassLibrary.Match;
+                if (match != null)
+                {
+                    var MoveList = LoadMoveHistory(match);
+
+                    MoveHistoryScreen = new MatchDetail(MoveList);
+                    MoveHistoryScreen.DataContext = MoveList;
+
+                    var mainWindow = Application.Current.MainWindow as MainWindow;
+                    if (mainWindow != null)
+                    {
+
+                        mainWindow.HistoryPanel.Children.Clear();
+
+                        mainWindow.HistoryPanel.Children.Add(MoveHistoryScreen);
+                        MoveHistoryScreen.Visibility = Visibility.Visible;
+                    }
+                }
+            }
+        }
+
+        public List<Move> LoadMoveHistory(ClassLibrary.Match p_Match)
+        {
+            var moveHistoryData = DataProvider.DisplayMoveHistory(p_Match.p_MatchId);
+            var moveHistory = new List<Move>(moveHistoryData.Select(move => new Move
+            {
+                Player = move.Player,
+                Match = move.Match,
+                Input = move.Input,
+                Twist = move.Twist
+            }));
+
+            return moveHistory;
+        }
+
 
 
         private static void OnPlayerPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
