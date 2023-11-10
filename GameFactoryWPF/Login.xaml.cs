@@ -105,18 +105,7 @@ namespace GameFactoryWPF
         {
             TextBox("Logged in as Guest!");
         }
-        /// <summary>
-        /// Handles the back button click to revert to the previous UI state.
-        /// </summary>
-        private void Back_Click(object sender, RoutedEventArgs e)
-        {
-            Storyboard SignupFlipOut = this.Resources["SignupFlipOut"] as Storyboard;
-            if (SignupFlipOut != null)
-            {
-                SignupFlipOut.Completed += SignupFlipOut_Completed;
-                SignupFlipOut.Begin();
-            }
-        }
+
         /// <summary>
         /// Handles the sign-up functionality, including user creation and validation.
         /// </summary>
@@ -153,7 +142,7 @@ namespace GameFactoryWPF
         }
         #endregion
 
-        #region Event Handlers
+        #region Event Handlers Animations
         /// <summary>
         /// Handles mouse down events on the window. Triggers a storyboard animation when clicked for the first time.
         /// </summary>
@@ -253,7 +242,18 @@ namespace GameFactoryWPF
             customMessageBox.WindowStartupLocation = WindowStartupLocation.CenterOwner;
             customMessageBox.ShowDialog();
         }
-
+        /// <summary>
+        /// Handles the back button click to revert to the previous UI state.
+        /// </summary>
+        private void Back_Click(object sender, RoutedEventArgs e)
+        {
+            Storyboard SignupFlipOut = this.Resources["SignupFlipOut"] as Storyboard;
+            if (SignupFlipOut != null)
+            {
+                SignupFlipOut.Completed += SignupFlipOut_Completed;
+                SignupFlipOut.Begin();
+            }
+        }
 
         private void OnPlayerLoggedIn(Player player)
         {
