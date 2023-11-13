@@ -1,6 +1,6 @@
 ﻿namespace ClassLibrary
 {
-    internal class TTT : Match
+    public class TTT : Match
     {
         #region Variables
         internal bool ChatGPT { get; set; }

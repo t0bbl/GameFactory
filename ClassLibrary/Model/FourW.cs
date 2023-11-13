@@ -1,6 +1,6 @@
 namespace ClassLibrary
 {
-    internal class FourW : Match
+    public class FourW : Match
     {
         #region Variables
         internal bool ChatGPT { get; set; }

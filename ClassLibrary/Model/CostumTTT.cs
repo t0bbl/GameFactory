@@ -1,6 +1,6 @@
 ﻿namespace ClassLibrary
 {
-    internal class CustomTTT : Match
+    public class CustomTTT : Match
     {
         #region Variables
         public bool p_Twist { get; set; }

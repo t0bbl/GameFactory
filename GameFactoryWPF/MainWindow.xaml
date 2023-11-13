@@ -37,7 +37,6 @@
                     <MenuItem Click="ToHistory" Header="_History" />
                     <MenuItem Click="ToTTT" Header="_TTT" />
                     <MenuItem Click="ToMainScreen" Header="_MainMenu" />
-                    <MenuItem Click="ToGameWindow" Header="Game" />
                 </MenuItem>
             </Menu>
         </materialDesign:Card>

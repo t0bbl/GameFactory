@@ -1,18 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using ClassLibrary;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Controls.Primitives;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
-using ClassLibrary;
 
 namespace GameFactoryWPF
 {
@@ -21,33 +9,34 @@ namespace GameFactoryWPF
     /// </summary>
     public partial class GameWindow : UserControl
     {
-        public GameWindow()
+        private MainWindow p_MainWindow;
+
+        public GameWindow(Match p_Game, MainWindow p_MainWindow)
         {
             InitializeComponent();
-            CreatePlayboard(3, 3);
-
-            TTT CurrentGame = new TTT();
-
-
+            this.p_MainWindow = p_MainWindow;
+            CreatePlayboard(p_Game.p_Rows, p_Game.p_Columns, p_Game.p_WinningLength);
+            
         }
 
-        private void CreatePlayboard(int rows, int columns)
-        {
 
+        private void CreatePlayboard(int p_Rows, int p_Columns, int p_WinningLength)
+        {
             var playboard = new Grid();
 
-            for (int row = 0; row < rows; row++)
+            for (int row = 0; row < p_Rows; row++)
             {
                 playboard.RowDefinitions.Add(new RowDefinition { Height = new GridLength(1, GridUnitType.Star) });
             }
-            for (int col = 0; col < columns; col++)
+
+            for (int col = 0; col < p_Columns; col++)
             {
                 playboard.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
             }
 
-            for (int row = 0; row < rows; row++)
+            for (int row = 0; row < p_Rows; row++)
             {
-                for (int col = 0; col < columns; col++)
+                for (int col = 0; col < p_Columns; col++)
                 {
                     var cellButton = new CellControl();
 
@@ -58,12 +47,10 @@ namespace GameFactoryWPF
                 }
             }
 
-            MainGrid.Children.Clear();
-            MainGrid.Children.Add(playboard);
+
+
+            p_MainWindow.MainContent.Content = playboard;
         }
-
-
-
 
 
     }
