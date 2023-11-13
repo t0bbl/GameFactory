@@ -1,6 +1,5 @@
 ﻿using ClassLibrary;
 using System.Windows;
-using System.Windows.Controls;
 
 namespace GameFactoryWPF
 {
