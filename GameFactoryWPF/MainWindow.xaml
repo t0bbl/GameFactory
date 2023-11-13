@@ -37,6 +37,7 @@
                     <MenuItem Click="ToHistory" Header="_History" />
                     <MenuItem Click="ToTTT" Header="_TTT" />
                     <MenuItem Click="ToMainScreen" Header="_MainMenu" />
+                    <MenuItem Click="ToGameWindow" Header="Game" />
                 </MenuItem>
             </Menu>
         </materialDesign:Card>
@@ -45,10 +46,31 @@
             <local:Login />
         </ContentControl>
         <StackPanel x:Name="StatsPanel" Grid.Row="1" />
-        <StackPanel
-            x:Name="HistoryPanel"
-            Grid.Row="1"
-            Grid.Column="2" />
+        <Grid Grid.Row="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <StackPanel
+                x:Name="HistoryPanel"
+                Grid.Row="0"
+                Grid.Column="2" />
+            <StackPanel
+                x:Name="GamesPanel"
+                Grid.Row="1"
+                Grid.Column="2"
+                Width="200"
+                Margin="20,20"
+                HorizontalAlignment="Right"
+                VerticalAlignment="Bottom" />
+
+        </Grid>
+
 
     </Grid>
 
