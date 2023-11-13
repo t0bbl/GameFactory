@@ -92,7 +92,8 @@ namespace GameFactoryWPF
                 Player = move.Player,
                 Match = move.Match,
                 Input = move.Input,
-                Twist = move.Twist
+                Twist = move.Twist,
+                PlayerName = move.PlayerName
             }));
 
             return moveHistory;

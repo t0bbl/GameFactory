@@ -302,7 +302,7 @@ namespace ClassLibrary
 
             using (SqlConnection conn = new SqlConnection(connString))
             {
-                string sqlQuery = "SELECT * FROM MoveHistory WHERE Match = @p_ident";
+                string sqlQuery = "SELECT * FROM MoveHistory_V WHERE Match = @p_ident";
 
                 using (SqlCommand cmd = new SqlCommand(sqlQuery, conn))
                 {
@@ -316,15 +316,18 @@ namespace ClassLibrary
                             while (reader.Read())
                             {
                                 int MatchId = reader.GetInt32(reader.GetOrdinal("Match"));
-                                int Player = reader.GetInt32(reader.GetOrdinal("Player"));
+                                int Player = reader.GetInt32(reader.GetOrdinal("PlayerIdent"));
                                 string Input = reader.GetString(reader.GetOrdinal("Input"));
                                 bool Twist = reader.GetBoolean(reader.GetOrdinal("Twist"));
+                                string PlayerName = reader.GetString(reader.GetOrdinal("PlayerName"));
                                 MoveHistory.Add(new Move
                                 {
                                     Match = MatchId,
                                     Player = Player,
                                     Input = Input,
-                                    Twist = Twist
+                                    Twist = Twist,
+                                    PlayerName = PlayerName
+
                                 });
 
                             }

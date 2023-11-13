@@ -12,5 +12,6 @@ namespace CoreGameFactory.Model
         public int Match { get; set; }
         public string Input { get; set; }
         public bool Twist { get; set; }
+        public string PlayerName { get; set; }
     }
 }

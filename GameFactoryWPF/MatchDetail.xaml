@@ -29,18 +29,21 @@
                 VerticalAlignment="Center"
                 FontSize="18"
                 FontWeight="Bold"
-                Text="{Binding Game}" />
+                Text="{Binding Match}" />
 
             <ListView
                 x:Name="MoveHistoryList"
                 Grid.Row="1"
+                Width="240"
+                Margin="10,0,10,0"
+                HorizontalAlignment="Center"
                 ItemsSource="{Binding}">
                 <ListView.View>
                     <GridView>
                         <GridViewColumn Width="Auto" Header="Player">
                             <GridViewColumn.CellTemplate>
                                 <DataTemplate>
-                                    <TextBlock Margin="20,0,20,0" Text="{Binding Player}" />
+                                    <TextBlock Margin="20,0,0,0" Text="{Binding PlayerName}" />
                                 </DataTemplate>
                             </GridViewColumn.CellTemplate>
                         </GridViewColumn>
@@ -48,18 +51,11 @@
                         <GridViewColumn Width="Auto" Header="Move">
                             <GridViewColumn.CellTemplate>
                                 <DataTemplate>
-                                    <TextBlock Text="{Binding Input}" />
+                                    <TextBlock Margin="20,0,0,0" Text="{Binding Input}" />
                                 </DataTemplate>
                             </GridViewColumn.CellTemplate>
                         </GridViewColumn>
 
-                        <GridViewColumn Width="Auto" Header="Twist">
-                            <GridViewColumn.CellTemplate>
-                                <DataTemplate>
-                                    <TextBlock Margin="20,0,20,0" Text="{Binding Twist}" />
-                                </DataTemplate>
-                            </GridViewColumn.CellTemplate>
-                        </GridViewColumn>
                     </GridView>
                 </ListView.View>
             </ListView>
