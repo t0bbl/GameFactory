@@ -15,7 +15,7 @@ namespace GameFactoryWPF
         TTT TTTScreen = new TTT();
         Stats StatsScreen;
         History HistoryScreen;
-        
+
 
         public MainWindow()
         {
@@ -61,17 +61,16 @@ namespace GameFactoryWPF
         #endregion
         private void LoginScreen_PlayerLoggedIn(Player p_Player)
         {
-            if (StatsScreen == null)
-            {
-                StatsScreen = new Stats(p_Player);
-                StatsPanel.Children.Add(StatsScreen);
-            }
-            if (HistoryScreen == null)
-            {
-                HistoryScreen = new History(p_Player);
-                HistoryScreen.LoadHistory(p_Player);
-            }
-            StatsScreen.Visibility = StatsScreen.Visibility == Visibility.Visible ? Visibility.Collapsed : Visibility.Visible;
+
+            StatsPanel.Children.Clear();
+            StatsScreen = new Stats(p_Player);
+            StatsPanel.Children.Add(StatsScreen);
+
+            HistoryPanel.Children.Clear();
+            HistoryScreen = new History(p_Player);
+            HistoryScreen.LoadHistory(p_Player);
+
+            StatsScreen.Visibility = Visibility.Visible;
             MainContent.Content = HistoryScreen;
         }
     }
