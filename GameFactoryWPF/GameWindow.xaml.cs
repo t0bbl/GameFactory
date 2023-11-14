@@ -11,18 +11,24 @@ namespace GameFactoryWPF
     {
         private MainWindow p_MainWindow;
 
+
+
         public GameWindow(Match p_Game, MainWindow p_MainWindow)
         {
             InitializeComponent();
             this.p_MainWindow = p_MainWindow;
             CreatePlayboard(p_Game.p_Rows, p_Game.p_Columns, p_Game.p_WinningLength);
-            
         }
 
 
         private void CreatePlayboard(int p_Rows, int p_Columns, int p_WinningLength)
         {
+            var mainContent = new Grid();
+            mainContent.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(100, GridUnitType.Star) });
+            mainContent.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(512, GridUnitType.Star) });
+            mainContent.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(100, GridUnitType.Star) });
             var playboard = new Grid();
+
 
             for (int row = 0; row < p_Rows; row++)
             {
@@ -46,12 +52,10 @@ namespace GameFactoryWPF
                     playboard.Children.Add(cellButton);
                 }
             }
+            Grid.SetColumn(playboard, 1);
+            mainContent.Children.Add(playboard);
 
-
-
-            p_MainWindow.MainContent.Content = playboard;
+            p_MainWindow.MainContent.Content = mainContent;
         }
-
-
     }
 }

@@ -10,7 +10,7 @@
     TextElement.Foreground="{DynamicResource MaterialDesignBody}"
     Visibility="Collapsed"
     mc:Ignorable="d">
-    <Grid>
+    <Grid x:Name="StartGamePanel" Visibility="Visible">
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
             <RowDefinition Height="*" />

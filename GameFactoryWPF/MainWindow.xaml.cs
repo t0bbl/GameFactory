@@ -1,4 +1,5 @@
 ﻿using ClassLibrary;
+using System;
 using System.Windows;
 
 namespace GameFactoryWPF
@@ -15,15 +16,14 @@ namespace GameFactoryWPF
         Stats StatsScreen;
         History HistoryScreen;
         StartGames GameScreen;
-       
-
-
         public MainWindow()
         {
             
             InitializeComponent();
+            GameScreen = new StartGames(this);
             MainContent.Content = LoginScreen;
             LoginScreen.PlayerLoggedIn += LoginScreen_PlayerLoggedIn;
+            GameScreen.GameStarted += GameLogic_GameStarted;
         }
         #region UI Event Handlers
         private void ToMainScreen(object sender, RoutedEventArgs e)
@@ -46,10 +46,7 @@ namespace GameFactoryWPF
                 ? Visibility.Collapsed
                 : Visibility.Visible;
         }
-        private void ToTTT(object sender, RoutedEventArgs e)
-        {
-            MainContent.Content = TTTScreen;
-        }
+
         private void ToHistory(object sender, RoutedEventArgs e)
         {
             if (HistoryScreen == null)
@@ -58,6 +55,8 @@ namespace GameFactoryWPF
                 return;
             }
             MainContent.Content = HistoryScreen;
+
+            GameScreen.StartGamePanel.Visibility = Visibility.Visible;
         }
 
         #endregion
@@ -73,7 +72,6 @@ namespace GameFactoryWPF
             HistoryScreen.LoadHistory(p_Player);
 
             GamesPanel.Children.Clear();
-            GameScreen = new StartGames(this);
             GamesPanel.Children.Add(GameScreen);
 
 
@@ -81,6 +79,11 @@ namespace GameFactoryWPF
             GameScreen.Visibility = Visibility.Visible;
 
             MainContent.Content = HistoryScreen;
+        }
+
+        private void GameLogic_GameStarted(object sender, EventArgs e)
+        {
+            GameScreen.StartGamePanel.Visibility = Visibility.Collapsed;
         }
     }
 

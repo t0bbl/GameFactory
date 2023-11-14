@@ -35,7 +35,6 @@
                     <MenuItem Click="ToLeaderboard" Header="_Leaderboard" />
                     <MenuItem Click="ToStats" Header="_Stats" />
                     <MenuItem Click="ToHistory" Header="_History" />
-                    <MenuItem Click="ToTTT" Header="_TTT" />
                     <MenuItem Click="ToMainScreen" Header="_MainMenu" />
                 </MenuItem>
             </Menu>
@@ -55,6 +54,10 @@
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
+            <StackPanel
+                x:Name="GamePanel"
+                Grid.Row="0"
+                Grid.Column="1" />
             <StackPanel
                 x:Name="HistoryPanel"
                 Grid.Row="0"
