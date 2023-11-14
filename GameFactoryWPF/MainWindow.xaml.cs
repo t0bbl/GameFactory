@@ -18,7 +18,7 @@ namespace GameFactoryWPF
         StartGames GameScreen;
         public MainWindow()
         {
-            
+
             InitializeComponent();
             GameScreen = new StartGames(this);
             MainContent.Content = LoginScreen;
