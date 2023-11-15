@@ -25,9 +25,12 @@ namespace GameFactoryWPF
 
         private void OnCellClicked(object sender, RoutedEventArgs e)
         {
+
             Button clickedButton = sender as Button;
             int row = Grid.GetRow(this);
             int col = Grid.GetColumn(this);
+
+
 
             MessageBox.Show($"You clicked cell {row}, {col}", "Debug Info", MessageBoxButton.OK, MessageBoxImage.Information);
         }

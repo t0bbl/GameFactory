@@ -126,14 +126,12 @@
                         Grid.Column="0"
                         Margin="10"
                         VerticalAlignment="Center"
-                        FontWeight="Bold"
                         Text="Icon:" />
                     <TextBlock
                         Grid.Row="5"
                         Grid.Column="1"
                         Margin="10"
                         VerticalAlignment="Center"
-                        FontWeight="Bold"
                         Text="{Binding Icon}"
                         TextAlignment="Right" />
 
@@ -142,14 +140,12 @@
                         Grid.Column="0"
                         Margin="10"
                         VerticalAlignment="Center"
-                        FontWeight="Bold"
                         Text="Color:" />
                     <TextBlock
                         Grid.Row="6"
                         Grid.Column="1"
                         Margin="10"
                         VerticalAlignment="Center"
-                        FontWeight="Bold"
                         Text="{Binding Color}"
                         TextAlignment="Right" />
 

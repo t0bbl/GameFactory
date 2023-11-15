@@ -24,6 +24,10 @@ namespace GameFactoryWPF
         {
             var TTTGame = new TTT();
             GameWindow TTTScreen = new GameWindow(TTTGame, p_MainWindow);
+            do
+            {
+                TTTGame.StartMatch();
+            } while (TTTGame.ReMatch());
             GameStarted?.Invoke(this, EventArgs.Empty);
 
         }

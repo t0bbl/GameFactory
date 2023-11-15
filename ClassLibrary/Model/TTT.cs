@@ -38,7 +38,6 @@
             if (FirstTurn)
             {
                 PrintBoard(false, false, p_player);
-                Console.WriteLine();
                 FirstTurn = false;
             }
             while (!p_validInput)
