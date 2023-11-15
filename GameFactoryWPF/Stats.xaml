@@ -15,7 +15,9 @@
         Width="200"
         Height="400"
         Margin="30"
-        HorizontalAlignment="Left">
+        HorizontalAlignment="Left"
+        Background="{DynamicResource SecondaryHueMidBrush}"
+        Foreground="Black">
 
         <Grid>
             <Grid.RowDefinitions>
