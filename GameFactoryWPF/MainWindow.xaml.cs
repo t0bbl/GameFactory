@@ -12,10 +12,10 @@ namespace GameFactoryWPF
 
         Login LoginScreen = new Login();
         Leaderboard LeaderBoardScreen = new Leaderboard();
-        TTT TTTScreen = new TTT();
         Stats StatsScreen;
         History HistoryScreen;
         StartGames GameScreen;
+
         public MainWindow()
         {
 
