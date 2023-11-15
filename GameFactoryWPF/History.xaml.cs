@@ -31,24 +31,24 @@ namespace GameFactoryWPF
             var PlayerHistory = new List<ClassLibrary.Match>();
             foreach (var match in HistoryData)
             {
-                string Result = match.p_Winner == p_Player.Ident ? "Win" : match.p_Loser == p_Player.Ident ? "Loss" : "Draw";
-                Result = match.p_Draw == 1 ? "Draw" : Result;
-                string Opponent = match.p_Winner == p_Player.Ident ? match.p_LoserName : match.p_WinnerName;
+                string Result = match.Winner == p_Player.Ident ? "Win" : match.Loser == p_Player.Ident ? "Loss" : "Draw";
+                Result = match.Draw == 1 ? "Draw" : Result;
+                string Opponent = match.Winner == p_Player.Ident ? match.LoserName : match.WinnerName;
                 PlayerHistory.Add(new ClassLibrary.Match
                 {
-                    p_Winner = match.p_Winner,
-                    p_Loser = match.p_Loser,
-                    p_Draw = match.p_Draw,
-                    p_GameTypeIdent = match.p_GameTypeIdent,
-                    p_WinningLength = match.p_WinningLength,
-                    p_MatchId = match.p_MatchId,
-                    p_Rows = match.p_Rows,
-                    p_Columns = match.p_Columns,
-                    p_GameType = match.p_GameType,
-                    p_LoserName = match.p_LoserName,
-                    p_WinnerName = match.p_WinnerName,
-                    p_Result = Result,
-                    p_Opponent = Opponent
+                    Winner = match.Winner,
+                    Loser = match.Loser,
+                    Draw = match.Draw,
+                    GameTypeIdent = match.GameTypeIdent,
+                    WinningLength = match.WinningLength,
+                    MatchId = match.MatchId,
+                    Rows = match.Rows,
+                    Columns = match.Columns,
+                    GameType = match.GameType,
+                    LoserName = match.LoserName,
+                    WinnerName = match.WinnerName,
+                    Result = Result,
+                    Opponent = Opponent
                 });
             }
 
@@ -84,7 +84,7 @@ namespace GameFactoryWPF
 
         public List<Move> LoadMoveHistory(ClassLibrary.Match p_Match)
         {
-            var moveHistoryData = DataProvider.DisplayMoveHistory(p_Match.p_MatchId);
+            var moveHistoryData = DataProvider.DisplayMoveHistory(p_Match.MatchId);
             var moveHistory = new List<Move>(moveHistoryData.Select(move => new Move
             {
                 Player = move.Player,

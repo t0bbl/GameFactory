@@ -17,7 +17,7 @@ namespace GameFactoryWPF
         {
             InitializeComponent();
             this.p_MainWindow = p_MainWindow;
-            CreatePlayboard(p_Game.p_Rows, p_Game.p_Columns, p_Game.p_WinningLength);
+            CreatePlayboard(p_Game.Rows, p_Game.Columns, p_Game.WinningLength);
         }
 
 

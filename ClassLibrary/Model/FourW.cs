@@ -20,7 +20,7 @@ namespace ClassLibrary
         {
             if (ChatGPT)
             {
-                if (p_CurrentPlayerIndex == 1)
+                if (CurrentPlayerIndex == 1)
                 {
                     ChatGPTMove(BoardToString(p_Board, p_Player), p_Player);
                 }
@@ -30,24 +30,24 @@ namespace ClassLibrary
             base.GameMechanic(p_Player);
 
             int p_chosenColumn;
-            if (p_FirstTurn)
+            if (FirstTurn)
             {
                 PrintBoard(false, true, p_Player);
                 Console.WriteLine();
-                p_FirstTurn = false;
+                FirstTurn = false;
             }
             do
             {
                 Console.WriteLine();
-                Console.WriteLine($"{p_Player[p_CurrentPlayerIndex].Name}, input a column number from 1 to {p_Columns}");
-                SavePlayerToMatch(p_Player[p_CurrentPlayerIndex].Ident, p_MatchId);
-            } while (!TryGetValidInput(out p_chosenColumn, p_Columns));
+                Console.WriteLine($"{p_Player[CurrentPlayerIndex].Name}, input a column number from 1 to {Columns}");
+                SavePlayerToMatch(p_Player[CurrentPlayerIndex].Ident, MatchId);
+            } while (!TryGetValidInput(out p_chosenColumn, Columns));
 
-            MakeMove(p_chosenColumn, p_CurrentPlayerIndex, p_Player);
+            MakeMove(p_chosenColumn, CurrentPlayerIndex, p_Player);
             string p_cell = p_chosenColumn.ToString();
-            SaveMoveHistory(p_Player[p_CurrentPlayerIndex].Ident, p_cell, p_MatchId, p_TwistStat);
+            SaveMoveHistory(p_Player[CurrentPlayerIndex].Ident, p_cell, MatchId, TwistStat);
 
-            p_CurrentPlayerIndex = (p_CurrentPlayerIndex + 1) % p_Player.Count;
+            CurrentPlayerIndex = (CurrentPlayerIndex + 1) % p_Player.Count;
 
             PrintBoard(false, true, p_Player);
         }
@@ -60,7 +60,7 @@ namespace ClassLibrary
         /// <returns>The row index of the lowest available row, or -1 if the column is full.</returns>
         public int FindLowestAvailableRow(int p_Column)
         {
-            for (int Row = p_Rows - 1; Row >= 0; Row--)
+            for (int Row = Rows - 1; Row >= 0; Row--)
             {
                 if (GetCell(Row, p_Column) == '0')
                 {
@@ -132,7 +132,7 @@ namespace ClassLibrary
                 MakeMove(chosenColumn, 1, p_Players);
 
 
-                p_CurrentPlayerIndex = (p_CurrentPlayerIndex + 1) % p_Players.Count;
+                CurrentPlayerIndex = (CurrentPlayerIndex + 1) % p_Players.Count;
 
                 PrintBoard(false, true, p_Players);
 
@@ -154,7 +154,7 @@ namespace ClassLibrary
         {
             if (int.TryParse(p_Response, out int chosenColumn))
             {
-                if (chosenColumn >= 1 && chosenColumn <= p_Columns)
+                if (chosenColumn >= 1 && chosenColumn <= Columns)
                 {
                     return chosenColumn;
                 }

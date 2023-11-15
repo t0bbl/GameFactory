@@ -26,7 +26,7 @@
         {
             if (ChatGPT)
             {
-                if (p_CurrentPlayerIndex == 1)
+                if (CurrentPlayerIndex == 1)
                 {
                     ChatGPTMove(BoardToString(p_Board, p_player), p_player);
                 }
@@ -35,26 +35,26 @@
 
             int p_chosenCell = 0;
             bool p_validInput = false;
-            if (p_FirstTurn)
+            if (FirstTurn)
             {
                 PrintBoard(false, false, p_player);
                 Console.WriteLine();
-                p_FirstTurn = false;
+                FirstTurn = false;
             }
             while (!p_validInput)
             {
-                Console.WriteLine($"{p_player[p_CurrentPlayerIndex].Name}, input a number from 1 to {p_Rows * p_Columns}");
+                Console.WriteLine($"{p_player[CurrentPlayerIndex].Name}, input a number from 1 to {Rows * Columns}");
 
-                if (TryGetValidInput(out p_chosenCell, p_Rows * p_Columns))
+                if (TryGetValidInput(out p_chosenCell, Rows * Columns))
                 {
-                    int p_row = (p_chosenCell - 1) / p_Columns;
-                    int p_col = (p_chosenCell - 1) % p_Columns;
+                    int p_row = (p_chosenCell - 1) / Columns;
+                    int p_col = (p_chosenCell - 1) % Columns;
 
                     if (GetCell(p_row, p_col) == '0')
                     {
-                        SetCell(p_row, p_col, p_player[p_CurrentPlayerIndex].Icon);
-                        SavePlayerToMatch(p_player[p_CurrentPlayerIndex].Ident, p_MatchId);
-                        p_CurrentPlayerIndex = (p_CurrentPlayerIndex + 1) % p_player.Count;
+                        SetCell(p_row, p_col, p_player[CurrentPlayerIndex].Icon);
+                        SavePlayerToMatch(p_player[CurrentPlayerIndex].Ident, MatchId);
+                        CurrentPlayerIndex = (CurrentPlayerIndex + 1) % p_player.Count;
                         p_validInput = true;
                     }
                     else
@@ -65,7 +65,7 @@
             }
             PrintBoard(false, false, p_player);
             string p_cell = p_chosenCell.ToString();
-            SaveMoveHistory(p_player[p_CurrentPlayerIndex].Ident, p_cell, p_MatchId, p_TwistStat);
+            SaveMoveHistory(p_player[CurrentPlayerIndex].Ident, p_cell, MatchId, TwistStat);
         }
         #region ChatGPT
         /// <summary>
@@ -108,7 +108,7 @@
                 PrintBoard(false, false, p_Players);
 
 
-                p_CurrentPlayerIndex = (p_CurrentPlayerIndex + 1) % p_Players.Count;
+                CurrentPlayerIndex = (CurrentPlayerIndex + 1) % p_Players.Count;
 
             }
             else
@@ -127,11 +127,11 @@
         {
             string[] RowsString = p_BoardString.Split(new[] { '\n' }, StringSplitOptions.RemoveEmptyEntries);
 
-            for (int Row = 0; Row < Math.Min(RowsString.Length, p_Rows); Row++)
+            for (int Row = 0; Row < Math.Min(RowsString.Length, Rows); Row++)
             {
                 string[] Cells = RowsString[Row].Split(new[] { '|', ' ' }, StringSplitOptions.RemoveEmptyEntries);
 
-                for (int Col = 0; Col < Math.Min(Cells.Length, p_Columns); Col++)
+                for (int Col = 0; Col < Math.Min(Cells.Length, Columns); Col++)
                 {
                     if (Cells[Col] == ".")
                     {

@@ -373,17 +373,17 @@ namespace ClassLibrary
 
                                 Match match = new Match()
                                 {
-                                    p_GameTypeIdent = GameTypeIdent,
-                                    p_Winner = Winner,
-                                    p_Loser = Loser,
-                                    p_Draw = Draw,
-                                    p_MatchId = MatchId,
-                                    p_Rows = Rows,
-                                    p_Columns = Columns,
-                                    p_WinningLength = WinningLength,
-                                    p_GameType = GameType,
-                                    p_WinnerName = reader.GetString(reader.GetOrdinal("WinnerName")),
-                                    p_LoserName = reader.GetString(reader.GetOrdinal("LoserName")),
+                                    GameTypeIdent = GameTypeIdent,
+                                    Winner = Winner,
+                                    Loser = Loser,
+                                    Draw = Draw,
+                                    MatchId = MatchId,
+                                    Rows = Rows,
+                                    Columns = Columns,
+                                    WinningLength = WinningLength,
+                                    GameType = GameType,
+                                    WinnerName = reader.GetString(reader.GetOrdinal("WinnerName")),
+                                    LoserName = reader.GetString(reader.GetOrdinal("LoserName")),
                                 };
                                 History.Add(match);
                             }

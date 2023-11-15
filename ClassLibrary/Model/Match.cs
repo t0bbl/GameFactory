@@ -8,23 +8,23 @@ namespace ClassLibrary
     {
         #region Variables
         internal char[,] p_Board { get; set; }
-        public int p_Rows { get; set; }
-        public int p_Columns { get; set; }
-        public int p_WinningLength { get; set; }
-        internal int p_CurrentPlayerIndex { get; set; }
-        internal string p_BoardString { get; set; }
-        internal bool p_FirstTurn { get; set; }
-        public int? p_Winner { get; set; }
-        public int? p_Loser { get; set; }
-        public int p_Draw { get; set; }
-        public int p_GameTypeIdent { get; set; }
-        public int p_MatchId { get; set; }
-        public bool p_TwistStat { get; set; }
-        public string p_GameType { get; set; }
-        public string p_WinnerName { get; set; }
-        public string p_LoserName { get; set; }
-        public string p_Result { get; set; }
-        public string p_Opponent { get; set; }
+        public int Rows { get; set; }
+        public int Columns { get; set; }
+        public int WinningLength { get; set; }
+        internal int CurrentPlayerIndex { get; set; }
+        internal string BoardString { get; set; }
+        internal bool FirstTurn { get; set; }
+        public int? Winner { get; set; }
+        public int? Loser { get; set; }
+        public int Draw { get; set; }
+        public int GameTypeIdent { get; set; }
+        public int MatchId { get; set; }
+        public bool TwistStat { get; set; }
+        public string GameType { get; set; }
+        public string WinnerName { get; set; }
+        public string LoserName { get; set; }
+        public string Result { get; set; }
+        public string Opponent { get; set; }
 
 
 
@@ -39,10 +39,10 @@ namespace ClassLibrary
         /// <param name="p_WinningLength">The length of consecutive symbols required to win the game.</param>
         internal Match(int p_Rows, int p_Columns, int p_WinningLength)
         {
-            this.p_Rows = p_Rows;
-            this.p_Columns = p_Columns;
-            this.p_WinningLength = p_WinningLength;
-            p_Board = new char[p_Rows, p_Columns];
+            this.Rows = p_Rows;
+            this.Columns = p_Columns;
+            this.WinningLength = p_WinningLength;
+            p_Board = new char[Rows, p_Columns];
         }
         public Match()
         {
@@ -53,20 +53,20 @@ namespace ClassLibrary
         /// </summary>
         public void StartMatch()
         {
-            p_FirstTurn = true;
+            FirstTurn = true;
             if (p_Player.All(player => player.Name != "CHATGPT"))
             { ShufflePlayers(p_Player); }
 
-            p_CurrentPlayerIndex = 0;
+            CurrentPlayerIndex = 0;
             ResetBoard();
             do
             {
                 GameMechanic(p_Player);
-                p_Winner = CheckWinner(p_Player);
-            } while (p_Winner == null);
+                Winner = CheckWinner(p_Player);
+            } while (Winner == null);
             UpdateStats(p_Player);
-            SaveMatch(p_Winner, p_Loser, p_Draw, p_GameTypeIdent, p_MatchId);
-            p_MatchId = 0;
+            SaveMatch(Winner, Loser, Draw, GameTypeIdent, MatchId);
+            MatchId = 0;
         }
         /// <summary>
         /// Executes the core game mechanics, including saving game and match details.
@@ -75,9 +75,9 @@ namespace ClassLibrary
         public virtual void GameMechanic(List<Player> p_Player)
         {
 
-            p_GameTypeIdent = SaveGame(p_Rows, p_Columns, p_WinningLength, p_GameType);
+            GameTypeIdent = SaveGame(Rows, Columns, WinningLength, p_GameType);
 
-            p_MatchId = SaveMatch(p_Winner, p_Loser, p_Draw, p_GameTypeIdent, p_MatchId);
+            MatchId = SaveMatch(Winner, Loser, Draw, GameTypeIdent, MatchId);
 
         }
 
@@ -87,9 +87,9 @@ namespace ClassLibrary
         /// </summary>
         public void ResetBoard()
         {
-            for (int Row = 0; Row < p_Rows; Row++)
+            for (int Row = 0; Row < Rows; Row++)
             {
-                for (int Col = 0; Col < p_Columns; Col++)
+                for (int Col = 0; Col < Columns; Col++)
                 {
                     SetCell(Row, Col, '0');
                 }
@@ -113,7 +113,7 @@ namespace ClassLibrary
         /// <param name="p_Icon">The value to be set at the specified cell.</param>
         public void SetCell(int p_Row, int p_Col, char p_Icon)
         {
-            if (p_Row >= 0 && p_Row < p_Rows && p_Col >= 0 && p_Col < p_Columns)
+            if (p_Row >= 0 && p_Row < Rows && p_Col >= 0 && p_Col < Columns)
             {
                 p_Board[p_Row, p_Col] = p_Icon;
             }
@@ -126,7 +126,7 @@ namespace ClassLibrary
         /// <param name="p_Player">The list of players participating in the game for icon colorization.</param>
         public void PrintBoard(bool p_ShowRow, bool p_ShowCol, List<Player> p_Player)
         {
-            for (int Row = 0; Row < p_Rows; Row++)
+            for (int Row = 0; Row < Rows; Row++)
             {
                 if (p_ShowRow)
                 {
@@ -139,7 +139,7 @@ namespace ClassLibrary
                     Console.Write("  ");
                 }
 
-                for (int Col = 0; Col < p_Columns; Col++)
+                for (int Col = 0; Col < Columns; Col++)
                 {
                     char CellValue = GetCell(Row, Col);
 
@@ -175,7 +175,7 @@ namespace ClassLibrary
             if (p_ShowCol)
             {
                 Console.Write("  ");
-                for (int Col = 0; Col < p_Columns; Col++)
+                for (int Col = 0; Col < Columns; Col++)
                 {
                     Console.BackgroundColor = ConsoleColor.DarkGray;
                     Console.Write($" {Col + 1} ");
@@ -192,9 +192,9 @@ namespace ClassLibrary
         /// <returns>The identifier of the winning player, 0 for a draw, or null if the game is ongoing.</returns>
         public int? CheckWinner(List<Player> p_Player)
         {
-            for (int Row = 0; Row < p_Rows; Row++)
+            for (int Row = 0; Row < Rows; Row++)
             {
-                for (int Col = 0; Col < p_Columns; Col++)
+                for (int Col = 0; Col < Columns; Col++)
                 {
                     char CellValue = GetCell(Row, Col);
                     if (CellValue == '0') continue;
@@ -203,11 +203,11 @@ namespace ClassLibrary
                     foreach (var Dir in directions)
                     {
                         int Count = 1;
-                        for (int PlayerRow = 1; PlayerRow < p_WinningLength; PlayerRow++)
+                        for (int PlayerRow = 1; PlayerRow < WinningLength; PlayerRow++)
                         {
                             int newRow = Row + Dir[0] * PlayerRow;
                             int newCol = Col + Dir[1] * PlayerRow;
-                            if (newRow < 0 || newRow >= p_Rows || newCol < 0 || newCol >= p_Columns) break;
+                            if (newRow < 0 || newRow >= Rows || newCol < 0 || newCol >= Columns) break;
 
                             if (GetCell(newRow, newCol) == CellValue)
                             {
@@ -216,7 +216,7 @@ namespace ClassLibrary
                             else break;
                         }
 
-                        if (Count >= p_WinningLength)
+                        if (Count >= WinningLength)
                         {
                             Player p_winner = p_Player.FirstOrDefault(p => p.Icon == CellValue);
                             return p_winner.Ident;
@@ -225,11 +225,11 @@ namespace ClassLibrary
                 }
             }
 
-            bool IsDraw = !Enumerable.Range(0, p_Rows).Any(p_Row => Enumerable.Range(0, p_Columns).Any(p_Col => GetCell(p_Row, p_Col) == '0'));
+            bool IsDraw = !Enumerable.Range(0, Rows).Any(p_Row => Enumerable.Range(0, Columns).Any(p_Col => GetCell(p_Row, p_Col) == '0'));
 
             if (IsDraw)
             {
-                p_Draw = 1;
+                Draw = 1;
                 return 0;
             }
 
@@ -300,23 +300,23 @@ namespace ClassLibrary
         /// <returns>The list of players with updated match statistics.</returns>
         internal List<Player> UpdateStats(List<Player> p_Players)
         {
-            if (p_Winner != null)
+            if (Winner != null)
             {
-                if (p_Draw == 0)
+                if (Draw == 0)
                 {
                     foreach (var Player in p_Players)
                     {
-                        if (Player.Ident == p_Winner)
+                        if (Player.Ident == Winner)
                         {
                             Console.WriteLine();
                             Console.WriteLine($"{Player.Name} won the game!");
-                            p_Winner = Player.Ident;
+                            Winner = Player.Ident;
                         }
 
                         else
                         {
                             Console.WriteLine();
-                            p_Loser = Player.Ident;
+                            Loser = Player.Ident;
                         }
                     }
                 }
@@ -324,8 +324,8 @@ namespace ClassLibrary
                 {
                     Console.WriteLine();
                     Console.WriteLine("It's a draw!");
-                    p_Winner = p_Players[0].Ident;
-                    p_Loser = p_Players[1].Ident;
+                    Winner = p_Players[0].Ident;
+                    Loser = p_Players[1].Ident;
                 }
             }
             return p_Players;
@@ -405,7 +405,7 @@ namespace ClassLibrary
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
 
-                    cmd.Parameters.AddWithValue("@p_Rows", p_Rows);
+                    cmd.Parameters.AddWithValue("@p_Rows", Rows);
                     cmd.Parameters.AddWithValue("@p_Cols", p_Columns);
                     cmd.Parameters.AddWithValue("@p_WinningLength", p_WinningLength);
                     cmd.Parameters.AddWithValue("@p_GameType", p_GameType);
@@ -517,9 +517,9 @@ namespace ClassLibrary
         protected string BoardToString(char[,] p_Board, List<Player> p_Players)
         {
             StringBuilder sb = new StringBuilder();
-            for (int row = 0; row < p_Rows; row++)
+            for (int row = 0; row < Rows; row++)
             {
-                for (int col = 0; col < p_Columns; col++)
+                for (int col = 0; col < Columns; col++)
                 {
                     char cellValue = p_Board[row, col];
                     if (cellValue == '0')
@@ -542,7 +542,7 @@ namespace ClassLibrary
                 sb.AppendLine();
             }
 
-            return p_BoardString = sb.ToString();
+            return BoardString = sb.ToString();
         }
         /// <summary>
         /// Defines the method to process a move using ChatGPT based on the game board and player information. To be implemented by derived classes.
