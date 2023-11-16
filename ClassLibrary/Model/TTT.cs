@@ -42,7 +42,6 @@
             }
             while (!p_validInput)
             {
-                Console.WriteLine($"{p_player[CurrentPlayerIndex].Name}, input a number from 1 to {Rows * Columns}");
 
                 if (TryGetValidInput(out p_chosenCell, Rows * Columns))
                 {
