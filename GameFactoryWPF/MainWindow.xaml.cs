@@ -14,13 +14,12 @@ namespace GameFactoryWPF
         Leaderboard LeaderBoardScreen = new Leaderboard();
         Stats StatsScreen;
         History HistoryScreen;
-        StartGames GameScreen;
+        GameWindow GameScreen;
 
         public MainWindow()
         {
-
             InitializeComponent();
-            GameScreen = new StartGames(this);
+            GameScreen = new GameWindow(this);
             MainContent.Content = LoginScreen;
             LoginScreen.PlayerLoggedIn += LoginScreen_PlayerLoggedIn;
             GameScreen.GameStarted += GameLogic_GameStarted;

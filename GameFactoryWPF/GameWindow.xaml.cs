@@ -1,4 +1,5 @@
 ﻿using ClassLibrary;
+using System;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -11,15 +12,19 @@ namespace GameFactoryWPF
     {
         private MainWindow p_MainWindow;
 
+        public event EventHandler GameStarted;
 
-
-        public GameWindow(Match p_Game, MainWindow p_MainWindow)
+        public GameWindow(MainWindow p_MainWindow)
         {
             InitializeComponent();
             this.p_MainWindow = p_MainWindow;
-            CreatePlayboard(p_Game.Rows, p_Game.Columns, p_Game.WinningLength);
         }
 
+        public void StartGame(Match p_Game)
+        {
+            GameStarted?.Invoke(this, EventArgs.Empty);
+            CreatePlayboard(p_Game.Rows, p_Game.Columns, p_Game.WinningLength);
+        }
 
         private void CreatePlayboard(int p_Rows, int p_Columns, int p_WinningLength)
         {
@@ -56,6 +61,38 @@ namespace GameFactoryWPF
             mainContent.Children.Add(playboard);
 
             p_MainWindow.MainContent.Content = mainContent;
+        }
+
+        private void OnClickTTT(object sender, RoutedEventArgs e)
+        {
+            var TTTGame = new TTT();
+            StartGame(TTTGame);
+            GameWindow TTTScreen = new GameWindow(p_MainWindow);
+            GameStarted?.Invoke(this, EventArgs.Empty);
+
+            //do
+            //{
+            //    TTTGame.StartMatch();
+            //} while (TTTGame.ReMatch());
+
+        }
+
+        private void OnClick4w(object sender, RoutedEventArgs e)
+        {
+            var FourWGame = new FourW();
+            StartGame(FourWGame);
+            GameWindow FourWinsScreen = new GameWindow(p_MainWindow);
+            GameStarted?.Invoke(this, EventArgs.Empty);
+
+        }
+
+        private void OnClickTwist(object sender, RoutedEventArgs e)
+        {
+            var CostumTTTGame = new CustomTTT(true);
+            StartGame(CostumTTTGame);
+            GameWindow TwistScreen = new GameWindow(p_MainWindow);
+            GameStarted?.Invoke(this, EventArgs.Empty);
+
         }
     }
 }
