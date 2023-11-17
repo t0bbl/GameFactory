@@ -10,7 +10,6 @@
     TextElement.Foreground="{DynamicResource MaterialDesignBody}"
     mc:Ignorable="d">
     <Button
-        Click="OnCellClicked"
         IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
         Style="{StaticResource MaterialDesignFloatingActionSecondaryDarkButton}"
         ToolTip="MaterialDesignFloatingActionSecondaryDarkButton">

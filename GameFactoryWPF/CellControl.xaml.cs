@@ -1,4 +1,6 @@
-﻿using System.Windows;
+﻿using ClassLibrary;
+using System;
+using System.Windows;
 using System.Windows.Controls;
 
 namespace GameFactoryWPF
@@ -8,32 +10,23 @@ namespace GameFactoryWPF
     /// </summary>
     public partial class CellControl : UserControl
     {
-        // Define a DependencyProperty for binding
         public static readonly DependencyProperty CellContentProperty =
             DependencyProperty.Register("CellContent", typeof(string), typeof(CellControl));
 
-        public string CellContent
-        {
-            get { return (string)GetValue(CellContentProperty); }
-            set { SetValue(CellContentProperty, value); }
-        }
+        public event EventHandler<CellClickedEventArgs> CellClicked;
+
+        public int Row { get; set; }
+        public int Column { get; set; }
 
         public CellControl()
         {
             InitializeComponent();
         }
 
-        private void OnCellClicked(object sender, RoutedEventArgs e)
-        {
-
-            Button clickedButton = sender as Button;
-            int row = Grid.GetRow(this);
-            int col = Grid.GetColumn(this);
 
 
 
-            MessageBox.Show($"You clicked cell {row}, {col}", "Debug Info", MessageBoxButton.OK, MessageBoxImage.Information);
-        }
+
 
     }
 

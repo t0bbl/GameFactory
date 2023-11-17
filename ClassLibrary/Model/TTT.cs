@@ -4,6 +4,11 @@
     {
         #region Variables
         internal bool ChatGPT { get; set; }
+        public IEnumerable<ICellControlContainer> GameScreenControl { get; set; }
+
+        public ICellControlContainer GameScreenContainer { get; set; }
+
+
         #endregion
 
         /// <summary>
@@ -13,6 +18,7 @@
         public TTT() : base(3, 3, 3)
         {
             p_GameType = ChatGPT ? "TTTChatGPT" : "TTT";
+
         }
         /// <summary>
         /// Overrides the base GameMechanic method to implement the game logic for Tic Tac Toe (TTT). 
@@ -24,6 +30,11 @@
         /// </summary>
         public override void GameMechanic(List<Player> p_player)
         {
+            foreach (var cell in GameScreenControl)
+            {
+                cell.CellClicked += CellControl_CellClicked;
+            }
+
             if (ChatGPT)
             {
                 if (CurrentPlayerIndex == 1)
@@ -40,31 +51,36 @@
                 PrintBoard(false, false, p_player);
                 FirstTurn = false;
             }
-            while (!p_validInput)
-            {
-
-                if (TryGetValidInput(out p_chosenCell, Rows * Columns))
-                {
-                    int p_row = (p_chosenCell - 1) / Columns;
-                    int p_col = (p_chosenCell - 1) % Columns;
-
-                    if (GetCell(p_row, p_col) == '0')
-                    {
-                        SetCell(p_row, p_col, p_player[CurrentPlayerIndex].Icon);
-                        SavePlayerToMatch(p_player[CurrentPlayerIndex].Ident, MatchId);
-                        CurrentPlayerIndex = (CurrentPlayerIndex + 1) % p_player.Count;
-                        p_validInput = true;
-                    }
-                    else
-                    {
-                        Console.WriteLine("Cell already occupied. Try again.");
-                    }
-                }
-            }
-            PrintBoard(false, false, p_player);
-            string p_cell = p_chosenCell.ToString();
-            SaveMoveHistory(p_player[CurrentPlayerIndex].Ident, p_cell, MatchId, TwistStat);
+  
         }
+        private void CellControl_CellClicked(object sender, CellClickedEventArgs e)
+        {
+            int p_row = e.Row;
+            int p_col = e.Column;
+
+            if (GetCell(p_row, p_col) == '0')
+            {
+                SetCell(p_row, p_col, p_Player[CurrentPlayerIndex].Icon);
+                SavePlayerToMatch(p_Player[CurrentPlayerIndex].Ident, MatchId);
+                CurrentPlayerIndex = (CurrentPlayerIndex + 1) % p_Player.Count;
+            }
+
+
+            PrintBoard(false, false, p_Player);
+            string p_cell = $"{p_row * Columns + p_col + 1}";
+            SaveMoveHistory(p_Player[CurrentPlayerIndex].Ident, p_cell, MatchId, TwistStat);
+        }
+
+        public void InitializeGameScreenContainer(ICellControlContainer container)
+        {
+            GameScreenContainer = container;
+            if (GameScreenContainer != null)
+            {
+                GameScreenContainer.CellClicked += CellControl_CellClicked;
+            }
+        }
+
+
         #region ChatGPT
         /// <summary>
         /// Builds and returns a message with instructions and the current game state for a ChatGPT turn in Tic Tac Toe (TTT).

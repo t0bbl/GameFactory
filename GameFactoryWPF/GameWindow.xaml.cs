@@ -1,16 +1,21 @@
 ﻿using ClassLibrary;
+using CoreGameFactory.Model;
 using System;
 using System.Windows;
 using System.Windows.Controls;
+using static GameFactoryWPF.CellControl;
 
 namespace GameFactoryWPF
 {
     /// <summary>
     /// Interaction logic for GameWindow.xaml
     /// </summary>
-    public partial class GameWindow : UserControl
+    public partial class GameWindow : UserControl, ICellControlContainer
     {
         private MainWindow p_MainWindow;
+
+        public event EventHandler<CellClickedEventArgs> CellClicked;
+
 
         public event EventHandler GameStarted;
 
@@ -50,7 +55,7 @@ namespace GameFactoryWPF
                 for (int col = 0; col < p_Columns; col++)
                 {
                     var cellButton = new CellControl();
-
+                    cellButton.CellClicked += CellButton_CellClicked;
                     Grid.SetRow(cellButton, row);
                     Grid.SetColumn(cellButton, col);
 
@@ -63,13 +68,18 @@ namespace GameFactoryWPF
             p_MainWindow.MainContent.Content = mainContent;
         }
 
+        private void CellButton_CellClicked(object? sender, CellClickedEventArgs e)
+        {
+            throw new NotImplementedException();
+        }
+
         private void OnClickTTT(object sender, RoutedEventArgs e)
         {
             var TTTGame = new TTT();
+            TTTGame.InitializeGameScreenContainer(this);
             StartGame(TTTGame);
             GameWindow TTTScreen = new GameWindow(p_MainWindow);
             GameStarted?.Invoke(this, EventArgs.Empty);
-
             //do
             //{
             //    TTTGame.StartMatch();
@@ -94,5 +104,7 @@ namespace GameFactoryWPF
             GameStarted?.Invoke(this, EventArgs.Empty);
 
         }
+
+        
     }
 }
