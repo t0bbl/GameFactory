@@ -21,12 +21,13 @@ namespace GameFactoryWPF
         public CellControl()
         {
             InitializeComponent();
+            CellButton.Click += CellButton_Click;
         }
 
-
-
-
-
+        private void CellButton_Click(object sender, RoutedEventArgs e)
+        {
+            CellClicked?.Invoke(this, new CellClickedEventArgs(Row, Column));
+        }
 
     }
 

@@ -10,12 +10,9 @@
     TextElement.Foreground="{DynamicResource MaterialDesignBody}"
     mc:Ignorable="d">
     <Button
+        x:Name="CellButton"
+        Content="{Binding CellContent}"
         IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
         Style="{StaticResource MaterialDesignFloatingActionSecondaryDarkButton}"
-        ToolTip="MaterialDesignFloatingActionSecondaryDarkButton">
-        <materialDesign:PackIcon
-            Width="30"
-            Height="30"
-            Kind="CircleOffOutline" />
-    </Button>
+        ToolTip="MaterialDesignFloatingActionSecondaryDarkButton" />
 </UserControl>

@@ -55,6 +55,8 @@ namespace GameFactoryWPF
                 for (int col = 0; col < p_Columns; col++)
                 {
                     var cellButton = new CellControl();
+                    cellButton.Row = row;
+                    cellButton.Column = col;
                     cellButton.CellClicked += CellButton_CellClicked;
                     Grid.SetRow(cellButton, row);
                     Grid.SetColumn(cellButton, col);
@@ -70,7 +72,8 @@ namespace GameFactoryWPF
 
         private void CellButton_CellClicked(object? sender, CellClickedEventArgs e)
         {
-            throw new NotImplementedException();
+            string message = $"Clicked cell: Row {e.Row}, Column {e.Column}";
+            MessageBox.Show(message);
         }
 
         private void OnClickTTT(object sender, RoutedEventArgs e)
