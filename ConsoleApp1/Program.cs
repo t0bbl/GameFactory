@@ -9,7 +9,7 @@ namespace GameFactory
             while (true)
             {
                 Game CurrentGame = new();
-                ClassLibrary.Match CurrentMatch;
+                Match CurrentMatch;
                 Player Player = new();
 
                 string GameMode = CurrentGame.InitializeGameMenu();

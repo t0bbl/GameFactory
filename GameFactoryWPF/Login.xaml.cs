@@ -54,14 +54,8 @@ namespace GameFactoryWPF
         {
             Username = UsernameTextBox.Text;
             Password = PasswordTextBox.Password;
-            if (!Player.ValidateLoginName(Username))
-            {
-                TextBox("Username must be between 3 and 16 characters long.");
 
-                return;
-            }
-
-            if (Username == null || Password == null)
+            if (Username == null || Password == null || !Player.ValidateLoginName(Username))
             {
                 TextBox("Username or Password is not valid, please try again!");
                 return;
@@ -84,6 +78,7 @@ namespace GameFactoryWPF
             else
             {
                 TextBox("Wrong UserName or Password, Please try again or Signup!");
+                return;
             };
         }
         /// <summary>
