@@ -9,7 +9,7 @@ namespace ClassLibrary
     public class Player
     {
         public string Name { get; set; }
-        public char Icon { get; set; }
+        public string Icon { get; set; }
         public string Color { get; set; }
         public int Ident { get; set; }
         internal string LoginName { get; set; }

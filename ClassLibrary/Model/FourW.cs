@@ -2,36 +2,18 @@ namespace ClassLibrary
 {
     public class FourW : Match
     {
-        #region Variables
-        internal bool ChatGPT { get; set; }
-        #endregion
-        /// <summary>
-        /// Initializes a new instance of the FourW class with specified board dimensions and winning length.
-        /// </summary>
+
         public FourW() : base(6, 7, 4)
         {
-            p_GameType = ChatGPT ? "FourWChatGPT" : "FourW";
+            p_GameType = "FourW";
         }
-        /// <summary>
-        /// Handles the game mechanics for FourW.
-        /// </summary>
-        /// <param name="p_Player">The list of players.</param>
-        public override void GameMechanic(List<Player> p_Player)
+
+        public override void CellClicked(object sender, CellClickedEventArgs e)
         {
-    
-
-            base.GameMechanic(p_Player);
-
             int p_chosenColumn;
-            if (FirstTurn)
-            {
-                Console.WriteLine();
-                FirstTurn = false;
-            }
+
             do
             {
-                Console.WriteLine();
-                Console.WriteLine($"{p_Player[CurrentPlayerIndex].Name}, input a column number from 1 to {Columns}");
                 SavePlayerToMatch(p_Player[CurrentPlayerIndex].Ident, MatchId);
             } while (!TryGetValidInput(out p_chosenColumn, Columns));
 
@@ -39,8 +21,18 @@ namespace ClassLibrary
             string p_cell = p_chosenColumn.ToString();
             SaveMoveHistory(p_Player[CurrentPlayerIndex].Ident, p_cell, MatchId, TwistStat);
 
-            CurrentPlayerIndex = (CurrentPlayerIndex + 1) % p_Player.Count;
+            Winner = CheckWinner(p_Player);
 
+            if (Winner != null)
+            {
+                UpdateStats(p_Player);
+
+                SaveMatch(Winner, Loser, Draw, GameTypeIdent, MatchId);
+
+                MatchId = 0;
+
+                OnGameStateChanged(new GameStateChangedEventArgs(Winner));
+            }
         }
 
         #region GameUtilities
@@ -53,7 +45,7 @@ namespace ClassLibrary
         {
             for (int Row = Rows - 1; Row >= 0; Row--)
             {
-                if (GetCell(Row, p_Column) == '0')
+                if (GetCell(Row, p_Column) == "0")
                 {
                     return Row;
                 }
@@ -71,16 +63,9 @@ namespace ClassLibrary
         {
             int p_row = FindLowestAvailableRow(p_ChosenColumn - 1);
 
-            if (p_row != -1)
-            {
                 SetCell(p_row, p_ChosenColumn - 1, p_Players[p_CurrentPlayerIndex].Icon);
                 return true;
-            }
-            else
-            {
-                Console.WriteLine("Column is full. Try again.");
-                return false;
-            }
+
         }
         #endregion
     }

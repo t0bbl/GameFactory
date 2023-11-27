@@ -128,12 +128,6 @@ namespace GameFactoryWPF
             p_MainContent.Children.Add(CurrentPlayerDisplay);
         }
 
-        private void CellButton_CellClicked(object? sender, CellClickedEventArgs e)
-        {
-            CurrentMatch.CellClicked(sender, e);
-            UpdateCurrentPlayerDisplay();
-
-        }
 
         private void StartMatch(Match p_Match)
         {
@@ -177,7 +171,24 @@ namespace GameFactoryWPF
             return CellControls;
         }
 
-        private void Match_GameStateChanged(object sender, GameStateChangedEventArgs e)
+        private void CellButton_CellClicked(object? sender, CellClickedEventArgs e)
+        {
+            CurrentMatch.CellClicked(sender, e);
+
+            if (sender is CellControl cellControl)
+            {
+                cellControl.CellContent = PlayerList[CurrentMatch.CurrentPlayerIndex].Icon;
+                cellControl.CellColor = PlayerList[CurrentMatch.CurrentPlayerIndex].Color;
+            }
+            CurrentMatch.CurrentPlayerIndex = (CurrentMatch.CurrentPlayerIndex + 1) % CurrentMatch.p_Player.Count;
+
+            UpdateCurrentPlayerDisplay();
+            
+
+        }
+
+
+            private void Match_GameStateChanged(object sender, GameStateChangedEventArgs e)
         {
             if (e.Winner.HasValue)
             {

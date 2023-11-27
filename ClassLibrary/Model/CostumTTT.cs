@@ -52,7 +52,7 @@
                     p_Row--;
                     p_Col--;
 
-                    if (GetCell(p_Row, p_Col) == '0')
+                    if (GetCell(p_Row, p_Col) == "0")
                     {
                         SetCell(p_Row, p_Col, p_Player[CurrentPlayerIndex].Icon);
                         CurrentPlayerIndex = (CurrentPlayerIndex + 1) % p_Player.Count;
@@ -130,7 +130,7 @@
             {
                 Console.WriteLine("Twist!");
 
-                List<char> TempColumn = new List<char>();
+                List<string> TempColumn = new List<string>();
                 for (int RowIndex = 0; RowIndex < Rows; RowIndex++)
                 {
                     TempColumn.Add(GetCell(RowIndex, p_chosenColumn));

@@ -8,7 +8,7 @@ namespace ClassLibrary
     public class Match : Game
     {
         #region Variables
-        internal char[,] p_Board { get; set; }
+        internal string[,] p_Board { get; set; }
         public int Rows { get; set; }
         public int Columns { get; set; }
         public int WinningLength { get; set; }
@@ -45,7 +45,7 @@ namespace ClassLibrary
             this.Rows = p_Rows;
             this.Columns = p_Columns;
             this.WinningLength = p_WinningLength;
-            p_Board = new char[Rows, p_Columns];
+            p_Board = new string[Rows, p_Columns];
         }
         public Match()
         {
@@ -74,8 +74,6 @@ namespace ClassLibrary
             MatchId = SaveMatch(Winner, Loser, Draw, GameTypeIdent, MatchId);
 
 
-            int p_chosenCell = 0;
-            bool p_validInput = false;
             if (FirstTurn)
             {
                 FirstTurn = false;
@@ -85,22 +83,22 @@ namespace ClassLibrary
         }
 
 
-        public void CellClicked(object sender, CellClickedEventArgs e)
+        public virtual void CellClicked(object sender, CellClickedEventArgs e)
         {
             int p_row = e.Row;
             int p_col = e.Column;
 
-            if (GetCell(p_row, p_col) == '0')
+            if (GetCell(p_row, p_col) == "0")
             {
                 SetCell(p_row, p_col, p_Player[CurrentPlayerIndex].Icon);
                 SavePlayerToMatch(p_Player[CurrentPlayerIndex].Ident, MatchId);
-                CurrentPlayerIndex = (CurrentPlayerIndex + 1) % p_Player.Count;
                 CurrentPlayer = p_Player[CurrentPlayerIndex].Name;
                 OnPlayerChanged(new PlayerChangedEventArgs(CurrentPlayer));
+                string p_cell = $"{p_row * Columns + p_col + 1}";
+                SaveMoveHistory(p_Player[CurrentPlayerIndex].Ident, p_cell, MatchId, TwistStat);
             }
 
-            string p_cell = $"{p_row * Columns + p_col + 1}";
-            SaveMoveHistory(p_Player[CurrentPlayerIndex].Ident, p_cell, MatchId, TwistStat);
+
 
             Winner = CheckWinner(p_Player);
 
@@ -126,7 +124,7 @@ namespace ClassLibrary
             {
                 for (int Col = 0; Col < Columns; Col++)
                 {
-                    SetCell(Row, Col, '0');
+                    SetCell(Row, Col, "0");
                 }
             }
         }
@@ -136,7 +134,7 @@ namespace ClassLibrary
         /// <param name="p_Row">The row index of the cell.</param>
         /// <param name="p_Col">The column index of the cell.</param>
         /// <returns>The value of the cell at the specified coordinates.</returns>
-        public char GetCell(int p_Row, int p_Col)
+        public string GetCell(int p_Row, int p_Col)
         {
             return p_Board[p_Row, p_Col];
         }
@@ -146,7 +144,7 @@ namespace ClassLibrary
         /// <param name="p_Row">The row index of the cell.</param>
         /// <param name="p_Col">The column index of the cell.</param>
         /// <param name="p_Icon">The value to be set at the specified cell.</param>
-        public void SetCell(int p_Row, int p_Col, char p_Icon)
+        public void SetCell(int p_Row, int p_Col, string p_Icon)
         {
             if (p_Row >= 0 && p_Row < Rows && p_Col >= 0 && p_Col < Columns)
             {
@@ -167,8 +165,8 @@ namespace ClassLibrary
             {
                 for (int Col = 0; Col < Columns; Col++)
                 {
-                    char CellValue = GetCell(Row, Col);
-                    if (CellValue == '0') continue;
+                    string CellValue = GetCell(Row, Col);
+                    if (CellValue == "0") continue;
 
                     int[][] directions = new int[][] { new int[] { 0, 1 }, new int[] { 1, 0 }, new int[] { 1, 1 }, new int[] { 1, -1 } };
                     foreach (var Dir in directions)
@@ -196,7 +194,7 @@ namespace ClassLibrary
                 }
             }
 
-            bool IsDraw = !Enumerable.Range(0, Rows).Any(p_Row => Enumerable.Range(0, Columns).Any(p_Col => GetCell(p_Row, p_Col) == '0'));
+            bool IsDraw = !Enumerable.Range(0, Rows).Any(p_Row => Enumerable.Range(0, Columns).Any(p_Col => GetCell(p_Row, p_Col) == "0"));
 
             if (IsDraw)
             {

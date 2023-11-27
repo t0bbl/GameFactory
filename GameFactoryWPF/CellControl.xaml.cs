@@ -20,6 +20,16 @@ namespace GameFactoryWPF
 
         public int Row { get; set; }
         public int Column { get; set; }
+        public string CellContent
+        {
+            get { return (string)GetValue(CellContentProperty); }
+            set { CellButton.Content = value; }
+        }
+        public string CellColor
+        {
+            get { return CellButton.Background.ToString(); }
+            set { CellButton.Background = (System.Windows.Media.Brush)new System.Windows.Media.BrushConverter().ConvertFromString(value); }
+        }
 
         public CellControl()
         {
