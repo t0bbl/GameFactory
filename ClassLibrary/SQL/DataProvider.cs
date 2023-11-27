@@ -346,7 +346,7 @@ namespace ClassLibrary
 
             using (SqlConnection conn = new SqlConnection(connString))
             {
-                string sqlQuery = "SELECT * FROM History_V WHERE Winner = @p_ident OR Loser = @p_ident";
+                string sqlQuery = "SELECT * FROM History_V WHERE Winner = @p_ident OR Loser = @p_ident ORDER BY MatchIdent DESC";
 
                 using (SqlCommand cmd = new SqlCommand(sqlQuery, conn))
                 {
