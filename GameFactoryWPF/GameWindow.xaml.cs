@@ -142,8 +142,10 @@ namespace GameFactoryWPF
             GameStarted?.Invoke(this, EventArgs.Empty);
 
             p_Match.ResetBoard();
-            p_Match.StartMatch();
+            p_Match.Start();
             p_Match.GameMechanic(PlayerList);
+
+            UpdateCurrentPlayerDisplay();
 
         }
 

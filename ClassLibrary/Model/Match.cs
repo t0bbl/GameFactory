@@ -54,7 +54,7 @@ namespace ClassLibrary
         /// <summary>
         /// Initiates a game match, handles player turns, checks for a winner, updates stats, and saves match results.
         /// </summary>
-        public void StartMatch()
+        public void Start()
         {
             FirstTurn = true;
             CurrentPlayerIndex = 0;
