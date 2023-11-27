@@ -3,6 +3,7 @@ using CoreGameFactory.Model;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -13,47 +14,52 @@ namespace GameFactoryWPF
     /// </summary>
     public partial class GameWindow : UserControl, ICellControlContainer
     {
-        private MainWindow p_MainWindow;
+        private MainWindow MainWindow;
+        private Match CurrentMatch;
+        private Stats StatScreen;
+        private Player HomePlayer;
 
-        public event EventHandler<CellClickedEventArgs> cellButtonCellClicked;
+        public event EventHandler<CellClickedEventArgs> CellClicked;
 
         public List<Player> PlayerList;
-        
+
         private List<CellControl> CellControls = new List<CellControl>();
 
 
         public event EventHandler GameStarted;
-        public ICellControlContainer GameScreenContainer { get; set; }
 
 
-        public GameWindow(MainWindow p_MainWindow, List<Player> p_PlayerList)
+        public GameWindow(MainWindow p_MainWindow, List<Player> p_PlayerList, Match p_Match, Player p_HomePlayer, Stats p_StatScreen)
         {
             InitializeComponent();
-            this.p_MainWindow = p_MainWindow;
+            MainWindow = p_MainWindow;
             PlayerList = p_PlayerList;
+            CurrentMatch = p_Match;
+            HomePlayer = p_HomePlayer;
+            StatScreen = p_StatScreen;
         }
 
-        event EventHandler<CellClickedEventArgs> ICellControlContainer.CellButton_CellClicked
+        event EventHandler<CellClickedEventArgs> ICellControlContainer.CellClicked
         {
             add
             {
-                cellButtonCellClicked += value;
+                CellClicked += value;
             }
 
             remove
             {
-                cellButtonCellClicked -= value;
+                CellClicked -= value;
             }
         }
 
         public void StartGame(Match p_Game)
         {
             GameStarted?.Invoke(this, EventArgs.Empty);
-            CreatePlayboard(p_Game.Rows, p_Game.Columns, p_Game.WinningLength);
+            CreatePlayboard(p_Game.Rows, p_Game.Columns);
 
         }
 
-        private void CreatePlayboard(int p_Rows, int p_Columns, int p_WinningLength)
+        private void CreatePlayboard(int p_Rows, int p_Columns)
         {
             var mainContent = new Grid();
             mainContent.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(100, GridUnitType.Star) });
@@ -91,53 +97,63 @@ namespace GameFactoryWPF
             Grid.SetColumn(playboard, 1);
             mainContent.Children.Add(playboard);
 
-            p_MainWindow.MainContent.Content = mainContent;
+            MainWindow.MainContent.Content = mainContent;
         }
 
         private void CellButton_CellClicked(object? sender, CellClickedEventArgs e)
         {
-            string message = $"Clicked cell: Row {e.Row}, Column {e.Column}";
-            MessageBox.Show(message);
+            CurrentMatch.CellClicked(sender, e);
+        }
+
+        private void StartMatch(Match p_Match)
+        {
+            p_Match.GameStateChanged += Match_GameStateChanged;
+
+            GetAllCellControls();
+            
+            StartGame(p_Match);
+            
+            GameWindow MatchScreen = new GameWindow(MainWindow, PlayerList, p_Match, HomePlayer, StatScreen);
+            GameStarted?.Invoke(this, EventArgs.Empty);
+
+            p_Match.ResetBoard();
+            p_Match.StartMatch();
+            p_Match.GameMechanic(PlayerList);
         }
 
         private void OnClickTTT(object sender, RoutedEventArgs e)
         {
-            var TTTGame = new TTT() { p_Player = PlayerList };
-            GetAllCellControls();
-            StartGame(TTTGame);
-            GameWindow TTTScreen = new GameWindow(p_MainWindow, PlayerList);
-            GameStarted?.Invoke(this, EventArgs.Empty);
-            TTTGame.StartMatch();
-
-            GameScreenContainer = GameScreenContainer;
-            if (GameScreenContainer != null)
-            {
-                GameScreenContainer.CellButton_CellClicked += TTTGame.CellControl_CellClicked;
-            }
+            CurrentMatch = new TTT() { p_Player = PlayerList };
+            StartMatch(CurrentMatch);
         }
 
         private void OnClick4w(object sender, RoutedEventArgs e)
         {
-            var FourWGame = new FourW();
-            StartGame(FourWGame);
-            GameWindow FourWinsScreen = new GameWindow(p_MainWindow, PlayerList);
-            GameStarted?.Invoke(this, EventArgs.Empty);
-
+            CurrentMatch = new FourW() { p_Player = PlayerList };
+            StartMatch(CurrentMatch);
         }
 
         private void OnClickTwist(object sender, RoutedEventArgs e)
         {
-            var CostumTTTGame = new CustomTTT(true);
-            StartGame(CostumTTTGame);
-            GameWindow TwistScreen = new GameWindow(p_MainWindow, PlayerList);
-            GameStarted?.Invoke(this, EventArgs.Empty);
-
+            CurrentMatch = new CustomTTT(true) { p_Player = PlayerList };
+            StartMatch(CurrentMatch);
         }
+    
 
         public IEnumerable<CellControl> GetAllCellControls()
         {
             return CellControls;
         }
 
+        private void Match_GameStateChanged(object sender, GameStateChangedEventArgs e)
+        {
+            if (e.Winner.HasValue)
+            {
+                Player Winner = DataProvider.GetPlayerVariables(e.Winner.Value);
+                Login.TextBox("The winner is: " + Winner.Name);
+                StatScreen.UpdateStats(HomePlayer);
+                MainWindow.LoginScreen_PlayerLoggedIn(HomePlayer);
+            }
+        }
     }
 }

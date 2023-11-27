@@ -17,8 +17,10 @@ namespace GameFactoryWPF
             this.DataContext = p_Player;
         }
 
-
-
+        public void UpdateStats(Player p_Player)
+        {
+            this.DataContext = p_Player;
+        }
 
         private void CloseButton_Click(object sender, RoutedEventArgs e)
         {

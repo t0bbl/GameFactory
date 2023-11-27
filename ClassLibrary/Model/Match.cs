@@ -12,7 +12,6 @@ namespace ClassLibrary
         public int Columns { get; set; }
         public int WinningLength { get; set; }
         internal int CurrentPlayerIndex { get; set; }
-        internal string BoardString { get; set; }
         internal bool FirstTurn { get; set; }
         public int? Winner { get; set; }
         public int? Loser { get; set; }
@@ -26,6 +25,7 @@ namespace ClassLibrary
         public string Result { get; set; }
         public string Opponent { get; set; }
 
+        public event EventHandler<GameStateChangedEventArgs> GameStateChanged;
 
         Random p_Random = new();
 
@@ -53,20 +53,11 @@ namespace ClassLibrary
         public void StartMatch()
         {
             FirstTurn = true;
+            CurrentPlayerIndex = 0;
+
             ShufflePlayers(p_Player);
 
-            CurrentPlayerIndex = 0;
             ResetBoard();
-            do
-            {
-                GameMechanic(p_Player);
-                
-                Winner = CheckWinner(p_Player);
-
-            } while (Winner == null);
-            UpdateStats(p_Player);
-            SaveMatch(Winner, Loser, Draw, GameTypeIdent, MatchId);
-            MatchId = 0;
         }
         /// <summary>
         /// Executes the core game mechanics, including saving game and match details.
@@ -77,19 +68,19 @@ namespace ClassLibrary
             GameTypeIdent = SaveGame(Rows, Columns, WinningLength, p_GameType);
 
             MatchId = SaveMatch(Winner, Loser, Draw, GameTypeIdent, MatchId);
-
-            int p_chosenCell = 0;
-            bool p_validInput = false;
-            if (FirstTurn)
-            {
-                FirstTurn = false;
-            }
-
-
+            
+          
+                int p_chosenCell = 0;
+                bool p_validInput = false;
+                if (FirstTurn)
+                {
+                    FirstTurn = false;
+                }
+             
         }
 
 
-        public void CellControl_CellClicked(object sender, CellClickedEventArgs e)
+        public void CellClicked(object sender, CellClickedEventArgs e)
         {
             int p_row = e.Row;
             int p_col = e.Column;
@@ -104,6 +95,18 @@ namespace ClassLibrary
             string p_cell = $"{p_row * Columns + p_col + 1}";
             SaveMoveHistory(p_Player[CurrentPlayerIndex].Ident, p_cell, MatchId, TwistStat);
 
+            Winner = CheckWinner(p_Player);
+
+            if (Winner != null)
+            {
+                UpdateStats(p_Player);
+
+                SaveMatch(Winner, Loser, Draw, GameTypeIdent, MatchId);
+
+                MatchId = 0;
+
+                OnGameStateChanged(new GameStateChangedEventArgs(Winner));
+            }
         }
 
         #region BoardSetup
@@ -390,5 +393,9 @@ namespace ClassLibrary
 
         #endregion
 
+        protected virtual void OnGameStateChanged(GameStateChangedEventArgs e)
+        {
+            GameStateChanged?.Invoke(this, e);
+        }
     }
 }

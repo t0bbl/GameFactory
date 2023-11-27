@@ -17,14 +17,14 @@ namespace GameFactoryWPF
         History HistoryScreen;
         GameWindow GameScreen;
         List<Player> PlayerList = new List<Player>();
+        Match Match;
+        Player HomePlayer;
 
         public MainWindow()
         {
             InitializeComponent();
-            GameScreen = new GameWindow(this, PlayerList);
             MainContent.Content = LoginScreen;
             LoginScreen.PlayerLoggedIn += LoginScreen_PlayerLoggedIn;
-            GameScreen.GameStarted += GameLogic_GameStarted;
         }
         #region UI Event Handlers
         private void ToMainScreen(object sender, RoutedEventArgs e)
@@ -61,9 +61,8 @@ namespace GameFactoryWPF
         }
 
         #endregion
-        private void LoginScreen_PlayerLoggedIn(Player p_Player)
+        public void LoginScreen_PlayerLoggedIn(Player p_Player)
         {
-
             StatsPanel.Children.Clear();
             StatsScreen = new Stats(p_Player);
             StatsPanel.Children.Add(StatsScreen);
@@ -71,6 +70,11 @@ namespace GameFactoryWPF
             HistoryPanel.Children.Clear();
             HistoryScreen = new History(p_Player);
             HistoryScreen.LoadHistory(p_Player);
+
+            HomePlayer = p_Player;
+
+            GameScreen = new GameWindow(this, PlayerList, Match, HomePlayer, StatsScreen);
+            GameScreen.GameStarted += GameLogic_GameStarted;
 
             GamesPanel.Children.Clear();
             GamesPanel.Children.Add(GameScreen);
@@ -85,6 +89,8 @@ namespace GameFactoryWPF
 
             MainContent.Content = HistoryScreen;
         }
+
+ 
 
         private void GameLogic_GameStarted(object sender, EventArgs e)
         {
