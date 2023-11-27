@@ -1,5 +1,6 @@
 ﻿using ClassLibrary;
 using System;
+using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -14,6 +15,8 @@ namespace GameFactoryWPF
             DependencyProperty.Register("CellContent", typeof(string), typeof(CellControl));
 
         public event EventHandler<CellClickedEventArgs> CellClicked;
+
+        private List<CellControl> cellControls = new List<CellControl>();
 
         public int Row { get; set; }
         public int Column { get; set; }

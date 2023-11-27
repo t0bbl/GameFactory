@@ -1,5 +1,6 @@
 ﻿using ClassLibrary;
 using System;
+using System.Collections.Generic;
 using System.Windows;
 
 namespace GameFactoryWPF
@@ -15,11 +16,12 @@ namespace GameFactoryWPF
         Stats StatsScreen;
         History HistoryScreen;
         GameWindow GameScreen;
+        List<Player> PlayerList = new List<Player>();
 
         public MainWindow()
         {
             InitializeComponent();
-            GameScreen = new GameWindow(this);
+            GameScreen = new GameWindow(this, PlayerList);
             MainContent.Content = LoginScreen;
             LoginScreen.PlayerLoggedIn += LoginScreen_PlayerLoggedIn;
             GameScreen.GameStarted += GameLogic_GameStarted;
@@ -73,6 +75,10 @@ namespace GameFactoryWPF
             GamesPanel.Children.Clear();
             GamesPanel.Children.Add(GameScreen);
 
+            PlayerList.Add(p_Player);
+
+            var GuestVariables = DataProvider.GetPlayerVariables(1);
+            PlayerList.Add(GuestVariables);
 
             StatsScreen.Visibility = Visibility.Visible;
             GameScreen.Visibility = Visibility.Visible;

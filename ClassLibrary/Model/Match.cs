@@ -27,7 +27,6 @@ namespace ClassLibrary
         public string Opponent { get; set; }
 
 
-
         Random p_Random = new();
 
         #endregion
@@ -54,15 +53,16 @@ namespace ClassLibrary
         public void StartMatch()
         {
             FirstTurn = true;
-            if (p_Player.All(player => player.Name != "CHATGPT"))
-            { ShufflePlayers(p_Player); }
+            ShufflePlayers(p_Player);
 
             CurrentPlayerIndex = 0;
             ResetBoard();
             do
             {
                 GameMechanic(p_Player);
+                
                 Winner = CheckWinner(p_Player);
+
             } while (Winner == null);
             UpdateStats(p_Player);
             SaveMatch(Winner, Loser, Draw, GameTypeIdent, MatchId);
@@ -74,10 +74,35 @@ namespace ClassLibrary
         /// <param name="p_Player">The list of players participating in the game.</param>
         public virtual void GameMechanic(List<Player> p_Player)
         {
-
             GameTypeIdent = SaveGame(Rows, Columns, WinningLength, p_GameType);
 
             MatchId = SaveMatch(Winner, Loser, Draw, GameTypeIdent, MatchId);
+
+            int p_chosenCell = 0;
+            bool p_validInput = false;
+            if (FirstTurn)
+            {
+                FirstTurn = false;
+            }
+
+
+        }
+
+
+        public void CellControl_CellClicked(object sender, CellClickedEventArgs e)
+        {
+            int p_row = e.Row;
+            int p_col = e.Column;
+
+            if (GetCell(p_row, p_col) == '0')
+            {
+                SetCell(p_row, p_col, p_Player[CurrentPlayerIndex].Icon);
+                SavePlayerToMatch(p_Player[CurrentPlayerIndex].Ident, MatchId);
+                CurrentPlayerIndex = (CurrentPlayerIndex + 1) % p_Player.Count;
+            }
+
+            string p_cell = $"{p_row * Columns + p_col + 1}";
+            SaveMoveHistory(p_Player[CurrentPlayerIndex].Ident, p_cell, MatchId, TwistStat);
 
         }
 
@@ -118,71 +143,7 @@ namespace ClassLibrary
                 p_Board[p_Row, p_Col] = p_Icon;
             }
         }
-        /// <summary>
-        /// Prints the game board to the console, with options to display row and column numbers, and colorizes player icons.
-        /// </summary>
-        /// <param name="p_ShowRow">Indicates whether to display row numbers.</param>
-        /// <param name="p_ShowCol">Indicates whether to display column numbers.</param>
-        /// <param name="p_Player">The list of players participating in the game for icon colorization.</param>
-        public void PrintBoard(bool p_ShowRow, bool p_ShowCol, List<Player> p_Player)
-        {
-            for (int Row = 0; Row < Rows; Row++)
-            {
-                if (p_ShowRow)
-                {
-                    Console.BackgroundColor = ConsoleColor.DarkGray;
-                    Console.Write($"{Row + 1} ");
-                    Console.BackgroundColor = ConsoleColor.Black;
-                }
-                else
-                {
-                    Console.Write("  ");
-                }
 
-                for (int Col = 0; Col < Columns; Col++)
-                {
-                    char CellValue = GetCell(Row, Col);
-
-                    if (CellValue == '0')
-                    {
-                        Console.Write(" . ");
-                    }
-                    else
-                    {
-                        Player CurrentPlayer = p_Player.FirstOrDefault(p => p.Icon == CellValue);
-
-                        if (CurrentPlayer != null)
-                        {
-                            ConsoleColor p_originalForegroundColor = Console.ForegroundColor;
-
-                            if (Enum.TryParse(CurrentPlayer.Color, out ConsoleColor ParsedColor))
-                            {
-                                Console.ForegroundColor = ParsedColor;
-                            }
-                            else
-                            {
-                                Console.ForegroundColor = ConsoleColor.White;
-                            }
-
-                            Console.Write($" {CellValue} ");
-                            Console.ForegroundColor = p_originalForegroundColor;
-                        }
-                    }
-                }
-                Console.WriteLine();
-            }
-
-            if (p_ShowCol)
-            {
-                Console.Write("  ");
-                for (int Col = 0; Col < Columns; Col++)
-                {
-                    Console.BackgroundColor = ConsoleColor.DarkGray;
-                    Console.Write($" {Col + 1} ");
-                    Console.BackgroundColor = ConsoleColor.Black;
-                }
-            }
-        }
         #endregion
         #region GameMechanics
         /// <summary>
@@ -236,31 +197,6 @@ namespace ClassLibrary
             return null;
         }
         /// <summary>
-        /// Prompts the user for a rematch and returns their decision.
-        /// </summary>
-        /// <returns>True if the user wants a rematch, false otherwise.</returns>
-        public bool ReMatch()
-        {
-            while (true)
-            {
-                Console.WriteLine("Do you want to rematch? (y/n)");
-                string keyInfo = Console.ReadKey().KeyChar.ToString().ToLower();
-                Console.WriteLine();
-
-                if (keyInfo == "n")
-                {
-                    return false;
-                }
-                if (keyInfo == "y")
-                {
-                    Console.Clear();
-                    return true;
-                }
-
-                Console.WriteLine("Invalid input. Try again.");
-            }
-        }
-        /// <summary>
         /// Shuffles the order of players in the provided list using the Fisher-Yates algorithm.
         /// </summary>
         /// <param name="p_Player">The list of players to be shuffled.</param>
@@ -288,7 +224,6 @@ namespace ClassLibrary
             {
                 return true;
             }
-            Console.WriteLine("Invalid input. Try again.");
             return false;
         }
         #endregion
@@ -308,46 +243,23 @@ namespace ClassLibrary
                     {
                         if (Player.Ident == Winner)
                         {
-                            Console.WriteLine();
-                            Console.WriteLine($"{Player.Name} won the game!");
-                            Winner = Player.Ident;
+                           Winner = Player.Ident;
                         }
 
                         else
                         {
-                            Console.WriteLine();
                             Loser = Player.Ident;
                         }
                     }
                 }
                 else
                 {
-                    Console.WriteLine();
-                    Console.WriteLine("It's a draw!");
                     Winner = p_Players[0].Ident;
                     Loser = p_Players[1].Ident;
                 }
             }
             return p_Players;
         }
-        /// <summary>
-        /// Displays the final scores and statistics of the players at the end of the game, and terminates the application.
-        /// </summary>
-        /// <param name="p_Player">The list of players participating in the game.</param>
-        public void EndGameStats(List<Player> p_Player)
-        {
-            Console.WriteLine("Game over!");
-            Console.WriteLine("Final scores:");
-
-            foreach (var Player in p_Player)
-            {
-                DataProvider.DisplayPlayerStats(Player.Ident, true);
-            }
-            Console.WriteLine("Press any key to continue.");
-            Console.ReadKey();
-            Environment.Exit(0);
-        }
-
         #endregion
         #region SQL
         /// <summary>
@@ -478,80 +390,5 @@ namespace ClassLibrary
 
         #endregion
 
-        #region ChatGPT
-        /// <summary>
-        /// Sends a message to ChatGPT service using the provided API key and retrieves the response.
-        /// </summary>
-        /// <param name="p_ApiKey">The API key for authentication with the ChatGPT service.</param>
-        /// <param name="p_Message">The message to be sent to ChatGPT.</param>
-        /// <returns>The response from the ChatGPT service.</returns>
-        protected string SendMessageToChatGPT(string p_ApiKey, string p_Message)
-        {
-            var chatGPTClient = new ChatGPTClient(p_ApiKey);
-            return chatGPTClient.SendMessage(p_Message);
-        }
-        /// <summary>
-        /// Constructs a message based on the game board and player information. To be implemented by derived classes.
-        /// </summary>
-        /// <param name="p_Board">The representation of the game board.</param>
-        /// <param name="p_Players">The list of players participating in the game.</param>
-        /// <returns>The constructed message or "error" if not implemented.</returns>
-        public virtual string BuildMessage(string p_Board, List<Player> p_Players)
-        {
-            return "error";
-        }
-        /// <summary>
-        /// Retrieves the ChatGPT API key from the machine-level environment variables.
-        /// </summary>
-        /// <returns>The ChatGPT API key.</returns>
-        protected string GetApiKey()
-        {
-            return Environment.GetEnvironmentVariable("CHATGPT_API_KEY", EnvironmentVariableTarget.Machine);
-        }
-        /// <summary>
-        /// Converts the game board array to a string representation, using the player icons for occupied cells.
-        /// </summary>
-        /// <param name="p_Board">The game board array.</param>
-        /// <param name="p_Players">The list of players participating in the game.</param>
-        /// <returns>The string representation of the game board.</returns>
-        protected string BoardToString(char[,] p_Board, List<Player> p_Players)
-        {
-            StringBuilder sb = new StringBuilder();
-            for (int row = 0; row < Rows; row++)
-            {
-                for (int col = 0; col < Columns; col++)
-                {
-                    char cellValue = p_Board[row, col];
-                    if (cellValue == '0')
-                    {
-                        sb.Append(" . ");
-                    }
-                    else if (cellValue == p_Players[0].Icon)
-                    {
-                        sb.Append($" {p_Players[0].Icon} ");
-                    }
-                    else if (cellValue == p_Players[1].Icon)
-                    {
-                        sb.Append($" {p_Players[1].Icon} ");
-                    }
-                    else
-                    {
-                        sb.Append(" ? ");
-                    }
-                }
-                sb.AppendLine();
-            }
-
-            return BoardString = sb.ToString();
-        }
-        /// <summary>
-        /// Defines the method to process a move using ChatGPT based on the game board and player information. To be implemented by derived classes.
-        /// </summary>
-        /// <param name="p_Board">The representation of the game board.</param>
-        /// <param name="p_Players">The list of players participating in the game.</param>
-        public virtual void ChatGPTMove(string p_Board, List<Player> p_Players)
-        {
-        }
-        #endregion
     }
 }

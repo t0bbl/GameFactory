@@ -33,14 +33,12 @@
 
             if (FirstTurn)
             {
-                PrintBoard(true, true, p_Player);
                 FirstTurn = false;
             }
             bool p_validInput = false;
             while (!p_validInput)
             {
-                Console.WriteLine();
-                Console.WriteLine($"{p_Player[CurrentPlayerIndex].Name}, input a coordinate X/Y");
+
                 SavePlayerToMatch(p_Player[CurrentPlayerIndex].Ident, MatchId);
                 string p_input = Console.ReadLine();
                 string[] p_parts = p_input.Split('/');
@@ -77,7 +75,6 @@
                 }
             }
 
-            PrintBoard(true, true, p_Player);
         }
 
         #region CustomSetup

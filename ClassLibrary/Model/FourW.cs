@@ -18,21 +18,13 @@ namespace ClassLibrary
         /// <param name="p_Player">The list of players.</param>
         public override void GameMechanic(List<Player> p_Player)
         {
-            if (ChatGPT)
-            {
-                if (CurrentPlayerIndex == 1)
-                {
-                    ChatGPTMove(BoardToString(p_Board, p_Player), p_Player);
-                }
-
-            }
+    
 
             base.GameMechanic(p_Player);
 
             int p_chosenColumn;
             if (FirstTurn)
             {
-                PrintBoard(false, true, p_Player);
                 Console.WriteLine();
                 FirstTurn = false;
             }
@@ -49,7 +41,6 @@ namespace ClassLibrary
 
             CurrentPlayerIndex = (CurrentPlayerIndex + 1) % p_Player.Count;
 
-            PrintBoard(false, true, p_Player);
         }
 
         #region GameUtilities
@@ -90,77 +81,6 @@ namespace ClassLibrary
                 Console.WriteLine("Column is full. Try again.");
                 return false;
             }
-        }
-        #endregion
-        #region ChatGPT
-        /// <summary>
-        /// Builds a message for the Connect 4 game.
-        /// </summary>
-        /// <param name="p_Board">The current game board as a string.</param>
-        /// <param name="p_Players">The list of players.</param>
-        /// <returns>The game instructions and current board as a formatted string.</returns>
-        public override string BuildMessage(string p_Board, List<Player> p_Players)
-        {
-            return $"Objective: Win the Connect 4 game by connecting four of your '{p_Players[1].Icon}' vertically, horizontally, or diagonally.\n" +
-                   $"The board is 7 columns by 6 rows.\n" +
-                   $"Current board:\n{p_Board}\n" +
-                   $"Your turn:\n" +
-                   $"- You are '{p_Players[1].Icon}'.\n" +
-                   $"- Drop your '{p_Players[1].Icon}' into any of the columns. You cannot choose a column that is already full.\n" +
-                   $"Choose a column (1-7) and return just this one number!:";
-        }
-        /// <summary>
-        /// Executes ChatGPT's move in the Connect 4 game.
-        /// </summary>
-        /// <param name="p_Board">The current game board as a string.</param>
-        /// <param name="p_Players">The list of players.</param>
-        public override void ChatGPTMove(string p_Board, List<Player> p_Players)
-        {
-            ConsoleColor p_originalForegroundColour = Console.ForegroundColor;
-            Console.ForegroundColor = ConsoleColor.Green;
-
-            string apiKey = GetApiKey();
-            if (apiKey != null)
-            {
-                int chosenColumn;
-                Console.WriteLine();
-                Console.WriteLine("ChatGPT is thinking...");
-
-                string p_message = BuildMessage(p_Board, p_Players);
-                string p_response = SendMessageToChatGPT(apiKey, p_message);
-                chosenColumn = ValidateColumnChoice(p_response.Trim(), p_Players);
-                MakeMove(chosenColumn, 1, p_Players);
-
-
-                CurrentPlayerIndex = (CurrentPlayerIndex + 1) % p_Players.Count;
-
-                PrintBoard(false, true, p_Players);
-
-            }
-            else
-            {
-                Console.WriteLine("Please set the environment variable CHATGPT_API_KEY to your ChatGPT API key.");
-                Environment.Exit(0);
-            }
-            Console.ForegroundColor = p_originalForegroundColour;
-        }
-        /// <summary>
-        /// Validates the column choice obtained from ChatGPT's response.
-        /// </summary>
-        /// <param name="p_Response">The column choice as a string.</param>
-        /// <param name="p_Players">The list of players.</param>
-        /// <returns>The validated column choice (1 to p_Columns) or -1 if invalid.</returns>
-        public int ValidateColumnChoice(string p_Response, List<Player> p_Players)
-        {
-            if (int.TryParse(p_Response, out int chosenColumn))
-            {
-                if (chosenColumn >= 1 && chosenColumn <= Columns)
-                {
-                    return chosenColumn;
-                }
-            }
-
-            return -1;
         }
         #endregion
     }

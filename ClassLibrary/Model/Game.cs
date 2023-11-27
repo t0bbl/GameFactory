@@ -29,8 +29,8 @@ namespace ClassLibrary
             {
                 "TTT" => new TTT() { p_Player = p_Player },
                 "FourW" => new FourW() { p_Player = p_Player },
-                "TTTChatGPT" => new TTT() { p_Player = p_Player, ChatGPT = true },
-                "FourWChatGPT" => new FourW() { p_Player = p_Player, ChatGPT = true },
+                "TTTChatGPT" => new TTT() { p_Player = p_Player },
+                "FourWChatGPT" => new FourW() { p_Player = p_Player },
                 "TwistFourW" => new CustomTTT(true) { p_Player = p_Player },
                 "CustomTTT" => new CustomTTT(false) { p_Player = p_Player },
             };
