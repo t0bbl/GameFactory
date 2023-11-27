@@ -11,7 +11,6 @@ namespace ClassLibrary
         public string Name { get; set; }
         public char Icon { get; set; }
         public string Color { get; set; }
-        internal bool IsHuman { get; set; }
         public int Ident { get; set; }
         internal string LoginName { get; set; }
         internal string Password { get; set; }

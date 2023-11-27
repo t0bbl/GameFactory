@@ -63,6 +63,9 @@ namespace GameFactoryWPF
         #endregion
         public void LoginScreen_PlayerLoggedIn(Player p_Player)
         {
+
+            PlayerList.Clear();
+
             StatsPanel.Children.Clear();
             StatsScreen = new Stats(p_Player);
             StatsPanel.Children.Add(StatsScreen);

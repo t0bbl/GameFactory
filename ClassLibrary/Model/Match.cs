@@ -1,3 +1,4 @@
+using CoreGameFactory.Model;
 using System.Data;
 using System.Data.SqlClient;
 using System.Text;
@@ -11,7 +12,7 @@ namespace ClassLibrary
         public int Rows { get; set; }
         public int Columns { get; set; }
         public int WinningLength { get; set; }
-        internal int CurrentPlayerIndex { get; set; }
+        public int CurrentPlayerIndex { get; set; }
         internal bool FirstTurn { get; set; }
         public int? Winner { get; set; }
         public int? Loser { get; set; }
@@ -24,8 +25,11 @@ namespace ClassLibrary
         public string LoserName { get; set; }
         public string Result { get; set; }
         public string Opponent { get; set; }
+        public string CurrentPlayer { get; set; }
 
         public event EventHandler<GameStateChangedEventArgs> GameStateChanged;
+
+        public event EventHandler<PlayerChangedEventArgs> PlayerChanged;
 
         Random p_Random = new();
 
@@ -68,15 +72,16 @@ namespace ClassLibrary
             GameTypeIdent = SaveGame(Rows, Columns, WinningLength, p_GameType);
 
             MatchId = SaveMatch(Winner, Loser, Draw, GameTypeIdent, MatchId);
-            
-          
-                int p_chosenCell = 0;
-                bool p_validInput = false;
-                if (FirstTurn)
-                {
-                    FirstTurn = false;
-                }
-             
+
+
+            int p_chosenCell = 0;
+            bool p_validInput = false;
+            if (FirstTurn)
+            {
+                FirstTurn = false;
+            }
+
+
         }
 
 
@@ -90,6 +95,8 @@ namespace ClassLibrary
                 SetCell(p_row, p_col, p_Player[CurrentPlayerIndex].Icon);
                 SavePlayerToMatch(p_Player[CurrentPlayerIndex].Ident, MatchId);
                 CurrentPlayerIndex = (CurrentPlayerIndex + 1) % p_Player.Count;
+                CurrentPlayer = p_Player[CurrentPlayerIndex].Name;
+                OnPlayerChanged(new PlayerChangedEventArgs(CurrentPlayer));
             }
 
             string p_cell = $"{p_row * Columns + p_col + 1}";
@@ -246,7 +253,7 @@ namespace ClassLibrary
                     {
                         if (Player.Ident == Winner)
                         {
-                           Winner = Player.Ident;
+                            Winner = Player.Ident;
                         }
 
                         else
@@ -396,6 +403,11 @@ namespace ClassLibrary
         protected virtual void OnGameStateChanged(GameStateChangedEventArgs e)
         {
             GameStateChanged?.Invoke(this, e);
+        }
+
+        protected virtual void OnPlayerChanged(PlayerChangedEventArgs e)
+        {
+            PlayerChanged?.Invoke(this, e);
         }
     }
 }

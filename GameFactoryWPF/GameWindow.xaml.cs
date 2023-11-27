@@ -19,6 +19,8 @@ namespace GameFactoryWPF
         private Stats StatScreen;
         private Player HomePlayer;
 
+        private TextBlock CurrentPlayerDisplay;
+
         public event EventHandler<CellClickedEventArgs> CellClicked;
 
         public List<Player> PlayerList;
@@ -55,16 +57,23 @@ namespace GameFactoryWPF
         public void StartGame(Match p_Game)
         {
             GameStarted?.Invoke(this, EventArgs.Empty);
-            CreatePlayboard(p_Game.Rows, p_Game.Columns);
-
+            CreateGameWindow(p_Game.Rows, p_Game.Columns);
+            UpdateCurrentPlayerDisplay();
         }
 
-        private void CreatePlayboard(int p_Rows, int p_Columns)
+        private void CreateGameWindow(int p_Rows, int p_Columns)
         {
-            var mainContent = new Grid();
-            mainContent.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(100, GridUnitType.Star) });
-            mainContent.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(512, GridUnitType.Star) });
-            mainContent.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(100, GridUnitType.Star) });
+            var MainContent = new Grid();
+            MainContent.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(100, GridUnitType.Star) });
+            MainContent.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(512, GridUnitType.Star) });
+            MainContent.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(100, GridUnitType.Star) });
+            CreatePlayboard(p_Rows, p_Columns, MainContent);
+            CreateCurrentPlayerDisplay(MainContent);
+        }
+
+        private void CreatePlayboard(int p_Rows, int p_Columns, Grid p_MainContent)
+        {
+
             var playboard = new Grid();
 
 
@@ -95,30 +104,53 @@ namespace GameFactoryWPF
                 }
             }
             Grid.SetColumn(playboard, 1);
-            mainContent.Children.Add(playboard);
+            p_MainContent.Children.Add(playboard);
 
-            MainWindow.MainContent.Content = mainContent;
+
+            MainWindow.MainContent.Content = p_MainContent;
+        }
+
+        private void CreateCurrentPlayerDisplay(Grid p_MainContent)
+        {
+            var CurrentPlayerDisplay = new TextBlock()
+            {
+                Text = "Current Player: " + CurrentMatch.CurrentPlayer,
+            };
+            Grid.SetColumn(CurrentPlayerDisplay, 0);
+            Grid.SetRow(CurrentPlayerDisplay, 1);
+            CurrentPlayerDisplay.HorizontalAlignment = HorizontalAlignment.Center;
+            CurrentPlayerDisplay.VerticalAlignment = VerticalAlignment.Bottom;
+            CurrentPlayerDisplay.FontSize = 20;
+            CurrentPlayerDisplay.FontWeight = FontWeights.Bold;
+            CurrentPlayerDisplay.Foreground = System.Windows.Media.Brushes.White;
+            this.CurrentPlayerDisplay = CurrentPlayerDisplay;
+
+            p_MainContent.Children.Add(CurrentPlayerDisplay);
         }
 
         private void CellButton_CellClicked(object? sender, CellClickedEventArgs e)
         {
             CurrentMatch.CellClicked(sender, e);
+            UpdateCurrentPlayerDisplay();
+
         }
 
         private void StartMatch(Match p_Match)
         {
+            p_Match.PlayerChanged += Match_PlayerChanged;
             p_Match.GameStateChanged += Match_GameStateChanged;
 
             GetAllCellControls();
-            
+
             StartGame(p_Match);
-            
+
             GameWindow MatchScreen = new GameWindow(MainWindow, PlayerList, p_Match, HomePlayer, StatScreen);
             GameStarted?.Invoke(this, EventArgs.Empty);
 
             p_Match.ResetBoard();
             p_Match.StartMatch();
             p_Match.GameMechanic(PlayerList);
+
         }
 
         private void OnClickTTT(object sender, RoutedEventArgs e)
@@ -138,7 +170,7 @@ namespace GameFactoryWPF
             CurrentMatch = new CustomTTT(true) { p_Player = PlayerList };
             StartMatch(CurrentMatch);
         }
-    
+
 
         public IEnumerable<CellControl> GetAllCellControls()
         {
@@ -154,6 +186,17 @@ namespace GameFactoryWPF
                 StatScreen.UpdateStats(HomePlayer);
                 MainWindow.LoginScreen_PlayerLoggedIn(HomePlayer);
             }
+        }
+        private void Match_PlayerChanged(object sender, PlayerChangedEventArgs e)
+        {
+            UpdateCurrentPlayerDisplay();
+        }
+
+        private void UpdateCurrentPlayerDisplay()
+        {
+
+            CurrentPlayerDisplay.Text = "Current Player: " + PlayerList[CurrentMatch.CurrentPlayerIndex].Name;
+            
         }
     }
 }
