@@ -231,7 +231,7 @@ namespace GameFactoryWPF
                         Grid.SetRow(CellButton, row);
                         Grid.SetColumn(CellButton, col);
                         CellButton.CellClicked += CellButton_CellClicked;
-                        CellButton.CellColor = "White";
+                        CellButton.CellColor = "Gray";
                         CellButton.CellContent = Icon;
                         Playboard.Children.Add(CellButton);
                         CellControls.Add(CellButton);

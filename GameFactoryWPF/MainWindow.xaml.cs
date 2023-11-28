@@ -105,6 +105,7 @@ namespace GameFactoryWPF
             }
             MainContent.Content = HistoryScreen;
 
+            GameScreen.StartGamePanel.Visibility = Visibility.Visible;
             GameScreen.Visibility = Visibility.Visible;
             StatsScreen.Visibility = Visibility.Visible;
         }
