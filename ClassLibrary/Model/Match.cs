@@ -59,7 +59,7 @@ namespace ClassLibrary
             FirstTurn = true;
             CurrentPlayerIndex = 0;
 
-            ShufflePlayers(p_Player);
+            ShufflePlayers(PlayerList);
 
             ResetBoard();
         }
@@ -69,7 +69,7 @@ namespace ClassLibrary
         /// <param name="p_Player">The list of players participating in the game.</param>
         public virtual void GameMechanic(List<Player> p_Player)
         {
-            GameTypeIdent = SaveGame(Rows, Columns, WinningLength, p_GameType);
+            GameTypeIdent = SaveGame(Rows, Columns, WinningLength, GameType);
 
             MatchId = SaveMatch(Winner, Loser, Draw, GameTypeIdent, MatchId);
 
@@ -90,21 +90,21 @@ namespace ClassLibrary
 
             if (GetCell(p_row, p_col) == "0")
             {
-                SetCell(p_row, p_col, p_Player[CurrentPlayerIndex].Icon);
-                SavePlayerToMatch(p_Player[CurrentPlayerIndex].Ident, MatchId);
-                CurrentPlayer = p_Player[CurrentPlayerIndex].Name;
+                SetCell(p_row, p_col, PlayerList[CurrentPlayerIndex].Icon);
+                SavePlayerToMatch(PlayerList[CurrentPlayerIndex].Ident, MatchId);
+                CurrentPlayer = PlayerList[CurrentPlayerIndex].Name;
                 OnPlayerChanged(new PlayerChangedEventArgs(CurrentPlayer));
                 string p_cell = $"{p_row * Columns + p_col + 1}";
-                SaveMoveHistory(p_Player[CurrentPlayerIndex].Ident, p_cell, MatchId, TwistStat);
+                SaveMoveHistory(PlayerList[CurrentPlayerIndex].Ident, p_cell, MatchId, TwistStat);
             }
 
 
 
-            Winner = CheckWinner(p_Player);
+            Winner = CheckWinner(PlayerList);
 
             if (Winner != null)
             {
-                UpdateStats(p_Player);
+                UpdateStats(PlayerList);
 
                 SaveMatch(Winner, Loser, Draw, GameTypeIdent, MatchId);
 

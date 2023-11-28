@@ -7,7 +7,7 @@
         /// </summary>
         public TTT() : base(3, 3, 3)
         {
-            p_GameType = "TTT";
+            GameType = "TTT";
 
         }
 

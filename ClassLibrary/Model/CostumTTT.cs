@@ -19,7 +19,7 @@
                   p_Twist ? 4 : AskForWinningLength()
               )
         {
-            p_GameType = p_Twist ? "Twist" : "CustomTTT";
+            GameType = p_Twist ? "Twist" : "CustomTTT";
             this.p_Twist = p_Twist;
             ResetBoard();
         }

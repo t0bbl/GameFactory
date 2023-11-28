@@ -22,7 +22,7 @@ namespace GameFactoryWPF
         public int Column { get; set; }
         public bool IsClicked { get; set; } = false;
 
-        public string CellContent
+        public object CellContent
         {
             get { return (string)GetValue(CellContentProperty); }
             set { CellButton.Content = value; }

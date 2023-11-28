@@ -7,7 +7,7 @@ namespace ClassLibrary
 
         public FourW() : base(6, 7, 4)
         {
-            p_GameType = "FourW";
+            GameType = "FourW";
         }
 
         public override void CellClicked(object sender, CellClickedEventArgs e)
@@ -15,18 +15,18 @@ namespace ClassLibrary
             int ChosenColumn = e.Column;
 
 
-            SavePlayerToMatch(p_Player[CurrentPlayerIndex].Ident, MatchId);
-            CurrentPlayer = p_Player[CurrentPlayerIndex].Name;
+            SavePlayerToMatch(PlayerList[CurrentPlayerIndex].Ident, MatchId);
+            CurrentPlayer = PlayerList[CurrentPlayerIndex].Name;
             OnPlayerChanged(new PlayerChangedEventArgs(CurrentPlayer));
-            MakeMove(ChosenColumn, CurrentPlayerIndex, p_Player);
+            MakeMove(ChosenColumn, CurrentPlayerIndex, PlayerList);
             string p_cell = ChosenColumn.ToString();
-            SaveMoveHistory(p_Player[CurrentPlayerIndex].Ident, p_cell, MatchId, TwistStat);
+            SaveMoveHistory(PlayerList[CurrentPlayerIndex].Ident, p_cell, MatchId, TwistStat);
 
-            Winner = CheckWinner(p_Player);
+            Winner = CheckWinner(PlayerList);
 
             if (Winner != null)
             {
-                UpdateStats(p_Player);
+                UpdateStats(PlayerList);
 
                 SaveMatch(Winner, Loser, Draw, GameTypeIdent, MatchId);
 

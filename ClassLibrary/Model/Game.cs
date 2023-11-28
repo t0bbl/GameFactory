@@ -4,9 +4,9 @@ namespace ClassLibrary
     public class Game
     {
         #region Variables
-        public List<Player> p_Player { get; set; } = new();
-        internal string p_GameType { get; set; }
-        internal string p_GameMode { get; set; }
+        public List<Player> PlayerList { get; set; } = new();
+        internal string GameType { get; set; }
+        internal string GameMode { get; set; }
         internal Match CurrentMatch { get; set; }
         internal int GuestCount { get; set; } = 0;
 
@@ -17,22 +17,15 @@ namespace ClassLibrary
         /// <returns>The created match, with players and any specific configurations set.</returns>
         public Match CreateMatch()
         {
-            if (p_GameMode == "SinglePlayer")
+          
+            CurrentMatch = GameType switch
             {
-                if (!p_Player.Any(x => x.Name == "ChatGPT"))
-                {
-                    var p_GPTVariables = DataProvider.GetPlayerVariables(10);
-                    p_Player.Add(p_GPTVariables);
-                }
-            }
-            CurrentMatch = p_GameType switch
-            {
-                "TTT" => new TTT() { p_Player = p_Player },
-                "FourW" => new FourW() { p_Player = p_Player },
-                "TTTChatGPT" => new TTT() { p_Player = p_Player },
-                "FourWChatGPT" => new FourW() { p_Player = p_Player },
-                "TwistFourW" => new CustomTTT(true) { p_Player = p_Player },
-                "CustomTTT" => new CustomTTT(false) { p_Player = p_Player },
+                "TTT" => new TTT() { PlayerList = PlayerList },
+                "FourW" => new FourW() { PlayerList = PlayerList },
+                "TTTChatGPT" => new TTT() { PlayerList = PlayerList },
+                "FourWChatGPT" => new FourW() { PlayerList = PlayerList },
+                "TwistFourW" => new CustomTTT(true) { PlayerList = PlayerList },
+                "CustomTTT" => new CustomTTT(false) { PlayerList = PlayerList },
             };
 
             return CurrentMatch;
@@ -64,7 +57,7 @@ namespace ClassLibrary
                         } while (p_ident == 0);
                         var playerVariables = DataProvider.GetPlayerVariables(p_ident);
                         Console.WriteLine($"Welcome back {playerVariables.Name}!");
-                        p_Player.Add(playerVariables);
+                        PlayerList.Add(playerVariables);
                         ValidInput = true;
                     }
                     else if (p_input == "u")
@@ -76,7 +69,7 @@ namespace ClassLibrary
                     {
                         Console.WriteLine("Playing as a guest.");
                         var GuestVariables = DataProvider.GetPlayerVariables(GuestCount + 1);
-                        p_Player.Add(GuestVariables);
+                        PlayerList.Add(GuestVariables);
                         GuestCount++;
                         ValidInput = true;
                     }
@@ -95,7 +88,7 @@ namespace ClassLibrary
         /// <returns>The number of players that will participate in the game.</returns>
         internal int DetermineNumberOfPlayers()
         {
-            if (p_GameMode == "SinglePlayer") return 1;
+            if (GameMode == "SinglePlayer") return 1;
 
             int NumberOfPlayers;
             do
@@ -167,8 +160,8 @@ namespace ClassLibrary
         {
             do
             {
-                return p_GameMode = ShowMenu(typeof(StartMenuOptions));
-            } while (p_GameMode == null);
+                return GameMode = ShowMenu(typeof(StartMenuOptions));
+            } while (GameMode == null);
         }
         /// <summary>
         /// Displays the game selection menu based on the game mode (SinglePlayer/MultiPlayer) and returns the selected game type.
@@ -179,8 +172,8 @@ namespace ClassLibrary
             Console.Clear();
             do
             {
-                return p_GameType = ShowMenu(p_GameMode == "SinglePlayer" ? typeof(SinglePlayerGames) : typeof(MultiPlayerGames));
-            } while (p_GameType == null);
+                return GameType = ShowMenu(GameMode == "SinglePlayer" ? typeof(SinglePlayerGames) : typeof(MultiPlayerGames));
+            } while (GameType == null);
         }
         #endregion
 
