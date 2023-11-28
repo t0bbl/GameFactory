@@ -26,6 +26,49 @@ namespace GameFactoryWPF
             MainContent.Content = LoginScreen;
             LoginScreen.PlayerLoggedIn += LoginScreen_PlayerLoggedIn;
         }
+
+        public void LoginScreen_PlayerLoggedIn(Player p_Player)
+        {
+            LoadPlayerHome(p_Player);
+        }
+
+        public void LoadPlayerHome(Player p_Player)
+        {
+            PlayerList.Clear();
+
+            StatsPanel.Children.Clear();
+            StatsScreen = new Stats(p_Player);
+            StatsPanel.Children.Add(StatsScreen);
+
+            HistoryPanel.Children.Clear();
+            HistoryScreen = new History(p_Player);
+            HistoryScreen.LoadHistory(p_Player);
+
+            HomePlayer = p_Player;
+
+            GameScreen = new GameWindow(this, PlayerList, Match, HomePlayer, StatsScreen);
+            GameScreen.GameStarted += GameLogic_GameStarted;
+
+            GamesPanel.Children.Clear();
+            GamesPanel.Children.Add(GameScreen);
+
+            PlayerList.Add(p_Player);
+
+            var GuestVariables = DataProvider.GetPlayerVariables(1);
+            PlayerList.Add(GuestVariables);
+
+            StatsScreen.Visibility = Visibility.Visible;
+            GameScreen.Visibility = Visibility.Visible;
+
+            MainContent.Content = HistoryScreen;
+        }
+
+
+        private void GameLogic_GameStarted(object sender, EventArgs e)
+        {
+            GameScreen.StartGamePanel.Visibility = Visibility.Collapsed;
+        }
+
         #region UI Event Handlers
         private void ToMainScreen(object sender, RoutedEventArgs e)
         {
@@ -61,48 +104,6 @@ namespace GameFactoryWPF
         }
 
         #endregion
-        public void LoginScreen_PlayerLoggedIn(Player p_Player)
-        {
-            LoadPlayerHome(p_Player);
-
-        }
-
-        public void LoadPlayerHome(Player p_Player)
-        {
-            PlayerList.Clear();
-
-            StatsPanel.Children.Clear();
-            StatsScreen = new Stats(p_Player);
-            StatsPanel.Children.Add(StatsScreen);
-
-            HistoryPanel.Children.Clear();
-            HistoryScreen = new History(p_Player);
-            HistoryScreen.LoadHistory(p_Player);
-
-            HomePlayer = p_Player;
-
-            GameScreen = new GameWindow(this, PlayerList, Match, HomePlayer, StatsScreen);
-            GameScreen.GameStarted += GameLogic_GameStarted;
-
-            GamesPanel.Children.Clear();
-            GamesPanel.Children.Add(GameScreen);
-
-            PlayerList.Add(p_Player);
-
-            var GuestVariables = DataProvider.GetPlayerVariables(1);
-            PlayerList.Add(GuestVariables);
-
-            StatsScreen.Visibility = Visibility.Visible;
-            GameScreen.Visibility = Visibility.Visible;
-
-            MainContent.Content = HistoryScreen;
-        }
- 
-
-        private void GameLogic_GameStarted(object sender, EventArgs e)
-        {
-            GameScreen.StartGamePanel.Visibility = Visibility.Collapsed;
-        }
     }
 
 

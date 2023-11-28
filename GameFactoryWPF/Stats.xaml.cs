@@ -19,6 +19,7 @@ namespace GameFactoryWPF
 
         public void UpdateStats(Player p_Player)
         {
+            this.DataContext = null;
             this.DataContext = p_Player;
         }
 
