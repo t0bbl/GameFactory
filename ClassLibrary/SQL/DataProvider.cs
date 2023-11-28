@@ -223,7 +223,7 @@ namespace ClassLibrary
                         if (reader.Read())
                         {
                             string p_name = reader["Name"] as string;
-                            string p_icon =reader["Icon"] as string;
+                            string p_icon = reader["Icon"] as string;
                             string p_color = reader["Color"] as string;
                             if (p_name != null && p_icon != null && p_color != null)
                             {

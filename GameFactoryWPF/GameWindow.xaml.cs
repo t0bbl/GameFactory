@@ -3,12 +3,9 @@ using CoreGameFactory.Model;
 using MaterialDesignThemes.Wpf;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Linq;
-using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Media;
 
 namespace GameFactoryWPF
 {
@@ -200,7 +197,7 @@ namespace GameFactoryWPF
         private void CreatePlayboard(int p_Rows, int p_Columns, Grid p_MainContent)
         {
             var Playboard = new Grid();
-            
+
 
 
             if (CurrentMatch.GameType == "FourW")
@@ -254,7 +251,8 @@ namespace GameFactoryWPF
                 }
             }
 
-            else {
+            else
+            {
 
                 for (int row = 0; row < p_Rows; row++)
                 {

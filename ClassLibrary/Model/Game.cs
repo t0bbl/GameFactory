@@ -17,7 +17,7 @@ namespace ClassLibrary
         /// <returns>The created match, with players and any specific configurations set.</returns>
         public Match CreateMatch()
         {
-          
+
             CurrentMatch = GameType switch
             {
                 "TTT" => new TTT() { PlayerList = PlayerList },

@@ -1,7 +1,6 @@
 using CoreGameFactory.Model;
 using System.Data;
 using System.Data.SqlClient;
-using System.Text;
 
 namespace ClassLibrary
 {
@@ -79,7 +78,6 @@ namespace ClassLibrary
                 FirstTurn = false;
             }
 
-
         }
 
 
@@ -91,27 +89,11 @@ namespace ClassLibrary
             if (GetCell(p_row, p_col) == "0")
             {
                 SetCell(p_row, p_col, PlayerList[CurrentPlayerIndex].Icon);
-                SavePlayerToMatch(PlayerList[CurrentPlayerIndex].Ident, MatchId);
-                CurrentPlayer = PlayerList[CurrentPlayerIndex].Name;
-                OnPlayerChanged(new PlayerChangedEventArgs(CurrentPlayer));
-                string p_cell = $"{p_row * Columns + p_col + 1}";
-                SaveMoveHistory(PlayerList[CurrentPlayerIndex].Ident, p_cell, MatchId, TwistStat);
+                string Cell = $"{p_row * Columns + p_col + 1}";
+                HandleClick(Cell);
             }
 
-
-
-            Winner = CheckWinner(PlayerList);
-
-            if (Winner != null)
-            {
-                UpdateStats(PlayerList);
-
-                SaveMatch(Winner, Loser, Draw, GameTypeIdent, MatchId);
-
-                MatchId = 0;
-
-                OnGameStateChanged(new GameStateChangedEventArgs(Winner, Draw));
-            }
+            EndTurn();
         }
 
         #region BoardSetup
@@ -151,8 +133,8 @@ namespace ClassLibrary
                 p_Board[p_Row, p_Col] = p_Icon;
             }
         }
-
         #endregion
+
         #region GameMechanics
         /// <summary>
         /// Checks the game board for a winner or a draw based on the game rules.
@@ -220,14 +202,30 @@ namespace ClassLibrary
                 p_Player[i] = temp;
             }
         }
-        /// <summary>
-        /// Tries to get a valid integer input from the user within a specified range.
-        /// </summary>
-        /// <param name="p_ChosenValue">The parsed integer value from the user input.</param>
-        /// <param name="p_MaxValue">The maximum valid value for the user input.</param>
-        /// <returns>True if a valid integer input is received, false otherwise.</returns>
- 
+        public void EndTurn()
+        {
+            Winner = CheckWinner(PlayerList);
+
+            if (Winner != null)
+            {
+                UpdateStats(PlayerList);
+
+                SaveMatch(Winner, Loser, Draw, GameTypeIdent, MatchId);
+
+                MatchId = 0;
+
+                OnGameStateChanged(new GameStateChangedEventArgs(Winner, Draw));
+            }
+        }
+        public void HandleClick(string p_cell)
+        {
+            SavePlayerToMatch(PlayerList[CurrentPlayerIndex].Ident, MatchId);
+            CurrentPlayer = PlayerList[CurrentPlayerIndex].Name;
+            OnPlayerChanged(new PlayerChangedEventArgs(CurrentPlayer));
+            SaveMoveHistory(PlayerList[CurrentPlayerIndex].Ident, p_cell, MatchId, TwistStat);
+        }
         #endregion
+
         #region Stats
         /// <summary>
         /// Updates the match statistics, identifies the winner or detects a draw, and displays the result.

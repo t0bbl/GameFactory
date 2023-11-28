@@ -8,8 +8,6 @@
         public TTT() : base(3, 3, 3)
         {
             GameType = "TTT";
-
         }
-
     }
 }
