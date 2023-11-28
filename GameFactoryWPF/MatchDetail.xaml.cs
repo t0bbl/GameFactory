@@ -1,22 +1,23 @@
-﻿using ClassLibrary;
+﻿using CoreGameFactory.Model;
+using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
 
 namespace GameFactoryWPF
 {
     /// <summary>
-    /// Interaction logic for Stats.xaml
+    /// Interaction logic for MatchDetail.xaml
     /// </summary>
-    public partial class Stats : UserControl
+    public partial class MatchDetail : UserControl
     {
 
-        public Stats(Player p_Player)
+        public MatchDetail(List<Move> p_Moves)
         {
             InitializeComponent();
             CloseButton.Click += CloseButton_Click;
-            this.DataContext = p_Player;
+            MoveHistoryList.Items.Clear();
+            MoveHistoryList.ItemsSource = p_Moves;
         }
-
 
 
         private void CloseButton_Click(object sender, RoutedEventArgs e)

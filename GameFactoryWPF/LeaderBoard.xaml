@@ -13,37 +13,63 @@
 
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="2*" />
+            <RowDefinition Height="*" />
         </Grid.RowDefinitions>
-        <ListView ItemsSource="{Binding Leaderboard}">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="540px" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <ListView
+            Grid.Row="1"
+            Grid.Column="1"
+            ItemsSource="{Binding Leaderboard}">
             <ListView.View>
                 <GridView>
-                    <GridViewColumn
-                        Width="Auto"
-                        DisplayMemberBinding="{Binding Place}"
-                        Header="#" />
-                    <GridViewColumn
-                        Width="Auto"
-                        DisplayMemberBinding="{Binding Name}"
-                        Header="Name" />
-                    <GridViewColumn
-                        Width="Auto"
-                        DisplayMemberBinding="{Binding Wins}"
-                        Header="Wins" />
-                    <GridViewColumn
-                        Width="Auto"
-                        DisplayMemberBinding="{Binding Losses}"
-                        Header="Losses" />
-                    <GridViewColumn
-                        Width="Auto"
-                        DisplayMemberBinding="{Binding Draws}"
-                        Header="Draws" />
-                    <GridViewColumn
-                        Width="Auto"
-                        DisplayMemberBinding="{Binding WinPercentage}"
-                        Header="Winpercentage" />
+                    <GridViewColumn Width="Auto" Header="#">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Margin="20,0,20,0" Text="{Binding Rank}" />
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+
+                    <GridViewColumn Width="Auto" Header="Name">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Name}" />
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+
+                    <GridViewColumn Width="Auto" Header="Wins">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Margin="20,0,20,0" Text="{Binding Wins}" />
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+
+                    <GridViewColumn Width="Auto" Header="Losses">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Margin="20,0,20,0" Text="{Binding Losses}" />
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+
+                    <GridViewColumn Width="Auto" Header="WinPercentage">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Margin="20,0,20,0" Text="{Binding WinPercentage, StringFormat={}{0:0.00}}" />
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
                 </GridView>
             </ListView.View>
         </ListView>
+
     </Grid>
 </UserControl>

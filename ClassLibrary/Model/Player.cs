@@ -3,19 +3,24 @@ using System.Data.SqlClient;
 using System.Security.Cryptography;
 using System.Text;
 using System.Text.RegularExpressions;
-using System.Xml.Linq;
 
 namespace ClassLibrary
 {
     public class Player
     {
-        internal string Name { get; set; }
-        internal char Icon { get; set; }
-        internal string Colour { get; set; }
-        internal bool IsHuman { get; set; }
-        internal int Ident { get; set; }
+        public string Name { get; set; }
+        public string Icon { get; set; }
+        public string Color { get; set; }
+        public int Ident { get; set; }
         internal string LoginName { get; set; }
         internal string Password { get; set; }
+        public int Rank { get; set; }
+        public int Wins { get; set; }
+        public int Losses { get; set; }
+        public int Draws { get; set; }
+        public int PlayedGames { get; set; }
+        public double WinPercentage { get; set; }
+
 
 
         #region variables
@@ -23,7 +28,7 @@ namespace ClassLibrary
         string p_Password { get; set; }
         string p_Name { get; set; }
         char p_Icon { get; set; }
-        string p_Colour { get; set; }
+        string p_Color { get; set; }
 
         #endregion
 
@@ -149,7 +154,7 @@ namespace ClassLibrary
         /// <param name="p_LoginName">The login name of the player.</param>
         /// <param name="p_Password">The password of the player.</param>
         /// <returns>The identifier of the newly created player record.</returns>
-        internal int SQLSignUpPlayer(string p_LoginName, string p_Password)
+        public int SQLSignUpPlayer(string p_LoginName, string p_Password)
         {
             string connString = new SQLDatabaseUtility().GetSQLConnectionString();
 
@@ -162,7 +167,7 @@ namespace ClassLibrary
                     cmd.Parameters.AddWithValue("@p_LoginName", p_LoginName);
                     cmd.Parameters.AddWithValue("@p_Password", p_Password);
                     cmd.Parameters.AddWithValue("@p_IsHuman", 1);
-                        
+
                     SqlParameter identParam = new SqlParameter("@p_Ident", SqlDbType.Int);
                     identParam.Direction = ParameterDirection.Output;
                     cmd.Parameters.Add(identParam);
@@ -182,10 +187,10 @@ namespace ClassLibrary
         /// <param name="p_LoginName">The login name of the player.</param>
         /// <param name="p_Password">The password of the player.</param>
         /// <returns>The identifier of the player if the login is successful, 0 otherwise.</returns>
-        internal int SQLLoginPlayer(string p_LoginName, string p_Password)
+        public static int SQLLoginPlayer(string p_LoginName, string p_Password)
         {
             string connString = new SQLDatabaseUtility().GetSQLConnectionString();
-            int p_ident = 0; 
+            int p_ident = 0;
 
             using (SqlConnection conn = new SqlConnection(connString))
             {
@@ -250,7 +255,7 @@ namespace ClassLibrary
         /// </summary>
         /// <param name="p_Password">The password to be hashed.</param>
         /// <returns>The hashed password as a hexadecimal string.</returns>
-        internal static string HashPassword(string p_Password)
+        public static string HashPassword(string p_Password)
         {
             using (SHA256 sha256Hash = SHA256.Create())
             {
@@ -269,7 +274,7 @@ namespace ClassLibrary
         /// </summary>
         /// <param name="p_LoginName">The login name to be validated.</param>
         /// <returns>True if the login name is valid, false otherwise.</returns>
-        internal bool ValidateLoginName(string p_LoginName)
+        public static bool ValidateLoginName(string p_LoginName)
         {
             if (p_LoginName.Length < 3 || p_LoginName.Length > 16)
             {
@@ -291,7 +296,7 @@ namespace ClassLibrary
         /// </summary>
         /// <param name="p_Password">The password to be validated.</param>
         /// <returns>True if the password is valid, false otherwise.</returns>
-        internal static bool ValidatePassword(string p_Password)
+        public static bool ValidatePassword(string p_Password)
         {
             if (p_Password.Length < 8 || p_Password.Length > 16)
             {
@@ -310,9 +315,9 @@ namespace ClassLibrary
             Console.Clear();
             p_Name = Game.InitializePlayerName();
             p_Icon = Game.InitializePlayerIcon();
-            p_Colour = Game.InitializePlayerColor();
+            p_Color = Game.InitializePlayerColor();
 
-            SQLSavePlayerVariables(p_Ident, p_Name, p_Icon, p_Colour);
+            SQLSavePlayerVariables(p_Ident, p_Name, p_Icon, p_Color);
             Console.Clear();
             return true;
         }
@@ -336,7 +341,7 @@ namespace ClassLibrary
                     if (password.Length > 0)
                     {
                         password.Remove(password.Length - 1, 1);
-                        Console.Write("\b \b"); 
+                        Console.Write("\b \b");
                     }
                 }
                 else

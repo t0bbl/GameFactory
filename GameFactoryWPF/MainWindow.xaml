@@ -12,7 +12,7 @@
     BorderThickness="0"
     Style="{StaticResource MaterialDesignWindow}"
     Template="{StaticResource CommonBackgroundTemplate}"
-    TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+    TextElement.Foreground="Black"
     mc:Ignorable="d">
 
     <Window.Resources>
@@ -28,13 +28,14 @@
             <RowDefinition Height="30" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
-        <materialDesign:Card Grid.Row="0" Grid.ColumnSpan="3">
+
+        <materialDesign:Card Grid.Row="0">
             <Menu materialDesign:MenuAssist.TopLevelMenuItemHeight="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type materialDesign:Card}}, Path=ActualHeight}">
                 <MenuItem Header="Menu">
-                    <MenuItem Click="ToLeaderboard" Header="Leaderboard" />
+                    <MenuItem Click="ToLeaderboard" Header="_Leaderboard" />
                     <MenuItem Click="ToStats" Header="_Stats" />
-                    <MenuItem Click="ToTTT" Header="_TTT" />
-                    <MenuItem Click="ToMainScreen" Header="_Login" />
+                    <MenuItem Click="ToHistory" Header="_History" />
+                    <MenuItem Click="ToMainScreen" Header="_MainMenu" />
                 </MenuItem>
             </Menu>
         </materialDesign:Card>
@@ -42,10 +43,35 @@
         <ContentControl x:Name="MainContent" Grid.Row="1">
             <local:Login />
         </ContentControl>
-        <StackPanel
-            x:Name="StatsPanel"
-            Grid.Row="2"
-            Grid.Column="0" />
+        <StackPanel x:Name="StatsPanel" Grid.Row="1" />
+        <Grid Grid.Row="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <StackPanel
+                x:Name="GamePanel"
+                Grid.Row="0"
+                Grid.Column="1" />
+            <StackPanel
+                x:Name="HistoryPanel"
+                Grid.Row="0"
+                Grid.Column="2" />
+            <StackPanel
+                x:Name="GamesPanel"
+                Grid.Row="1"
+                Grid.Column="2"
+                Width="200"
+                Margin="20,20"
+                HorizontalAlignment="Right"
+                VerticalAlignment="Bottom" />
+
+        </Grid>
 
 
     </Grid>
