@@ -72,10 +72,15 @@ namespace GameFactoryWPF
         #region UI Event Handlers
         private void ToMainScreen(object sender, RoutedEventArgs e)
         {
+            StatsScreen.Visibility = Visibility.Collapsed;
+            GameScreen.Visibility = Visibility.Collapsed;
+
             MainContent.Content = LoginScreen;
         }
         private void ToLeaderboard(object sender, RoutedEventArgs e)
         {
+            StatsScreen.Visibility = Visibility.Collapsed;
+            GameScreen.Visibility = Visibility.Collapsed;
             MainContent.Content = LeaderBoardScreen;
         }
         private void ToStats(object sender, RoutedEventArgs e)
@@ -100,7 +105,8 @@ namespace GameFactoryWPF
             }
             MainContent.Content = HistoryScreen;
 
-            GameScreen.StartGamePanel.Visibility = Visibility.Visible;
+            GameScreen.Visibility = Visibility.Visible;
+            StatsScreen.Visibility = Visibility.Visible;
         }
 
         #endregion
