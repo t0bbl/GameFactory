@@ -206,13 +206,13 @@ namespace GameFactoryWPF
             {
                 Text = "Current Player: " + CurrentMatch.CurrentPlayer,
             };
-            Grid.SetColumn(CurrentPlayerDisplay, 0);
-            Grid.SetRow(CurrentPlayerDisplay, 1);
+            Grid.SetColumn(CurrentPlayerDisplay, 1);
+            Grid.SetRow(CurrentPlayerDisplay, 0);
             CurrentPlayerDisplay.HorizontalAlignment = HorizontalAlignment.Center;
             CurrentPlayerDisplay.VerticalAlignment = VerticalAlignment.Bottom;
             CurrentPlayerDisplay.FontSize = 20;
             CurrentPlayerDisplay.FontWeight = FontWeights.Bold;
-            CurrentPlayerDisplay.Foreground = System.Windows.Media.Brushes.White;
+            CurrentPlayerDisplay.Foreground = (System.Windows.Media.Brush)FindResource("SecondaryHueMidBrush");
             this.CurrentPlayerDisplay = CurrentPlayerDisplay;
 
             p_MainContent.Children.Add(CurrentPlayerDisplay);
