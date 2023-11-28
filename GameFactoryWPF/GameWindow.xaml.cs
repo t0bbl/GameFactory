@@ -181,23 +181,31 @@ namespace GameFactoryWPF
             {
                 cellControl.CellContent = PlayerList[CurrentMatch.CurrentPlayerIndex].Icon;
                 cellControl.CellColor = PlayerList[CurrentMatch.CurrentPlayerIndex].Color;
+                cellControl.CellClicked -= CellButton_CellClicked;
             }
             CurrentMatch.CurrentPlayerIndex = (CurrentMatch.CurrentPlayerIndex + 1) % CurrentMatch.p_Player.Count;
 
             UpdateCurrentPlayerDisplay();
-            
+
 
         }
 
 
-            private void Match_GameStateChanged(object sender, GameStateChangedEventArgs e)
+        private void Match_GameStateChanged(object sender, GameStateChangedEventArgs e)
         {
             if (e.Winner.HasValue)
             {
-                Player Winner = DataProvider.GetPlayerVariables(e.Winner.Value);
-                Login.TextBox("The winner is: " + Winner.Name);
-                StatScreen.UpdateStats(HomePlayer);
-                MainWindow.LoginScreen_PlayerLoggedIn(HomePlayer);
+                if (e.Draw.Value == 1)
+                {
+                    Login.TextBox("It's a draw!");
+                    MainWindow.LoadPlayerHome(HomePlayer);
+                }
+                else
+                {
+                    Player Winner = DataProvider.GetPlayerVariables(e.Winner.Value);
+                    Login.TextBox("The winner is: " + Winner.Name);
+                    MainWindow.LoadPlayerHome(HomePlayer);
+                }
             }
         }
         private void Match_PlayerChanged(object sender, PlayerChangedEventArgs e)
@@ -209,7 +217,7 @@ namespace GameFactoryWPF
         {
 
             CurrentPlayerDisplay.Text = "Current Player: " + PlayerList[CurrentMatch.CurrentPlayerIndex].Name;
-            
+
         }
     }
 }

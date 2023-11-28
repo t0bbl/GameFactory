@@ -31,7 +31,7 @@ namespace ClassLibrary
 
                 MatchId = 0;
 
-                OnGameStateChanged(new GameStateChangedEventArgs(Winner));
+                OnGameStateChanged(new GameStateChangedEventArgs(Winner, Draw));
             }
         }
 
