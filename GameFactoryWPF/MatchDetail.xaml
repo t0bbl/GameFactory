@@ -67,7 +67,15 @@
                     </GridView>
                 </ListView.View>
             </ListView>
-
+            <Button
+                x:Name="CloseButton"
+                Grid.Row="1"
+                Margin="8,23"
+                HorizontalAlignment="Right"
+                VerticalAlignment="Bottom"
+                Style="{StaticResource MaterialDesignFloatingActionMiniSecondaryButton}">
+                <materialDesign:PackIcon Kind="Close" />
+            </Button>
         </Grid>
 
     </materialDesign:Card>

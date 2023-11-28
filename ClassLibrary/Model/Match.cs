@@ -226,14 +226,7 @@ namespace ClassLibrary
         /// <param name="p_ChosenValue">The parsed integer value from the user input.</param>
         /// <param name="p_MaxValue">The maximum valid value for the user input.</param>
         /// <returns>True if a valid integer input is received, false otherwise.</returns>
-        protected bool TryGetValidInput(out int p_ChosenValue, int p_MaxValue)
-        {
-            if (int.TryParse(Console.ReadLine(), out p_ChosenValue) && p_ChosenValue >= 0 && p_ChosenValue <= p_MaxValue)
-            {
-                return true;
-            }
-            return false;
-        }
+ 
         #endregion
         #region Stats
         /// <summary>

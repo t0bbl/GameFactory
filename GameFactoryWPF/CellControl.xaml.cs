@@ -20,6 +20,8 @@ namespace GameFactoryWPF
 
         public int Row { get; set; }
         public int Column { get; set; }
+        public bool IsClicked { get; set; } = false;
+
         public string CellContent
         {
             get { return (string)GetValue(CellContentProperty); }
@@ -40,6 +42,7 @@ namespace GameFactoryWPF
         private void CellButton_Click(object sender, RoutedEventArgs e)
         {
             CellClicked?.Invoke(this, new CellClickedEventArgs(Row, Column));
+            IsClicked = true;
         }
 
     }

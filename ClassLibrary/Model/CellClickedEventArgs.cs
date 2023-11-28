@@ -5,10 +5,10 @@
         public int Row { get; }
         public int Column { get; }
 
-        public CellClickedEventArgs(int row, int column)
+        public CellClickedEventArgs(int p_Row, int p_Column)
         {
-            Row = row;
-            Column = column;
+            Row = p_Row;
+            Column = p_Column;
         }
     }
 }

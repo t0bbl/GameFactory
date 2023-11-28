@@ -14,6 +14,7 @@ namespace GameFactoryWPF
         public MatchDetail(List<Move> p_Moves)
         {
             InitializeComponent();
+            CloseButton.Click += CloseButton_Click;
             MoveHistoryList.Items.Clear();
             MoveHistoryList.ItemsSource = p_Moves;
         }

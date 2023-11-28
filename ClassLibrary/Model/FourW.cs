@@ -1,3 +1,5 @@
+using CoreGameFactory.Model;
+
 namespace ClassLibrary
 {
     public class FourW : Match
@@ -10,15 +12,14 @@ namespace ClassLibrary
 
         public override void CellClicked(object sender, CellClickedEventArgs e)
         {
-            int p_chosenColumn;
+            int ChosenColumn = e.Column;
 
-            do
-            {
-                SavePlayerToMatch(p_Player[CurrentPlayerIndex].Ident, MatchId);
-            } while (!TryGetValidInput(out p_chosenColumn, Columns));
 
-            MakeMove(p_chosenColumn, CurrentPlayerIndex, p_Player);
-            string p_cell = p_chosenColumn.ToString();
+            SavePlayerToMatch(p_Player[CurrentPlayerIndex].Ident, MatchId);
+            CurrentPlayer = p_Player[CurrentPlayerIndex].Name;
+            OnPlayerChanged(new PlayerChangedEventArgs(CurrentPlayer));
+            MakeMove(ChosenColumn, CurrentPlayerIndex, p_Player);
+            string p_cell = ChosenColumn.ToString();
             SaveMoveHistory(p_Player[CurrentPlayerIndex].Ident, p_cell, MatchId, TwistStat);
 
             Winner = CheckWinner(p_Player);
@@ -61,9 +62,9 @@ namespace ClassLibrary
         /// <returns>True if the move is successfully made, false if the column is full.</returns>
         public bool MakeMove(int p_ChosenColumn, int p_CurrentPlayerIndex, List<Player> p_Players)
         {
-            int p_row = FindLowestAvailableRow(p_ChosenColumn - 1);
+                int Row = FindLowestAvailableRow(p_ChosenColumn);
 
-                SetCell(p_row, p_ChosenColumn - 1, p_Players[p_CurrentPlayerIndex].Icon);
+                SetCell(Row, p_ChosenColumn, p_Players[p_CurrentPlayerIndex].Icon);
                 return true;
 
         }

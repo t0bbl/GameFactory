@@ -3,6 +3,7 @@ using CoreGameFactory.Model;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
 using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
@@ -62,6 +63,8 @@ namespace GameFactoryWPF
             p_Match.PlayerChanged += Match_PlayerChanged;
             p_Match.GameStateChanged += Match_GameStateChanged;
 
+            
+
             GetAllCellControls();
 
             GameStarted?.Invoke(this, EventArgs.Empty);
@@ -89,19 +92,45 @@ namespace GameFactoryWPF
 
         private void CellButton_CellClicked(object? sender, CellClickedEventArgs e)
         {
+            
+
             CurrentMatch.CellClicked(sender, e);
 
             if (sender is CellControl cellControl)
             {
-                cellControl.CellContent = PlayerList[CurrentMatch.CurrentPlayerIndex].Icon;
-                cellControl.CellColor = PlayerList[CurrentMatch.CurrentPlayerIndex].Color;
-                cellControl.CellClicked -= CellButton_CellClicked;
+                if (CurrentMatch.GameTypeIdent == 2)
+                {
+                    CellControl lowestCellControl = FindLowestUnclickedCellControl(cellControl.Column);
+                    if (lowestCellControl != null)
+                    {
+                        lowestCellControl.CellContent = PlayerList[CurrentMatch.CurrentPlayerIndex].Icon;
+                        lowestCellControl.CellColor = PlayerList[CurrentMatch.CurrentPlayerIndex].Color;
+                        lowestCellControl.CellClicked -= CellButton_CellClicked;
+                        lowestCellControl.IsClicked = true;
+                    }
+                }
+                else
+                {
+                    cellControl.CellContent = PlayerList[CurrentMatch.CurrentPlayerIndex].Icon;
+                    cellControl.CellColor = PlayerList[CurrentMatch.CurrentPlayerIndex].Color;
+                    cellControl.CellClicked -= CellButton_CellClicked;
+                }
             }
             CurrentMatch.CurrentPlayerIndex = (CurrentMatch.CurrentPlayerIndex + 1) % CurrentMatch.p_Player.Count;
 
             UpdateCurrentPlayerDisplay();
         }
 
+        private CellControl FindLowestUnclickedCellControl(int column)
+        {
+            for (int row = CurrentMatch.Rows - 1; row >= 0; row--)
+            {
+                var cell = CellControls.FirstOrDefault(c => c.Column == column && c.Row == row && !c.IsClicked);
+                if (cell != null)
+                    return cell;
+            }
+            return null; 
+        }
 
         private void Match_GameStateChanged(object sender, GameStateChangedEventArgs e)
         {
