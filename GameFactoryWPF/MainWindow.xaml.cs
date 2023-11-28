@@ -12,11 +12,11 @@ namespace GameFactoryWPF
     {
 
         Login LoginScreen = new Login();
-        Leaderboard LeaderBoardScreen = new Leaderboard();
+        Leaderboard LeaderBoardScreen;
         Stats StatsScreen;
         History HistoryScreen;
         GameWindow GameScreen;
-        List<Player> PlayerList = new List<Player>();
+        List<Player> PlayerList;
         Match Match;
         Player HomePlayer;
 
@@ -34,7 +34,7 @@ namespace GameFactoryWPF
 
         public void LoadPlayerHome(Player p_Player)
         {
-            PlayerList.Clear();
+            PlayerList = new List<Player>();
 
             StatsPanel.Children.Clear();
             StatsScreen = new Stats(p_Player);
@@ -72,15 +72,28 @@ namespace GameFactoryWPF
         #region UI Event Handlers
         private void ToMainScreen(object sender, RoutedEventArgs e)
         {
-            StatsScreen.Visibility = Visibility.Collapsed;
-            GameScreen.Visibility = Visibility.Collapsed;
+            if (GameScreen != null)
+            {
+                GameScreen.Visibility = Visibility.Collapsed;
+            }
+            if (StatsScreen != null)
+            {
+                StatsScreen.Visibility = Visibility.Collapsed;
+            }
 
             MainContent.Content = LoginScreen;
         }
         private void ToLeaderboard(object sender, RoutedEventArgs e)
         {
-            StatsScreen.Visibility = Visibility.Collapsed;
-            GameScreen.Visibility = Visibility.Collapsed;
+            if (LeaderBoardScreen == null)
+            {
+                LeaderBoardScreen = new Leaderboard();
+            }
+            if (GameScreen != null)
+            {
+                GameScreen.Visibility = Visibility.Collapsed;
+            }
+            
             MainContent.Content = LeaderBoardScreen;
         }
         private void ToStats(object sender, RoutedEventArgs e)
