@@ -1,6 +1,4 @@
 ﻿using ClassLibrary;
-using System;
-using System.Collections.Generic;
 using System.Windows;
 
 namespace GameFactoryWPF
@@ -12,12 +10,9 @@ namespace GameFactoryWPF
     {
 
         Login LoginScreen = new Login();
-        Leaderboard LeaderBoardScreen;
         Stats StatsScreen;
         History HistoryScreen;
         GameWindow GameScreen;
-        List<Player> PlayerList;
-        Match Match;
         Player HomePlayer;
 
         public MainWindow()
@@ -34,7 +29,6 @@ namespace GameFactoryWPF
 
         public void LoadPlayerHome(Player p_Player)
         {
-            PlayerList = new List<Player>();
 
             StatsPanel.Children.Clear();
             StatsScreen = new Stats(p_Player);
@@ -46,28 +40,15 @@ namespace GameFactoryWPF
 
             HomePlayer = p_Player;
 
-            GameScreen = new GameWindow(this, PlayerList, Match, HomePlayer, StatsScreen);
-            GameScreen.GameStarted += GameLogic_GameStarted;
-
-            GamesPanel.Children.Clear();
-            GamesPanel.Children.Add(GameScreen);
-
-            PlayerList.Add(p_Player);
-
-            var GuestVariables = DataProvider.GetPlayerVariables(1);
-            PlayerList.Add(GuestVariables);
-
             StatsScreen.Visibility = Visibility.Visible;
-            GameScreen.Visibility = Visibility.Visible;
+
+            InitializeGameScreen(HomePlayer);
 
             MainContent.Content = HistoryScreen;
         }
 
 
-        private void GameLogic_GameStarted(object sender, EventArgs e)
-        {
-            GameScreen.StartGamePanel.Visibility = Visibility.Collapsed;
-        }
+
 
         #region UI Event Handlers
         private void ToMainScreen(object sender, RoutedEventArgs e)
@@ -85,15 +66,13 @@ namespace GameFactoryWPF
         }
         private void ToLeaderboard(object sender, RoutedEventArgs e)
         {
-            if (LeaderBoardScreen == null)
-            {
-                LeaderBoardScreen = new Leaderboard();
-            }
+            Leaderboard LeaderBoardScreen = new Leaderboard();
+
             if (GameScreen != null)
             {
                 GameScreen.Visibility = Visibility.Collapsed;
             }
-            
+
             MainContent.Content = LeaderBoardScreen;
         }
         private void ToStats(object sender, RoutedEventArgs e)
@@ -108,7 +87,6 @@ namespace GameFactoryWPF
                 ? Visibility.Collapsed
                 : Visibility.Visible;
         }
-
         private void ToHistory(object sender, RoutedEventArgs e)
         {
             if (HistoryScreen == null)
@@ -122,9 +100,16 @@ namespace GameFactoryWPF
             GameScreen.Visibility = Visibility.Visible;
             StatsScreen.Visibility = Visibility.Visible;
         }
-
         #endregion
-            GameScreen.StartGamePanel.Visibility = Visibility.Collapsed;
+
+        private void InitializeGameScreen(Player p_Player)
+        {
+            GameScreen = new GameWindow(this, p_Player, StatsScreen);
+            GameScreen.StartGamePanel.Visibility = Visibility.Visible;
+            GamesPanel.Children.Clear();
+            GamesPanel.Children.Add(GameScreen);
+            GameScreen.Visibility = Visibility.Visible;
+        }
     }
 
 

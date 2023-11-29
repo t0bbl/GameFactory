@@ -14,6 +14,7 @@ namespace GameFactoryWPF
     /// </summary>
     public partial class GameWindow : UserControl, ICellControlContainer
     {
+        #region Variables
         private MainWindow MainWindow;
         private Match CurrentMatch;
         private Stats StatScreen;
@@ -21,11 +22,9 @@ namespace GameFactoryWPF
 
         private TextBlock CurrentPlayerDisplay;
 
-
         public List<Player> PlayerList;
 
         private List<CellControl> CellControls = new List<CellControl>();
-
 
         public event EventHandler GameStarted;
         public event EventHandler<PlayerChangedEventArgs> PlayerChanged;
@@ -43,88 +42,81 @@ namespace GameFactoryWPF
                 CellClicked -= value;
             }
         }
+        #endregion
 
-
-
-        public GameWindow(MainWindow p_MainWindow, List<Player> p_PlayerList, Match p_Match, Player p_HomePlayer, Stats p_StatScreen)
+        public GameWindow(MainWindow p_MainWindow, Player p_HomePlayer, Stats p_StatScreen)
         {
             InitializeComponent();
             MainWindow = p_MainWindow;
-            PlayerList = p_PlayerList;
-            CurrentMatch = p_Match;
             HomePlayer = p_HomePlayer;
             StatScreen = p_StatScreen;
+            PlayerList = new List<Player>
+            {
+                HomePlayer,
+                DataProvider.GetPlayerVariables(1)
+            };
         }
-
 
         private void StartMatch(Match p_Match)
         {
-            p_Match.PlayerChanged += Match_PlayerChanged;
-            p_Match.GameStateChanged += Match_GameStateChanged;
+            GameStarted?.Invoke(this, EventArgs.Empty);
 
-
+            Match CurrentMatch = new Match();
+            EventhandlerRegister();
 
             GetAllCellControls();
 
-            GameStarted?.Invoke(this, EventArgs.Empty);
             CreateGameWindow(p_Match.Rows, p_Match.Columns);
-            UpdateCurrentPlayerDisplay();
 
-            GameWindow MatchScreen = new GameWindow(MainWindow, PlayerList, p_Match, HomePlayer, StatScreen);
-            GameStarted?.Invoke(this, EventArgs.Empty);
+            GameWindow MatchScreen = new GameWindow(MainWindow, HomePlayer, StatScreen);
 
             p_Match.ResetBoard();
             p_Match.Start();
             p_Match.GameMechanic(PlayerList);
 
             UpdateCurrentPlayerDisplay();
-
         }
 
-
-
-
-        public IEnumerable<CellControl> GetAllCellControls()
-        {
-            return CellControls;
-        }
-
+        #region HandleCellClick
         private void CellButton_CellClicked(object? sender, CellClickedEventArgs e)
         {
-
-
             CurrentMatch.CellClicked(sender, e);
 
             if (sender is CellControl cellControl)
             {
                 if (CurrentMatch.GameTypeIdent == 2)
                 {
-                    CellControl lowestCellControl = FindLowestUnclickedCellControl(cellControl.Column);
-                    if (lowestCellControl != null)
-                    {
-                        lowestCellControl.CellContent = PlayerList[CurrentMatch.CurrentPlayerIndex].Icon;
-                        lowestCellControl.CellColor = PlayerList[CurrentMatch.CurrentPlayerIndex].Color;
-                        lowestCellControl.IsClicked = true;
-                        if (lowestCellControl.Row == 1)
-                        {
-                            cellControl.IsClicked = true;
-                            cellControl.CellClicked -= CellButton_CellClicked;
-                        }
-                    }
+                    HandleFourWTypeGame(cellControl, PlayerList[CurrentMatch.CurrentPlayerIndex]);
                 }
                 else
                 {
-                    cellControl.CellContent = PlayerList[CurrentMatch.CurrentPlayerIndex].Icon;
-                    cellControl.CellColor = PlayerList[CurrentMatch.CurrentPlayerIndex].Color;
+                    UpdateCellControl(cellControl, PlayerList[CurrentMatch.CurrentPlayerIndex]);
                     cellControl.CellClicked -= CellButton_CellClicked;
-                    cellControl.IsClicked = true;
                 }
             }
             CurrentMatch.CurrentPlayerIndex = (CurrentMatch.CurrentPlayerIndex + 1) % CurrentMatch.PlayerList.Count;
 
             UpdateCurrentPlayerDisplay();
         }
-
+        private void UpdateCellControl(CellControl p_CellControl, Player p_Player)
+        {
+            p_CellControl.CellContent = p_Player.Icon;
+            p_CellControl.CellColor = p_Player.Color;
+            p_CellControl.IsClicked = true;
+        }
+        private void HandleFourWTypeGame(CellControl p_CellControl, Player p_Player)
+        {
+            CellControl lowestCellControl = FindLowestUnclickedCellControl(p_CellControl.Column);
+            if (lowestCellControl != null)
+            {
+                UpdateCellControl(lowestCellControl, p_Player);
+                if (lowestCellControl.Row == 1)
+                {
+                    p_CellControl.IsClicked = true;
+                    p_CellControl.CellClicked -= CellButton_CellClicked;
+                }
+            }
+        }
         private CellControl FindLowestUnclickedCellControl(int p_Column)
         {
             for (int row = CurrentMatch.Rows; row >= 0; row--)
@@ -135,7 +127,8 @@ namespace GameFactoryWPF
             }
             return null;
         }
-
+        #endregion
+        #region StateChanges
         private void Match_GameStateChanged(object sender, GameStateChangedEventArgs e)
         {
             HomePlayer = DataProvider.GetStatsAndVariables(HomePlayer.Ident);
@@ -152,6 +145,8 @@ namespace GameFactoryWPF
                     Player Winner = DataProvider.GetPlayerVariables(e.Winner.Value);
                     Login.TextBox("The winner is: " + Winner.Name);
                     MainWindow.LoadPlayerHome(HomePlayer);
+
+                    EventhandlerUnregister();
                 }
             }
         }
@@ -159,11 +154,11 @@ namespace GameFactoryWPF
         {
             UpdateCurrentPlayerDisplay();
         }
-
         private void UpdateCurrentPlayerDisplay()
         {
             CurrentPlayerDisplay.Text = "Current Player: " + PlayerList[CurrentMatch.CurrentPlayerIndex].Name;
         }
+        #endregion
         #region GameTypeStart
         private void OnClickTTT(object sender, RoutedEventArgs e)
         {
@@ -177,11 +172,11 @@ namespace GameFactoryWPF
             StartMatch(CurrentMatch);
         }
 
-        private void OnClickTwist(object sender, RoutedEventArgs e)
-        {
-            CurrentMatch = new CustomTTT(true) { PlayerList = PlayerList };
-            StartMatch(CurrentMatch);
-        }
+        //private void OnClickTwist(object sender, RoutedEventArgs e)
+        //{
+        //    CurrentMatch = new CustomTTT(true) { PlayerList = PlayerList };
+        //    StartMatch(CurrentMatch);
+        //}
         #endregion
         #region GameBoardSetup
         private void CreateGameWindow(int p_Rows, int p_Columns)
@@ -306,6 +301,24 @@ namespace GameFactoryWPF
 
             p_MainContent.Children.Add(CurrentPlayerDisplay);
         }
+
+        public IEnumerable<CellControl> GetAllCellControls()
+        {
+            return CellControls;
+        }
+
+
+        private void EventhandlerRegister()
+        {
+            CurrentMatch.PlayerChanged += Match_PlayerChanged;
+            CurrentMatch.GameStateChanged += Match_GameStateChanged;
+        }
+        private void EventhandlerUnregister()
+        {
+            CurrentMatch.PlayerChanged -= Match_PlayerChanged;
+            CurrentMatch.GameStateChanged -= Match_GameStateChanged;
+        }
+
         #endregion
 
     }

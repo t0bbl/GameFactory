@@ -34,16 +34,7 @@ namespace GameFactoryWPF
         {
             InitializeComponent();
             this.MouseDown += MainWindow_MouseDown;
-
-            LoginSection.Visibility = Visibility.Hidden;
-            SignupSection.Visibility = Visibility.Hidden;
-            LoginSection.RenderTransform = new TransformGroup()
-            {
-                Children = new TransformCollection()
-                {
-                new ScaleTransform() { ScaleX = -1 }
-                }
-            };
+            ApplyInitialTransformations();
         }
 
         #region UI Event Handlers
@@ -55,7 +46,7 @@ namespace GameFactoryWPF
             Username = UsernameTextBox.Text;
             Password = PasswordTextBox.Password;
 
-            if (Username == null || Password == null || !Player.ValidateLoginName(Username))
+            if (string.IsNullOrEmpty(Username) || string.IsNullOrEmpty(Password) || !Player.ValidateLoginName(Username))
             {
                 TextBox("Username or Password is not valid, please try again!");
                 return;
@@ -82,25 +73,12 @@ namespace GameFactoryWPF
             };
         }
         /// <summary>
-        /// Triggers the sign-up animation and process when the sign-up button is clicked.
-        /// </summary>
-        private void SignUp_Click(object sender, RoutedEventArgs e)
-        {
-            Storyboard LoginFlipOut = this.Resources["LoginFlipOut"] as Storyboard;
-            if (LoginFlipOut != null)
-            {
-                LoginFlipOut.Completed += LoginFlipOut_Completed;
-                LoginFlipOut.Begin();
-            }
-        }
-        /// <summary>
         /// Allows a user to continue as a guest.
         /// </summary>
         private void Guest_Click(object sender, RoutedEventArgs e)
         {
             TextBox("Logged in as Guest!");
         }
-
         /// <summary>
         /// Handles the sign-up functionality, including user creation and validation.
         /// </summary>
@@ -138,21 +116,28 @@ namespace GameFactoryWPF
         #endregion
 
         #region Event Handlers Animations
-        /// <summary>
-        /// Handles mouse down events on the window. Triggers a storyboard animation when clicked for the first time.
-        /// </summary>
-        private void MainWindow_MouseDown(object Sender, MouseButtonEventArgs e)
+        private void ApplyInitialTransformations()
         {
-            if (Welcomed == 0)
+            LoginSection.Visibility = Visibility.Hidden;
+            SignupSection.Visibility = Visibility.Hidden;
+            LoginSection.RenderTransform = new TransformGroup
             {
-                Storyboard welcomeFlipOut = this.Resources["WelcomeFlipOut"] as Storyboard;
-                if (welcomeFlipOut != null)
-                {
-                    welcomeFlipOut.Completed += WelcomeFlipOut_Completed;
-                    welcomeFlipOut.Begin();
-                }
-
-                Welcomed = 1;
+                Children = new TransformCollection
+        {
+            new ScaleTransform { ScaleX = -1 }
+        }
+            };
+        }
+        /// <summary>
+        /// Triggers the sign-up animation and process when the sign-up button is clicked.
+        /// </summary>
+        private void SignUp_Click(object sender, RoutedEventArgs e)
+        {
+            Storyboard LoginFlipOut = this.Resources["LoginFlipOut"] as Storyboard;
+            if (LoginFlipOut != null)
+            {
+                LoginFlipOut.Completed += LoginFlipOut_Completed;
+                LoginFlipOut.Begin();
             }
         }
         /// <summary>
@@ -206,6 +191,23 @@ namespace GameFactoryWPF
         #endregion
 
         #region Helper Functions
+        /// <summary>
+        /// Handles mouse down events on the window. Triggers a storyboard animation when clicked for the first time.
+        /// </summary>
+        private void MainWindow_MouseDown(object Sender, MouseButtonEventArgs e)
+        {
+            if (Welcomed == 0)
+            {
+                Storyboard welcomeFlipOut = this.Resources["WelcomeFlipOut"] as Storyboard;
+                if (welcomeFlipOut != null)
+                {
+                    welcomeFlipOut.Completed += WelcomeFlipOut_Completed;
+                    welcomeFlipOut.Begin();
+                }
+
+                Welcomed = 1;
+            }
+        }
         /// <summary>
         /// Initiates the login process when the Enter key is pressed.
         /// </summary>
