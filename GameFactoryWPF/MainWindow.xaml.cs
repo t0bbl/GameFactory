@@ -124,6 +124,7 @@ namespace GameFactoryWPF
         }
 
         #endregion
+            GameScreen.StartGamePanel.Visibility = Visibility.Collapsed;
     }
 
 
