@@ -15,13 +15,10 @@ namespace GameFactoryWPF
     {
         MatchDetail MoveHistoryScreen;
 
-
-
         public History(Player p_Player)
         {
             InitializeComponent();
             this.DataContext = p_Player;
-
         }
 
         public void LoadHistory(Player p_Player)
@@ -95,17 +92,6 @@ namespace GameFactoryWPF
             }));
 
             return moveHistory;
-        }
-
-
-
-        private static void OnPlayerPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            var historyControl = d as History;
-            if (historyControl != null && e.NewValue is Player newPlayer)
-            {
-                historyControl.LoadHistory(newPlayer);
-            }
         }
     }
 }

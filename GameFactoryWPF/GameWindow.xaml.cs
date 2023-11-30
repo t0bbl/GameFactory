@@ -17,7 +17,6 @@ namespace GameFactoryWPF
         #region Variables
         private MainWindow MainWindow;
         private Match CurrentMatch;
-        private Stats StatScreen;
         private Player HomePlayer;
 
         private TextBlock CurrentPlayerDisplay;
@@ -44,12 +43,11 @@ namespace GameFactoryWPF
         }
         #endregion
 
-        public GameWindow(MainWindow p_MainWindow, Player p_HomePlayer, Stats p_StatScreen)
+        public GameWindow(MainWindow p_MainWindow, Player p_HomePlayer)
         {
             InitializeComponent();
             MainWindow = p_MainWindow;
             HomePlayer = p_HomePlayer;
-            StatScreen = p_StatScreen;
             PlayerList = new List<Player>
             {
                 HomePlayer,
@@ -68,7 +66,7 @@ namespace GameFactoryWPF
 
             CreateGameWindow(p_Match.Rows, p_Match.Columns);
 
-            GameWindow MatchScreen = new GameWindow(MainWindow, HomePlayer, StatScreen);
+            GameWindow MatchScreen = new GameWindow(MainWindow, HomePlayer);
 
             p_Match.ResetBoard();
             p_Match.Start();
@@ -193,8 +191,6 @@ namespace GameFactoryWPF
         {
             var Playboard = new Grid();
 
-
-
             if (CurrentMatch.GameType == "FourW")
             {
 
@@ -213,35 +209,14 @@ namespace GameFactoryWPF
                 {
                     for (int col = 0; col < p_Columns; col++)
                     {
-                        var CellButton = new CellControl();
-
-                        var Icon = new PackIcon();
-                        Icon.Kind = PackIconKind.ArrowDownCircle;
-
-                        CellButton.Row = row;
-                        CellButton.Column = col;
-                        Grid.SetRow(CellButton, row);
-                        Grid.SetColumn(CellButton, col);
-                        CellButton.CellClicked += CellButton_CellClicked;
-                        CellButton.CellColor = "Gray";
-                        CellButton.CellContent = Icon;
-                        Playboard.Children.Add(CellButton);
-                        CellControls.Add(CellButton);
-
+                        CreateCellButton(true, true, row, col, Playboard);
                     }
                 }
                 for (int row = 1; row < p_Rows + 1; row++)
                 {
                     for (int col = 0; col < p_Columns; col++)
                     {
-                        var cellButton = new CellControl();
-                        cellButton.Row = row;
-                        cellButton.Column = col;
-                        Grid.SetRow(cellButton, row);
-                        Grid.SetColumn(cellButton, col);
-                        Playboard.Children.Add(cellButton);
-                        CellControls.Add(cellButton);
-
+                        CreateCellButton(false, false, row, col, Playboard);
                     }
                 }
             }
@@ -263,15 +238,7 @@ namespace GameFactoryWPF
                 {
                     for (int col = 0; col < p_Columns; col++)
                     {
-                        var cellButton = new CellControl();
-                        cellButton.Row = row;
-                        cellButton.Column = col;
-                        Grid.SetRow(cellButton, row);
-                        Grid.SetColumn(cellButton, col);
-                        cellButton.CellClicked += CellButton_CellClicked;
-                        Playboard.Children.Add(cellButton);
-                        CellControls.Add(cellButton);
-
+                       CreateCellButton(false, true, row, col, Playboard);
                     }
                 }
             }
@@ -300,6 +267,32 @@ namespace GameFactoryWPF
             this.CurrentPlayerDisplay = CurrentPlayerDisplay;
 
             p_MainContent.Children.Add(CurrentPlayerDisplay);
+        }
+
+        private void CreateCellButton(bool p_SetterRow, bool p_Clickable, int p_Row, int p_Col, Grid p_Board)
+        {
+            var CellButton = new CellControl();
+
+            if (p_SetterRow)
+            {
+                var Icon = new PackIcon();
+                Icon.Kind = PackIconKind.ArrowDownCircle;
+
+                CellButton.CellContent = Icon;
+                CellButton.CellColor = "Gray";
+            }
+
+            if (p_Clickable)
+            {
+                CellButton.CellClicked += CellButton_CellClicked;
+            }
+
+            CellButton.Row = p_Row;
+            CellButton.Column = p_Col;
+            Grid.SetRow(CellButton, p_Row);
+            Grid.SetColumn(CellButton, p_Col);
+            p_Board.Children.Add(CellButton);
+            CellControls.Add(CellButton);
         }
 
         public IEnumerable<CellControl> GetAllCellControls()

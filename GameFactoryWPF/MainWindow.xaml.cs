@@ -51,7 +51,7 @@ namespace GameFactoryWPF
 
 
         #region UI Event Handlers
-        private void ToMainScreen(object sender, RoutedEventArgs e)
+        private void ToLogin(object sender, RoutedEventArgs e)
         {
             if (GameScreen != null)
             {
@@ -87,7 +87,7 @@ namespace GameFactoryWPF
                 ? Visibility.Collapsed
                 : Visibility.Visible;
         }
-        private void ToHistory(object sender, RoutedEventArgs e)
+        private void ToMain(object sender, RoutedEventArgs e)
         {
             if (HistoryScreen == null)
             {
@@ -104,7 +104,7 @@ namespace GameFactoryWPF
 
         private void InitializeGameScreen(Player p_Player)
         {
-            GameScreen = new GameWindow(this, p_Player, StatsScreen);
+            GameScreen = new GameWindow(this, p_Player);
             GameScreen.StartGamePanel.Visibility = Visibility.Visible;
             GamesPanel.Children.Clear();
             GamesPanel.Children.Add(GameScreen);
