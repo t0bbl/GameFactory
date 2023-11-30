@@ -8,7 +8,7 @@ namespace ClassLibrary
             GameType = "FourW";
         }
 
-        public override void CellClicked(object sender, CellClickedEventArgs e)
+        public override void GameCellClicked(object sender, CellClickedEventArgs e)
         {
             int ChosenColumn = e.Column;
             MakeMove(ChosenColumn, CurrentPlayerIndex, PlayerList);

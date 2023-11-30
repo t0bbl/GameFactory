@@ -8,12 +8,12 @@ namespace GameFactoryWPF
     /// <summary>
     /// Interaction logic for CellControl.xaml
     /// </summary>
-    public partial class CellControl : UserControl
+    public partial class GameCell : UserControl
     {
         public static readonly DependencyProperty CellContentProperty =
-            DependencyProperty.Register("CellContent", typeof(string), typeof(CellControl));
+            DependencyProperty.Register("CellContent", typeof(string), typeof(GameCell));
 
-        public event EventHandler<CellClickedEventArgs> CellClicked;
+        public event EventHandler<CellClickedEventArgs> GameCellClicked;
 
 
         public int Row { get; set; }
@@ -31,15 +31,15 @@ namespace GameFactoryWPF
             set { CellButton.Background = (System.Windows.Media.Brush)new System.Windows.Media.BrushConverter().ConvertFromString(value); }
         }
 
-        public CellControl()
+        public GameCell()
         {
             InitializeComponent();
-            CellButton.Click += CellButton_Click;
+            CellButton.Click += GameCell_Click;
         }
 
-        private void CellButton_Click(object sender, RoutedEventArgs e)
+        private void GameCell_Click(object sender, RoutedEventArgs e)
         {
-            CellClicked?.Invoke(this, new CellClickedEventArgs(Row, Column));
+            GameCellClicked?.Invoke(this, new CellClickedEventArgs(Row, Column));
             IsClicked = true;
         }
 

@@ -12,7 +12,7 @@ namespace GameFactoryWPF
     /// <summary>
     /// Interaction logic for GameWindow.xaml
     /// </summary>
-    public partial class GameWindow : UserControl, ICellControlContainer
+    public partial class GameWindow : UserControl, IGameCellControlContainer
     {
         #region Variables
         private MainWindow MainWindow;
@@ -23,13 +23,13 @@ namespace GameFactoryWPF
 
         public List<Player> PlayerList;
 
-        private List<CellControl> CellControls = new List<CellControl>();
+        private List<GameCell> GameCells = new List<GameCell>();
 
         public event EventHandler GameStarted;
         public event EventHandler<PlayerChangedEventArgs> PlayerChanged;
         public event EventHandler<CellClickedEventArgs> CellClicked;
 
-        event EventHandler<CellClickedEventArgs> ICellControlContainer.CellClicked
+        event EventHandler<CellClickedEventArgs> IGameCellControlContainer.GameCellClicked
         {
             add
             {
@@ -62,7 +62,7 @@ namespace GameFactoryWPF
             Match CurrentMatch = new Match();
             EventhandlerRegister();
 
-            GetAllCellControls();
+            GetAllGameCellControls();
 
             CreateGameWindow(p_Match.Rows, p_Match.Columns);
 
@@ -76,50 +76,50 @@ namespace GameFactoryWPF
         }
 
         #region HandleCellClick
-        private void CellButton_CellClicked(object? sender, CellClickedEventArgs e)
+        private void GameCell_CellClicked(object? sender, CellClickedEventArgs e)
         {
-            CurrentMatch.CellClicked(sender, e);
+            CurrentMatch.GameCellClicked(sender, e);
 
-            if (sender is CellControl cellControl)
+            if (sender is GameCell gameCellControl)
             {
                 if (CurrentMatch.GameTypeIdent == 2)
                 {
-                    HandleFourWTypeGame(cellControl, PlayerList[CurrentMatch.CurrentPlayerIndex]);
+                    HandleFourWTypeGame(gameCellControl, PlayerList[CurrentMatch.CurrentPlayerIndex]);
                 }
                 else
                 {
-                    UpdateCellControl(cellControl, PlayerList[CurrentMatch.CurrentPlayerIndex]);
-                    cellControl.CellClicked -= CellButton_CellClicked;
+                    UpdateCellControl(gameCellControl, PlayerList[CurrentMatch.CurrentPlayerIndex]);
+                    gameCellControl.GameCellClicked -= GameCell_CellClicked;
                 }
             }
             CurrentMatch.CurrentPlayerIndex = (CurrentMatch.CurrentPlayerIndex + 1) % CurrentMatch.PlayerList.Count;
 
             UpdateCurrentPlayerDisplay();
         }
-        private void UpdateCellControl(CellControl p_CellControl, Player p_Player)
+        private void UpdateCellControl(GameCell p_CellControl, Player p_Player)
         {
             p_CellControl.CellContent = p_Player.Icon;
             p_CellControl.CellColor = p_Player.Color;
             p_CellControl.IsClicked = true;
         }
-        private void HandleFourWTypeGame(CellControl p_CellControl, Player p_Player)
+        private void HandleFourWTypeGame(GameCell p_CellControl, Player p_Player)
         {
-            CellControl lowestCellControl = FindLowestUnclickedCellControl(p_CellControl.Column);
+            GameCell lowestCellControl = FindLowestUnclickedCellControl(p_CellControl.Column);
             if (lowestCellControl != null)
             {
                 UpdateCellControl(lowestCellControl, p_Player);
                 if (lowestCellControl.Row == 1)
                 {
                     p_CellControl.IsClicked = true;
-                    p_CellControl.CellClicked -= CellButton_CellClicked;
+                    p_CellControl.GameCellClicked -= GameCell_CellClicked;
                 }
             }
         }
-        private CellControl FindLowestUnclickedCellControl(int p_Column)
+        private GameCell FindLowestUnclickedCellControl(int p_Column)
         {
             for (int row = CurrentMatch.Rows; row >= 0; row--)
             {
-                var cell = CellControls.FirstOrDefault(c => c.Column == p_Column && c.Row == row && !c.IsClicked);
+                var cell = GameCells.FirstOrDefault(c => c.Column == p_Column && c.Row == row && !c.IsClicked);
                 if (cell != null)
                     return cell;
             }
@@ -209,14 +209,14 @@ namespace GameFactoryWPF
                 {
                     for (int col = 0; col < p_Columns; col++)
                     {
-                        CreateCellButton(true, true, row, col, Playboard);
+                        CreateGameCell(true, true, row, col, Playboard);
                     }
                 }
                 for (int row = 1; row < p_Rows + 1; row++)
                 {
                     for (int col = 0; col < p_Columns; col++)
                     {
-                        CreateCellButton(false, false, row, col, Playboard);
+                        CreateGameCell(false, false, row, col, Playboard);
                     }
                 }
             }
@@ -238,7 +238,7 @@ namespace GameFactoryWPF
                 {
                     for (int col = 0; col < p_Columns; col++)
                     {
-                       CreateCellButton(false, true, row, col, Playboard);
+                        CreateGameCell(false, true, row, col, Playboard);
                     }
                 }
             }
@@ -269,9 +269,9 @@ namespace GameFactoryWPF
             p_MainContent.Children.Add(CurrentPlayerDisplay);
         }
 
-        private void CreateCellButton(bool p_SetterRow, bool p_Clickable, int p_Row, int p_Col, Grid p_Board)
+        private void CreateGameCell(bool p_SetterRow, bool p_Clickable, int p_Row, int p_Col, Grid p_Board)
         {
-            var CellButton = new CellControl();
+            var CellButton = new GameCell();
 
             if (p_SetterRow)
             {
@@ -284,7 +284,7 @@ namespace GameFactoryWPF
 
             if (p_Clickable)
             {
-                CellButton.CellClicked += CellButton_CellClicked;
+                CellButton.GameCellClicked += GameCell_CellClicked;
             }
 
             CellButton.Row = p_Row;
@@ -292,12 +292,12 @@ namespace GameFactoryWPF
             Grid.SetRow(CellButton, p_Row);
             Grid.SetColumn(CellButton, p_Col);
             p_Board.Children.Add(CellButton);
-            CellControls.Add(CellButton);
+            GameCells.Add(CellButton);
         }
 
-        public IEnumerable<CellControl> GetAllCellControls()
+        public IEnumerable<GameCell> GetAllGameCellControls()
         {
-            return CellControls;
+            return GameCells;
         }
 
 
