@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace GameFactoryWPF
+namespace GameFactoryWPF.Utilities
 {
     public interface IGameCellControlContainer
     {

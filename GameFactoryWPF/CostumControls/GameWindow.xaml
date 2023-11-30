@@ -39,15 +39,7 @@
                 Style="{StaticResource MaterialDesignFlatAccentBgButton}">
                 Start 4W
             </Button>
-            <!--<Button
-                Grid.Row="2"
-                Width="200px"
-                Margin="0,5"
-                HorizontalAlignment="Left"
-                Click="OnClickTwist"
-                Style="{StaticResource MaterialDesignFlatAccentBgButton}">
-                Start Twist
-            </Button>-->
+
         </Grid>
     </Grid>
 </UserControl>
