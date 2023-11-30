@@ -27,9 +27,9 @@ namespace GameFactoryWPF
 
         public event EventHandler GameStarted;
         public event EventHandler<PlayerChangedEventArgs> PlayerChanged;
-        public event EventHandler<CellClickedEventArgs> CellClicked;
+        public event EventHandler<GameCellClickedEventArgs> CellClicked;
 
-        event EventHandler<CellClickedEventArgs> IGameCellControlContainer.GameCellClicked
+        event EventHandler<GameCellClickedEventArgs> IGameCellControlContainer.GameCellClicked
         {
             add
             {
@@ -58,6 +58,7 @@ namespace GameFactoryWPF
         private void StartMatch(Match p_Match)
         {
             GameStarted?.Invoke(this, EventArgs.Empty);
+            StartGamePanel.Visibility = Visibility.Collapsed;
 
             Match CurrentMatch = new Match();
             EventhandlerRegister();
@@ -76,7 +77,7 @@ namespace GameFactoryWPF
         }
 
         #region HandleCellClick
-        private void GameCell_CellClicked(object? sender, CellClickedEventArgs e)
+        private void GameCell_CellClicked(object? sender, GameCellClickedEventArgs e)
         {
             CurrentMatch.GameCellClicked(sender, e);
 
@@ -88,7 +89,7 @@ namespace GameFactoryWPF
                 }
                 else
                 {
-                    UpdateCellControl(gameCellControl, PlayerList[CurrentMatch.CurrentPlayerIndex]);
+                    UpdateGameCellControl(gameCellControl, PlayerList[CurrentMatch.CurrentPlayerIndex]);
                     gameCellControl.GameCellClicked -= GameCell_CellClicked;
                 }
             }
@@ -96,26 +97,26 @@ namespace GameFactoryWPF
 
             UpdateCurrentPlayerDisplay();
         }
-        private void UpdateCellControl(GameCell p_CellControl, Player p_Player)
+        private void UpdateGameCellControl(GameCell p_GameCell, Player p_Player)
         {
-            p_CellControl.CellContent = p_Player.Icon;
-            p_CellControl.CellColor = p_Player.Color;
-            p_CellControl.IsClicked = true;
+            p_GameCell.CellContent = p_Player.Icon;
+            p_GameCell.CellColor = p_Player.Color;
+            p_GameCell.IsClicked = true;
         }
-        private void HandleFourWTypeGame(GameCell p_CellControl, Player p_Player)
+        private void HandleFourWTypeGame(GameCell p_GameCell, Player p_Player)
         {
-            GameCell lowestCellControl = FindLowestUnclickedCellControl(p_CellControl.Column);
+            GameCell lowestCellControl = FindLowestUnclickedGameCell(p_GameCell.Column);
             if (lowestCellControl != null)
             {
-                UpdateCellControl(lowestCellControl, p_Player);
+                UpdateGameCellControl(lowestCellControl, p_Player);
                 if (lowestCellControl.Row == 1)
                 {
-                    p_CellControl.IsClicked = true;
-                    p_CellControl.GameCellClicked -= GameCell_CellClicked;
+                    p_GameCell.IsClicked = true;
+                    p_GameCell.GameCellClicked -= GameCell_CellClicked;
                 }
             }
         }
-        private GameCell FindLowestUnclickedCellControl(int p_Column)
+        private GameCell FindLowestUnclickedGameCell(int p_Column)
         {
             for (int row = CurrentMatch.Rows; row >= 0; row--)
             {

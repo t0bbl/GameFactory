@@ -81,7 +81,7 @@ namespace ClassLibrary
         }
 
 
-        public virtual void GameCellClicked(object sender, CellClickedEventArgs e)
+        public virtual void GameCellClicked(object sender, GameCellClickedEventArgs e)
         {
             int p_row = e.Row;
             int p_col = e.Column;
