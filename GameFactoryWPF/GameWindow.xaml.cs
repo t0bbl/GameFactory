@@ -69,9 +69,8 @@ namespace GameFactoryWPF
 
             GameWindow MatchScreen = new GameWindow(MainWindow, HomePlayer);
 
-            p_Match.ResetBoard();
-            p_Match.Start();
-            p_Match.GameMechanic(PlayerList);
+            p_Match.ResetBoard();         
+            p_Match.StartGameMechanic(PlayerList);
 
             UpdateCurrentPlayerDisplay();
         }

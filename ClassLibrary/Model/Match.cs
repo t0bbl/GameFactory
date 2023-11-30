@@ -31,8 +31,8 @@ namespace ClassLibrary
         public event EventHandler<PlayerChangedEventArgs> PlayerChanged;
 
         Random p_Random = new();
-
         #endregion
+
         /// <summary>
         /// Constructs a new match with specified dimensions and winning condition.
         /// </summary>
@@ -50,51 +50,31 @@ namespace ClassLibrary
         {
 
         }
+
         /// <summary>
-        /// Initiates a game match, handles player turns, checks for a winner, updates stats, and saves match results.
+        /// Executes the core game mechanics, including saving game and match details.
         /// </summary>
-        public void Start()
+        /// <param name="p_Player">The list of players participating in the game.</param>
+        public virtual void StartGameMechanic(List<Player> p_Player)
         {
-            FirstTurn = true;
             CurrentPlayerIndex = 0;
 
             ShufflePlayers(PlayerList);
 
             ResetBoard();
-        }
-        /// <summary>
-        /// Executes the core game mechanics, including saving game and match details.
-        /// </summary>
-        /// <param name="p_Player">The list of players participating in the game.</param>
-        public virtual void GameMechanic(List<Player> p_Player)
-        {
             GameTypeIdent = SaveGame(Rows, Columns, WinningLength, GameType);
 
             MatchId = SaveMatch(Winner, Loser, Draw, GameTypeIdent, MatchId);
-
-
-            if (FirstTurn)
-            {
-                FirstTurn = false;
-            }
-
         }
 
-
-        public virtual void GameCellClicked(object sender, GameCellClickedEventArgs e)
+        public void HandleClick(int p_Row, int p_Col)
         {
-            int p_row = e.Row;
-            int p_col = e.Column;
+            SetCell(p_Row, p_Col, PlayerList[CurrentPlayerIndex].Icon);
+            string Cell = $"{p_Row * Columns + p_Col + 1}";
 
-            if (GetCell(p_row, p_col) == "0")
-            {
-                SetCell(p_row, p_col, PlayerList[CurrentPlayerIndex].Icon);
-                string Cell = $"{p_row * Columns + p_col + 1}";
-                HandleClick(Cell);
-            }
-
-            EndTurn();
+            EndTurn(Cell);
         }
+
 
         #region BoardSetup
         /// <summary>
@@ -134,7 +114,6 @@ namespace ClassLibrary
             }
         }
         #endregion
-
         #region GameMechanics
         /// <summary>
         /// Checks the game board for a winner or a draw based on the game rules.
@@ -202,30 +181,31 @@ namespace ClassLibrary
                 p_Player[i] = temp;
             }
         }
-        public void EndTurn()
-        {
-            Winner = CheckWinner(PlayerList);
-
-            if (Winner != null)
-            {
-                UpdateStats(PlayerList);
-
-                SaveMatch(Winner, Loser, Draw, GameTypeIdent, MatchId);
-
-                MatchId = 0;
-
-                OnGameStateChanged(new GameStateChangedEventArgs(Winner, Draw));
-            }
-        }
-        public void HandleClick(string p_cell)
+        public void EndTurn(string p_ChosenCell)
         {
             SavePlayerToMatch(PlayerList[CurrentPlayerIndex].Ident, MatchId);
             CurrentPlayer = PlayerList[CurrentPlayerIndex].Name;
             OnPlayerChanged(new PlayerChangedEventArgs(CurrentPlayer));
-            SaveMoveHistory(PlayerList[CurrentPlayerIndex].Ident, p_cell, MatchId, TwistStat);
+            SaveMoveHistory(PlayerList[CurrentPlayerIndex].Ident, p_ChosenCell, MatchId, TwistStat);
+
+            Winner = CheckWinner(PlayerList);
+
+            if (Winner != null)
+            {
+                EndGame(PlayerList);
+            }
+        }
+        private void EndGame(List<Player> p_PlayerList)
+        {
+            UpdateStats(p_PlayerList);
+
+            SaveMatch(Winner, Loser, Draw, GameTypeIdent, MatchId);
+
+            MatchId = 0;
+
+            OnGameStateChanged(new GameStateChangedEventArgs(Winner, Draw));
         }
         #endregion
-
         #region Stats
         /// <summary>
         /// Updates the match statistics, identifies the winner or detects a draw, and displays the result.
@@ -388,7 +368,7 @@ namespace ClassLibrary
         }
 
         #endregion
-
+        #region EventArgs
         protected virtual void OnGameStateChanged(GameStateChangedEventArgs e)
         {
             GameStateChanged?.Invoke(this, e);
@@ -398,7 +378,10 @@ namespace ClassLibrary
         {
             PlayerChanged?.Invoke(this, e);
         }
-
-
+        public virtual void GameCellClicked(object sender, GameCellClickedEventArgs e)
+        {
+            HandleClick(e.Row, e.Column);
+        }
+        #endregion
     }
 }

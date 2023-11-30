@@ -27,9 +27,9 @@
         /// <summary>
         /// Implements the primary game mechanics for the current game session. It prompts players for their move, validates the input, and updates the game board. Players take turns inputting coordinates for their move. If the twist mode is active, specific game dynamics are applied after a valid move. Player moves and game states are saved for record-keeping.
         /// </summary>
-        public override void GameMechanic(List<Player> p_Player)
+        public override void StartGameMechanic(List<Player> p_Player)
         {
-            base.GameMechanic(p_Player);
+            base.StartGameMechanic(p_Player);
 
             if (FirstTurn)
             {

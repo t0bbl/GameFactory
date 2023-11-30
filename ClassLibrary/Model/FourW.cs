@@ -8,14 +8,13 @@ namespace ClassLibrary
             GameType = "FourW";
         }
 
-        public override void GameCellClicked(object sender, GameCellClickedEventArgs e)
-        {
-            int ChosenColumn = e.Column;
-            MakeMove(ChosenColumn, CurrentPlayerIndex, PlayerList);
-            string Cell = ChosenColumn.ToString();
-            HandleClick(Cell);
 
-            EndTurn();
+
+        private void HandleGameCellClicked(int p_ChosenColumn)
+        {
+            MakeMove(p_ChosenColumn, CurrentPlayerIndex, PlayerList);
+            string Cell = p_ChosenColumn.ToString();
+            EndTurn(Cell);
         }
 
         #region GameUtilities
@@ -49,6 +48,12 @@ namespace ClassLibrary
             SetCell(Row, p_ChosenColumn, p_Players[p_CurrentPlayerIndex].Icon);
             return true;
 
+        }
+        #endregion
+        #region Events
+        public override void GameCellClicked(object sender, GameCellClickedEventArgs e)
+        {
+            HandleGameCellClicked(e.Column);
         }
         #endregion
     }
