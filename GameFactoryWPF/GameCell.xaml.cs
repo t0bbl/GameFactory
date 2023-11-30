@@ -13,7 +13,7 @@ namespace GameFactoryWPF
         public static readonly DependencyProperty CellContentProperty =
             DependencyProperty.Register("CellContent", typeof(string), typeof(GameCell));
 
-        public event EventHandler<GameCellClickedEventArgs> GameCellClicked;
+        public event EventHandler<Match.GameCellClickedEventArgs> GameCellClicked;
 
 
         public int Row { get; set; }
@@ -39,7 +39,7 @@ namespace GameFactoryWPF
 
         private void GameCell_Click(object sender, RoutedEventArgs e)
         {
-            GameCellClicked?.Invoke(this, new GameCellClickedEventArgs(Row, Column));
+            GameCellClicked?.Invoke(this, new Match.GameCellClickedEventArgs(Row, Column));
             IsClicked = true;
         }
 

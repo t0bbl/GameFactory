@@ -6,7 +6,7 @@ namespace GameFactoryWPF
 {
     public interface IGameCellControlContainer
     {
-        event EventHandler<GameCellClickedEventArgs> GameCellClicked;
+        event EventHandler<Match.GameCellClickedEventArgs> GameCellClicked;
 
         IEnumerable<GameCell> GetAllGameCellControls();
 

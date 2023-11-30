@@ -1,5 +1,4 @@
 ﻿using ClassLibrary;
-using CoreGameFactory.Model;
 using MaterialDesignThemes.Wpf;
 using System;
 using System.Collections.Generic;
@@ -26,21 +25,9 @@ namespace GameFactoryWPF
         private List<GameCell> GameCells = new List<GameCell>();
 
         public event EventHandler GameStarted;
-        public event EventHandler<PlayerChangedEventArgs> PlayerChanged;
-        public event EventHandler<GameCellClickedEventArgs> CellClicked;
-
-        event EventHandler<GameCellClickedEventArgs> IGameCellControlContainer.GameCellClicked
-        {
-            add
-            {
-                CellClicked += value;
-            }
-
-            remove
-            {
-                CellClicked -= value;
-            }
-        }
+        public event EventHandler<Player.PlayerChangedEventArgs> PlayerChanged;
+        public event EventHandler<Match.GameCellClickedEventArgs> CellClicked;
+        public event EventHandler<Match.GameCellClickedEventArgs> GameCellClicked;
         #endregion
 
         public GameWindow(MainWindow p_MainWindow, Player p_HomePlayer)
@@ -76,7 +63,7 @@ namespace GameFactoryWPF
         }
 
         #region HandleCellClick
-        private void GameCell_CellClicked(object? sender, GameCellClickedEventArgs e)
+        private void GameCell_CellClicked(object? sender, Match.GameCellClickedEventArgs e)
         {
             CurrentMatch.GameCellClicked(sender, e);
 
@@ -148,7 +135,7 @@ namespace GameFactoryWPF
                 }
             }
         }
-        private void Match_PlayerChanged(object sender, PlayerChangedEventArgs e)
+        private void Match_PlayerChanged(object sender, Player.PlayerChangedEventArgs e)
         {
             UpdateCurrentPlayerDisplay();
         }

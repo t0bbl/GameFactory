@@ -28,7 +28,7 @@ namespace ClassLibrary
 
         public event EventHandler<GameStateChangedEventArgs> GameStateChanged;
 
-        public event EventHandler<PlayerChangedEventArgs> PlayerChanged;
+        public event EventHandler<Player.PlayerChangedEventArgs> PlayerChanged;
 
         Random p_Random = new();
         #endregion
@@ -185,7 +185,7 @@ namespace ClassLibrary
         {
             SavePlayerToMatch(PlayerList[CurrentPlayerIndex].Ident, MatchId);
             CurrentPlayer = PlayerList[CurrentPlayerIndex].Name;
-            OnPlayerChanged(new PlayerChangedEventArgs(CurrentPlayer));
+            OnPlayerChanged(new Player.PlayerChangedEventArgs(CurrentPlayer));
             SaveMoveHistory(PlayerList[CurrentPlayerIndex].Ident, p_ChosenCell, MatchId, TwistStat);
 
             Winner = CheckWinner(PlayerList);
@@ -374,7 +374,7 @@ namespace ClassLibrary
             GameStateChanged?.Invoke(this, e);
         }
 
-        protected virtual void OnPlayerChanged(PlayerChangedEventArgs e)
+        protected virtual void OnPlayerChanged(Player.PlayerChangedEventArgs e)
         {
             PlayerChanged?.Invoke(this, e);
         }

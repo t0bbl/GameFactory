@@ -10,6 +10,8 @@ namespace ClassLibrary
         internal Match CurrentMatch { get; set; }
         internal int GuestCount { get; set; } = 0;
 
+
+
         #endregion
 
     }
