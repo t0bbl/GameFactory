@@ -19,7 +19,6 @@ namespace GameFactoryWPF
             InitializeComponent();
             CloseButton.Click += CloseButton_Click;
             HomePlayer = p_Player;
-            var Color = p_Player.Color;
             this.DataContext = HomePlayer;
         }
 
