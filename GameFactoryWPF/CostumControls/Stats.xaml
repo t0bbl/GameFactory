@@ -127,13 +127,28 @@
                         Margin="10"
                         VerticalAlignment="Center"
                         Text="Icon:" />
+
                     <TextBlock
+                        x:Name="DisplayTextBlock"
                         Grid.Row="5"
                         Grid.Column="1"
                         Margin="10"
                         VerticalAlignment="Center"
+                        MouseLeftButtonUp="DisplayTextBlock_MouseLeftButtonUp"
                         Text="{Binding Icon}"
                         TextAlignment="Right" />
+                    <TextBox
+                        x:Name="EditTextBox"
+                        Grid.Row="5"
+                        Grid.Column="1"
+                        Margin="10"
+                        VerticalAlignment="Center"
+                        KeyUp="EditTextBox_KeyUp"
+                        LostFocus="EditTextBox_LostFocus"
+                        MaxLength="1"
+                        Text="{Binding Icon, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                        TextAlignment="Right"
+                        Visibility="Collapsed" />
 
                     <TextBlock
                         Grid.Row="6"
@@ -141,13 +156,55 @@
                         Margin="10"
                         VerticalAlignment="Center"
                         Text="Color:" />
-                    <TextBlock
+
+                    <ComboBox
+                        x:Name="ColorComboBox"
                         Grid.Row="6"
                         Grid.Column="1"
+                        Width="20px"
                         Margin="10"
+                        HorizontalAlignment="Right"
                         VerticalAlignment="Center"
-                        Text="{Binding Color}"
-                        TextAlignment="Right" />
+                        Background="{Binding Color}"
+                        SelectedValue="{Binding Color}"
+                        SelectionChanged="ColorComboBox_SelectionChanged">
+                        <ComboBoxItem
+                            Width="20px"
+                            Background="Gray"
+                            Content="Gray" />
+                        <ComboBoxItem
+                            Width="20px"
+                            Background="DarkGray"
+                            Content="DarkGray" />
+                        <ComboBoxItem
+                            Width="20px"
+                            Background="Blue"
+                            Content="Blue" />
+                        <ComboBoxItem
+                            Width="20px"
+                            Background="Green"
+                            Content="Green" />
+                        <ComboBoxItem
+                            Width="20px"
+                            Background="Cyan"
+                            Content="Cyan" />
+                        <ComboBoxItem
+                            Width="20px"
+                            Background="Red"
+                            Content="Red" />
+                        <ComboBoxItem
+                            Width="20px"
+                            Background="Magenta"
+                            Content="Magenta" />
+                        <ComboBoxItem
+                            Width="20px"
+                            Background="Yellow"
+                            Content="Yellow" />
+                        <ComboBoxItem
+                            Width="20px"
+                            Background="White"
+                            Content="White" />
+                    </ComboBox>
 
                 </Grid>
 

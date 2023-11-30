@@ -96,7 +96,7 @@ namespace ClassLibrary
         /// <param name="p_Icon">The icon of the player represented as a character.</param>
         /// <param name="p_Color">The color preference of the player represented as a string.</param>
         /// <returns>True if the operation succeeded, false otherwise.</returns>
-        internal bool SQLSavePlayerVariables(int p_Ident, string p_Name, char p_Icon, string p_Color)
+        public bool SQLSavePlayerVariables(int p_Ident, string p_Name, string p_Icon, string p_Color)
         {
             string connString = new SQLDatabaseUtility().GetSQLConnectionString();
 

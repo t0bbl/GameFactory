@@ -31,7 +31,7 @@
 
         <materialDesign:Card Grid.Row="0">
             <Menu materialDesign:MenuAssist.TopLevelMenuItemHeight="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type materialDesign:Card}}, Path=ActualHeight}">
-                <MenuItem Click="ToMain" Header="_Main" />
+                <MenuItem Click="ToMain" Header="_Main Menu" />
                 <MenuItem Click="ToLeaderboard" Header="_Show Leaderboard" />
                 <MenuItem Click="ToStats" Header="_Toggle Stats" />
                 <MenuItem Click="ToLogin" Header="_Back to Login" />
