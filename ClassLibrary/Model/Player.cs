@@ -42,6 +42,8 @@ namespace ClassLibrary
                     cmd.Parameters.AddWithValue("@p_LoginName", p_LoginName);
                     cmd.Parameters.AddWithValue("@p_Password", p_Password);
                     cmd.Parameters.AddWithValue("@p_IsHuman", 1);
+                    cmd.Parameters.AddWithValue("@p_Icon", "X");
+                    cmd.Parameters.AddWithValue("@p_Color", "Gray");
 
                     SqlParameter identParam = new SqlParameter("@p_Ident", SqlDbType.Int);
                     identParam.Direction = ParameterDirection.Output;

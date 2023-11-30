@@ -21,7 +21,7 @@ namespace GameFactoryWPF
         private string Password1 { get; set; }
         private string Password2 { get; set; }
         private int Ident { get; set; } = 0;
-        private Player Player { get; set; }
+        private Player Player { get; set; } = new Player();
 
         public delegate void PlayerLoggedInHandler(Player player);
 
@@ -84,6 +84,7 @@ namespace GameFactoryWPF
         /// </summary>
         private void SignUpFunction_Click(object sender, RoutedEventArgs e)
         {
+
             Username = UsernameTextBoxSignup.Text;
             if (!Player.ValidateLoginName(Username))
             {
