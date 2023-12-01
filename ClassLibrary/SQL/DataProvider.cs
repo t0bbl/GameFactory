@@ -315,16 +315,20 @@ namespace ClassLibrary
                         {
                             while (reader.Read())
                             {
+                                int Row = 0;
                                 int MatchId = reader.GetInt32(reader.GetOrdinal("Match"));
                                 int Player = reader.GetInt32(reader.GetOrdinal("PlayerIdent"));
-                                string Input = reader.GetString(reader.GetOrdinal("Input"));
+                                if (!reader.IsDBNull(reader.GetOrdinal("Row")))
+                                    Row = reader.GetInt32(reader.GetOrdinal("Row"));
+                                int Column = reader.GetInt32(reader.GetOrdinal("Column"));
                                 bool Twist = reader.GetBoolean(reader.GetOrdinal("Twist"));
                                 string PlayerName = reader.GetString(reader.GetOrdinal("PlayerName"));
                                 MoveHistory.Add(new Move
                                 {
                                     Match = MatchId,
                                     Player = Player,
-                                    Input = Input,
+                                    Row = Row,
+                                    Column = Column,
                                     Twist = Twist,
                                     PlayerName = PlayerName
 

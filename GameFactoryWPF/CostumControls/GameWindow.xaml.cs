@@ -1,4 +1,5 @@
 ﻿using ClassLibrary;
+using CoreGameFactory.Model;
 using GameFactoryWPF.Utilities;
 using MaterialDesignThemes.Wpf;
 using System;
@@ -46,6 +47,8 @@ namespace GameFactoryWPF
         {
             InitializeComponent();
         }
+
+
 
         private void StartMatch(Match p_Match)
         {

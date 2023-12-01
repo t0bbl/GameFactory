@@ -86,7 +86,8 @@ namespace GameFactoryWPF
             {
                 Player = move.Player,
                 Match = move.Match,
-                Input = move.Input,
+                Row = move.Row,
+                Column = move.Column,
                 Twist = move.Twist,
                 PlayerName = move.PlayerName
             }));

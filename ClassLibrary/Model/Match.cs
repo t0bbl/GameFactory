@@ -70,9 +70,8 @@ namespace ClassLibrary
         public void HandleClick(int p_Row, int p_Col)
         {
             SetCell(p_Row, p_Col, PlayerList[CurrentPlayerIndex].Icon);
-            string Cell = $"{p_Row * Columns + p_Col + 1}";
 
-            EndTurn(Cell);
+            EndTurn(p_Row, p_Col);
         }
 
 
@@ -181,12 +180,12 @@ namespace ClassLibrary
                 p_Player[i] = temp;
             }
         }
-        public void EndTurn(string p_ChosenCell)
+        public void EndTurn(int? p_Row, int p_Col)
         {
             SavePlayerToMatch(PlayerList[CurrentPlayerIndex].Ident, MatchId);
             CurrentPlayer = PlayerList[CurrentPlayerIndex].Name;
             OnPlayerChanged(new Player.PlayerChangedEventArgs(CurrentPlayer));
-            SaveMoveHistory(PlayerList[CurrentPlayerIndex].Ident, p_ChosenCell, MatchId, TwistStat);
+            SaveMoveHistory(PlayerList[CurrentPlayerIndex].Ident, p_Row, p_Col, MatchId, TwistStat);
 
             Winner = CheckWinner(PlayerList);
 
@@ -322,7 +321,7 @@ namespace ClassLibrary
         /// <param name="p_Input">The input representing the move.</param>
         /// <param name="p_MatchId">The identifier of the match in which the move is made.</param>
         /// <param name="p_Twist">Indicates whether a special condition or rule was applied to the move.</param>
-        internal void SaveMoveHistory(int p_Player, string p_Input, int p_MatchId, bool p_Twist)
+        internal void SaveMoveHistory(int p_Player, int? p_Row, int p_Col, int p_MatchId, bool p_Twist)
         {
             string connString = new SQLDatabaseUtility().GetSQLConnectionString();
 
@@ -333,7 +332,15 @@ namespace ClassLibrary
                     cmd.CommandType = CommandType.StoredProcedure;
 
                     cmd.Parameters.AddWithValue("@p_Player", p_Player);
-                    cmd.Parameters.AddWithValue("@p_Input", p_Input);
+                    if (p_Row.HasValue)
+                    {
+                        cmd.Parameters.AddWithValue("@Row", p_Row.Value);
+                    }
+                    else
+                    {
+                        cmd.Parameters.AddWithValue("@Row", DBNull.Value);
+                    }
+                    cmd.Parameters.AddWithValue("@Col", p_Col);
                     cmd.Parameters.AddWithValue("@p_MatchId", p_MatchId);
                     cmd.Parameters.AddWithValue("@p_Twist", p_Twist);
 

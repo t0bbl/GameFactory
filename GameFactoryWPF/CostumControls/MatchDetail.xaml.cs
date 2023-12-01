@@ -29,14 +29,16 @@ namespace GameFactoryWPF
                 Style = (Style)FindResource("HiddenTabsStyle")
             };
 
-            foreach (var move in p_Moves)
+            foreach (var Move in p_Moves)
             {
-                var moveHistoryItem = new TabItem();
+                var MoveHistoryItem = new TabItem();
 
-                var historyGameWindow = new GameWindow();
+                var HistoryGameWindow = new GameWindow();
 
-                moveHistoryItem.Content = historyGameWindow.CreatePlayboard(p_Match);
-                MoveHistory.Items.Add(moveHistoryItem);
+                //HistoryGameWindow.
+
+                MoveHistoryItem.Content = HistoryGameWindow.CreatePlayboard(p_Match);
+                MoveHistory.Items.Add(MoveHistoryItem);
             }
             Grid.SetRow(MoveHistory, 0);
             Grid.SetColumnSpan(MoveHistory, 3);
