@@ -135,13 +135,46 @@ namespace GameFactoryWPF
         {
             if (File.Exists("windowPosition.json"))
             {
-                var windowPosition = JsonConvert.DeserializeObject<dynamic>(File.ReadAllText("windowPosition.json"));
-                this.Top = windowPosition.Top;
-                this.Left = windowPosition.Left;
-                this.Width = windowPosition.Width;
-                this.Height = windowPosition.Height;
+                var windowPositionJson = File.ReadAllText("windowPosition.json");
+                var windowPosition = JsonConvert.DeserializeObject<dynamic>(windowPositionJson);
+
+                double top = (double)windowPosition.Top;
+                double left = (double)windowPosition.Left;
+                double width = (double)windowPosition.Width;
+                double height = (double)windowPosition.Height;
+
+                double virtualScreenWidth = SystemParameters.VirtualScreenWidth;
+                double virtualScreenHeight = SystemParameters.VirtualScreenHeight;
+                double virtualScreenLeft = SystemParameters.VirtualScreenLeft;
+                double virtualScreenTop = SystemParameters.VirtualScreenTop;
+
+                double threshold = 0.50;
+
+                bool isWindowVisible =
+                    (left + width * threshold > virtualScreenLeft) &&
+                    (top + height * threshold > virtualScreenTop) &&
+                    (left < virtualScreenWidth - width * threshold) &&
+                    (top < virtualScreenHeight - height * threshold);
+
+                if (isWindowVisible)
+                {
+                    this.Top = top;
+                    this.Left = left;
+                    this.Width = width;
+                    this.Height = height;
+                }
+                else
+                {
+                    this.WindowStartupLocation = WindowStartupLocation.CenterScreen;
+                }
+            }
+            else
+            {
+                this.WindowStartupLocation = WindowStartupLocation.CenterScreen;
             }
         }
+
+
     }
 
 
