@@ -1,5 +1,8 @@
 ﻿using ClassLibrary;
+using Microsoft.Azure.Amqp.Framing;
+using Newtonsoft.Json;
 using System.Windows;
+using System.IO;
 
 namespace GameFactoryWPF
 {
@@ -20,6 +23,7 @@ namespace GameFactoryWPF
             InitializeComponent();
             MainContent.Content = LoginScreen;
             LoginScreen.PlayerLoggedIn += LoginScreen_PlayerLoggedIn;
+            LoadWindowPosition();
         }
 
         public void LoginScreen_PlayerLoggedIn(Player p_Player)
@@ -109,6 +113,34 @@ namespace GameFactoryWPF
             GamesPanel.Children.Clear();
             GamesPanel.Children.Add(GameScreen);
             GameScreen.Visibility = Visibility.Visible;
+        }
+
+        private void MainWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            SaveWindowPosition();
+        }
+        private void SaveWindowPosition()
+        {
+            var windowPosition = new
+            {
+                Top = this.Top,
+                Left = this.Left,
+                Width = this.Width,
+                Height = this.Height
+            };
+
+            File.WriteAllText("windowPosition.json", JsonConvert.SerializeObject(windowPosition));
+        }
+        private void LoadWindowPosition()
+        {
+            if (File.Exists("windowPosition.json"))
+            {
+                var windowPosition = JsonConvert.DeserializeObject<dynamic>(File.ReadAllText("windowPosition.json"));
+                this.Top = windowPosition.Top;
+                this.Left = windowPosition.Left;
+                this.Width = windowPosition.Width;
+                this.Height = windowPosition.Height;
+            }
         }
     }
 

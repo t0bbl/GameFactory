@@ -9,6 +9,7 @@
 
   <ItemGroup>
     <PackageReference Include="MaterialDesignThemes" Version="4.9.0" />
+    <PackageReference Include="Microsoft.Azure.Amqp" Version="2.6.4" />
   </ItemGroup>
 
   <ItemGroup>

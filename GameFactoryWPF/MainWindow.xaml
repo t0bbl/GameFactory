@@ -10,6 +10,7 @@
     Width="1600"
     Height="900"
     BorderThickness="0"
+    Closing="MainWindow_Closing"
     Style="{StaticResource MaterialDesignWindow}"
     Template="{StaticResource CommonBackgroundTemplate}"
     TextElement.Foreground="Black"
