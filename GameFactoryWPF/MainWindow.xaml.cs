@@ -16,7 +16,6 @@ namespace GameFactoryWPF
         Stats StatsScreen;
         History HistoryScreen;
         GameWindow GameScreen;
-        Player HomePlayer;
 
         public MainWindow()
         {
@@ -41,11 +40,9 @@ namespace GameFactoryWPF
             HistoryScreen = new History(p_Player);
             HistoryScreen.LoadHistory(p_Player);
 
-            HomePlayer = p_Player;
-
             StatsScreen.Visibility = Visibility.Visible;
 
-            InitializeGameScreen(HomePlayer);
+            InitializeGameScreen(p_Player);
 
             MainContent.Content = HistoryScreen;
         }
@@ -66,7 +63,6 @@ namespace GameFactoryWPF
             HistoryPanel.Children.Clear();
             GamesPanel.Children.Clear();
 
-            HomePlayer = null;
             HistoryScreen = null;
             StatsScreen = null;
             GameScreen = null;
