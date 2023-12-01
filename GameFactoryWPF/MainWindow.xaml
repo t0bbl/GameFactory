@@ -35,7 +35,7 @@
                 <MenuItem Click="ToMain" Header="_Main Menu" />
                 <MenuItem Click="ToLeaderboard" Header="_Show Leaderboard" />
                 <MenuItem Click="ToStats" Header="_Toggle Stats" />
-                <MenuItem Click="ToLogin" Header="_Back to Login" />
+                <MenuItem Click="LogOut" Header="_Logout" />
             </Menu>
         </materialDesign:Card>
 

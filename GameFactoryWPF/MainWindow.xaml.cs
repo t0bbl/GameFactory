@@ -33,7 +33,6 @@ namespace GameFactoryWPF
 
         public void LoadPlayerHome(Player p_Player)
         {
-
             StatsPanel.Children.Clear();
             StatsScreen = new Stats(p_Player);
             StatsPanel.Children.Add(StatsScreen);
@@ -51,22 +50,30 @@ namespace GameFactoryWPF
             MainContent.Content = HistoryScreen;
         }
 
-
-
+        private void InitializeGameScreen(Player p_Player)
+        {
+            GameScreen = new GameWindow(this, p_Player);
+            GameScreen.StartGamePanel.Visibility = Visibility.Visible;
+            GamesPanel.Children.Clear();
+            GamesPanel.Children.Add(GameScreen);
+            GameScreen.Visibility = Visibility.Visible;
+        }
 
         #region UI Event Handlers
-        private void ToLogin(object sender, RoutedEventArgs e)
+        private void LogOut(object sender, RoutedEventArgs e)
         {
-            if (GameScreen != null)
-            {
-                GameScreen.Visibility = Visibility.Collapsed;
-            }
-            if (StatsScreen != null)
-            {
-                StatsScreen.Visibility = Visibility.Collapsed;
-            }
+            StatsPanel.Children.Clear();
+            HistoryPanel.Children.Clear();
+            GamesPanel.Children.Clear();
 
+            HomePlayer = null;
+            HistoryScreen = null;
+            StatsScreen = null;
+            GameScreen = null;
+
+            LoginScreen = new Login();
             MainContent.Content = LoginScreen;
+            LoginScreen.PlayerLoggedIn += LoginScreen_PlayerLoggedIn;
         }
         private void ToLeaderboard(object sender, RoutedEventArgs e)
         {
@@ -104,21 +111,12 @@ namespace GameFactoryWPF
             GameScreen.Visibility = Visibility.Visible;
             StatsScreen.Visibility = Visibility.Visible;
         }
-        #endregion
-
-        private void InitializeGameScreen(Player p_Player)
-        {
-            GameScreen = new GameWindow(this, p_Player);
-            GameScreen.StartGamePanel.Visibility = Visibility.Visible;
-            GamesPanel.Children.Clear();
-            GamesPanel.Children.Add(GameScreen);
-            GameScreen.Visibility = Visibility.Visible;
-        }
-
         private void MainWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
             SaveWindowPosition();
         }
+        #endregion
+        #region Window Positioning
         private void SaveWindowPosition()
         {
             var windowPosition = new
@@ -173,10 +171,6 @@ namespace GameFactoryWPF
                 this.WindowStartupLocation = WindowStartupLocation.CenterScreen;
             }
         }
-
-
+        #endregion
     }
-
-
-
 }
