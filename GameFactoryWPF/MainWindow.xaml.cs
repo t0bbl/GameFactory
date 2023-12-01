@@ -82,7 +82,7 @@ namespace GameFactoryWPF
 
             MainContent.Content = LeaderBoardScreen;
         }
-        private void ToStats(object sender, RoutedEventArgs e)
+        private void ToggleStats(object sender, RoutedEventArgs e)
         {
             if (StatsScreen == null)
             {
