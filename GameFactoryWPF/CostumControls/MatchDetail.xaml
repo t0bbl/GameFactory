@@ -11,65 +11,50 @@
     mc:Ignorable="d">
     <materialDesign:Card
         Grid.Column="2"
-        Width="200"
+        Width="400"
         Height="400"
         Margin="30"
         HorizontalAlignment="Right"
         Background="{DynamicResource SecondaryHueMidBrush}"
         Foreground="Black">
 
-        <Grid>
+        <Grid x:Name="MoveHistoryGrid">
+
             <Grid.RowDefinitions>
-                <RowDefinition Height="60" />
                 <RowDefinition Height="*" />
-                <RowDefinition Height="Auto" />
+                <RowDefinition Height="90" />
             </Grid.RowDefinitions>
-            <TextBlock
-                Grid.Row="0"
-                HorizontalAlignment="Center"
-                VerticalAlignment="Center"
-                FontSize="18"
-                FontWeight="Bold"
-                Text="{Binding Match}" />
 
-            <ListView
-                x:Name="MoveHistoryList"
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <Button
+                x:Name="BackButton"
                 Grid.Row="1"
-                Width="240"
-                Margin="10,0,10,0"
+                Grid.Column="0"
+                Margin="0,23"
                 HorizontalAlignment="Center"
-                Foreground="Black"
-                ItemsSource="{Binding}">
-                <ListView.View>
-                    <GridView>
-                        <GridViewColumn Width="Auto" Header="Player">
-                            <GridViewColumn.CellTemplate>
-                                <DataTemplate>
-                                    <TextBlock
-                                        Margin="20,0,0,0"
-                                        Foreground="Black"
-                                        Text="{Binding PlayerName}" />
-                                </DataTemplate>
-                            </GridViewColumn.CellTemplate>
-                        </GridViewColumn>
-
-                        <GridViewColumn Width="Auto" Header="Move">
-                            <GridViewColumn.CellTemplate>
-                                <DataTemplate>
-                                    <TextBlock
-                                        Margin="20,0,0,0"
-                                        Foreground="Black"
-                                        Text="{Binding Input}" />
-                                </DataTemplate>
-                            </GridViewColumn.CellTemplate>
-                        </GridViewColumn>
-
-                    </GridView>
-                </ListView.View>
-            </ListView>
+                VerticalAlignment="Bottom"
+                Style="{StaticResource MaterialDesignFloatingActionMiniSecondaryButton}">
+                <materialDesign:PackIcon Kind="ArrowLeft" />
+            </Button>
+            <Button
+                x:Name="ForwardButton"
+                Grid.Row="1"
+                Grid.Column="1"
+                Margin="0,23"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Bottom"
+                Style="{StaticResource MaterialDesignFloatingActionMiniSecondaryButton}">
+                <materialDesign:PackIcon Kind="ArrowRight" />
+            </Button>
             <Button
                 x:Name="CloseButton"
                 Grid.Row="1"
+                Grid.Column="2"
                 Margin="8,23"
                 HorizontalAlignment="Right"
                 VerticalAlignment="Bottom"

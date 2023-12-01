@@ -15,7 +15,7 @@
         <Grid
             x:Name="StartGamePanel"
             Grid.Column="1"
-            Visibility="Visible">
+            Visibility="Collapsed">
             <Grid.RowDefinitions>
                 <RowDefinition Height="*" />
                 <RowDefinition Height="*" />

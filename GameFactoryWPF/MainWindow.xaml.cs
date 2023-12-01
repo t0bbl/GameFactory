@@ -40,6 +40,10 @@ namespace GameFactoryWPF
             HistoryScreen = new History(p_Player);
             HistoryScreen.LoadHistory(p_Player);
 
+            GameScreen = new GameWindow(this, p_Player);
+
+            GameScreen.StartGamePanel.Visibility = Visibility.Visible;
+
             StatsScreen.Visibility = Visibility.Visible;
 
             InitializeGameScreen(p_Player);

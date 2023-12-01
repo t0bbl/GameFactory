@@ -58,12 +58,12 @@ namespace GameFactoryWPF
             var listView = sender as ListView;
             if (listView != null && listView.SelectedItem != null)
             {
-                var match = listView.SelectedItem as ClassLibrary.Match;
+                var match = listView.SelectedItem as Match;
                 if (match != null)
                 {
                     var MoveList = LoadMoveHistory(match);
 
-                    MoveHistoryScreen = new MatchDetail(MoveList);
+                    MoveHistoryScreen = new MatchDetail(MoveList, match);
                     MoveHistoryScreen.DataContext = MoveList;
 
                     var mainWindow = Application.Current.MainWindow as MainWindow;
@@ -79,7 +79,7 @@ namespace GameFactoryWPF
             }
         }
 
-        public List<Move> LoadMoveHistory(ClassLibrary.Match p_Match)
+        public List<Move> LoadMoveHistory(Match p_Match)
         {
             var moveHistoryData = DataProvider.DisplayMoveHistory(p_Match.MatchId);
             var moveHistory = new List<Move>(moveHistoryData.Select(move => new Move

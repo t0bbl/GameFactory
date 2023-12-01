@@ -42,6 +42,10 @@ namespace GameFactoryWPF
                 DataProvider.GetPlayerVariables(1)
             };
         }
+        public GameWindow()
+        {
+            InitializeComponent();
+        }
 
         private void StartMatch(Match p_Match)
         {
@@ -53,7 +57,7 @@ namespace GameFactoryWPF
 
             GetAllGameCellControls();
 
-            CreateGameWindow(p_Match.Rows, p_Match.Columns);
+            CreateGameWindow(p_Match);
 
             GameWindow MatchScreen = new GameWindow(MainWindow, HomePlayer);
 
@@ -165,29 +169,31 @@ namespace GameFactoryWPF
         //}
         #endregion
         #region GameBoardSetup
-        private void CreateGameWindow(int p_Rows, int p_Columns)
+        protected void CreateGameWindow(Match p_Match)
         {
             var MainContent = new Grid();
             MainContent.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(100, GridUnitType.Star) });
             MainContent.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(512, GridUnitType.Star) });
             MainContent.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(100, GridUnitType.Star) });
-            CreatePlayboard(p_Rows, p_Columns, MainContent);
+            MainContent.Children.Add(CreatePlayboard(p_Match));
+
+            MainWindow.MainContent.Content = MainContent;
             CreateCurrentPlayerDisplay(MainContent);
         }
 
-        private void CreatePlayboard(int p_Rows, int p_Columns, Grid p_MainContent)
+        public Grid CreatePlayboard(Match p_Match)
         {
             var Playboard = new Grid();
 
-            if (CurrentMatch.GameType == "FourW")
+            if (p_Match.GameType == "FourW")
             {
 
-                for (int row = 0; row < p_Rows + 1; row++)
+                for (int row = 0; row < p_Match.Rows + 1; row++)
                 {
                     Playboard.RowDefinitions.Add(new RowDefinition { Height = new GridLength(1, GridUnitType.Star) });
                 }
 
-                for (int col = 0; col < p_Columns; col++)
+                for (int col = 0; col < p_Match.Columns; col++)
                 {
                     Playboard.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
                 }
@@ -195,14 +201,14 @@ namespace GameFactoryWPF
 
                 for (int row = 0; row == 0; row++)
                 {
-                    for (int col = 0; col < p_Columns; col++)
+                    for (int col = 0; col < p_Match.Columns; col++)
                     {
                         CreateGameCell(true, true, row, col, Playboard);
                     }
                 }
-                for (int row = 1; row < p_Rows + 1; row++)
+                for (int row = 1; row < p_Match.Rows + 1; row++)
                 {
-                    for (int col = 0; col < p_Columns; col++)
+                    for (int col = 0; col < p_Match.Columns; col++)
                     {
                         CreateGameCell(false, false, row, col, Playboard);
                     }
@@ -212,19 +218,19 @@ namespace GameFactoryWPF
             else
             {
 
-                for (int row = 0; row < p_Rows; row++)
+                for (int row = 0; row < p_Match.Rows; row++)
                 {
                     Playboard.RowDefinitions.Add(new RowDefinition { Height = new GridLength(1, GridUnitType.Star) });
                 }
 
-                for (int col = 0; col < p_Columns; col++)
+                for (int col = 0; col < p_Match.Columns; col++)
                 {
                     Playboard.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
                 }
 
-                for (int row = 0; row < p_Rows; row++)
+                for (int row = 0; row < p_Match.Rows; row++)
                 {
-                    for (int col = 0; col < p_Columns; col++)
+                    for (int col = 0; col < p_Match.Columns; col++)
                     {
                         CreateGameCell(false, true, row, col, Playboard);
                     }
@@ -233,11 +239,11 @@ namespace GameFactoryWPF
 
 
             Grid.SetColumn(Playboard, 1);
-            p_MainContent.Children.Add(Playboard);
 
-
-            MainWindow.MainContent.Content = p_MainContent;
+            return Playboard;
+            
         }
+
 
         private void CreateCurrentPlayerDisplay(Grid p_MainContent)
         {
