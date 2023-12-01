@@ -10,6 +10,11 @@
                 <Grid.Effect>
                     <BlurEffect Radius="15" />
                 </Grid.Effect>
+                <Canvas
+                    Width="2000"
+                    Height="2000"
+                    Margin="-100,-100,0,0"
+                    Background="{DynamicResource MaterialDesignPaper}" />
                 <Ellipse
                     Width="1200"
                     Height="1200"

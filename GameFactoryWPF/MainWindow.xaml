@@ -31,13 +31,27 @@
         </Grid.RowDefinitions>
 
         <materialDesign:Card Grid.Row="0">
-            <Menu materialDesign:MenuAssist.TopLevelMenuItemHeight="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type materialDesign:Card}}, Path=ActualHeight}">
-                <MenuItem Click="ToMain" Header="_Main Menu" />
-                <MenuItem Click="ToLeaderboard" Header="_Show Leaderboard" />
-                <MenuItem Click="ToStats" Header="_Toggle Stats" />
-                <MenuItem Click="LogOut" Header="_Logout" />
-            </Menu>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+                <Menu Grid.Column="0" materialDesign:MenuAssist.TopLevelMenuItemHeight="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type materialDesign:Card}}, Path=ActualHeight}">
+                    <MenuItem Click="ToMain" Header="_Main Menu" />
+                    <MenuItem Click="ToLeaderboard" Header="_Show Leaderboard" />
+                    <MenuItem Click="ToStats" Header="_Toggle Stats" />
+                </Menu>
+
+                <Menu
+                    Grid.Column="1"
+                    HorizontalAlignment="Right"
+                    materialDesign:MenuAssist.TopLevelMenuItemHeight="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type materialDesign:Card}}, Path=ActualHeight}">
+                    <MenuItem Click="LogOut" Header="_Logout" />
+                </Menu>
+            </Grid>
         </materialDesign:Card>
+
 
         <ContentControl x:Name="MainContent" Grid.Row="1">
             <local:Login />
