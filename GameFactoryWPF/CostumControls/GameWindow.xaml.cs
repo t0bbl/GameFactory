@@ -184,6 +184,25 @@ namespace GameFactoryWPF
             CreateCurrentPlayerDisplay(MainContent);
         }
 
+        public List<Grid> CreateHistoryPlayboard(List<Move> p_Moves, Match p_Match)
+        {
+            List<Grid> HistoricMatch = new List<Grid>();
+            foreach (Move HistoryMove in p_Moves)
+            {
+                Grid HistoryBoard = CreatePlayboard(p_Match);
+                Player CurrentPlayer = DataProvider.GetPlayerVariables(HistoryMove.Player);
+                foreach (GameCell GameCell in GetAllGameCellControls())
+                {
+                    if (GameCell.Row == HistoryMove.Row && GameCell.Column == HistoryMove.Column)
+                    {
+                        UpdateGameCellControl(GameCell, CurrentPlayer);
+                    }
+                }
+                HistoricMatch.Add(HistoryBoard);
+            }
+            return HistoricMatch;
+        }
+
         public Grid CreatePlayboard(Match p_Match)
         {
             var Playboard = new Grid();
