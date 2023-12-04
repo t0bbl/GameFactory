@@ -179,6 +179,11 @@ namespace ClassLibrary
                 p_Player[i] = temp;
             }
         }
+        /// <summary>
+        /// Ends the current player's turn, saves the move to the match history, checks for a winner, and potentially ends the game.
+        /// </summary>
+        /// <param name="p_Row">The row index of the player's move (null if not applicable).</param>
+        /// <param name="p_Col">The column index of the player's move.</param>
         public void EndTurn(int? p_Row, int p_Col)
         {
             SavePlayerToMatch(PlayerList[CurrentPlayerIndex].Ident, MatchId);
@@ -193,6 +198,10 @@ namespace ClassLibrary
                 EndGame(PlayerList);
             }
         }
+        /// <summary>
+        /// Concludes the game, updates player statistics, saves the match details, and triggers the game state change event.
+        /// </summary>
+        /// <param name="p_PlayerList">List of players involved in the game.</param>
         private void EndGame(List<Player> p_PlayerList)
         {
             UpdateStats(p_PlayerList);
@@ -375,19 +384,34 @@ namespace ClassLibrary
 
         #endregion
         #region EventArgs
+        /// <summary>
+        /// Raises the GameStateChanged event to notify subscribers of changes in the game's state, such as game end or draw.
+        /// </summary>
+        /// <param name="e">Event arguments containing details about the game state change.</param>
         protected virtual void OnGameStateChanged(GameStateChangedEventArgs e)
         {
             GameStateChanged?.Invoke(this, e);
         }
-
+        /// <summary>
+        /// Raises the PlayerChanged event to notify subscribers of a change in the current player.
+        /// </summary>
+        /// <param name="e">Event arguments containing details about the player change.</param>
         protected virtual void OnPlayerChanged(Player.PlayerChangedEventArgs e)
         {
             PlayerChanged?.Invoke(this, e);
         }
+        /// <summary>
+        /// Handles the click event on a game cell, initiating the process to manage the player's move.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">Event arguments containing details about the clicked cell.</param>
         public virtual void GameCellClicked(object sender, GameCellClickedEventArgs e)
         {
             HandleClick(e.Row, e.Column);
         }
+        /// <summary>
+        /// Provides data for the GameCellClicked event, containing the row and column indices of the clicked cell.
+        /// </summary>
         public class GameCellClickedEventArgs : EventArgs
         {
             public int Row { get; }

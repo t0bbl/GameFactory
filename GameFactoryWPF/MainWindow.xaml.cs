@@ -10,12 +10,15 @@ namespace GameFactoryWPF
     /// </summary>
     public partial class MainWindow : Window
     {
-
         Login LoginScreen = new Login();
         Stats StatsScreen;
         History HistoryScreen;
         GameWindow GameScreen;
 
+        /// <summary>
+        /// Initializes a new instance of the MainWindow class.
+        /// Sets up the initial content and subscribes to necessary events.
+        /// </summary>
         public MainWindow()
         {
             InitializeComponent();
@@ -24,11 +27,21 @@ namespace GameFactoryWPF
             LoadWindowPosition();
         }
 
+
+        /// <summary>
+        /// Handles the PlayerLoggedIn event from the LoginScreen.
+        /// Loads the player home screen with the provided player information.
+        /// </summary>
+        /// <param name="p_Player">The player who logged in.</param>
         public void LoginScreen_PlayerLoggedIn(Player p_Player)
         {
             LoadPlayerHome(p_Player);
         }
-
+        /// <summary>
+        /// Loads the home screen for the specified player.
+        /// Initializes and displays player's statistics, history, and game screen.
+        /// </summary>
+        /// <param name="p_Player">The player for whom to load the home screen.</param>
         public void LoadPlayerHome(Player p_Player)
         {
             StatsPanel.Children.Clear();
@@ -49,7 +62,11 @@ namespace GameFactoryWPF
 
             MainContent.Content = HistoryScreen;
         }
-
+        /// <summary>
+        /// Initializes the game screen for the specified player.
+        /// Adds the game window to the GamesPanel.
+        /// </summary>
+        /// <param name="p_Player">The player for whom to initialize the game screen.</param>
         private void InitializeGameScreen(Player p_Player)
         {
             GameScreen = new GameWindow(this, p_Player);
@@ -60,6 +77,10 @@ namespace GameFactoryWPF
         }
 
         #region UI Event Handlers
+        /// <summary>
+        /// Handles the click event to log out the current user.
+        /// Clears all panels and resets the application to the login screen.
+        /// </summary>
         private void LogOut(object sender, RoutedEventArgs e)
         {
             StatsPanel.Children.Clear();
@@ -74,6 +95,9 @@ namespace GameFactoryWPF
             MainContent.Content = LoginScreen;
             LoginScreen.PlayerLoggedIn += LoginScreen_PlayerLoggedIn;
         }
+        /// <summary>
+        /// Handles the click event to navigate to the leaderboard screen.
+        /// </summary>
         private void ToLeaderboard(object sender, RoutedEventArgs e)
         {
             Leaderboard LeaderBoardScreen = new Leaderboard();
@@ -85,6 +109,10 @@ namespace GameFactoryWPF
 
             MainContent.Content = LeaderBoardScreen;
         }
+        /// <summary>
+        /// Toggles the visibility of the statistics screen.
+        /// Shows an alert if no user is logged in.
+        /// </summary>
         private void ToggleStats(object sender, RoutedEventArgs e)
         {
             if (StatsScreen == null)
@@ -97,6 +125,10 @@ namespace GameFactoryWPF
                 ? Visibility.Collapsed
                 : Visibility.Visible;
         }
+        /// <summary>
+        /// Navigates to the main content screen, showing the player's history.
+        /// Ensures the game screen and stats screen are visible.
+        /// </summary>
         private void ToMain(object sender, RoutedEventArgs e)
         {
             if (HistoryScreen == null)
@@ -110,12 +142,19 @@ namespace GameFactoryWPF
             GameScreen.Visibility = Visibility.Visible;
             StatsScreen.Visibility = Visibility.Visible;
         }
+        /// <summary>
+        /// Handles the window closing event.
+        /// Saves the current window position for future sessions.
+        /// </summary>
         private void MainWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
             SaveWindowPosition();
         }
         #endregion
         #region Window Positioning
+        /// <summary>
+        /// Saves the current window position and size to a JSON file.
+        /// </summary>
         private void SaveWindowPosition()
         {
             var windowPosition = new
@@ -128,6 +167,10 @@ namespace GameFactoryWPF
 
             File.WriteAllText("windowPosition.json", JsonConvert.SerializeObject(windowPosition));
         }
+        /// <summary>
+        /// Loads the window position and size from a JSON file if it exists.
+        /// Sets the window to the center of the screen if the position is not found.
+        /// </summary>
         private void LoadWindowPosition()
         {
             if (File.Exists("windowPosition.json"))

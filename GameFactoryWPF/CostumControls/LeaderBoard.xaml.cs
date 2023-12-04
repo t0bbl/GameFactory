@@ -14,7 +14,9 @@ namespace GameFactoryWPF
             InitializeComponent();
             LoadLeaderBoard();
         }
-
+        /// <summary>
+        /// Loads the leaderboard data from the data provider and populates the user interface.
+        /// </summary>
         private void LoadLeaderBoard()
         {
             var LeaderboardData = ClassLibrary.DataProvider.DisplayLeaderBoard();
