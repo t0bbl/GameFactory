@@ -245,7 +245,7 @@ namespace GameFactoryWPF
         public List<Grid> CreateHistoryPlayboard(List<Move> p_Moves, Match p_Match)
         {
             List<Grid> HistoricMatch = new List<Grid>();
-            Grid currentBoard = CreatePlayboard(p_Match);
+            Grid CurrentBoard = CreatePlayboard(p_Match);
 
             foreach (Move historyMove in p_Moves)
             {
@@ -258,7 +258,7 @@ namespace GameFactoryWPF
                 }
                 else
                 {
-                    targetCell = FindGameCell(currentBoard, historyMove.Row, historyMove.Column);
+                    targetCell = FindGameCell(CurrentBoard, historyMove.Row, historyMove.Column);
                 }
 
                 if (targetCell != null)
@@ -266,7 +266,7 @@ namespace GameFactoryWPF
                     UpdateGameCellControl(targetCell, currentPlayer);
                 }
 
-                Grid clonedBoard = CloneGrid(currentBoard);
+                Grid clonedBoard = CloneGrid(CurrentBoard);
                 HistoricMatch.Add(clonedBoard);
             }
 
