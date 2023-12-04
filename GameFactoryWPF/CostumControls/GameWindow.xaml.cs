@@ -187,35 +187,95 @@ namespace GameFactoryWPF
         public List<Grid> CreateHistoryPlayboard(List<Move> p_Moves, Match p_Match)
         {
             List<Grid> HistoricMatch = new List<Grid>();
-            foreach (Move HistoryMove in p_Moves)
+            Grid currentBoard = CreatePlayboard(p_Match);
+
+            foreach (Move historyMove in p_Moves)
             {
-                Grid HistoryBoard = CreatePlayboard(p_Match);
-                Player CurrentPlayer = DataProvider.GetPlayerVariables(HistoryMove.Player);
+                Player currentPlayer = DataProvider.GetPlayerVariables(historyMove.Player);
+                GameCell targetCell;
 
                 if (p_Match.GameType == "FourW")
                 {
-                    GameCell TargetCell = FindLowestUnclickedGameCell(HistoryMove.Column, p_Match);
-                    if (TargetCell != null)
-                    {
-                        UpdateGameCellControl(TargetCell, CurrentPlayer);
-                    }
+                    targetCell = FindLowestUnclickedGameCell(historyMove.Column, currentBoard);
                 }
                 else
                 {
-                    foreach (GameCell GameCell in GetAllGameCellControls())
-                    {
-                        if (GameCell.Row == HistoryMove.Row && GameCell.Column == HistoryMove.Column)
-                        {
-                            UpdateGameCellControl(GameCell, CurrentPlayer);
-                        }
-                    }
+                    targetCell = FindGameCell(currentBoard, historyMove.Row, historyMove.Column);
                 }
-                
-                HistoricMatch.Add(HistoryBoard);
+
+                if (targetCell != null)
+                {
+                    UpdateGameCellControl(targetCell, currentPlayer);
+                }
+
+                Grid clonedBoard = CloneGrid(currentBoard);
+                HistoricMatch.Add(clonedBoard);
             }
-            HistoricMatch.Reverse();
+
             return HistoricMatch;
         }
+
+        private GameCell FindLowestUnclickedGameCell(int column, Grid board)
+        {
+            for (int row = board.RowDefinitions.Count - 1; row >= 0; row--)
+            {
+                GameCell cell = FindGameCell(board, row, column);
+                if (cell != null && !cell.IsClicked)
+                {
+                    return cell;
+                }
+            }
+            return null;
+        }
+
+        private GameCell FindGameCell(Grid board, int row, int column)
+        {
+            foreach (UIElement element in board.Children)
+            {
+                if (element is GameCell cell && Grid.GetRow(element) == row && Grid.GetColumn(element) == column)
+                {
+                    return cell;
+                }
+            }
+            return null;
+        }
+
+
+        private Grid CloneGrid(Grid originalGrid)
+        {
+            Grid clonedGrid = new Grid();
+
+            foreach (var rowDef in originalGrid.RowDefinitions)
+                clonedGrid.RowDefinitions.Add(new RowDefinition { Height = rowDef.Height });
+
+            foreach (var colDef in originalGrid.ColumnDefinitions)
+                clonedGrid.ColumnDefinitions.Add(new ColumnDefinition { Width = colDef.Width });
+
+            foreach (UIElement child in originalGrid.Children)
+            {
+                if (child is GameCell originalCell)
+                {
+                    GameCell clonedCell = new GameCell
+                    {
+                        Row = originalCell.Row,
+                        Column = originalCell.Column,
+                        CellContent = originalCell.CellButton.Content, 
+                        CellColor = originalCell.CellColor,
+                        IsClicked = originalCell.IsClicked
+                    };
+                    clonedCell.SetValue(GameCell.CellContentProperty, originalCell.CellContent);
+
+
+                    Grid.SetRow(clonedCell, Grid.GetRow(originalCell));
+                    Grid.SetColumn(clonedCell, Grid.GetColumn(originalCell));
+
+                    clonedGrid.Children.Add(clonedCell);
+                }
+            }
+
+            return clonedGrid;
+        }
+
 
         public Grid CreatePlayboard(Match p_Match)
         {
