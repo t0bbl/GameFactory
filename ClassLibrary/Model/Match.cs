@@ -1,4 +1,3 @@
-using CoreGameFactory.Model;
 using System.Data;
 using System.Data.SqlClient;
 

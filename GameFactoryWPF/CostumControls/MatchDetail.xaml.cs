@@ -1,8 +1,8 @@
-﻿using CoreGameFactory.Model;
+﻿using ClassLibrary;
+using CoreGameFactory.Model;
 using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
-using ClassLibrary;
 
 namespace GameFactoryWPF
 {

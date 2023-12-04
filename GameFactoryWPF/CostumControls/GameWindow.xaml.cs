@@ -64,7 +64,7 @@ namespace GameFactoryWPF
 
             GameWindow MatchScreen = new GameWindow(MainWindow, HomePlayer);
 
-            p_Match.ResetBoard();         
+            p_Match.ResetBoard();
             p_Match.StartGameMechanic(PlayerList);
 
             UpdateCurrentPlayerDisplay();
@@ -116,10 +116,12 @@ namespace GameFactoryWPF
             {
                 var cell = GameCells.FirstOrDefault(c => c.Column == p_Column && c.Row == row && !c.IsClicked);
                 if (cell != null)
-                return cell;
-        }
+                    return cell;
+            }
             return null;
         }
+
+
         #endregion
         #region StateChanges
         private void Match_GameStateChanged(object sender, GameStateChangedEventArgs e)
@@ -196,7 +198,7 @@ namespace GameFactoryWPF
 
                 if (p_Match.GameType == "FourW")
                 {
-                    targetCell = FindLowestUnclickedGameCell(historyMove.Column, currentBoard);
+                    targetCell = FindLowestUnclickedGameCell(historyMove.Column, p_Match);
                 }
                 else
                 {
@@ -214,20 +216,6 @@ namespace GameFactoryWPF
 
             return HistoricMatch;
         }
-
-        private GameCell FindLowestUnclickedGameCell(int column, Grid board)
-        {
-            for (int row = board.RowDefinitions.Count - 1; row >= 0; row--)
-            {
-                GameCell cell = FindGameCell(board, row, column);
-                if (cell != null && !cell.IsClicked)
-                {
-                    return cell;
-                }
-            }
-            return null;
-        }
-
         private GameCell FindGameCell(Grid board, int row, int column)
         {
             foreach (UIElement element in board.Children)
@@ -239,8 +227,6 @@ namespace GameFactoryWPF
             }
             return null;
         }
-
-
         private Grid CloneGrid(Grid originalGrid)
         {
             Grid clonedGrid = new Grid();
@@ -259,7 +245,7 @@ namespace GameFactoryWPF
                     {
                         Row = originalCell.Row,
                         Column = originalCell.Column,
-                        CellContent = originalCell.CellButton.Content, 
+                        CellContent = originalCell.CellButton.Content,
                         CellColor = originalCell.CellColor,
                         IsClicked = originalCell.IsClicked
                     };
@@ -275,8 +261,6 @@ namespace GameFactoryWPF
 
             return clonedGrid;
         }
-
-
         public Grid CreatePlayboard(Match p_Match)
         {
             var Playboard = new Grid();
@@ -337,7 +321,7 @@ namespace GameFactoryWPF
             Grid.SetColumn(Playboard, 1);
 
             return Playboard;
-            
+
         }
         private void CreateCurrentPlayerDisplay(Grid p_MainContent)
         {
@@ -385,7 +369,6 @@ namespace GameFactoryWPF
         {
             return GameCells;
         }
-
 
         private void EventhandlerRegister()
         {
