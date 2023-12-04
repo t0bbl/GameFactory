@@ -11,7 +11,6 @@ namespace GameFactoryWPF
     /// </summary>
     public partial class MatchDetail : UserControl
     {
-        List<Move> Moves;
         private TabControl MoveHistory;
         public MatchDetail(List<Move> p_Moves, Match p_Match)
         {
@@ -30,7 +29,6 @@ namespace GameFactoryWPF
             };
 
             GameWindow HistoryGameWindow = new GameWindow();
-            p_Moves.Reverse();
 
             List<Grid> HistoricBoards = HistoryGameWindow.CreateHistoryPlayboard(p_Moves, p_Match);
 
@@ -43,8 +41,15 @@ namespace GameFactoryWPF
             Grid.SetRow(MoveHistory, 0);
             Grid.SetColumnSpan(MoveHistory, 3);
             MoveHistoryGrid.Children.Add(MoveHistory);
+            MoveHistory.SelectionChanged += MoveHistory_SelectionChanged;
         }
 
+
+        private void MoveHistory_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            BackButton.Visibility = MoveHistory.SelectedIndex == 0 ? Visibility.Hidden : Visibility.Visible;
+            ForwardButton.Visibility = MoveHistory.SelectedIndex == MoveHistory.Items.Count - 1 ? Visibility.Hidden : Visibility.Visible;
+        }
         private void CloseButton_Click(object sender, RoutedEventArgs e)
         {
             this.Visibility = Visibility.Collapsed;

@@ -99,7 +99,7 @@ namespace GameFactoryWPF
         }
         private void HandleFourWTypeGame(GameCell p_GameCell, Player p_Player)
         {
-            GameCell lowestCellControl = FindLowestUnclickedGameCell(p_GameCell.Column);
+            GameCell lowestCellControl = FindLowestUnclickedGameCell(p_GameCell.Column, CurrentMatch);
             if (lowestCellControl != null)
             {
                 UpdateGameCellControl(lowestCellControl, p_Player);
@@ -110,14 +110,14 @@ namespace GameFactoryWPF
                 }
             }
         }
-        private GameCell FindLowestUnclickedGameCell(int p_Column)
+        private GameCell FindLowestUnclickedGameCell(int p_Column, Match p_Match)
         {
-            for (int row = CurrentMatch.Rows; row >= 0; row--)
+            for (int row = p_Match.Rows; row >= 0; row--)
             {
                 var cell = GameCells.FirstOrDefault(c => c.Column == p_Column && c.Row == row && !c.IsClicked);
                 if (cell != null)
-                    return cell;
-            }
+                return cell;
+        }
             return null;
         }
         #endregion
@@ -191,15 +191,29 @@ namespace GameFactoryWPF
             {
                 Grid HistoryBoard = CreatePlayboard(p_Match);
                 Player CurrentPlayer = DataProvider.GetPlayerVariables(HistoryMove.Player);
-                foreach (GameCell GameCell in GetAllGameCellControls())
+
+                if (p_Match.GameType == "FourW")
                 {
-                    if (GameCell.Row == HistoryMove.Row && GameCell.Column == HistoryMove.Column)
+                    GameCell TargetCell = FindLowestUnclickedGameCell(HistoryMove.Column, p_Match);
+                    if (TargetCell != null)
                     {
-                        UpdateGameCellControl(GameCell, CurrentPlayer);
+                        UpdateGameCellControl(TargetCell, CurrentPlayer);
                     }
                 }
+                else
+                {
+                    foreach (GameCell GameCell in GetAllGameCellControls())
+                    {
+                        if (GameCell.Row == HistoryMove.Row && GameCell.Column == HistoryMove.Column)
+                        {
+                            UpdateGameCellControl(GameCell, CurrentPlayer);
+                        }
+                    }
+                }
+                
                 HistoricMatch.Add(HistoryBoard);
             }
+            HistoricMatch.Reverse();
             return HistoricMatch;
         }
 
@@ -265,8 +279,6 @@ namespace GameFactoryWPF
             return Playboard;
             
         }
-
-
         private void CreateCurrentPlayerDisplay(Grid p_MainContent)
         {
             var CurrentPlayerDisplay = new TextBlock()
@@ -284,7 +296,6 @@ namespace GameFactoryWPF
 
             p_MainContent.Children.Add(CurrentPlayerDisplay);
         }
-
         private void CreateGameCell(bool p_SetterRow, bool p_Clickable, int p_Row, int p_Col, Grid p_Board)
         {
             var CellButton = new GameCell();
@@ -310,7 +321,6 @@ namespace GameFactoryWPF
             p_Board.Children.Add(CellButton);
             GameCells.Add(CellButton);
         }
-
         public IEnumerable<GameCell> GetAllGameCellControls()
         {
             return GameCells;
