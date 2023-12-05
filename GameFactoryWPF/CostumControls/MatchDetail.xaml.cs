@@ -50,10 +50,7 @@ namespace GameFactoryWPF
                 MoveHistoryTab.Content = HistoricBoard;
                 MoveHistory.Items.Add(MoveHistoryTab);
             }
-            //Grid.SetRow(MoveHistory, 0);
-            //Grid.SetColumnSpan(MoveHistory, 3);
-            //MoveHistoryGrid.Children.Add(MoveHistory);
-            //MoveHistory.SelectionChanged += MoveHistory_SelectionChanged;
+            MoveHistory.SelectionChanged += MoveHistory_SelectionChanged;
             HistoryBoard.Content = MoveHistory;
         }
 

@@ -20,7 +20,7 @@
 
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
-                <RowDefinition Height="90" />
+                <RowDefinition Height="100" />
             </Grid.RowDefinitions>
 
             <Grid.ColumnDefinitions>
@@ -36,7 +36,7 @@
                 x:Name="BackButton"
                 Grid.Row="1"
                 Grid.Column="0"
-                Margin="0,28"
+                Margin="0,0,0,35"
                 HorizontalAlignment="Center"
                 VerticalAlignment="Bottom"
                 Style="{StaticResource MaterialDesignFloatingActionMiniSecondaryButton}">
@@ -46,7 +46,7 @@
                 x:Name="ForwardButton"
                 Grid.Row="1"
                 Grid.Column="1"
-                Margin="0,28"
+                Margin="0,0,0,35"
                 HorizontalAlignment="Center"
                 VerticalAlignment="Bottom"
                 Style="{StaticResource MaterialDesignFloatingActionMiniSecondaryButton}">
@@ -56,7 +56,7 @@
                 x:Name="CloseButton"
                 Grid.Row="1"
                 Grid.Column="2"
-                Margin="8,28"
+                Margin="0,0,8,35"
                 HorizontalAlignment="Right"
                 VerticalAlignment="Bottom"
                 Style="{StaticResource MaterialDesignFloatingActionMiniSecondaryButton}">
