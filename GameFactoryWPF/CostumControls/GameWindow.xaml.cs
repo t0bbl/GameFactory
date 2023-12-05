@@ -180,6 +180,7 @@ namespace GameFactoryWPF
                 {
                     Player Winner = DataProvider.GetPlayerVariables(e.Winner.Value);
                     Login.TextBox("The winner is: " + Winner.Name);
+                    MainWindow.OpponentStatsPanel.Children.Clear();
                     MainWindow.LoadPlayerHome(HomePlayer);
 
                     EventhandlerUnregister();
