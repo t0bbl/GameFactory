@@ -68,42 +68,41 @@ namespace ClassLibrary
         /// <summary>
         /// Retrieves a list of player identifiers from the Player database based on an optional name parameter. The function searches both the "Name" and "LoginName" fields for a match using the provided name. If no name is given, all player identifiers are returned.
         /// </summary>
-        internal static List<int> GetPlayerIdentsFromName(string p_Name = null)
+        public static int GetPlayerIdentFromName(string p_Name = null)
         {
             string connString = new SQLDatabaseUtility().GetSQLConnectionString();
-            List<int> p_idents = new List<int>();
-
+            int ident = 0;
             using (SqlConnection conn = new SqlConnection(connString))
             {
                 conn.Open();
-
-                StringBuilder sqlQuery = new StringBuilder("SELECT Ident FROM Player WHERE 1=1");
+                string sqlQuery = "SELECT Ident FROM Player WHERE 1=1";
                 List<SqlParameter> parameters = new List<SqlParameter>();
-
                 if (!string.IsNullOrEmpty(p_Name))
                 {
-                    sqlQuery.Append(" AND (Name LIKE @p_name OR LoginName LIKE @p_name)");
+                    sqlQuery += " AND (Name LIKE @p_name OR LoginName LIKE @p_name)";
                     parameters.Add(new SqlParameter("@p_name", p_Name));
                 }
-
-                using (SqlCommand cmd = new SqlCommand(sqlQuery.ToString(), conn))
+                using (SqlCommand cmd = new SqlCommand(sqlQuery, conn))
                 {
-                    cmd.Parameters.AddRange(parameters.ToArray());
-
-                    using (SqlDataReader reader = cmd.ExecuteReader())
+                    foreach (var parameter in parameters)
                     {
-                        while (reader.Read())
+                        cmd.Parameters.AddWithValue(parameter.ParameterName, parameter.Value);
+                    }
+                        using (SqlDataReader reader = cmd.ExecuteReader())
                         {
-                            if (reader["Ident"] != DBNull.Value)
+                            while (reader.Read())
                             {
-                                p_idents.Add(Convert.ToInt32(reader["Ident"]));
+                                if (reader["Ident"] != DBNull.Value)
+                                {
+                                    ident = Convert.ToInt32(reader["Ident"]);
+                                }
                             }
                         }
-                    }
                 }
             }
-            return p_idents;
+            return ident;
         }
+
         /// <summary>
         /// Checks the availability of a given login name in the Player database. Returns true if the login name is available (not taken), and false otherwise. If the login name is already taken, a message is displayed to the user.
         /// </summary>
@@ -315,16 +314,20 @@ namespace ClassLibrary
                         {
                             while (reader.Read())
                             {
+                                int Row = 0;
                                 int MatchId = reader.GetInt32(reader.GetOrdinal("Match"));
                                 int Player = reader.GetInt32(reader.GetOrdinal("PlayerIdent"));
-                                string Input = reader.GetString(reader.GetOrdinal("Input"));
+                                if (!reader.IsDBNull(reader.GetOrdinal("Row")))
+                                    Row = reader.GetInt32(reader.GetOrdinal("Row"));
+                                int Column = reader.GetInt32(reader.GetOrdinal("Column"));
                                 bool Twist = reader.GetBoolean(reader.GetOrdinal("Twist"));
                                 string PlayerName = reader.GetString(reader.GetOrdinal("PlayerName"));
                                 MoveHistory.Add(new Move
                                 {
                                     Match = MatchId,
                                     Player = Player,
-                                    Input = Input,
+                                    Row = Row,
+                                    Column = Column,
                                     Twist = Twist,
                                     PlayerName = PlayerName
 

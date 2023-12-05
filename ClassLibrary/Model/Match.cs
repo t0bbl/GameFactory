@@ -1,4 +1,3 @@
-using CoreGameFactory.Model;
 using System.Data;
 using System.Data.SqlClient;
 
@@ -70,9 +69,8 @@ namespace ClassLibrary
         public void HandleClick(int p_Row, int p_Col)
         {
             SetCell(p_Row, p_Col, PlayerList[CurrentPlayerIndex].Icon);
-            string Cell = $"{p_Row * Columns + p_Col + 1}";
 
-            EndTurn(Cell);
+            EndTurn(p_Row, p_Col);
         }
 
 
@@ -181,12 +179,17 @@ namespace ClassLibrary
                 p_Player[i] = temp;
             }
         }
-        public void EndTurn(string p_ChosenCell)
+        /// <summary>
+        /// Ends the current player's turn, saves the move to the match history, checks for a winner, and potentially ends the game.
+        /// </summary>
+        /// <param name="p_Row">The row index of the player's move (null if not applicable).</param>
+        /// <param name="p_Col">The column index of the player's move.</param>
+        public void EndTurn(int? p_Row, int p_Col)
         {
             SavePlayerToMatch(PlayerList[CurrentPlayerIndex].Ident, MatchId);
             CurrentPlayer = PlayerList[CurrentPlayerIndex].Name;
             OnPlayerChanged(new Player.PlayerChangedEventArgs(CurrentPlayer));
-            SaveMoveHistory(PlayerList[CurrentPlayerIndex].Ident, p_ChosenCell, MatchId, TwistStat);
+            SaveMoveHistory(PlayerList[CurrentPlayerIndex].Ident, p_Row, p_Col, MatchId, TwistStat);
 
             Winner = CheckWinner(PlayerList);
 
@@ -195,6 +198,10 @@ namespace ClassLibrary
                 EndGame(PlayerList);
             }
         }
+        /// <summary>
+        /// Concludes the game, updates player statistics, saves the match details, and triggers the game state change event.
+        /// </summary>
+        /// <param name="p_PlayerList">List of players involved in the game.</param>
         private void EndGame(List<Player> p_PlayerList)
         {
             UpdateStats(p_PlayerList);
@@ -322,7 +329,7 @@ namespace ClassLibrary
         /// <param name="p_Input">The input representing the move.</param>
         /// <param name="p_MatchId">The identifier of the match in which the move is made.</param>
         /// <param name="p_Twist">Indicates whether a special condition or rule was applied to the move.</param>
-        internal void SaveMoveHistory(int p_Player, string p_Input, int p_MatchId, bool p_Twist)
+        internal void SaveMoveHistory(int p_Player, int? p_Row, int p_Col, int p_MatchId, bool p_Twist)
         {
             string connString = new SQLDatabaseUtility().GetSQLConnectionString();
 
@@ -333,7 +340,15 @@ namespace ClassLibrary
                     cmd.CommandType = CommandType.StoredProcedure;
 
                     cmd.Parameters.AddWithValue("@p_Player", p_Player);
-                    cmd.Parameters.AddWithValue("@p_Input", p_Input);
+                    if (p_Row.HasValue)
+                    {
+                        cmd.Parameters.AddWithValue("@Row", p_Row.Value);
+                    }
+                    else
+                    {
+                        cmd.Parameters.AddWithValue("@Row", DBNull.Value);
+                    }
+                    cmd.Parameters.AddWithValue("@Col", p_Col);
                     cmd.Parameters.AddWithValue("@p_MatchId", p_MatchId);
                     cmd.Parameters.AddWithValue("@p_Twist", p_Twist);
 
@@ -369,19 +384,34 @@ namespace ClassLibrary
 
         #endregion
         #region EventArgs
+        /// <summary>
+        /// Raises the GameStateChanged event to notify subscribers of changes in the game's state, such as game end or draw.
+        /// </summary>
+        /// <param name="e">Event arguments containing details about the game state change.</param>
         protected virtual void OnGameStateChanged(GameStateChangedEventArgs e)
         {
             GameStateChanged?.Invoke(this, e);
         }
-
+        /// <summary>
+        /// Raises the PlayerChanged event to notify subscribers of a change in the current player.
+        /// </summary>
+        /// <param name="e">Event arguments containing details about the player change.</param>
         protected virtual void OnPlayerChanged(Player.PlayerChangedEventArgs e)
         {
             PlayerChanged?.Invoke(this, e);
         }
+        /// <summary>
+        /// Handles the click event on a game cell, initiating the process to manage the player's move.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">Event arguments containing details about the clicked cell.</param>
         public virtual void GameCellClicked(object sender, GameCellClickedEventArgs e)
         {
             HandleClick(e.Row, e.Column);
         }
+        /// <summary>
+        /// Provides data for the GameCellClicked event, containing the row and column indices of the clicked cell.
+        /// </summary>
         public class GameCellClickedEventArgs : EventArgs
         {
             public int Row { get; }

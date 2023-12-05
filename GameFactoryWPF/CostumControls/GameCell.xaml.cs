@@ -19,7 +19,6 @@ namespace GameFactoryWPF
         public int Row { get; set; }
         public int Column { get; set; }
         public bool IsClicked { get; set; } = false;
-
         public object CellContent
         {
             get { return (string)GetValue(CellContentProperty); }

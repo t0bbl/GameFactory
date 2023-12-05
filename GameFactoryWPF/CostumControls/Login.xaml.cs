@@ -77,7 +77,7 @@ namespace GameFactoryWPF
         /// </summary>
         private void Guest_Click(object sender, RoutedEventArgs e)
         {
-            TextBox("Logged in as Guest!");
+            TextBox("Logged in as Guest! WIP");
         }
         /// <summary>
         /// Handles the sign-up functionality, including user creation and validation.
@@ -115,8 +115,11 @@ namespace GameFactoryWPF
             }
         }
         #endregion
-
         #region Event Handlers Animations
+        /// <summary>
+        /// Applies initial transformations and visibility settings to the login and sign-up sections of the user interface.
+        /// This method sets up the initial state of the UI elements involved in the login and sign-up animations.
+        /// </summary>
         private void ApplyInitialTransformations()
         {
             LoginSection.Visibility = Visibility.Hidden;
@@ -124,9 +127,9 @@ namespace GameFactoryWPF
             LoginSection.RenderTransform = new TransformGroup
             {
                 Children = new TransformCollection
-        {
-            new ScaleTransform { ScaleX = -1 }
-        }
+                    {
+                        new ScaleTransform { ScaleX = -1 }
+                    }
             };
         }
         /// <summary>
@@ -190,7 +193,6 @@ namespace GameFactoryWPF
             }
         }
         #endregion
-
         #region Helper Functions
         /// <summary>
         /// Handles mouse down events on the window. Triggers a storyboard animation when clicked for the first time.
@@ -238,7 +240,22 @@ namespace GameFactoryWPF
             CustomMessageBox customMessageBox = new CustomMessageBox(p_Text);
             customMessageBox.Owner = Application.Current.MainWindow;
             customMessageBox.WindowStartupLocation = WindowStartupLocation.CenterOwner;
+            customMessageBox.KeyDown += CustomMessageBox_KeyDown;
             customMessageBox.ShowDialog();
+            customMessageBox.KeyDown -= CustomMessageBox_KeyDown;
+        }
+        /// <summary>
+        /// Lets you close TextBox with Enter.
+        /// </summary>
+        private static void CustomMessageBox_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+            {
+                if (sender is Window window)
+                {
+                    window.Close();
+                }
+            }
         }
         /// <summary>
         /// Handles the back button click to revert to the previous UI state.
@@ -252,10 +269,13 @@ namespace GameFactoryWPF
                 SignupFlipOut.Begin();
             }
         }
-
-        private void OnPlayerLoggedIn(Player player)
+        /// <summary>
+        /// Invokes the PlayerLoggedIn event to notify subscribers that a player has successfully logged in.
+        /// </summary>
+        /// <param name="p_Player">The player who has logged in.</param>
+        private void OnPlayerLoggedIn(Player p_Player)
         {
-            PlayerLoggedIn?.Invoke(player);
+            PlayerLoggedIn?.Invoke(p_Player);
         }
         #endregion
 

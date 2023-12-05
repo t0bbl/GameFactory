@@ -61,7 +61,7 @@
                         {
                             TwistStat = TwistColumn(p_Col);
                         }
-                        SaveMoveHistory(p_Player[CurrentPlayerIndex].Ident, p_input, MatchId, TwistStat);
+                        SaveMoveHistory(p_Player[CurrentPlayerIndex].Ident, p_Row, p_Col, MatchId, TwistStat);
 
                     }
                     else

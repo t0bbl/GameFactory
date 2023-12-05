@@ -13,8 +13,7 @@ namespace ClassLibrary
         private void HandleGameCellClicked(int p_ChosenColumn)
         {
             MakeMove(p_ChosenColumn, CurrentPlayerIndex, PlayerList);
-            string Cell = p_ChosenColumn.ToString();
-            EndTurn(Cell);
+            EndTurn(null, p_ChosenColumn);
         }
 
         #region GameUtilities
