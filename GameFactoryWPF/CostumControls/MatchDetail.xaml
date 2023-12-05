@@ -11,8 +11,6 @@
     mc:Ignorable="d">
     <materialDesign:Card
         Grid.Column="2"
-        Width="450"
-        Height="400"
         Margin="30"
         HorizontalAlignment="Right"
         Background="{DynamicResource SecondaryHueMidBrush}"
@@ -21,7 +19,7 @@
         <Grid x:Name="MoveHistoryGrid">
 
             <Grid.RowDefinitions>
-                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
                 <RowDefinition Height="90" />
             </Grid.RowDefinitions>
 
@@ -30,12 +28,15 @@
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
-
+            <ContentControl
+                x:Name="HistoryBoard"
+                Grid.Row="0"
+                Grid.ColumnSpan="3" />
             <Button
                 x:Name="BackButton"
                 Grid.Row="1"
                 Grid.Column="0"
-                Margin="0,23"
+                Margin="0,28"
                 HorizontalAlignment="Center"
                 VerticalAlignment="Bottom"
                 Style="{StaticResource MaterialDesignFloatingActionMiniSecondaryButton}">
@@ -45,7 +46,7 @@
                 x:Name="ForwardButton"
                 Grid.Row="1"
                 Grid.Column="1"
-                Margin="0,23"
+                Margin="0,28"
                 HorizontalAlignment="Center"
                 VerticalAlignment="Bottom"
                 Style="{StaticResource MaterialDesignFloatingActionMiniSecondaryButton}">
@@ -55,7 +56,7 @@
                 x:Name="CloseButton"
                 Grid.Row="1"
                 Grid.Column="2"
-                Margin="8,23"
+                Margin="8,28"
                 HorizontalAlignment="Right"
                 VerticalAlignment="Bottom"
                 Style="{StaticResource MaterialDesignFloatingActionMiniSecondaryButton}">

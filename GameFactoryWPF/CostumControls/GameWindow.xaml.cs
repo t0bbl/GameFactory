@@ -60,7 +60,7 @@ namespace GameFactoryWPF
         private void StartMatch(Match p_Match)
         {
             GameStarted?.Invoke(this, EventArgs.Empty);
-            StartGamePanel.Visibility = Visibility.Collapsed;
+            GameStartPanel.Visibility = Visibility.Collapsed;
 
             Match CurrentMatch = new Match();
             EventhandlerRegister();
@@ -206,6 +206,7 @@ namespace GameFactoryWPF
         private void OnClickTTT(object sender, RoutedEventArgs e)
         {
             CurrentMatch = new TTT() { PlayerList = PlayerList };
+
             StartMatch(CurrentMatch);
         }
         /// <summary>

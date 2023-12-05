@@ -85,9 +85,9 @@ namespace GameFactoryWPF
                     if (mainWindow != null)
                     {
 
-                        mainWindow.HistoryPanel.Children.Clear();
+                        mainWindow.GameDetailPanel.Children.Clear();
 
-                        mainWindow.HistoryPanel.Children.Add(MoveHistoryScreen);
+                        mainWindow.GameDetailPanel.Children.Add(MoveHistoryScreen);
                         MoveHistoryScreen.Visibility = Visibility.Visible;
                     }
                 }

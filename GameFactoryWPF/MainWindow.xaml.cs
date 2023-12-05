@@ -48,13 +48,13 @@ namespace GameFactoryWPF
             StatsScreen = new Stats(p_Player);
             StatsPanel.Children.Add(StatsScreen);
 
-            HistoryPanel.Children.Clear();
+            GameDetailPanel.Children.Clear();
             HistoryScreen = new History(p_Player);
             HistoryScreen.LoadHistory(p_Player);
 
             GameScreen = new GameWindow(this, p_Player);
 
-            GameScreen.StartGamePanel.Visibility = Visibility.Visible;
+            GameScreen.GameStartPanel.Visibility = Visibility.Visible;
 
             StatsScreen.Visibility = Visibility.Visible;
 
@@ -70,9 +70,9 @@ namespace GameFactoryWPF
         private void InitializeGameScreen(Player p_Player)
         {
             GameScreen = new GameWindow(this, p_Player);
-            GameScreen.StartGamePanel.Visibility = Visibility.Visible;
-            GamesPanel.Children.Clear();
-            GamesPanel.Children.Add(GameScreen);
+            GameScreen.GameStartPanel.Visibility = Visibility.Visible;
+            GameStartPanel.Children.Clear();
+            GameStartPanel.Children.Add(GameScreen);
             GameScreen.Visibility = Visibility.Visible;
         }
 
@@ -84,8 +84,8 @@ namespace GameFactoryWPF
         private void LogOut(object sender, RoutedEventArgs e)
         {
             StatsPanel.Children.Clear();
-            HistoryPanel.Children.Clear();
-            GamesPanel.Children.Clear();
+            GameDetailPanel.Children.Clear();
+            GameStartPanel.Children.Clear();
 
             HistoryScreen = null;
             StatsScreen = null;
@@ -138,7 +138,7 @@ namespace GameFactoryWPF
             }
             MainContent.Content = HistoryScreen;
 
-            GameScreen.StartGamePanel.Visibility = Visibility.Visible;
+            GameScreen.GameStartPanel.Visibility = Visibility.Visible;
             GameScreen.Visibility = Visibility.Visible;
             StatsScreen.Visibility = Visibility.Visible;
         }

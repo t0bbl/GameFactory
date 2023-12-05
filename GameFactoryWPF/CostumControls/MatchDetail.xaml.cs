@@ -36,7 +36,8 @@ namespace GameFactoryWPF
         {
             MoveHistory = new TabControl
             {
-                Style = (Style)FindResource("HiddenTabsStyle")
+                Style = (Style)FindResource("HiddenTabsStyle"),
+
             };
 
             GameWindow HistoryGameWindow = new GameWindow();
@@ -49,10 +50,11 @@ namespace GameFactoryWPF
                 MoveHistoryTab.Content = HistoricBoard;
                 MoveHistory.Items.Add(MoveHistoryTab);
             }
-            Grid.SetRow(MoveHistory, 0);
-            Grid.SetColumnSpan(MoveHistory, 3);
-            MoveHistoryGrid.Children.Add(MoveHistory);
-            MoveHistory.SelectionChanged += MoveHistory_SelectionChanged;
+            //Grid.SetRow(MoveHistory, 0);
+            //Grid.SetColumnSpan(MoveHistory, 3);
+            //MoveHistoryGrid.Children.Add(MoveHistory);
+            //MoveHistory.SelectionChanged += MoveHistory_SelectionChanged;
+            HistoryBoard.Content = MoveHistory;
         }
 
         #region EventHandlers
