@@ -20,6 +20,9 @@ namespace GameFactoryWPF
         private Match CurrentMatch;
         private Player HomePlayer;
 
+        Stats OpponentStatsScreen;
+
+
         private TextBlock CurrentPlayerDisplay;
 
         public List<Player> PlayerList;
@@ -62,14 +65,18 @@ namespace GameFactoryWPF
             GameStarted?.Invoke(this, EventArgs.Empty);
             GameStartPanel.Visibility = Visibility.Collapsed;
 
-            Match CurrentMatch = new Match();
+            Player Opponent = DataProvider.GetStatsAndVariables(p_Match.PlayerList[1].Ident);
+
+            MainWindow.OpponentStatsPanel.Children.Clear();
+            OpponentStatsScreen = new Stats(Opponent);
+            MainWindow.OpponentStatsPanel.Children.Add(OpponentStatsScreen);
+            OpponentStatsScreen.Visibility = Visibility.Visible;
+
             EventhandlerRegister();
 
             GetAllGameCellControls();
 
             CreateGameWindow(p_Match);
-
-            GameWindow MatchScreen = new GameWindow(MainWindow, HomePlayer);
 
             p_Match.ResetBoard();
             p_Match.StartGameMechanic(PlayerList);

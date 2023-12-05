@@ -58,7 +58,7 @@ namespace GameFactoryWPF
 
             StatsScreen.Visibility = Visibility.Visible;
 
-            InitializeGameScreen(p_Player);
+            InitializeHistoryScreen(p_Player);
 
             MainContent.Content = HistoryScreen;
         }
@@ -67,7 +67,7 @@ namespace GameFactoryWPF
         /// Adds the game window to the GamesPanel.
         /// </summary>
         /// <param name="p_Player">The player for whom to initialize the game screen.</param>
-        private void InitializeGameScreen(Player p_Player)
+        private void InitializeHistoryScreen(Player p_Player)
         {
             GameScreen = new GameWindow(this, p_Player);
             GameScreen.GameStartPanel.Visibility = Visibility.Visible;
@@ -142,6 +142,9 @@ namespace GameFactoryWPF
             GameScreen.Visibility = Visibility.Visible;
             StatsScreen.Visibility = Visibility.Visible;
         }
+
+        #endregion
+        #region Window Positioning
         /// <summary>
         /// Handles the window closing event.
         /// Saves the current window position for future sessions.
@@ -150,8 +153,6 @@ namespace GameFactoryWPF
         {
             SaveWindowPosition();
         }
-        #endregion
-        #region Window Positioning
         /// <summary>
         /// Saves the current window position and size to a JSON file.
         /// </summary>

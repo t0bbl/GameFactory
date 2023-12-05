@@ -58,6 +58,10 @@
             <local:Login />
         </ContentControl>
         <StackPanel x:Name="StatsPanel" Grid.Row="1" />
+        <StackPanel
+            x:Name="OpponentStatsPanel"
+            Grid.Row="1"
+            HorizontalAlignment="Right" />
         <Grid Grid.Row="1">
             <Grid.RowDefinitions>
                 <RowDefinition Height="600" />
