@@ -14,6 +14,7 @@ namespace GameFactoryWPF
         Stats StatsScreen;
         History HistoryScreen;
         GameWindow GameScreen;
+        Player HomePlayer;
 
         /// <summary>
         /// Initializes a new instance of the MainWindow class.
@@ -44,6 +45,8 @@ namespace GameFactoryWPF
         /// <param name="p_Player">The player for whom to load the home screen.</param>
         public void LoadPlayerHome(Player p_Player)
         {
+            HomePlayer = p_Player;
+
             StatsPanel.Children.Clear();
             StatsScreen = new Stats(p_Player);
             StatsPanel.Children.Add(StatsScreen);
@@ -84,6 +87,7 @@ namespace GameFactoryWPF
         private void LogOut(object sender, RoutedEventArgs e)
         {
             StatsPanel.Children.Clear();
+            OpponentStatsPanel.Children.Clear();
             GameDetailPanel.Children.Clear();
             GameStartPanel.Children.Clear();
 
@@ -136,11 +140,9 @@ namespace GameFactoryWPF
                 Login.TextBox("Please log in to view history.");
                 return;
             }
-            MainContent.Content = HistoryScreen;
+            OpponentStatsPanel.Children.Clear();
 
-            GameScreen.GameStartPanel.Visibility = Visibility.Visible;
-            GameScreen.Visibility = Visibility.Visible;
-            StatsScreen.Visibility = Visibility.Visible;
+            LoadPlayerHome(HomePlayer);
         }
 
         #endregion

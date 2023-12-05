@@ -72,6 +72,7 @@ namespace GameFactoryWPF
             MainWindow.OpponentStatsPanel.Children.Add(OpponentStatsScreen);
             OpponentStatsScreen.Visibility = Visibility.Visible;
 
+
             EventhandlerRegister();
 
             GetAllGameCellControls();
@@ -236,11 +237,9 @@ namespace GameFactoryWPF
         /// <param name="p_Match">The match for which to create the game window.</param>
         protected void CreateGameWindow(Match p_Match)
         {
-            var MainContent = new Grid();
-            MainContent.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(100, GridUnitType.Star) });
-            MainContent.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(512, GridUnitType.Star) });
-            MainContent.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(100, GridUnitType.Star) });
-            MainContent.Children.Add(CreatePlayboard(p_Match));
+            var PlayBoard = CreatePlayboard(p_Match);
+            MainContent.Children.Add(PlayBoard);
+            Grid.SetColumn(PlayBoard, 1);
 
             MainWindow.MainContent.Content = MainContent;
             CreateCurrentPlayerDisplay(MainContent);
