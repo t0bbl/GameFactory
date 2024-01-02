@@ -366,7 +366,7 @@ namespace ClassLibrary
                                 int GameTypeIdent = reader.GetInt32(reader.GetOrdinal("GameTypeIdent"));
                                 int Winner = reader.GetInt32(reader.GetOrdinal("Winner"));
                                 int Loser = reader.GetInt32(reader.GetOrdinal("Loser"));
-                                int Draw = reader.GetInt32(reader.GetOrdinal("Draw"));
+                                int? Draw = reader.IsDBNull(reader.GetOrdinal("Draw")) ? (int?)null : reader.GetInt32(reader.GetOrdinal("Draw"));
                                 int Rows = reader.GetInt32(reader.GetOrdinal("Rows"));
                                 int Columns = reader.GetInt32(reader.GetOrdinal("Cols"));
                                 int WinningLength = reader.GetInt32(reader.GetOrdinal("WinningLength"));
@@ -379,7 +379,7 @@ namespace ClassLibrary
                                     GameTypeIdent = GameTypeIdent,
                                     Winner = Winner,
                                     Loser = Loser,
-                                    Draw = Draw,
+                                    Draw = Draw.HasValue ? Draw.Value : 0,
                                     MatchId = MatchId,
                                     Rows = Rows,
                                     Columns = Columns,
