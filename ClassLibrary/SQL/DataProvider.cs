@@ -66,108 +66,6 @@ namespace ClassLibrary
             return Player;
         }
         /// <summary>
-        /// Retrieves a list of player identifiers from the Player database based on an optional name parameter. The function searches both the "Name" and "LoginName" fields for a match using the provided name. If no name is given, all player identifiers are returned.
-        /// </summary>
-        public static int GetPlayerIdentFromName(string p_Name = null)
-        {
-            string connString = new SQLDatabaseUtility().GetSQLConnectionString();
-            int ident = 0;
-            using (SqlConnection conn = new SqlConnection(connString))
-            {
-                conn.Open();
-                string sqlQuery = "SELECT Ident FROM Player WHERE 1=1";
-                List<SqlParameter> parameters = new List<SqlParameter>();
-                if (!string.IsNullOrEmpty(p_Name))
-                {
-                    sqlQuery += " AND (Name LIKE @p_name OR LoginName LIKE @p_name)";
-                    parameters.Add(new SqlParameter("@p_name", p_Name));
-                }
-                using (SqlCommand cmd = new SqlCommand(sqlQuery, conn))
-                {
-                    foreach (var parameter in parameters)
-                    {
-                        cmd.Parameters.AddWithValue(parameter.ParameterName, parameter.Value);
-                    }
-                        using (SqlDataReader reader = cmd.ExecuteReader())
-                        {
-                            while (reader.Read())
-                            {
-                                if (reader["Ident"] != DBNull.Value)
-                                {
-                                    ident = Convert.ToInt32(reader["Ident"]);
-                                }
-                            }
-                        }
-                }
-            }
-            return ident;
-        }
-
-        /// <summary>
-        /// Checks the availability of a given login name in the Player database. Returns true if the login name is available (not taken), and false otherwise. If the login name is already taken, a message is displayed to the user.
-        /// </summary>
-        internal static bool CheckLoginNameAvailability(string p_LoginName)
-        {
-            string connString = new SQLDatabaseUtility().GetSQLConnectionString();
-            bool p_result = false;
-
-            using (SqlConnection conn = new SqlConnection(connString))
-            {
-                conn.Open();
-
-                string sqlQuery = "SELECT 1 FROM [Player] WHERE LoginName = @p_loginName";
-
-                using (SqlCommand cmd = new SqlCommand(sqlQuery, conn))
-                {
-                    cmd.Parameters.Add(new SqlParameter("@p_loginName", p_LoginName));
-
-                    object result = cmd.ExecuteScalar();
-                    if (result == null)
-                    {
-                        p_result = true;
-                    }
-                    else
-                    {
-                        Console.WriteLine("LoginName already exists. Try again.");
-                    }
-                }
-            }
-
-            return p_result;
-        }
-        /// <summary>
-        /// Validates whether a given login name exists in the Player database. Returns true if the login name is found, and false otherwise. If the login name doesn't exist, a message is displayed to the user.
-        /// </summary>
-        internal static bool ValidateLoginName(string p_LoginName)
-        {
-            string connString = new SQLDatabaseUtility().GetSQLConnectionString();
-            bool p_result = false;
-
-            using (SqlConnection conn = new SqlConnection(connString))
-            {
-                conn.Open();
-
-                string sqlQuery = "SELECT 1 FROM [Player] WHERE LoginName = @p_loginName";
-
-                using (SqlCommand cmd = new SqlCommand(sqlQuery, conn))
-                {
-                    cmd.Parameters.Add(new SqlParameter("@p_loginName", p_LoginName));
-
-                    object result = cmd.ExecuteScalar();
-                    if (result == null)
-                    {
-                        Console.WriteLine("LoginName doesn't exists. Try again.");
-                    }
-                    else
-                    {
-                        p_result = true;
-                    }
-                }
-            }
-
-            return p_result;
-        }
-        /// <summary>
         /// Validates whether a given login name exists in the Player database. Returns true if the login name is found, and false otherwise.
         /// </summary>
         public static bool ValidateLoginNameForSignup(string p_Loginname)
@@ -241,6 +139,9 @@ namespace ClassLibrary
 
             return player;
         }
+        /// <summary>
+        /// Retrieves and combines player statistics with additional player variables such as name, icon, and color. This method first calls GetPlayerVariables to obtain the player's basic information based on the provided identifier. It then retrieves the player's statistics using DisplayPlayerStats. The method returns a Player object populated with both sets of information, or null if no matching record is found.
+        /// </summary>
         public static Player GetStatsAndVariables(int p_Ident)
         {
             Player Variables = GetPlayerVariables(p_Ident);
@@ -293,7 +194,9 @@ namespace ClassLibrary
             }
 
         }
-
+        /// <summary>
+        /// Retrieves the move history for a specific match identified by p_Ident. Each move is represented as a Move object, containing details such as row, column, twist, and player information. This method queries the MoveHistory_V view and populates a list of Move objects, which is then returned. If no moves are found for the given match, an empty list is returned.
+        /// </summary>
         public static List<Move> DisplayMoveHistory(int p_Ident)
         {
             List<Move> MoveHistory = new List<Move>();
@@ -340,8 +243,9 @@ namespace ClassLibrary
                 return MoveHistory;
             }
         }
-
-
+        /// <summary>
+        /// Fetches the match history for a player specified by p_Ident. This method queries the History_V view to obtain matches where the player was either a winner or a loser. Each match is represented as a Match object, encompassing details such as game type, winner, loser, and match dimensions. The method returns a list of Match objects in descending order of match identity. If no matches are found, an empty list is returned.
+        /// </summary>
         public static List<Match> DisplayHistory(int p_Ident)
         {
             List<Match> History = new List<Match>();

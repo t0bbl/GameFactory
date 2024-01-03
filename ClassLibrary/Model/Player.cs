@@ -12,8 +12,6 @@ namespace ClassLibrary
         public string Icon { get; set; }
         public string Color { get; set; }
         public int Ident { get; set; }
-        internal string LoginName { get; set; }
-        internal string Password { get; set; }
         public int Rank { get; set; }
         public int Wins { get; set; }
         public int Losses { get; set; }

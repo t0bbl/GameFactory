@@ -88,12 +88,12 @@ namespace GameFactoryWPF
             Username = UsernameTextBoxSignup.Text;
             if (!Player.ValidateLoginName(Username))
             {
-                MessageBox.Show("Username is not valid, please try again!");
+                TextBox("Username is not valid, please try again!");
                 return;
             }
             if (!DataProvider.ValidateLoginNameForSignup(Username))
             {
-                MessageBox.Show("Username is already taken, please try again!");
+                TextBox("Username is already taken, please try again!");
                 return;
             }
             Password1 = PasswordTextBoxSignup1.Password;
@@ -104,13 +104,13 @@ namespace GameFactoryWPF
                 Ident = Player.SQLSignUpPlayer(Username, PasswordSave);
                 if (Ident != 0)
                 {
-                    MessageBox.Show("Signed up as " + Username + " ! Continue to LogIn");
+                    TextBox("Signed up as " + Username + " ! Continue to LogIn");
                     Back_Click(sender, e);
                 }
             }
             else
             {
-                MessageBox.Show("Passwords do not match or are not valid, please try again!");
+                TextBox("Passwords do not match or are not valid, please try again!");
                 return;
             }
         }
